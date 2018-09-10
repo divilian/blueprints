@@ -1,0 +1,243 @@
+
+\chapter{Memory matters}
+
+This chapter is near and dear to my heart. The concepts here are vastly
+undertaught by computer science educators today, and yet they are at the
+epicenter of most intermediate students' understanding (or misunderstanding).
+A failure to master this material slaps a hard ceiling on what you can
+accomplish as a programmer. Successfully mastering it is the key to the next
+level.
+
+The key idea is that there are two ways of looking at a computer program. One
+is to look at the static lines of code as they are written on a screen or on
+paper. This is how novices think about programs: they look at the lines of
+code, and ask themselves whether lines need to be added, removed, changed, or
+moved.
+
+The other way is to think about what happens to the computer's \textbf{memory}
+as the program runs, and how its variables and structure change as the program
+unfolds. Whether they realize it or not, this is how all proficient
+programmers think. It turns out that \textbf{the ``purpose" of almost any line
+of code is to change the contents of memory in a particular way.} The name of
+the game is recognizing what impact on memory each line of code has -- and
+conversely, what line of code is required to make a particular change to
+memory.
+
+\section{Memory diagrams}
+
+The focal point of this chapter will be the \textbf{memory diagram}, which
+incorporates the UML object representations we discussed in
+section~\ref{sec:UMLclasses}. A memory diagram depicts the contents of the
+computer's memory at a \textit{snapshot in time.} At any given moment, as a
+program is running, you could say ``Freeze!" and look at the memory diagram.
+It would give you the exact state of the system at that moment.
+
+\subsection{The stack and the heap}
+
+A program's memory, it turns out, is divided into two realms with funny names:
+``\textbf{the stack}" and ``\textbf{the heap}." It is vital to understand the
+difference between the two, and which one is used for what. The stack contains
+\textbf{statically-allocated} memory and the heap contains
+\textbf{dynamically-allocated} memory. We'll unpack what all this means, but
+first let me show you a full list of differences:
+
+\vspace{.2in}
+\begin{tabular}{c|c}
+\textbf{stack} & \textbf{heap} \\
+\hline
+statically-allocated & dynamically-allocated \\
+contains named things & contains unnamed things \\
+contains primitive types and references & contains objects\footnote{This is
+true in Java, but C++ permits programmers to store objects on the
+\textit{stack} as well as the heap. I will argue that's universally dumb, and
+that is a large part of what makes programming in C++ difficult: you have to
+account for that happening, which requires a ton of tedious and error-prone
+bookkeeping.} \\
+items have a limited lifespan & items have an unlimited lifespan\footnote{Not
+completely unlimited, but things on the heap stick around as long as they're
+needed, rather than evaporating at the end of their current function.} \\
+\end{tabular}
+\vspace{.2in}
+
+This is best understood by example, and in fact can be illustrated with just a
+small function:
+
+\begin{figure}[ht]
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+void illustration() {
+    int year = 2018;
+    Car minivan = new Car("Toyota","Sienna");
+}
+\end{Verbatim}
+\vspace{-.3in}
+\caption{Some surprisingly complex code.}
+\label{fig:firstCode}
+\end{figure}
+
+This teensy function, when it runs, produces memory contents as depicted in
+Figure~\ref{fig:stackHeap1}. Let's go through it carefully.
+
+\begin{figure}[ht]   % 590x220
+\centering
+\includegraphics[width=1\textwidth]{stackHeap1.pdf}
+\caption{The stack and the heap.}
+\label{fig:stackHeap1}
+\end{figure}
+
+The first line of \texttt{illustration()} creates a simple integer variable
+and sets it equal to 2018. Since an \texttt{int} is a \textbf{primitive
+type}\footnote{If you've never heard this lingo, a ``primitive type" is one of
+the very basic lower-case Java variable types, like \texttt{int},
+\texttt{double}, or \texttt{boolean}. Importantly, a primitive type is
+\textit{not} an object.}, it is stored on the stack. ``On" the stack should
+make you think of layering items vertically on a surface. Before this line of
+code executed, nothing existed in the program's memory at all, so the stack
+was nothing but a bare floor (think of it as a horizontal line). Our first
+variable goes right on top of that floor.
+
+There's a ton packed into that second line of code, so hold on to your seats.
+The first thing to realize is that \textit{it encompasses both stack and
+heap.} We have a named \textbf{reference variable} called \texttt{minivan},
+which, as with all named things, goes on the stack (right on top of
+\texttt{year}). A ``reference variable" means a variable that has the ability
+to reference (or ``refer to," or ``point to") an object. However, the object
+itself is created in the heap, because in Java that's where all objects live.
+The word \texttt{new} is a ``heap word": using it is the only way to make an
+object at all, and therefore, the only way to make something on the heap.
+Finally, to carry out the equals sign (``\texttt{=}") in that line of code, we
+draw an arrow from \texttt{minivan} to the object to indicate that's what it's
+currently referring to.
+
+\subsubsection{(...a brief commercial...)}
+
+Now before we go any further, I want to \textit{\textbf{implore}} you that
+\textit{this stuff does actually matter.} It's tempting at this point to think
+that all this gibberish about stack and heap and whether something's on the
+left or right side of a diagram is irrelevant.  Nothing could be further from
+the truth. As soon as our example gets even moderately complicated, you will
+absolutely get the wrong answer if you conflate or confuse the two memory
+realms, or fail to keep their contents utterly in sync. Trust me on this.
+
+\subsubsection{(...okay, back to work...)}
+
+Okay, now a head-scratcher. Look at Figure~\ref{fig:stackHeap1} again. What
+would you answer if I asked you, ``what's the \textit{name} of that blue
+object?"
+
+If you're like 99\% of novice programmers (including myself, long ago), you
+would confidently answer, ``\texttt{minivan}. Its name is \texttt{minivan}."
+That seems to make perfect sense. But unfortunately it is \textit{wrong}. The
+truth is that \textit{the object has no name.}
+
+Again, you may think I'm being pedantic. Let me demonstrate why I'm not.
+Suppose we expanded our previous code with four more lines:
+
+\begin{figure}[ht]
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+void illustration() {
+    ...
+    Car other = new Car("Ferrari","F355");
+    Car t = minivan;
+    minivan = other;
+    other = t;
+}
+\end{Verbatim}
+\vspace{-.3in}
+\caption{(Continuing the previous example.)}
+\label{fig:additionalCode}
+\end{figure}
+
+Let's deal with the first two of these lines. The first one creates a new
+reference variable called \texttt{other} on the stack, and points it to a
+brand new \texttt{Car} object (unrelated to our Toyota Sienna) in the heap.
+Notice that unlike with the stack, I didn't carefully put the new \texttt{Car}
+exactly on top of the first one. Instead, I just threw it in there helter
+skelter. This is how the heap works, and in fact why it's called a ``heap":
+it's a disorganized mess of stuff that comes and goes in response to the
+program's unpredictable needs. The stack is as tidy as the Library of
+Congress; the heap is a teenage boy's room. Though weird, it turns out that
+things have to be that way.
+
+The second line creates a new stack variable called \texttt{t} but
+emphatically does \textit{not} create a new \texttt{Car} object. Let that sink
+in deeply. Many programmers, upon seeing a line begin with ``\texttt{Car t =
+...} would naturally assume that line is making a new \texttt{Car}. But it's
+actually only creating another variable that has the \textit{potential} to
+refer to a \texttt{Car}. And in fact, after the equals sign, we do point it to
+a \texttt{Car}...but one of the ones we've already instantiated (namely, the
+Sienna.)
+
+The result of executing these two lines is shown in
+Figure~\ref{fig:stackHeap2}. Stare very carefully at that figure and mull over
+each box and line. We have four named variables, three of which are of type
+\texttt{Car}, and yet there are only \textit{two} \texttt{Car} objects because
+we only executed two \texttt{new}'s. And two of our named variables --
+\texttt{t} and \texttt{minivan} -- are pointing to \textit{the same object}.
+This turns out to be okay. We'll have multiple references to the same object
+all the time, and it's entirely healthy. What's critical not to miss is that
+\texttt{t} and \texttt{minivan} are not referring to identical copies of the
+\texttt{Car}, but literally \textit{the same \texttt{Car}}. If we were to
+change the state of \texttt{t}'s \texttt{Car} by, say, increasing its odometer
+instance variable, \texttt{minivan} would instantly experience the same
+change. And that's because they \textit{are} the same. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{stackHeap2.pdf}   % 620x230
+\caption{After executing the first two lines of code
+listing~\ref{fig:additionalCode}.}
+\label{fig:stackHeap2}
+\end{figure}
+
+
+Okay, now the punchline of this whole example. I'm going to complete the
+bait-and-switch, just to prove I was right before when I said ``the name of
+that first blue box is \textit{not} \texttt{minivan}." Let's do the
+\textit{second} two lines of code in listing~\ref{fig:additionalCode}:
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+    minivan = other;
+    other = t;
+\end{Verbatim}
+
+The result of those two operations is to change what the \texttt{other} and
+\texttt{minivan} variables are pointing to. Memory now looks like
+Figure~\ref{fig:stackHeap3}. And so I ask you again: ``what's the
+\textit{name} of that Toyota Sienna object?" I think you'll agree that
+\texttt{minivan} is most certainly \textit{not} its name. Two valid ways to
+refer to it are \texttt{t} and \texttt{other}, both of which point to it. But
+neither one is its name. Objects simply have no name.
+
+Names are ephemeral, momentary: they're only used temporarily so we can get at
+the stuff in the heap, which is ultimately what matters.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{stackHeap3.pdf}   % 620x230
+\caption{Finally, after executing the rest of code
+listing~\ref{fig:additionalCode}.}
+\label{fig:stackHeap3}
+\end{figure}
+
+Let me conclude this example by explaining what I meant earlier about
+``limited lifespans." After executing the ``\texttt{other = t;}" line, we are
+done with the function. It's time to return control to whoever called
+\texttt{illustration()} in the first place. And at this point, all of our
+named variables -- \texttt{t}, \texttt{other}, \texttt{minivan}, and even
+\texttt{year} -- cease to exist. Their destiny was only to provide service
+during the time that \texttt{illustration()} was being executed. 
+
+But the stuff on the heap lives on after. Long after a function is completed,
+the objects it may have created or changed have a presence that will affect
+the behavior of other, future functions. In this case, since we weren't passed
+any arguments and didn't return anything, our Toyota and Ferrari \textit{will}
+actually peacefully go away. But in general there are meaningful, long-term
+effects, and in the next section we'll see an example in action.
+
+Most methods are just like this. They create a few named variables so they can
+change the contents of the heap in some way, and then clean up their dishes
+and return with the heap thus changed. That is their \textit{raison d'etre}.
+It's a short but happy life.
+
+
+
