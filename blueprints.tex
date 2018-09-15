@@ -151,6 +151,47 @@ object to carry out this attack. Since somewhere in the \texttt{Wizard} class's
 code there will be a ``\texttt{new RangedSpell()}" line, we say that
 \texttt{Wizard} $\ll$instantiates$\gg$ \texttt{RangedSpell}.
 
+\subsubsection{Dependencies in code}
+
+Now what would we expect to see in the code that would reflect this kind of
+association? In the ``$\ll$uses$\gg$" case, we expect to see one or more
+methods of the \texttt{A} class making method calls on \texttt{B} objects.
+Perhaps something like this:
+
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+class Battle {
+    ...
+    void resolveAttack(Adventurer a, Monster m, Die d) {
+        ...
+        if (d.roll() < a.currentWeapon().attackStat()) {
+            ...
+        }
+    }
+    ...
+}
+\end{Verbatim}
+
+The design diagram doesn't specify exactly what \texttt{A} method will be
+called where, just that method calls are expected. This communicates something
+important to the programmer.
+
+For ``$\ll$instantiates$\gg$", we'd expect to see the word \texttt{new}
+somewhere in \texttt{A}:
+
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+class Wizard {
+    ...
+    void takeAction(ArrayList<Monster> enemies) {
+        ...
+        if (enemies.size() > 3) {
+            RangedSpell fireball = new RangedSpell("Fireball", 60, 12);
+            fireball.cast();
+            ...
+        }
+    }
+    ...
+}
+\end{Verbatim}
 
 \subsection{``Has-a" associations}
 
