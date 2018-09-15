@@ -268,11 +268,6 @@ right-hand side of the figure. Each object points to the other, so that a
 a \texttt{DeliveryCar} also knows which \texttt{Driver} is driving it. No
 biggie.
 
-Note, by the way, that the has-a arrow implies the existence of the inst var
-\textit{all by itself}. The class diagram should \textit{not} contain a
-duplicate copy of the inst var in its second compartment. That would be
-redundant, and is considered an error (see Figure~\ref{fig:wrongHasA}).
-
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{wrongHasA.pdf}   % 640x180
@@ -282,3 +277,108 @@ extraneous \texttt{topping} entry in the \texttt{Pizza} class's second box is
 redundant and incorrect.}
 \label{fig:wrongHasA}
 \end{figure}
+
+Note, by the way, that the has-a arrow implies the existence of the inst var
+\textit{all by itself}. The class diagram should \textit{not} contain a
+duplicate copy of the inst var in its second compartment. That would be
+redundant, and is considered an error (see Figure~\ref{fig:wrongHasA}).
+
+\pagebreak
+\subsubsection{``Has-a" associations in code}
+
+Obviously instance variables are how ``has-a" associations are manifested in a
+Java program. For \texttt{Pizza} and \texttt{Topping}, we'd see:
+
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+class Pizza {
+    ...
+    Topping topping;
+    ...
+}
+\end{Verbatim}
+
+and for our bidirectional \texttt{Driver}/\texttt{DeliveryCar}, we'd see both
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+class Driver {
+    ...
+    DeliveryCar car;
+    ...
+}
+\end{Verbatim}
+
+and
+
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+class DeliveryCar {
+    ...
+    Driver currentDriver;
+    ...
+}
+\end{Verbatim}
+
+These examples both assume that a \texttt{Pizza} has only \textit{one}
+\texttt{Topping}, \textit{etc.} If this isn't so, we'd use some kind of
+container class instead:
+
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+class Pizza {
+    ...
+    ArrayList toppings;
+    ...
+}
+\end{Verbatim}
+
+More on that later.
+
+\subsection{Aggregation associations}
+
+Continuing on towards the ``stronger" end of the association continuum, an
+\textbf{aggregation} implies exclusive ownership of the object(s) in question.
+In other words, if \texttt{A} aggregates \texttt{B}, not only does it mean
+that \texttt{A} has an instance variable of type \texttt{B}, but that
+\textit{no other \texttt{A} object also has that \texttt{B}.}
+
+This is frequently misinterpreted, so let me expand on that. The
+``exclusivity" thing is a statement about \textit{objects}, not classes. If
+\texttt{A} aggregates \texttt{B}, that does \textit{not} mean that no other
+class can have an instance variable of type \texttt{B}. Rather, it means that
+if a particular \texttt{B} object is pointed to by an \texttt{A} object, no
+\textit{other} \texttt{A} object also points to that \texttt{B}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{aggregationAssoc.pdf}   % 620x220
+\caption{Examples of aggregation associations.}
+\label{fig:aggregationAssoc}
+\end{figure}
+
+Examples appear in Figure~\ref{fig:aggregationAssoc}. Note that the diamond
+appears on the ``aggregator" side; \textit{i.e.}, adjacent to the class that
+will have the instance variable.
+
+In the first example, for a Banner-like college enrollment management system,
+each \texttt{Professor} will teach some number of \texttt{Section}s in a given
+semester. If Professor Jones is assigned to teach section 03 of BIOL 121, then
+no \textit{other} professor is also assigned to that section. That's what the
+white diamond communicates.
+
+In the second example, from a Facebook-like social networking site, users can
+arrange their \texttt{Photo}s into \texttt{Album}s. As indicated on this
+diagram, a given \texttt{Photo} is \textit{not} intended to simultaneously
+belong to more than one \texttt{Album}. (If we wanted to relax that
+constraint, and permit photos to belong to multiple albums at once, we would
+get rid of our white diamond and use a plain-old ``has-a" arrow instead.)
+
+\subsubsection{Aggregations in code}
+
+Aggregation is intended to imply some sort of collection or ownership
+relationship between the two classes. However, in terms of the Java code that
+you initially write, \textit{there is no immediate difference between an
+aggregation and a regular ``has-a."} In both cases, you'll make an inst var of
+the appropriate type in the appropriate place. The code difference between
+aggregation and has-a won't come out until later, when the class methods are
+being implemented. That white diamond is more of a long-term signal to the
+programmer about how two classes are generally intended to operate together,
+rather than being a cue to write the first bit of code differently than you
+otherwise would.
+
