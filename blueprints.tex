@@ -1,0 +1,243 @@
+
+\chapter{Blueprints: UML class diagrams}
+
+We spent last chapter discussing the \textbf{dynamic} view of a program: what
+happens to memory, step by step, as it unfolds. In this chapter, we'll switch
+to a \textbf{static} view: long-term, what are the program's classes, methods,
+and relationships between them?\footnote{The words ``dynamic" and ``static"
+are ubiquitous in computer science, and mean a zillion different unrelated
+things. For example, we've already seen the Java ``\texttt{static}" keyword,
+and how it indicates class-level rather than an object-level ownership. We've
+also hinted at the stack having ``statically-allocated memory" and the heap
+being ``dynamically-allocated." These terms are \textbf{\textit{unrelated}} to
+our use of the words in this chapter. At present, by ``dynamic" we mean ``the
+contents of memory changing as the program runs"; and by ``static" we mean
+``the consistent, permanent characteristics of a program, quite apart from how
+it might be behaving at any moment, which include its classes, methods, and
+associations."}
+
+If there's a type of UML diagram that deserves the name ``blueprint," it's the
+\textbf{class diagram}. Class diagrams depict a high-level, stable perspective
+of a software system. When you want to figure out how a large OO program
+works, or when you're tasked with implementing a system that someone else has
+designed, the first thing you look at are its class diagram(s).
+
+UML class diagrams contain a number of elements, each of which has a very
+specific meaning. We'll cover each in turn.
+
+\section{Classes}
+
+Unlike memory diagrams, which depict objects, class diagrams contain classes
+(duh). We've already seen what a single class looks like in
+section~\ref{sec:UMLclasses} (\textit{e.g.}, the left side of
+Figure~\ref{fig:classObject}.) Most class diagrams contain many such classes.
+Recall that each class has three compartments, containing the class's name,
+its inst vars, and its methods, in that order.
+
+By the way, one flexible (yet slightly annoying IMO) aspect of UML is that it
+allows \textbf{varying levels of detail}. In other words, on a particular
+diagram, you may or may not want to show all the instance variables and
+methods, because it may or may not be relevant to the purpose of that
+particular diagram. Similarly, you may or may not want to show all the aspects
+of each inst var or method; perhaps it's too early in the design process to
+completely specify all the parameters and return types, for example. To
+illustrate, all three pictures in Figure~\ref{fig:graceful} are legit
+ways of representing the \texttt{Car} class. We can include as much or as
+little detail as we please.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{graceful.pdf}   % 670x320
+\caption{Three equally valid ways to draw the \texttt{Car} class on a class
+diagram, depending on how much detail it makes sense to include.}
+\label{fig:graceful}
+\end{figure}
+
+The reason I find this annoying, by the way, is that it's ambiguous. If you
+see no inst vars in the second box, does that mean (a) that class \textit{has}
+no inst vars, or (b) the designer didn't think it was relevant to include them
+on this particular diagram? No way to really know.
+
+\section{Associations}
+
+Perhaps the most important bits of information on a class diagram are the
+\textbf{association}s between classes. An association means that two classes
+collaborate together in some way to achieve some larger purpose. It is
+indicated on a class diagram by a line connecting the two classes. Different
+types of lines represent different kinds of relationships between the classes.
+It's important not to mix them up, because if you do, you're dictating
+something incorrect to the programming team about how the classes are intended
+to work.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\textwidth]{assocArrows.pdf}   % 350x200
+\vspace{.2in}
+\caption{Diagrammatic elements for different association types.}
+\label{fig:assocArrows}
+\end{figure}
+
+\subsection{Dependency associations}
+
+Figure~\ref{fig:assocArrows} shows some of the UML association arrows and
+their meaning. (There are others we'll get to in future chapters.) The dashed
+line with a crow's foot arrowhead is called a \textbf{dependency}, and is the
+``weakest" of the association types. When I say weak, I mean that the
+relationship between the two classes isn't as important, nor as permanent, as
+with the other association types we'll discuss later.
+
+A dependency between classes \texttt{A} and \texttt{B} can be thought of in a
+couple of ways:
+
+\begin{compactitem}
+\item One or more methods of the \texttt{A} class will \textit{call methods
+on} a \texttt{B} object.
+\item The \texttt{A} class \textit{is dependent on the interface of} the
+\texttt{B} class.
+\end{compactitem}
+
+The word \textbf{interface} -- like stack, heap, dynamic, static, and many
+other computer science words -- has multiple meanings. We'll talk about the
+Java \texttt{interface} keyword later in the book. For now, when I say
+interface I mean \textit{those aspects of a class that a user of that type of
+object can see.} This boils down to: the methods you can call on it, together
+with their argument lists and return types. Specifically, the interface does
+\textit{not} include the method implementations (the bodies of the methods),
+nor the instance variables.
+
+If you think about it, you'll realize why the above two bullet points are
+actually equivalent. Suppose some class \texttt{A} method has this line of
+code in it: ``\texttt{String s = B.scissorKick(15)}". Then clearly the code in
+the \texttt{A.java} file is \textit{dependent} on the fact that class
+\texttt{B} has a \texttt{.scissorKick()} method, and that it takes an integer,
+and returns a \texttt{String}. If any of that ever changed in the
+\texttt{B.java} file, then class \texttt{A} would be impacted.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{dependencyAssoc.pdf}   % 
+\caption{Examples of dependency associations.}
+\label{fig:dependencyExamples}
+\end{figure}
+
+The strange-looking words adjacent to the dependency arrows in
+Figure~\ref{fig:assocArrows} go by the even stranger-sounding term
+\textbf{stereotypes}. A stereotype in UML is an extra bit of information that
+enhances part of a diagram (an association arrow, as here, or sometimes a
+class, method, or other element) by making its meaning more precise.
+Stereotypes are usually displayed enclosed by double-wakkas
+(``$\ll$...$\gg$").
+
+In the case of dependency associations, the stereotype ``$\ll$uses$\gg$" means
+pretty much what a dependency always means: that the designer intends class
+\texttt{A} to ``use" (\textit{i.e.}, get its hands on, and call method(s) on)
+object(s) of class \texttt{B}. The ``$\ll$instantiates$\gg$" stereotype goes a
+bit further, and implies that some method of \texttt{A} will
+\textit{instantiate} \texttt{B} objects in addition to merely calling methods
+on them.
+
+The examples in Figure~\ref{fig:dependencyExamples} are from a Dungeons \&
+Dragons type combat simulator. A \texttt{Battle} object represents a fight
+between adventurers and monsters. While simulating this fight, a
+\texttt{Battle} will make use of one or more \texttt{Die} (singular of ``dice")
+objects to roll random numbers that determine the outcome. This is a
+``$\ll$uses$\gg$" association, since \texttt{Battle}'s code now depends on
+\texttt{Die}'s interface not changing.
+
+Elsewhere in the program, wizards sometimes cast ranged spells, like fireballs
+or lightning bolts, to damage distant enemies. In the simulator, a
+\texttt{Wizard} object might therefore instantiate a \texttt{RangedSpell}
+object to carry out this attack. Since somewhere in the \texttt{Wizard} class's
+code there will be a ``\texttt{new RangedSpell()}" line, we say that
+\texttt{Wizard} $\ll$instantiates$\gg$ \texttt{RangedSpell}.
+
+
+\subsection{``Has-a" associations}
+
+The next strongest type of association has a bizarre name: it's called
+``\textbf{has-a}." We denote it with a solid arrow between classes, with a
+crow's foot on one side or both.
+
+When class \texttt{A} has-a class \texttt{B}, that is nearly always a signal
+to the programmer that \texttt{A} should have an \textit{instance variable} of
+type \texttt{B}.\footnote{Or perhaps a \textbf{collection} of \texttt{B}
+objects rather than a single \texttt{B} object, as we'll see later in the
+chapter.} In other words, not only does an \texttt{A} object call
+methods on a \texttt{B} (as in the dependency association), but an \texttt{A}
+object actually holds on to one (or more) \texttt{B} objects for the
+long-haul.
+
+Now in some cases, the ``has-a" verbiage makes perfect sense. If our Domino's
+Pizza delivery manager application had a \texttt{Pizza} class and a
+\texttt{Topping} class, it would be no-brainer to say that every
+\texttt{Pizza} has-a \texttt{Topping}. It conjures up in our minds a picture
+of containment, or ownership. Perfect. However, we also use this type of
+association in cases where containment doesn't make sense at all.
+
+For example, in the same application it would be quite sensible to say that
+``every \texttt{Pizza} has-a \texttt{DeliveryCar}." But obviously the delivery
+car isn't ``inside" the pizza in the same physical way that the toppings are
+inside it. So what does it mean then?
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{wrongRightHasA.pdf}   % 
+\caption{The \textbf{wrong}, and \textbf{right}, way of visualizing a ``has-a"
+association in Java.}
+\label{fig:wrongRightHasA}
+\end{figure}
+
+The key is making sure you have the right mental model.
+Figure~\ref{fig:wrongRightHasA} shows both the wrong, and the right, way to
+envision a has-a relationship (at least, in Java). In memory, there is
+\textit{no} ``containment" as in the left-hand (wrong) image. The
+\texttt{Topping} object isn't enclosed inside the \texttt{Pizza}, or even
+exclusively owned by it. It's simply pointed to by one of the \texttt{Pizza}
+object's inst vars. The right-hand side of the figure is the correct one --
+and I daresay it's not problematic at all to think of a \texttt{Pizza}
+``having" a \texttt{DeliveryCar} in this way. All it really means is that a
+\texttt{Pizza} object ``knows about" a \texttt{DeliveryCar}, which is the
+particular car that's delivering it.
+
+Another reason that the correct mental model of ``has-a" is important is that
+it is possible, and even common, for the association to go \textit{both ways}.
+We use the term \textbf{navigability} for the question ``which direction does
+the arrow go -- from \texttt{A} to \texttt{B}, from \texttt{B} to \texttt{A},
+or both?" When it goes both ways, we call it a \textbf{bidirectional}
+association.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{bidirectional.pdf}   % 750x235
+\caption{A bidirectional ``has-a," depicted on a class diagram (left) and a
+memory diagram.}
+\label{fig:bidirectional}
+\end{figure}
+
+An example is the left-hand side of Figure~\ref{fig:bidirectional}. Here, our
+\texttt{Driver} class and our \texttt{DeliveryCar} class each know about the
+other, and in fact each hold on to an instance variable of the other type. If
+we viewed this \texttt{A}-having-an-instance-variable-of-type-\texttt{B} thing
+as the \texttt{A} object \textit{enclosing} the \texttt{B}, we'd blow a fuse.
+\texttt{A} would contain \texttt{B}, which would contain \texttt{A}, which
+would contain \texttt{B}, which... That way madness lies. But notice that
+nothing paradoxical happens at all in the corresponding memory diagram on the
+right-hand side of the figure. Each object points to the other, so that a
+\texttt{Driver} object knows which \texttt{DeliveryCar} he/she is driving, and
+a \texttt{DeliveryCar} also knows which \texttt{Driver} is driving it. No
+biggie.
+
+Note, by the way, that the has-a arrow implies the existence of the inst var
+\textit{all by itself}. The class diagram should \textit{not} contain a
+duplicate copy of the inst var in its second compartment. That would be
+redundant, and is considered an error (see Figure~\ref{fig:wrongHasA}).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{wrongHasA.pdf}   % 640x180
+\caption{One wrong way to model an instance variable. The ``has-a" arrow
+already indicates that every \texttt{Pizza} has-a \texttt{Topping}: the
+extraneous \texttt{topping} entry in the \texttt{Pizza} class's second box is
+redundant and incorrect.}
+\label{fig:wrongHasA}
+\end{figure}
