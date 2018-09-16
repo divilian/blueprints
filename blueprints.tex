@@ -382,3 +382,208 @@ programmer about how two classes are generally intended to operate together,
 rather than being a cue to write the first bit of code differently than you
 otherwise would.
 
+\subsection{Composition associations}
+
+The last association type we'll cover, and the most tightly-binding between
+classes, is called \textbf{composition}. It's a lot like aggregation (even the
+diamond syntax is the same, except it's black) but with one difference. With
+composition, not only does an \texttt{A} object have exclusive ownership over
+its \texttt{B} object(s), but there's a \textbf{lifespan dependency} as well:
+if the \texttt{A} ever disappears, its constituent \texttt{B}'s should also
+cease to exist.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{compositionAssoc.pdf}   % 700x230
+\caption{Examples of composition associations.}
+\label{fig:compositionAssoc}
+\end{figure}
+
+
+Consider the examples in Figure~\ref{fig:compositionAssoc}. In this social
+networking site, every \texttt{User} has a \texttt{Profile}. That
+\texttt{User} is the \textit{only} one with that particular profile (hence
+this is at least aggregation) and what's more, \textit{the \texttt{Profile}
+has no meaningful existence without its \texttt{User}.} If the user ever
+deletes their account, it wouldn't make sense to have a disembodied
+\texttt{Profile} object lying around, so it should automatically disappear as
+well. This lifespan connection is really the only difference between the white
+diamond and the black.
+
+On the right-hand side is an example from some kind of email reader
+application (like Outlook, gmail, or Thunderbird). A user can compose an
+\texttt{Email} with some text and a list of recipients, and then add
+\texttt{Attachment}s to it to send images, documents, code, \textit{etc.} But
+what if the user decides to abandon the message before sending it? The
+\texttt{Email} object should go away, but its \texttt{Attachment}s should too.
+Hence this is another example of composition.
+
+\subsubsection{Compositions in code}
+
+Just as with aggregations, there's no simple Java keyword that magically maps
+to the idea of ``composition." Instead, the presence of the black diamond
+suggests to the programmer the intended function of the classes involved, and
+she will write the code with this in mind.
+
+
+\subsection{Association annotations}
+
+As if all this weren't enough, there are also a couple more syntactic things
+to learn about UML associations. An \textbf{annotation} is another mark on
+part of a diagram that gives more detail about how it is to be understood or
+implemented. We've already seen two examples of this: the stereotypes we
+included next to dependency lines are a type of annotation, as are the
+arrowheads to indicate navigability. We'll learn two more in this section.
+
+\subsubsection{Multiplicity}
+
+The \textbf{multiplicity} of an association indicates \textit{how many}
+objects are involved in each concrete relationship. It's important to realize
+that even though multiplicity is shown on a class diagram, it's really a
+statement about \textit{objects}.
+
+Let's start with the left-most example in Figure~\ref{fig:multiplicity}. There
+we have two classes from a DMV software system, connected with a ``has-a"
+association between \texttt{Driver} and \texttt{License}, navigable both ways.
+Note the numeral ``\textbf{1}" annotation both sides of the arrow. This
+indicates that \textit{every \texttt{Driver} ``goes with" just one
+\texttt{License} object}, and \textit{every \texttt{License} also goes with
+just one \texttt{Driver}.} This is called a \textbf{one-to-one association},
+sensibly enough.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{multiplicity.pdf}   % 790x270
+\caption{Association annotations indicating multiplicity.}
+\label{fig:multiplicity}
+\end{figure}
+
+In the center example, on the other hand, we have a ``$\star$" on the side of
+the arrow that connects to \texttt{Weapon}. In UML, the symbol ``$\star$"
+means \textbf{zero or more}. So here's how we interpret this
+\textbf{one-to-many association}: every \texttt{Adventurer} has zero or more
+weapons, while every \texttt{Weapon} is possessed by just one
+\texttt{Adventurer}. Note that since the direction is only navigable in one
+direction, this indicates that although an \texttt{Adventurer} is aware of
+which \texttt{Weapon}s she owns, the \texttt{Weapon} objects are \textit{not}
+aware of which \texttt{Adventurer} owns them. This knowledge (or lack thereof)
+is perfectly okay, and does not invalidate the meaning of the \textbf{1} or
+the $\star$ in the slightest.
+
+Finally, on the right side, we have a \textbf{many-to-many association}
+between \texttt{Transcript} and \texttt{Course}. This says that every
+\texttt{Transcript} object is associated with potentially multiple
+\texttt{Course} objects, while each \texttt{Course} object appears on more
+than one \texttt{Transcript}. Navigability-wise, in this example
+\texttt{Transcript}s maintain a record of which \texttt{Course}s they contain,
+whereas \texttt{Course} objects don't know which \texttt{Transcript}s they
+appear on (if any).
+
+\subsubsection{Multiplicity in code}
+
+What does all this look like in code? Well, first remember that inst vars are
+only used in the direction(s) along which the association is navigable. For
+Figure~\ref{fig:multiplicity}, this means that only \texttt{Driver},
+\texttt{License}, \texttt{Adventurer}, and \texttt{Transcript} will have inst
+vars related to these associations; \texttt{Weapon} and \texttt{Course} will
+not. Furthermore, if the multiplicity is a \textbf{1}, the inst var will be 
+of the type the arrow is pointing to; if it's a $\star$, it will be
+\textit{some collection} of that type. Which sort of collection is used -- an
+array, an \texttt{ArrayList}, a \texttt{Hashtable}, a \texttt{Set},
+\textit{etc.} -- is normally up to the programmer, and is decided based on the 
+run-time performance features of that collection type.
+
+So here's some code we might reasonably expect to see from our three examples:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+    class Driver {                        class Adventurer {
+        String name;                          String name;
+        License license;                      int hitPoints;
+        ...                                   ArrayList<Weapon> weapons;
+    }                                         ...
+                                          }
+    class License {
+        String number;                    class Transcript {
+        Driver owner;                         Course[] courses;
+        ...                                   ...
+    }                                     }
+\end{Verbatim}
+
+Here the programmer of the \texttt{Adventurer} class has chosen to use an
+\texttt{ArrayList} to hold each adventurer's weapons, while the
+\texttt{Transcript} author decided on a simple array. In terms of being
+faithful to the design, neither choice is right or wrong.
+
+\subsubsection{Roles}
+
+Our last type of association annotation has to do with \textbf{roles}.
+Sometimes, a design will be specific not only about the \textit{existence} of
+the association between two classes, and about which-knows-about-which, and
+about how-many-are-involved, but also the intended \textit{meaning} of the
+relationship. In other words, it may specify what role each of the object
+types is expected to play with respect to the other. This may sound a bit
+abstract, but some examples will make it clearer.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{roles.pdf}   % 670x400
+\caption{Association annotations indicating roles.}
+\label{fig:roles}
+\end{figure}
+
+The upper-left example in Figure~\ref{fig:roles} shows a piece of a Marvel
+comic book database application. We have \texttt{Hero} and \texttt{Villain}
+classes, and a one-to-one association between them...but what does the
+association \textit{mean}? If \texttt{Hero X} ``goes with" \texttt{Villain Y},
+does that mean that \texttt{X} has recently beaten up \texttt{Y}? That
+\texttt{X} admires \texttt{Y}? That \texttt{X} secretly \textit{is}
+\texttt{Y}, unbeknownst to the public?
+
+The word ``archnemesis" next to the \texttt{Villain}-side of the arrow spells
+it out. It's called a \textbf{role name}. It tells us that in this
+relationship, the role that the \texttt{Villain} plays with respect to the
+\texttt{Hero} is that the former is the archenemy of the latter.
+
+Moving to the right side of the diagram, we have an interesting situation
+involving only one class: \texttt{TwitterUser}. This class apparently has an
+association to itself! This turns out not to be as weird as it might seem. In
+fact, if you think about a social network like Twitter, the most meaningful
+relationships \textit{are} between objects of the same class. And that's the
+key to de-weirding it in your mind: remember that an association is a
+statement about \textit{objects}, not classes. We're not saying
+``\texttt{TwitterUser} has a relationship with itself" but rather ``each
+\texttt{TwitterUser} is related to zero or more other \texttt{TwitterUser}s."
+
+And what do those relations mean, you ask? The role name tells us: one of the
+users ``follows" the other in the Twitter sense. In this diagram, we have role
+names on both sides of the arrow, although that's probably not strictly
+necessary. What is interesting here is the navigability of the association:
+according to the design, a \texttt{TwitterUser} object is aware of what other
+\texttt{TwitterUser}s follow him/her, but not which \texttt{TwitterUser}s
+he/she follows. If the design team decided they needed to track that
+separately, they'd need another arrowhead on the top side of the line.
+
+Finally, the bottom example illustrates two \textit{different} associations
+between the same two classes. This can happen as well. In this case, there are
+two distinct roles that \texttt{Professor}s play with respect to
+\texttt{Student}s: as their instructors (each student has several) and as
+their advisor (each student has one). The role names are imperative here,
+since otherwise the programming team would be lost as to why there are two
+relationships and what each one is supposed to mean.
+
+\subsubsection{Roles in code}
+
+Often, the role name on the diagram is simply used as the instance variable
+name in the code. For instance, I'd expect to see something like this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+class Student {
+    String major;    
+    Professor advisor;
+    ArrayList<Professor> instructors;
+}
+\end{Verbatim}
+
+since those names were handed to us on a silver platter in the design diagram.
+
+
