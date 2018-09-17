@@ -490,7 +490,7 @@ not. Furthermore, if the multiplicity is a \textbf{1}, the inst var will be
 of the type the arrow is pointing to; if it's a $\star$, it will be
 \textit{some collection} of that type. Which sort of collection is used -- an
 array, an \texttt{ArrayList}, a \texttt{Hashtable}, a \texttt{Set},
-\textit{etc.} -- is normally up to the programmer, and is decided based on the 
+\textit{etc.}~-- is normally up to the programmer, and is decided based on the 
 run-time performance features of that collection type.
 
 So here's some code we might reasonably expect to see from our three examples:
@@ -586,4 +586,327 @@ class Student {
 
 since those names were handed to us on a silver platter in the design diagram.
 
+\section{Visibility}
 
+The other parts of UML class diagrams that we'll annotate with extra
+information will indicate the level of \textbf{visibility} that the designer
+intends the various inst vars, methods, and even classes to possess.
+Visibility has to do with promoting \textbf{encapsulation}, perhaps the most
+important of all OO principles, which will be the subject of an entire future
+chapter. For now, let me just give you the syntax and the operational
+implications of the different visibility levels.
+
+This is one area where our UML diagrams, ostensibly
+programming-language-neutral, will betray a very Java-ish flavor. That's
+because in Java, there are four specific visibility levels for methods and
+inst vars (two for classes), each with a precise meaning, and we'll have UML
+syntax to indicate each. The complete list can be found in the tables in
+Figures~\ref{fig:visibilityLevels} and \ref{fig:visibilityLevelsClasses}. In
+both tables, the visibility levels are listed in order from most restrictive
+to least restrictive.
+
+\begin{figure}[ht]
+\centering
+\begin{tabular}{c|c|c|l}
+\thead{visibility level} & \thead{Java keyword} & \thead{UML syntax} &
+\thead{visible to...} \\
+\hline
+private & \texttt{private} & \textbf{--} & the class itself \\
+package & (none) & \textbf{\freakingtilde} & any class from the same package\\
+protected & \texttt{protected} & \textbf{\#} & \makecell{from the same
+package, or a subclass\footnote{A ``subclass" has to
+do with the topic of \textbf{inheritance} in OO, a subject of a future
+chapter. For now, I just want to make the table complete.}} \\
+public & \texttt{public} & \textbf{$\plus$} & any method anywhere \\
+\end{tabular}
+\vspace{.1in}
+\caption{The four Java visibility levels for \textit{methods and inst vars}.}
+\label{fig:visibilityLevels}
+\end{figure}
+
+\begin{figure}[hb]
+\centering
+\begin{tabular}{c|c|c|l}
+\thead{visibility level} & \thead{Java keyword} & \thead{UML syntax} &
+\thead{visible to...} \\
+\hline
+non-public & (none) & (none) & only classes in the same package \\
+public & \texttt{public} & \textbf{$\plus$} & any class anywhere \\
+\end{tabular}
+\vspace{.1in}
+\caption{The two Java visibility levels for \textit{classes}.}
+\label{fig:visibilityLevelsClasses}
+\end{figure}
+
+Now it's important to understand that unlike multiplicity, visibility
+modifiers make a statement about \textit{classes}, not \textit{objects}. Also,
+crucially, visibility is about the very \textit{existence} of the method, inst
+var, or class, not its \textit{value.} This is very commonly misconstrued, so
+let me clarify with an example.
+
+Suppose a class diagram included the class in
+Figure~\ref{fig:visAboutClasses}. Here, for the first time, we see visibility
+modifiers in action. In particular, the \texttt{numHits} and
+\texttt{numAtBats} inst vars are both marked as private, while the
+\texttt{isBetterThan()} method is public.
+
+\begin{figure}[hb]
+\centering
+\includegraphics[width=0.5\textwidth]{visAboutClasses.pdf}
+\caption{A class whose components bear visibility annotations.}
+\label{fig:visAboutClasses}
+\end{figure}
+
+Here's the kind of code we want to make possible with this method:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+    ...
+    Ballplayer jeter = new Ballplayer("Jeter");
+    Ballplayer arod = new Ballplayer("Rodriguez");
+    if (jeter.isBetterThan(arod)) {
+        System.out.println("Sign Jeter to a zillion dollars!");
+    }
+    ...
+\end{Verbatim}
+
+Let's inspect the \textit{inside} of the \texttt{.isBetterThan()} method
+(\textit{i.e.}, its implementation). Suppose it reads like
+this\footnote{Apologies to baseball fans for the gross simplification of
+reducing an entire player's ``goodness" down to his or her batting average. Of
+course in real life there are all kinds of other stats that come into play
+here -- slugging percentage, base running stats, defensive ability,
+\textit{etc.} -- as well as impossible-to-quantify aspects like teamwork,
+inspiration, and clubhouse chemistry.}:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class Ballplayer {
+    private int numHits;
+    private int numAtBats;
+    ...
+    public boolean isBetterThan(Ballplayer other) {
+        double myBattingAvg = ((double) numHits) / numAtBats;
+        double otherBattingAvg = ((double) other.numHits) / other.numAtBats;
+        if (myBattingAvg > otherBattingAvg) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    ...
+}
+\end{Verbatim}
+
+Now the key line I want to draw your attention to is the \textit{second} line
+of the method. It reads:
+
+\begin{verbatim}
+double otherBattingAvg = ((double) other.numHits) / other.numAtBats;
+\end{verbatim}
+
+My question to you, the dear reader, is this: do you think this line ought to
+compile without errors, or no? Take a moment to consider your answer.
+
+Many, many students assume this line will \textit{not} compile cleanly. Here's
+their reasoning: ``We're calling \texttt{.isBetterThan()} on a particular
+\texttt{Ballplayer} object (say, \texttt{jeter}). And we're passing another
+\texttt{Ballplayer} object as a parameter (say, \texttt{arod}). Now both
+\texttt{numHits} and \texttt{numAtBats} are marked \textbf{\texttt{private}}
+in the class. Therefore, \texttt{arod}'s values for these should be protected
+from, and unavailable to, the \texttt{jeter} object. It stands to reason that
+this will not be allowed. Otherwise, we'd be allowing one object to access
+another object's private data."
+
+This sounds so eminently reasonable, and yet it is dead wrong. Here's why:
+
+\begin{itemize}
+\itemsep.1em
+\item A ``private" inst var does \underline{not} mean that one object's
+\textit{value} is hidden from another \textit{object}.
+\item A ``private" inst var \underline{does} mean that the very
+\textit{existence} of one class's inst var is hidden from other
+\textit{classes}.
+\end{itemize}
+
+In other words, it's not a ``data privacy" thing like keeping your information
+inaccessible to creepy people online. Instead, it's a \textit{code
+encapsulation thing} that prevents one class from making (and thereafter
+depending upon) assumptions about another class's design decisions. In terms
+of the online creep example, here's how I'd explain it:
+
+\begin{itemize}
+\itemsep.1em
+\item Making \texttt{SSN} (Social Security Number) a private inst var of the
+\texttt{Person} class does \underline{not} mean that one person cannot find
+out another person's SSN.
+\item Making \texttt{SSN} a private inst var of the \texttt{Person} class
+\underline{does} mean that \texttt{Dog}s, \texttt{Website}s,
+\texttt{CreditCard}s, \textit{etc.}~don't even know that people \textit{have}
+Social Security Numbers at all.
+\end{itemize}
+
+In yet other words, visibility is about \textit{variables} and
+\textit{classes}, not \textit{values} and \textit{objects}.
+
+We'll see why this is useful in the encapsulation chapter. For now, just
+realize that the code above \textit{does} compile cleanly for one simple
+reason: it's a method of the \texttt{Ballplayer} class. Any method of the
+\texttt{Ballplayer} class can talk about any inst var or method of the
+\texttt{Ballplayer} class, regardless of which particular object is in view.
+
+To complete the example, here's some code which indeed does \textit{not}
+compile because of those private \texttt{numHits} and \texttt{numAtBats}:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class Team {
+    private ArrayList<Ballplayer> roster;
+    ...    
+    public void printRoster() {
+        System.out.println("Name          Hits    ABs");
+        for (Ballplayer b : roster) {
+            System.out.println(b.name + "     " + b.numHits + "  " + b.numAtBats);
+        }
+    }
+    ...
+}
+\end{Verbatim}
+
+\begin{samepage}
+When we try to compile it, the \texttt{println()} statement inside the
+\texttt{for} loop barfs with:
+\footnotesize
+\begin{verbatim}
+Team.java:25: error: numHits has private access in Ballplayer
+    System.out.println(b.name + "     " + b.numHits + "  " + b.numAtBats);
+                                           ^
+Team.java:25: error: numABs has private access in Ballplayer
+    System.out.println(b.name + b.numHits + b.numABs);
+                                             ^
+\end{verbatim}
+\normalsize
+\vspace{-.2in}
+as we would expect. It's because the offending code is a \texttt{Team} method,
+not a \texttt{Ballplayer} method, and therefore cannot refer to any of
+\texttt{Ballplayer}'s private components (inst vars or methods).
+\end{samepage}
+
+The same mechanic is at play with methods as it is with inst vars: no code in
+a class can \textit{call} a method unless it has visibility to that method,
+as specified in the rightmost column of Figure~\ref{fig:visibilityLevels}.
+
+If you're wondering why it would ever make sense to have a private method, the
+answer is: as a helper method, for other (perhaps public) methods of that
+class to call internally. Having lots of short methods to perform basic tasks,
+but not exposing those methods outside the class, is one sign of a good
+designer.
+
+\subsection{Which visibility level to choose}
+
+Both inst vars and methods can technically have any of the four visibility
+levels assigned to them from the table in Figure~\ref{fig:visibilityLevels}.
+Here are the rules (and strong suggestions) to keep in mind:
+
+\begin{enumerate}
+\itemsep.1em
+\item Always make all instance variables \texttt{private}. That's the easiest
+design decision you'll ever make. As we'll see in the encapsulation chapter,
+giving an inst var any other level of visibility unacceptably sacrifices
+encapsulation.
+\item Always make methods ``as private as possible." This promotes
+encapsulation and reduces dependencies. When in doubt, err on the side of the
+\textit{higher} entry in Figure~\ref{fig:visibilityLevels}, not the lower. If
+it turns out you must make it more accessible later on, you can always move
+its visibility lower on the chart without breaking anything. The reverse is
+not true.
+\end{enumerate}
+
+Lastly, a word about package-level visibility. Recall that a Java
+\textbf{package} is an organizational mechanism that allows a developer to
+group related classes together. One reason to do this is to promote neatness
+and tidiness throughout your code base: instead of having all your classes in
+one huge directory, you divvy them up according to functional area. Another
+reason is to take advantage of package-level visibility. There may be design
+decisions you make (namely, certain methods you create on a class) that you
+don't necessarily want to make publicly accessible to all users of the class,
+yet which it does make sense to make available to the other classes that are
+collaborating with that class. Package-level visibility was designed for this
+purpose. Note that there is no Java keyword for it: it's the default. This is
+because Gosling \& Co.~(the designers of Java) were proud of the package
+concept and wanted to promote its use among Java developers as much as
+possible. So you have to explicitly type if you want any other choice. I think
+package-level visibility is a neat feature, but is underutilized.
+
+\subsection{Class visibility}
+
+As shown in Figure~\ref{fig:visibilityLevelsClasses}, the notion of visibility
+also extends to entire classes in Java. But it's simpler: either a class is
+public, or it's not. If it's public, any class anywhere can refer to it, and
+if it's ``non-public" (yep, that's actually the term) it effectively has
+package-level visibility (\textit{i.e.}, only other classes in its package can
+use it.)
+
+Non-public classes thus play the same sort of role as private helper methods
+do: the public classes use them to help get their job done, but the non-public
+ones aren't designed to be directly instantiated (or even seen) by the outside
+world. Their use in practice is somewhat rarer than private methods, but I
+encourage their use.
+
+
+\section{Putting it all together}
+
+All right, let's close this chapter with a small but still full-blown class
+diagram that illustrates most of the above features. See if you can interpret
+all of Figure~\ref{fig:fullClassDiag} correctly.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.9\textwidth]{fullClassDiag.pdf}   % 800x400
+\caption{A full-blown class diagram. (The color is not part of UML; I only
+colored certain elements so I could refer to them in the text.)}
+\label{fig:fullClassDiag}
+\end{figure}
+
+Here's an incomplete list of things we know from the diagram. Each item's
+color corresponds to an item in Figure~\ref{fig:fullClassDiag}:
+
+\begin{enumerate}
+\itemsep.1em
+
+\definecolor{darkgreen}{rgb}{0,.65,0}
+\definecolor{darkblue}{rgb}{0,0,.95}
+\item \textcolor{darkgreen}{The \texttt{Ballplayer} class is public, and thus
+can be used by any class in any other package. The \texttt{Simulator} class
+isn't, though, and can only be referenced by classes in the same package.}
+
+\item \textcolor{BurntOrange}{Although anyone can use a \texttt{Team} object,
+only classes in this package can instantiate one. (And to do so, you must
+specify a city and a mascot.)} 
+
+\item \textcolor{Turquoise}{Any method that gets its hands on a
+\texttt{Ballplayer} can find out his/her age. But only methods of the
+\texttt{Ballplayer} class itself can change its age.}
+
+\item \textcolor{Red}{Every \texttt{Team} object will have a private instance
+variable\footnote{Notice that the ``\textbf{--}" immediately before the word
+``roster" is a visibility modifier, indicating that the inst var that results
+from this association will be private.} called \texttt{roster} which holds a collection (perhaps an
+\texttt{ArrayList}) of \texttt{Ballplayer} objects. Each of those
+\texttt{Ballplayer}s belongs to only a single \texttt{Team} object, but is not
+aware of which \texttt{Team} object that is (\textit{i.e.},
+\texttt{Ballplayer} objects don't have an inst var of type \texttt{Team})}.
+
+\item \textcolor{darkblue}{There is a single integer variable \texttt{numTeams}
+which is shared among all objects of type \texttt{Team}. It is not visible to
+any other class.}
+
+\item \textcolor{Purple}{Somewhere in the static \texttt{main()} method of the
+\texttt{Simulator} class we would expect to find code like this: ``\texttt{new
+Ballplayer(someName, someAge)}".}
+
+\item \textcolor{Brown}{A \texttt{Simulator} holds on to some number of
+\texttt{Team} objects, probably in an instance variable, and each of those
+\texttt{Team}s belong only to it.}
+
+\end{enumerate}
+
+Did you pick all those things out? If so, you can read a blueprint, and I
+foresee many beautiful buildings in your future!
