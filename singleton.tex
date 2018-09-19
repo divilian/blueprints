@@ -1,0 +1,247 @@
+
+\chapter{Life in Singleton, USA}
+
+``Singleton" always sounded to me like the name of some small American town,
+maybe one where nobody ever gets married. But it's actually the name of our
+first (and easiest) \textit{design pattern}, and the subject of this chapter.
+
+\section{Design patterns}
+
+You know how when you sit down to write some code, there are times when you
+think, ``wait, I've written this before"? Programmer's d\'{e}j\`{a} vu is
+commonplace, especially because certain tips and tricks end up working in
+a lot of different settings. For instance, we've all seen this sort of thing:
+
+\vspace{-.1in}
+\begin{Verbatim}[fontsize=\small]
+    int multiplyAllTogether(int arr[]) {
+        product = 1;
+        for (int i=0; i<arr.length; i++) {
+            product = product * arr[i];
+        }
+        return product;
+    }
+\end{Verbatim}
+
+and this:
+
+\pagebreak
+\begin{Verbatim}[fontsize=\small]
+    boolean hasAtLeastOneFive(int arr[]) {
+        for (int i=0; i<arr.length; i++) {
+            if (arr[i] == 5) {
+                return true;
+            }
+        }
+        return false;
+    }
+\end{Verbatim}
+
+and this:
+
+\begin{samepage}
+\begin{Verbatim}[fontsize=\small]
+    int getIndexOfHighest(int arr[]) {
+        highestSoFar = arr[0];
+        index = 0;
+        for (int i=1; i<arr.length; i++) {
+            if (arr[i] > highestSoFar) {
+                index = i;
+                highestSoFar = arr[i];
+            }
+        }
+        return index;
+    }
+\end{Verbatim}
+\end{samepage}
+
+I could go on and on. You might think of these as ``programming patterns."
+They're bite-sized, go-to solutions that can handle a myriad of common little
+programming scenarios.
+
+It turns out that the same is true of design. Certain motifs in how classes
+collaborate with each other crop up again and again in different settings.
+They're important enough that they've been identified, described, and named.
+
+The people who first promoted the idea of \textbf{design patterns} were Erich
+Gamma, John Vlissides, Ralph Johnson, and Richard Helm, who were thereafter
+nicknamed ``The Gang of Four." (You'll hear many references in the software
+development industry to a ``Gang of Four design pattern," sometimes
+abbreviated ``GoF design pattern." This means one of the 21 named patterns
+that appeared in their hugely influential 1994 book \textit{Design Patterns:
+Elements of Reusable Object-Oriented Software}. It's a book highly worth
+obtaining and reading.)
+
+One thing that's great about this is that just by mentioning one of these
+agreed-upon pattern names -- like ``Observer," ``Iterator," or ``Strategy" --
+every developer worth their salt will instantly conjure up in their mind the
+mechanics of that particular pattern, and know immediately what kind of
+problem it's intended to solve. It saves a lot of words trying to describe an
+idea you know your fellow developer has seen before, if only you could get
+them to realize what you're talking about.
+
+In this brief chapter, we'll cover the simplest GoF pattern of all:
+the \textbf{Singleton} pattern.
+
+\section{The Singleton pattern}
+
+The Singleton pattern is so simple it almost doesn't even deserve to be called
+a pattern. But it is. And it's easy to figure out when it applies to your
+situation: \textbf{a Singleton is used when you have a class for which you
+only ever want to instantiate one object.}
+
+If you think about it, this kind of situation is pretty rare. Clearly any
+relevant program is going to need to instantiate lots of different
+\texttt{Car} objects, or \texttt{Ballplayer}s, or \texttt{Professor}s. There
+are occasions, though, when your class isn't so much a category as it is a
+special, one-of-a-kind object. Here are some examples:
+
+\begin{itemize}
+\itemsep.1em
+
+\item Part of your operating system may have a \texttt{PrinterManager} class
+that controls sending documents to various printers. The code will create many 
+\texttt{Printer} objects, and many \texttt{Document}s, but only one
+\texttt{PrinterManager} which runs traffic control and routes print jobs to
+available printers.
+
+\item Your website that collects information about classic rock 'n' roll
+albums may have a \texttt{Database} class that represents the underlying data
+storage. You might get multiple \texttt{Connection}s to it and instantiate
+multiple \texttt{Query} objects to search it, but there's just one
+\texttt{Database} as a point of contact.
+
+\item Most programs have some way of configuring them, usually by tweaking the
+values of various configuration variables. Your program could have a
+\texttt{Config\-uration} class from which the other software components can
+fetch the values of the settings as needed. There needs to be only
+\textit{one} \texttt{Configuration} object, since they will all share access
+to a common set of settings.
+
+\end{itemize}
+
+The Singleton pattern does two things: (1) it ensures that only one
+instantiation is possible, and (2) it provides a global point of access to
+that one object, so that the rest of the code can get to it.
+
+\section{Implementation}
+
+Here's what a properly-coded Singleton pattern looks like. We'll use the
+\texttt{Configuration} example from above:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+class Configuration {
+    private static Configuration theInstance;
+    
+    public static synchronized Configuration instance() {
+        if (theInstance == null) {
+            theInstance = new Configuration(...);
+        }
+        return theInstance;
+    }
+
+    private Configuration(...) {
+        ...
+    }
+
+    // The actual methods of the object. For Configuration, this
+    //   might include something like:
+    public String getParamSetting(String param) {
+        ...
+    }
+}
+\end{Verbatim}
+
+Let's go through each part carefully. First, we have a
+\textit{\texttt{static}} variable called ``\texttt{theInstance}". Recall that
+\texttt{static} here means ``goes with the class as a whole, rather than with
+each individual object." The reason for this is \textit{the class itself will
+be holding on to its one-and-only instantiated object.} This is one of the few
+places we'll be using \texttt{static} stuff in this book, because we need to.
+If \texttt{theInstance} were \textit{not} \texttt{static}, then the only way
+to get a hold of \texttt{theInstance} would be to have an instance of
+\texttt{Configuration} in the first place...which would defeat the purpose of
+the pattern.
+
+Note that \texttt{theInstance} is also marked \texttt{private}. This is
+partially because of our rule ``all inst vars should always be private,
+period," but also because making this variable accessible outside the class
+would make the whole pattern collapse. Parts of the code that needed access to
+the \texttt{Configuration} singleton instance would try to grab
+\texttt{theInstance} and use it, but it might not have even been set to
+anything yet!
+
+Next, we have the \texttt{instance()} method. This method is also
+\texttt{static}, so that it can be called on the \textit{class} rather than on
+an object. And what does it return? A \texttt{Configuration} object...or
+perhaps I should say, \textit{the} \texttt{Configuration} object since there's
+only ever going to be one.
+
+Unlike \texttt{theInstance}, \texttt{instance()} is public. (Package-level
+visibility is also an appropriate choice, depending on how wide your intended
+users of this Singleton are.) This is part of the public interface of the
+class, designed to be called by code external to the class. The other word on
+the declaration line is probably foreign to you: it's called
+\texttt{synchronized}, and its purpose is beyond the scope of this chapter.
+Very briefly, ``\texttt{synchronized}" prevents two different \textbf{threads}
+of execution from entering the \texttt{instance()} method at the same time.
+A \textbf{multithreaded program} is one that executes more than one flow of
+control simultaneously, each with its own stack. It turns out that if more
+than one thread was inside this method at the same time, we might accidentally
+instantiate \textit{two} (or more) \texttt{Configuration} objects. For our
+single-threaded programs this isn't an issue, but it's good practice to get in
+the habit of making your Singleton \texttt{instance()} methods synchronized.
+
+Now let's dive in to the code for \texttt{instance()}. It's very simple, as
+you'll see: all it does is say ``if this is the first time anyone's ever
+called me, go ahead and instantiate an instance of me, and remember it (in the
+\texttt{theInstance} class variable). Then, return the one-and-only instance
+of me to the caller, to use to their heart's content."
+
+This is called \textbf{lazy instantiation}: the only thing that will trigger
+the one-and-only \texttt{Configuration} object being instantiated is the first
+time any other part of the program calls \texttt{Configuration.instance()}. If
+nobody ever does call it, then there won't ever be even one instance of this
+class created. But assuming someone does, a new \texttt{Configuration} object
+will be instantiated \textit{this time only}. From that point on, all the
+subsequent times \texttt{Configuration.instance()} is called, that same object
+will be returned.
+
+Then we have the constructor. It can do anything that any constructor can do,
+which varies widely depending on what kind of class this is. (For the
+\texttt{Configuration} example, perhaps it looks at the filesystem for a
+\texttt{.config} file, and if it exists, loads it and remembers all its
+contents in instance variables.) The important point to emphasize here is that
+\textit{the constructor must be \texttt{private}}). That's because if it
+weren't private, any old schmo could just write ``\texttt{new
+Configuration()}" and get a \textit{second} instance of the class, which is
+precisely what we want to avoid. Making the constructor \texttt{private} means
+nobody is allowed to instantiate a \texttt{Configuration} object...except for
+the \texttt{Configuration} class itself, which we saw in the
+\texttt{instance()} method.
+
+
+\section{Using the Singleton}
+
+This pattern allows any other part of the code base to do things like:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+  String bgcolor = Configuration.instance().getParamSetting("backgroundColor");
+\end{Verbatim}
+
+Whenever we say ``\texttt{Configuration.instance()}" we get back a
+\texttt{Configuration} object. (Whether we realize it or not, it's the only
+such object that will ever exist.) There's no need to set this to anything, or
+to use the word \texttt{new}; we just say ``\texttt{Configuration.instance()}"
+every time we need it.
+
+Other than this scaffolding, the rest of your Singleton class can do anything
+it wants. It will almost certainly have other (non-static) instance variables,
+and other methods to carry out its evil deeds. The ``Singleton part" is just
+the \texttt{instance()} and \texttt{theInstance} members, together with the
+private constructor.
+
+Singleton is often used in conjunction with the Factory pattern, by the way,
+which we will look at in a future chapter.
+
+That's it. Told you it was easy! $\smiley$
