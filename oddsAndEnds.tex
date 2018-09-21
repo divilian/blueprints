@@ -1,0 +1,241 @@
+
+\chapter{Java Odds 'n' Ends}
+
+Before we continue our study of OOA\&D proper, let's look at a few
+Java-specific idiosyncrasies which will be all up in our business soon enough.
+
+\section{Garbage collection}
+
+No, I didn't make that term up just to be funny. \textbf{Garbage collection}
+is actually the official name for a Java feature which was super innovative at
+the time, but which we now often take for granted.
+
+Consider the code for a \texttt{Ball} class given in
+Figure~\ref{fig:ballCode}. When we run it, Java calls \texttt{main()}, which
+calls \texttt{play()}. At the end of \texttt{play()}, right before it returns,
+a memory diagram would look like Figure~\ref{fig:ballMemory}. Take a moment to
+see if you agree with all the details.
+
+\begin{figure}[ht]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+class Ball {
+    private String color;
+    private int airPressure;
+
+    Ball(String color) {
+        this.color = color;
+        airPressure = 0;
+    }
+
+    void bounce() {
+        System.out.println("Boing!!");
+    }
+
+    static Ball play(int numBalls) {
+        ArrayList equipment = new ArrayList();
+        Ball b;
+        int i;
+        for (i=0; i<numBalls; i++) {
+            b = new Ball("red");
+            b.bounce();
+            equipment.add(b);
+        }
+        Ball basket = new Ball("orange");
+        return basket;
+    }
+
+    public static void main(String args[]) {
+        int x = 3;
+        Ball myBall = play(2);
+        System.out.println("My ball is " + myBall.color + ".");
+    }
+}
+\end{Verbatim}
+\caption{A class to illustrate the utility of garbage collection.}
+\label{fig:ballCode}
+\end{figure}
+
+At this moment, we have an active stack frame for the \texttt{play()} function
+which contains five variables of various types. And we're getting ready to
+return the reference variable \texttt{basket} back to \texttt{main()}, which
+means that about a nanosecond from now \texttt{main()} will be assigning its
+new \texttt{myBall} variable to point to that orange ball.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{ballMemory.pdf}    % 750x400
+\caption{A snapshot of memory, taken just before the \texttt{play()} function
+returns back to \texttt{main()}.}
+\label{fig:ballMemory}
+\end{figure}
+
+Okay, now let's do it. We return to \texttt{main()}. As soon as we do, the
+memory diagram looks like Figure~\ref{fig:ballMemory2}. Take a close look.
+That second diagram is all correct, but something about it may strike you as a
+bit weird; namely, there are three objects on the heap \textit{with nothing on
+the stack referencing them}. The \texttt{myBall} variable dutifully points to
+the orange ball that was returned, but the two red balls, and the
+\texttt{ArrayList} that contained them, are now disembodied from everything
+else. And in fact, they are effectively \textit{lost} to the program. There's
+simply no way to reference them. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{ballMemory2.pdf}    % 750x400
+\caption{The state of memory right \textit{after} the return to
+\texttt{main()}. Notice there are now three unreachable objects on the heap.}
+\label{fig:ballMemory2}
+\end{figure}
+
+If you're unsure that there's truly no way, ask yourself this question: ``what
+line of code could we write to (say) change one of the \texttt{Ball} object's
+color from red to blue?" The answer is: there is no possible line of code we
+could write to do that. To even get off the ground we'd have to start with a
+\textit{name}, and there is no name we could possibly use to get at either of
+those red \texttt{Ball} objects.
+
+Now with C++, a language that preceded Java by decades, this would be a bad
+situation called (I kid you not) a \textbf{memory leak}. The memory the
+program used to store those now-unreachable \texttt{Ball}s is now inaccessible
+to the program, and what's worse, \textit{C++ doesn't realize that's the
+case.} So those old objects just sit there, growing stale, occupying system
+memory that could be used to store other things instead. The program never
+realizes this, and so never reclaims that space. So the actual amount of
+memory the program has available to it has effectively shrunk.
+
+In C++, the only remedy for this situation is for the programmer herself to
+keep track of which objects no longer have any stack references to them, and
+to explicitly \texttt{delete} those objects. This is a delicate task: fail to
+\texttt{delete} what is in fact delete-able and you'll have a memory leak;
+eagerly \texttt{delete} what actually does have other references to it and
+your program will crash when that memory is reused by something else writing
+over the top of it. The whole situation is fraught with peril.
+
+Enter Java, in 1995. Java featured \textbf{automatic garbage collection} which
+outsourced the whole responsibility for this from the programmer to a special
+Java background task called the \textbf{garbage collector}. Whenever the
+garbage collector runs, it intelligently sifts through the contents of memory,
+looking for junk that can't be legally accessed anymore anyway. Whenever it
+finds such junk, it \textit{automatically} tells the memory manager that that
+memory is no longer in use, and can therefore be repurposed the next time the
+program requests some memory with \texttt{new}.
+
+Automatic garbage collection is lit. It means that pictures like
+Figure~\ref{fig:ballMemory2} aren't scary at all. Sure, we have three objects
+in the heap that can't ever be reached, but the garbage collector will soon
+run, figure that out, and reacquire that memory so it can be used again. All
+this without the programmer having to think a thing about it. Memory leaks are
+in principle a thing of the past.
+
+As with most good things, there are downsides too. One downside to Java's
+approach is that the garbage collector thread decides to run ``any time it
+damn well pleases." As developers, we don't ever tell Java to get off its butt
+and take out the trash (although there is a way to suggest this); rather, we
+just wait for it to run when it periodically thinks it needs to. This isn't
+normally a problem, but it can be in mission-critial real-time applications
+with absolute performance deadlines. Think of the software running on a
+pacemaker, which is embedded in a human heart. The code \textit{must} respond
+in a certain amount of time in order to trigger the heart to take its next
+beat! Now if, during our pacemaker program's operation, the garbage collector
+suddenly decided to run in order to clean up lost memory, it might be a
+time-consuming operation in its own right. And our program could literally
+skip a beat (or beat later than it should) while waiting for it to finish. In
+situations like these, C++'s style of manual control does give us more
+fine-tuned flexibility over when exactly the reclamation of lost memory
+occurs. For most applications, though, we don't need that flexibility and
+Java's way of handling it is much appreciated.
+
+\section{The \texttt{import} statement}
+
+You've probably used \texttt{import} in almost every Java program you've ever
+written. Yet I've found most developers don't really understand what it does.
+Java itself is partially to blame here: the word ``import" is a poor choice of
+words, since nothing is ``imported" at all.\footnote{Also, the fact that it
+begins with a lower-case \texttt{i} just like C++'s ``\texttt{\#include}"
+statement does reinforces this misconception -- C++'s \texttt{\#include}
+actually \textit{does} include/import content.}
+
+Here's a statement that surprises a lot of Java programmers: you can write
+\textit{any} Java program -- even one that uses stuff in the Java API --
+\textit{without} an \texttt{import} statement. The left side of
+Figure~\ref{fig:dontNeedImport} is such a program.
+
+\begin{figure}[ht]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+                                                  import java.util.ArrayList;
+
+class YouDontNeedImport {                         class YouDontNeedImport {                                                 
+  public static void main(String args[]) {          public static void main(String args[]) {
+    java.util.ArrayList celebs =                      ArrayList celebs =
+      new java.util.ArrayList();                        new ArrayList();
+    celebs.add("Kim Kardashian");                     celebs.add("Kim Kardashian");
+    celebs.add("Justin Bieber");                      celebs.add("Justin Bieber");
+    celebs.add("Taylor Swift");                       celebs.add("Taylor Swift");
+    printEm(celebs);                                  printEm(celebs);
+  }                                                 }
+                                                
+  static void printEm(java.util.ArrayList l) {      static void printEm(ArrayList l) {
+    for (int i=0; i<l.size(); i++) {                  for (int i=0; i<l.size(); i++) {
+      System.out.println("People love "                 System.out.println("People love "
+        + l.get(i));                                      + l.get(i));
+    }                                                 }
+  }                                                 }
+}                                                 }
+\end{Verbatim}
+\caption{The same Java program, using explicit inline package names (left),
+and the \texttt{import} statement (right).}
+\label{fig:dontNeedImport}
+\end{figure}
+
+No \texttt{import} required. Instead, every time we wanted to refer to the
+\texttt{ArrayList} class from the Java API, we specified it as
+\texttt{java.util.ArrayList} That did require us to type out the full name
+three times, but it turns out to be all Java needs to understand perfectly
+which \texttt{ArrayList} class we want to use.
+
+Now since programmers (myself included) are lazy, and want to avoid typing
+when possible, the Java gods invented the \texttt{import} statement. The
+\textit{only} thing it does is tell Java ``I don't really feel like typing out
+\texttt{java.util.ArrayList} every time. That's a pain. So Java, please know
+that when I type \texttt{ArrayList} in this file, I really mean
+\texttt{java.util.ArrayList}."
+
+The right-side of Figure~\ref{fig:dontNeedImport} is exactly the same program,
+but now using the \texttt{import} statement to avoid a little typing.
+
+Whether the savings are worth it in any particular case is up to you. My point
+here is just to demonstrate that the statement ``\texttt{import
+java.util.ArrayList}" does \textit{not} do anything remotely like ``go and
+find the \texttt{ArrayList} code in the \texttt{java.util} package, and bring
+it in here so I can use it." Nor is it true that ``unless you import that
+class, you can't use it." Both are common Java myths.
+
+By the way, you may have seen the use of \texttt{*} syntax, like this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+import java.util.*;
+import com.google.search.engines.*;
+import edu.umw.stephen.coolclasses.*;
+\end{Verbatim}
+
+This isn't a good idea. The reason is that it's ambiguous. Suppose in my code
+I refer to a class called \texttt{Scanner}. Which \texttt{Scanner} do I mean?
+Should Java assume I wanted to avoid typing ``\texttt{java.util.Scanner}" or
+``\texttt{com.google.search.engines.Scanner}" or
+``\texttt{edu.umw.stephen.coolclasses.Scanner}"? It has no way of knowing. So
+if more than one of those packages defines a class with the same name (which
+is very possible), Java will at best not compile, and at worst give unexpected
+runtime behavior.
+
+For this reason, using ``\texttt{*}" in \texttt{import} statements is only
+acceptable when writing quick and dirty one-off code, not for anything that
+will stick around longer than your current coding session.
+
+\section{``Wrapper" classes}
+
+
+\section{Java ``generics"}
+
+\section{The \texttt{Hashtable} data structure}
+
+\section{Sameness vs.~identicality}
