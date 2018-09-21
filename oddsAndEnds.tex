@@ -210,7 +210,7 @@ find the \texttt{ArrayList} code in the \texttt{java.util} package, and bring
 it in here so I can use it." Nor is it true that ``unless you import that
 class, you can't use it." Both are common Java myths.
 
-By the way, you may have seen the use of \texttt{*} syntax, like this:
+By the way, you may have seen the use of ``\texttt{*}" syntax, like this:
 
 \begin{Verbatim}[fontsize=\small,samepage=true]
 import java.util.*;
@@ -231,10 +231,102 @@ For this reason, using ``\texttt{*}" in \texttt{import} statements is only
 acceptable when writing quick and dirty one-off code, not for anything that
 will stick around longer than your current coding session.
 
-\section{``Wrapper" classes}
 
 
 \section{Java ``generics"}
+
+Speaking of misleading terms, let me give you another one.
+
+There are two ways to use a container class from \texttt{java.util} (like
+\texttt{ArrayList}, \texttt{Set}, or \texttt{PriorityQueue}). One way is to
+just create one without any syntactic fuss:
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+import java.util.ArrayList;
+...
+ArrayList stuff = new ArrayList();
+\end{Verbatim}
+
+and then put stuff in it:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+stuff.add("Laundry");
+stuff.add("Lunchbox");
+stuff.add(new Car("Mazda", "MX-5"));
+\end{Verbatim}
+
+This is called a \textbf{heterogeneous} collection, because the things it
+contains are of different types (\texttt{String}s and \texttt{Car}s, this
+case).
+
+Java allows this perfectly well, for reasons we'll understand in detail later.
+Here's the rub, though: when we get something \textit{out} of the collection,
+we have to \textbf{cast} (or \textbf{typecast}) it to the correct type before
+doing anything specific with it. This code, for example, does \textit{not}
+compile:
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+// Doesn't work:
+System.out.println("First item has " + stuff.get(0).length() +
+    " letters.");
+\end{Verbatim}
+
+The reason is that we're calling \texttt{.length()} on whatever object happens
+to be at position \texttt{0} of the list, and Java can't know for sure whether
+that object will end up being a \texttt{String}, a \texttt{Car}, or something
+else. In particular, it can't know that that object will even \textit{have} a
+\texttt{.length()} method. So Java makes us do this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+// Works, due to explicit cast:
+System.out.println("First item has " + ((String) stuff.get(0)).length() +
+    " letters.");
+\end{Verbatim}
+
+This says, ``Java, I give you my word. I promise the thing at position
+\texttt{0} \textit{will} be a \texttt{String}, and I'll stake my reputation on
+it. Please force it to be treated as a \texttt{String}, and if it turns out
+I'm lying, you can embarrass me at runtime with a program crash."
+
+Having to do that is a rather high price to pay for the flexibility of being
+able to store any old thing in \texttt{stuff}. That's why back in 2004, Java
+introduced the idea of \textbf{generics}, which allow you to restrict a
+collection to having only items of a single type. Here's how you do it:
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+import java.util.ArrayList;
+...
+ArrayList<String> stuff = new ArrayList<String>();
+stuff.add("Laundry");
+stuff.add("Lunchbox");
+stuff.add(new Car("Mazda", "MX-5"));    // Compile error
+\end{Verbatim}
+
+Our \texttt{stuff} is no longer a plain old \texttt{ArrayList}, but
+specifically an \texttt{ArrayList<String>} (pronounced ``array list of
+strings.") This tells Java, ``please don't let me put anything into this
+\texttt{ArrayList} \textit{except} \texttt{String}s. I'm asking for this
+restriction because it's for my own good."
+
+When we do this, trying to insert a \texttt{Car} (or anything else) will bomb
+at compile time, as it should. And now, we don't have to typecast anything we
+get out of it: since Java knows it would only have put \texttt{String}s in, it
+knows that it will only get \texttt{String}s out. Therefore,
+``\texttt{stuff.get(0).length()}" works just fine, no cast necessary.
+
+This is a good feature, and you should pretty much always use it. My only
+complaint is that I think the word ``generic" is almost exactly the wrong word
+for it. They practically couldn't have chosen a worse term. Saying you have
+``a generic \texttt{ArrayList}" sounds like it ought to mean the
+\textit{first} style (above), where the type wasn't specifically mentioned and
+therefore any object was fair game to put in it. But in actual fact, ``a
+generic \texttt{ArrayList}" means ``a specific, decidedly \textit{non}-generic
+\texttt{ArrayList} that is declared to only hold values of a certain type." Go
+figure.
+
+\section{``Wrapper" classes}
+
+
 
 \section{The \texttt{Hashtable} data structure}
 
