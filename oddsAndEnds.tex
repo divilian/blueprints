@@ -498,4 +498,165 @@ customer IDs.}
 
 \section{Sameness vs.~identicality}
 
+Our last odd/end has to do with how Java determines whether two objects are
+``equal" to each other. It turns out that there are two different definitions
+of equality, which must be kept firmly separate in your mind:
+\textbf{sameness} and \textbf{identicality}.
+
+Consider the memory diagram in Figure~\ref{fig:sameness}. Here we have four
+named variables: \texttt{p1}, \texttt{p2}, \texttt{p3}, and \texttt{p4}. Now
+riddle me this, Batman: at the moment this snapshot was taken, which of these
+variables do you consider to be \textit{equal} to each other?
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{sameness.pdf}
+\caption{What does ``equal" mean?}
+\label{fig:sameness}
+\end{figure}
+
+I think we can agree that \texttt{p2} does not ``equal" any of the others.
+That leaves the other three. Are \texttt{p1} and \texttt{p3} ``equal?" Are
+\texttt{p3} and \texttt{p4} ``equal?"
+
+It all depends on what your definition of ``equal" is, of course. And here's
+how Java does it: it says that \texttt{p1} and \texttt{p3} are \textbf{the
+same}, while \texttt{p3} and \texttt{p4} are \textbf{identical}. ``The same"
+means that the two reference variables refer to \textit{the very same} object
+in memory. They are literally pointing to the same memory address, and so they
+are pointing to the same ``copy" of the object. This is easy to see by
+imagining changes to that object -- if the left-most Josh Gibson changed
+uniform numbers when he was traded from the Homestead Grays to the Pittsburgh
+Crawfords, both \texttt{p1} and \texttt{p3} would automatically see that
+change. They point to the same object, so they refer to the same uniform
+number variable: if it changes, they both change.
+
+But \texttt{p3} and \texttt{p4} are not the same -- they're merely identical.
+They refer to two \textit{different} objects which just happen to have the
+same internal state. Changing one would not affect the other. At the moment,
+they're duplicate copies, but copies nevertheless.
+
+(By the way, realize that sameness \textit{implies} identicality. The objects
+\texttt{p1} and \texttt{p3} refer to the same, and therefore they are
+\textit{also} identical.)
+
+\subsection{Testing for sameness and identicality}
+
+Sometimes a programmer cares about one of these conditions, and sometimes the
+other. Java has two syntaxes to distinguish between the two tests.
+
+\textbf{To test for sameness, use ``\texttt{==}". To test for identicality, use
+``\texttt{.equals()}".} Example:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+    if (p1 == p3) {
+        System.out.println("This WILL print.");
+    }
+    if (p3 == p4) {
+        System.out.println("This will NOT print.");
+    }
+    if (p1.equals(p3)) {
+        System.out.println("This WILL print.");
+    }
+    if (p3.equals(p4)) {
+        System.out.println("This WILL probably print (but see below).");
+    }
+\end{Verbatim}
+
+In the first two lines of that code, we are testing for sameness. So even
+though the objects referred to by \texttt{p3} and \texttt{p4} are spittin'
+images of each other, identical in every conceivable way, they are
+nevertheless \textit{not} ``\texttt{==}" to each other. But they might well be
+\texttt{.equals()} to each other...if we take the special step described next.
+
+\subsection{Overriding \texttt{.equals()}}
+
+It turns out that the last print statement of the preceding code statement
+will actually \textit{not} get printed \textit{unless we inform Java about
+what ``identical" actually means for this class.} By default, Java will fall
+back to just using the sameness test when \texttt{.equals()} is used. The way
+to tell it how to test for identicality is to \textit{override} the
+\texttt{.equals()} method for the \texttt{Ballplayer} class. Here's how:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class Ballplayer {
+    private String name;
+    private int uni;
+    private String pos;
+    
+    ...
+    public boolean equals(Ballplayer b) {
+        if (this.name.equals(b.name) &&
+            this.uni == b.uni &&
+            this.pos.equals(b.pos)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    ...
+}
+\end{Verbatim}
+
+We've told Java that for \texttt{Ballplayers}, ``identical" means objects that
+have the same \texttt{name}, \texttt{uni}form number, and \texttt{pos}ition.
+We could have done anything else we wanted; for instance:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class Ballplayer {
+    private String name;
+    private int uni;
+    private String pos;
+    
+    ...
+    public boolean equals(Ballplayer b) {
+        if (this.name.charAt(0) == b.name.charAt(0)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    ...
+}
+\end{Verbatim}
+
+Now any two \texttt{Ballplayer}s whose name started with the same letter would
+be considered ``identical" -- \texttt{Josh Gibson} would be considered
+identical to \texttt{Joe Dimaggio}. This is a weird idea, and not normally
+encouraged. But sometimes a situation does come up where it makes sense to say
+that one object \texttt{.equals()} another even if only \textit{some} of their
+information matches.
+
+\subsection{\textit{Beware} comparing \texttt{String}s! (Use \texttt{.equals()})}
+
+Notice how in the very definition of \texttt{Ballplayer.equals()} we called
+the \texttt{.equals()} method for \texttt{String}s. You may have expected it
+to say:
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+    public boolean equals(Ballplayer b) {
+        // WRONG
+        if (this.name == b.name &&
+            this.uni == b.uni &&
+            this.pos == b.pos) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+\end{Verbatim}
+
+instead. After all, that's less typing, right?
+
+But my choice here was deliberate, and when comparing \texttt{String}s in
+particular \textit{you must always use \texttt{.equals()}} like this. The
+reason is esoteric, and has to do with how Java tries to conserve memory by
+re-using space for different \texttt{String} objects with identical contents.
+The upshot of this is that ``\texttt{==}" \textit{sometimes} works the way you
+expect, and other times does not. One minute you'll find that
+\texttt{"Satchell" == "Satchell"} and then a moment later you'll discover that
+\texttt{"Buck" != "Buck"}. It'll seem random, and it basically is. But if you
+always use .\texttt{equals()} to compare \texttt{String}s, it'll always return
+true when their contents are exactly the same, and you won't have any painful
+late-night debugging sessions (for that reason, at least).
 
