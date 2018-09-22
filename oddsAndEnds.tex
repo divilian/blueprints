@@ -1,5 +1,5 @@
 
-\chapter{Java Odds 'n' Ends}
+\chapter{Java odds 'n' ends}
 
 Before we continue our study of OOA\&D proper, let's look at a few
 Java-specific idiosyncrasies which will be all up in our business soon enough.
@@ -210,6 +210,8 @@ find the \texttt{ArrayList} code in the \texttt{java.util} package, and bring
 it in here so I can use it." Nor is it true that ``unless you import that
 class, you can't use it." Both are common Java myths.
 
+\subsubsection{Don't \texttt{import *}}
+
 By the way, you may have seen the use of ``\texttt{*}" syntax, like this:
 
 \begin{Verbatim}[fontsize=\small,samepage=true]
@@ -241,7 +243,7 @@ There are two ways to use a container class from \texttt{java.util} (like
 \texttt{ArrayList}, \texttt{Set}, or \texttt{PriorityQueue}). One way is to
 just create one without any syntactic fuss:
 
-\begin{Verbatim}[fontsize=\small,samepage=true]
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 import java.util.ArrayList;
 ...
 ArrayList stuff = new ArrayList();
@@ -326,8 +328,174 @@ figure.
 
 \section{``Wrapper" classes}
 
+This is a good time to explain the usage of Java's \textbf{wrapper} classes.
+Recall that there are two kinds of Java variables: those that store primitive
+types (like \texttt{int}) and those that refer to objects (like \texttt{Car}).
+The biggest practical difference between these two, as we've seen, is where
+they're stored: primitive types go on the stack (and hence are pass-by-value)
+whereas the objects pointed to by reference variables go on the heap (and
+hence are pass-by-reference).
 
+Another difference relates to the container classes like \texttt{ArrayList}
+that we've just been discussing. All those \texttt{java.util} goodies, it
+turns out, can store any type of object...but it must be exactly that: an
+\textit{object}. In particular, they can't store primitive types.
+
+So this means we can't do this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+    import java.util.ArrayList;
+    ...
+    ArrayList<int> uniformNumbers = new ArrayList<int>();     // NOPE
+\end{Verbatim}
+
+because there's no such thing as ``an \texttt{ArrayList} of \texttt{int}s."
+That sucks because \texttt{int}s, \texttt{double}s, and \texttt{boolean}s are
+things we'd like to make \texttt{ArrayList}s of all the time.
+
+Fortunately, there's an easy way around this. Each primitive type has a
+``wrapper class" in Java: it is the mold for objects so simple that they don't
+do anything except hold a piece of data: an \texttt{int} (or \texttt{char}, or
+\texttt{double}, \textit{etc.}) We could do this, for instance:
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+    Integer michaelJordan = new Integer(23);
+    Integer derekJeter = new Integer(2);
+    Boolean gameOfThronesRocks = new Boolean(true);
+\end{Verbatim}
+
+and produce the memory diagram in Figure~\ref{fig:wrapper}. Each object is
+nothing more than a shell that ``wraps" a primitive piece of data.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{wrapper.pdf}  % 650x250
+\caption{Wrapper objects live on the heap.}
+\label{fig:wrapper}
+\end{figure}
+
+So far this isn't very exciting. But one reason we need it is so we can store
+primitive types in container objects like \texttt{ArrayLists}s. Here's all we
+need to do to create our list of uniform numbers:
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+    import java.util.ArrayList;
+    ...
+    ArrayList<Integer> uniformNumbers = new ArrayList<Integer>();
+\end{Verbatim}
+
+and it works, since the elements of the \texttt{ArrayList} are declared to be
+objects, as required. (Really teensy-tiny objects that don't really do
+anything, but objects nonetheless.)
+
+It's nice that after this, Java lets us work with primitive variables rather
+than the wrapper classes:
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+    uniformNumbers.add(23);
+    uniformNumbers.add(2);
+    uniformNumbers.add(20);
+    int mikeSchmidt = uniformNumbers.get(2);
+\end{Verbatim}
+
+so we really only notice the wrapper part at instantiation time. This isn't
+the only time we need to use wrappers, but it's the only one we need in the
+immediate future.
 
 \section{The \texttt{Hashtable} data structure}
 
+One very, very common container type that we'll use is
+\texttt{java.util.Hashtable}. (If you've used a \textbf{dictionary} in Python,
+this is essentially the same thing.) A \texttt{Hashtable} holds a container of
+\textbf{key-value pairs}. Each key-value pair represents a \textit{named}
+piece of data -- the key is the name, and the value is the data. So unlike an
+\texttt{ArrayList}, where the data elements are numbered, and thus accessed by
+a numerical index, a \texttt{Hashtable} uses the keys to specify which piece
+of data is required.
+
+An example will make this all clear. Suppose we want to keep track of
+superheroes and the names of their secret identities, so that if the
+government decides to legislate against super powers, we can hunt down all the
+potential perpetrators. We'll do so in a \texttt{Hashtable} called
+\texttt{alterEgos}:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+    import java.util.Hashtable;
+    ...
+    Hashtable<String,String> alterEgos = new Hashtable<String,String>();
+    alterEgos.put("Superman","Clark Kent");
+    alterEgos.put("Batman","Bruce Wayne");
+    alterEgos.put("Elastigirl","Helen Incredible");
+\end{Verbatim}
+
+This instantiation syntax may make you bug-eyed. You'll see that we include
+not one but \textit{two} types inside the ``$\ll...\gg$" markers; in this
+case, both are \texttt{String}s. These two specify \textit{the type of the
+keys, and the type of the values}. Since our keys are text (superhero names)
+and our values are also text (the names of the alter egos) it makes sense to
+make this a \texttt{String}-to-\texttt{String} hash table.
+
+The \texttt{.put()} method is used to add a new key-value pair to the table.
+It is also used to \textit{change} the value that goes with a particular key.
+That works because in a hash table, \textit{every key goes with just one
+value}. If we ran a line of code like this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+    alterEgos.put("Batman","Rich Dude");
+\end{Verbatim}
+
+then the \texttt{String} ``\texttt{Bruce Wayne}" would be permanently removed
+from memory, and replaced by ``\texttt{Rich Dude}".
+
+To retrieve the value that goes with a particular key, we use \texttt{.get()}:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+    String elastigirlTrueIdentity = alterEgos.get("Elastigirl");
+    System.out.println("Pssst...Superman is really: " + 
+        alterEgos.get("Superman"));
+\end{Verbatim}
+
+This looks very much like the way we obtain items from an \texttt{ArrayList},
+except for \texttt{ArrayList.get()} we passed an integer, and for
+\texttt{Hashtable.get()} we pass a key (whatever type that may be).
+
+A very common use of \texttt{Hashtable}s is to store objects based on some
+kind of name or identifier. For example:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+    import java.util.Hashtable;
+    ...
+    Hashtable<Integer,Customer> customers = new Hashtable<Integer,Customer>();
+    ...
+    customers.put(7533, new Customer("Joe Blow", "New Plymouth, ID"));
+    customers.put(6717, new Customer("Jill Hill", "New York, NY"));
+    ...
+    Customer custNum6717 = customers.get(6717);
+\end{Verbatim}
+
+Here we're storing \texttt{Customer} objects by their customer ID numbers, for
+easy retrieval by that later.
+
+In this book, I'll draw \texttt{Hashtable} objects as shown in
+Figure~\ref{fig:hashtable}. Its \texttt{contents} table is full of references:
+each box in the left column points to a key (in this case, an
+\texttt{Integer}) and the box to its immediate right points to the
+corresponding value (a \texttt{Customer}). Notice that there is no
+well-defined order to the entries in the table -- in this case, even though
+\texttt{Joe Blow} was the first one inserted, he occupies the second row of
+the table. This is to emphasize that when you add a key-value pair to a
+\texttt{Hashtable}, it doesn't remember anything about when you added it, only
+that you \textit{did} add it.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{hashtable.pdf}
+\caption{A \texttt{Hashtable} of \texttt{Customer} objects, stored by their
+customer IDs.}
+\label{fig:hashtable}
+\end{figure}
+
+
 \section{Sameness vs.~identicality}
+
+
