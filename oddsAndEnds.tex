@@ -495,6 +495,55 @@ customer IDs.}
 \label{fig:hashtable}
 \end{figure}
 
+\subsection{Iterating through \texttt{Hashtable}s}
+
+One last thing about \texttt{Hashtable}s: you can iterate through them as you
+can iterate through any other collection (like an \texttt{ArrayList}). But
+it's kind of tricky. Remember that there isn't any inherent ``order" to the
+key-value pairs, so you can't say ``give me the first one, then the second,
+then ..., all the way to the end."
+
+The way you achieve this is by using an \textbf{\texttt{Enumeration}} object,
+also from the \texttt{java.util} package. This is actually an example of the
+\textbf{Iterator} design pattern, which we'll see in a later chapter. For now,
+mostly just memorize the approach.
+
+First, you call \texttt{.keys()} on the \texttt{Hashtable} which returns an
+\texttt{Enumeration} of the ``key halves" of the key/value pairs. Think of an
+\texttt{Enumeration} as just ``a way to iterate through a group of things, one
+by one." In this case, the ``things" are the \texttt{Hashtable}'s keys. Every
+time you call \texttt{.nextElement()} on the \texttt{Enumeration} object, it
+gives you the next key and advances the ``cursor" to point further on down the
+line. When you call \texttt{.hasMoreElements()} on the \texttt{Enumeration},
+it tells you whether or not you can continue further. These two methods are
+just what you need to write a \texttt{while} loop to cycle through all the
+keys; and each time you get a key, you can use the original \texttt{Hashtable}
+to retrieve the corresponding value. To wit:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+    import java.util.Hashtable;
+    import java.util.Enumeration;
+    ...
+    Hashtable<String,String> alterEgos = new Hashtable<String,String>();
+    ...
+    Enumeration<String> superheroNames = alterEgos.keys();
+    while (superheroNames.hasMoreElements()) {
+        String superheroName = superheroNames.nextElement();
+        System.out.println(superheroName + " is really " +
+            alterEgos.get(superheroName));
+    }
+\end{Verbatim}
+
+Note how whereas the \textit{key} is retrieved directly from the
+\texttt{.nextElement()} method, to get the \textit{value} we have to go back
+to the \texttt{Hashtable} itself and call \texttt{.get()} with the key.
+
+Also, remember that the order in which you're given the key-value pairs here
+is \textit{not} necessarily the order in which you inserted them. That order
+is irretrievable after the fact -- and if you need to keep track of it, you'll
+need a separate data structure (perhaps an \texttt{ArrayList} of the keys, in
+order of insertion) to remember it.
+
 
 \section{Sameness vs.~identicality}
 
