@@ -471,7 +471,7 @@ is perfectly okay, and does not invalidate the meaning of the \textbf{1} or
 the $\star$ in the slightest.
 
 Finally, on the right side, we have a \textbf{many-to-many association}
-between \texttt{Transcript} and \texttt{Course}. This says that every
+between \texttt{Tran\-script} and \texttt{Course}. This says that every
 \texttt{Transcript} object is associated with potentially multiple
 \texttt{Course} objects, while each \texttt{Course} object appears on more
 than one \texttt{Transcript}. Navigability-wise, in this example
@@ -500,17 +500,17 @@ language like Java.
 
 \subsubsection{Multiplicity in code}
 
-What does all this look like in code? Well, first remember that inst vars are
-only used in the direction(s) along which the association is navigable. For
-Figure~\ref{fig:multiplicity}, this means that only \texttt{Driver},
+So what does all this look like in code? Well, first remember that inst vars
+are only used in the direction(s) along which the association is navigable.
+For Figure~\ref{fig:multiplicity}, this means that only \texttt{Driver},
 \texttt{License}, \texttt{Adventurer}, and \texttt{Transcript} will have inst
 vars related to these associations; \texttt{Weapon} and \texttt{Course} will
-not. Furthermore, if the multiplicity is a \textbf{1}, the inst var will be 
-of the type the arrow is pointing to; if it's a $\star$, it will be
-\textit{some collection} of that type. Which sort of collection is used -- an
-array, an \texttt{ArrayList}, a \texttt{Hashtable}, a \texttt{Set},
-\textit{etc.}~-- is normally up to the programmer, and is decided based on the 
-run-time performance features of that collection type.
+not. Furthermore, if the multiplicity is a \textbf{1}, the inst var will be of
+the type the arrow is pointing to; if it's a $\star$, it will be \textit{some
+collection} of that type. Which sort of collection is used -- an array, an
+\texttt{ArrayList}, a \texttt{Hashtable}, a \texttt{Set}, \textit{etc.}~-- is
+normally up to the programmer, and is decided based on the run-time
+performance features of that collection type.
 
 So here's some code we might reasonably expect to see from our three examples:
 
@@ -842,15 +842,16 @@ Lastly, a word about package-level visibility. Recall that a Java
 \textbf{package} is an organizational mechanism that allows a developer to
 group related classes together. One reason to do this is to promote neatness
 and tidiness throughout your code base: instead of having all your classes in
-one huge directory, you divvy them up according to functional area. Another
-reason is to take advantage of package-level visibility. There may be design
-decisions you make (namely, certain methods you create on a class) that you
-don't necessarily want to make publicly accessible to all users of the class,
-yet which it does make sense to make available to the other classes that are
-collaborating with that class. Package-level visibility was designed for this
-purpose. Note that there is no Java keyword for it: it's the default. This is
-because Gosling \& Co.~(the designers of Java) were proud of the package
-concept and wanted to promote its use among Java developers as much as
+one huge directory, you divvy them up according to functional area. 
+
+Another reason is to take advantage of package-level visibility. There may be
+design decisions you make (namely, certain methods you create on a class) that
+you don't necessarily want to make publicly accessible to all users of the
+class, yet which it does make sense to make available to the other classes
+that are collaborating with that class. Package-level visibility was designed
+for this purpose. Note that there is no Java keyword for it: it's the default.
+This is because Gosling \& Co.~(the designers of Java) were proud of the
+package concept and wanted to promote its use among Java developers as much as
 possible. So you have to explicitly type if you want any other choice. I think
 package-level visibility is a neat feature, but is underutilized.
 
