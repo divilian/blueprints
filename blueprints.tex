@@ -479,6 +479,25 @@ than one \texttt{Transcript}. Navigability-wise, in this example
 whereas \texttt{Course} objects don't know which \texttt{Transcript}s they
 appear on (if any).
 
+You'll occasionally see more elaborate multiplicity notations on class
+diagrams. The notation ``\textbf{0..$\star$}" means ``zero or more"...which is
+of course exactly what plain old ``$\star$" means. The only reason for a
+designer to write ``\textbf{0..$\star$}" is for emphasis: she is stressing to
+the coding team that an object of the first type may well have \textit{zero}
+objects of the second type at any given time; this is a real possibility. In
+contrast, if she writes ``\textbf{1..$\star$}" that means ``one or more,"
+which signals the coder ``by the way, every object of the first type should
+\textit{always} be assigned to at least one object of the second type; you
+should keep that in mind as you code." Even more rarely, you'll see
+multiplicities like ``\textbf{5}" (``each object of type A is associated with
+exactly five objects of type B"), or ``\textbf{3..8}" (``each object of type A
+is associated with anywhere from three to eight objects of type B"),
+\textit{etc.} These are rare, especially since as we'll see in the next
+section, there really isn't any way to code those constraints explicitly in a
+language like Java.
+
+
+
 \subsubsection{Multiplicity in code}
 
 What does all this look like in code? Well, first remember that inst vars are
