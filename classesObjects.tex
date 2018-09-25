@@ -69,12 +69,12 @@ two.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=1.0\textwidth]{classObject.png}
+\includegraphics[width=1.0\textwidth]{classObject.pdf}   % 650x350
 \caption{A class (left) and an object in UML.}
 \label{fig:classObject}
 \end{figure}
 
-\subsubsection{Classes in UML}
+\subsection{Classes in UML: the first two compartments}
 
 Let's look at the class in detail. In the top box is its name; so far so good.
 One thing to point out, though, is that in Java, \textit{the names of all
@@ -97,6 +97,22 @@ One slight headache is that the UML syntax differs from Java's a bit: instead
 of listing the variable's type and then its name, we reverse them, we use
 a colon instead of a space, and we omit the semicolon. Otherwise, it's pretty
 straightforward to interpret that second compartment.
+
+By the way, one important piece of syntax in that second compartment is an
+\underline{underline}, which says that the underlined ``instance variable"
+isn't an instance variable after all: it's a \textbf{class variable}. This
+means that \textit{there's only one shared variable for the entire class,
+rather than a different variable for each object.} In
+Figure~\ref{fig:classObject}, the integer \texttt{numCars} variable is such a
+case. Even though every \texttt{Car} has its own \texttt{make},
+\texttt{model}, \texttt{odo}meter reading, \textit{etc.}, they all share one
+\texttt{numCars} (which presumably represents the total number of \texttt{Car}
+objects instantiated so far.) This makes sense, since after all such a
+variable is not specific to a certain \texttt{Car}. We'll see that in Java,
+class variables are created by using the ``\texttt{static}" keyword where the
+variable is declared.
+
+\subsection{Classes in UML: the third compartment}
 
 The third compartment isn't much harder: it contains the \textbf{methods} for
 the class. Like everything it seems, programmers have multiple terms for these
@@ -151,6 +167,8 @@ technically programming-language-independent, language-specific things like
 \texttt{int} and \texttt{String} can't help but creep in in practice. Our
 thoughts betray us.
 
+\subsubsection{Various ``special" methods}
+
 A few of those methods are worthy of special note. The first one listed,
 called simply ``\texttt{Car}", is a very special kind of method called a
 \textbf{constructor} which we'll be talking about a lot. Here's an iron-clad
@@ -174,6 +192,17 @@ long as those methods have different argument lists, so it can have multiple
 constructors subject to the same conditions. This is a very common practice,
 although in this first example we have only one \texttt{Car} constructor.
 
+Also, just as in the second compartment, an \underline{underline} indicates
+that the method ``goes with the whole class, not with each object." And just
+as before, this implies the use of the \texttt{static} keyword. A
+\texttt{static} method is essentially a function: \textit{i.e.}, you
+\textit{don't} call it on an object. Instead, you just call it \textit{on the
+class itself.} In the example above, \texttt{numCars()} method is
+\texttt{static}, which means that you could write ``\texttt{Cars.numCars()}"
+to retrieve the number of \texttt{Car} objects that have been instantiated to
+that point. Static methods are quite rare, but they do arise occasionally, and
+are always indicated with an underline.
+
 The other methods I'll draw your attention to are the ones that begin with
 ``\texttt{get}". People call these methods ``\textbf{getters}," and all they
 normally do is return the value of the instance variable in question. Often
@@ -182,7 +211,7 @@ our example doesn't have any of those. People also call getters and setters
 \textbf{accessors}, and sometimes specifically call setters
 ``\textbf{mutators}," a term which always made me chuckle.
 
-\subsubsection{Objects in UML}
+\subsection{Objects in UML}
 
 The blue object in the diagram has only two compartments, not three. That's
 because there's no need (in most OO languages) to say anything about an
@@ -194,12 +223,12 @@ you can see that there is a \texttt{Car} object in memory representing an old
 Chevy Malibu with a zillion miles on it and other suboptimal features.
 
 Perhaps the strangest thing about a UML object is the top compartment. Notice
-that it says ``\texttt{: Car}" (``colon-Car"), which is not a typo. Here's the
+that it says ``\texttt{:~Car}" (``colon-Car"), which is not a typo. Here's the
 sitch. The top compartment of a class has the class's name, since that's all
 there is to say about it. The top compartment of an object, meanwhile, has the
 \textit{object's} name, followed by a colon and then its class. Just like we
-said ``\texttt{make : String}" earlier, so here we can say
-``\texttt{johnsMercedes : Car}". Why, then, is Figure~\ref{fig:classObject}
+said ``\texttt{make :~String}" earlier, so here we can say
+``\texttt{johnsMercedes :~Car}". Why, then, is Figure~\ref{fig:classObject}
 missing the name before the colon? Because we've chosen \textit{not to name
 this object in the diagram.} It's just ``a Car" with certain properties, not a
 named Car. This may seem odd, but in fact 99\% of the time we will do exactly
@@ -442,7 +471,7 @@ Does the make or model or mileage change? Of course not: the amount of gas in
 the tank does. And ``fill 'er up" means to raise it to its maximum. The
 correct implementation of \texttt{.fillUp()}, then, is simply:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
 class Car {
     ...
     void fillUp() {
@@ -453,7 +482,7 @@ class Car {
 
 We could equally well have written this as:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
 class Car {
     ...
     void fillUp() {
@@ -469,7 +498,7 @@ In the same vein, we ask ourselves, ``suppose someone asks me what percentage
 full my tank is. What answer do I give them?" The proper response again
 involves the same two inst vars and a little math:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
 class Car {
     ...
     double getTankPerc() {
@@ -482,7 +511,7 @@ I chose to omit \texttt{this}, but again it's a personal choice.
 
 Some methods are no-brainers:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
 class Car {
     ...
     String getModel() {
@@ -541,7 +570,7 @@ Nonsense Land. A simple \texttt{if} statement can take care of that.
 The second step is figuring out \textit{what to do} when this occurs. Most
 people's first thought is to blare out a siren:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
 // Inadequate approach #1
 class Car {
     ...
@@ -565,7 +594,7 @@ level.
 Slightly better, but still not good enough, is to print the error and also
 refuse to carry out orders:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
 // Inadequate approach #2
 class Car {
     ...
@@ -600,7 +629,7 @@ work. It's the only responsible thing to do.
 Our first step is to ``throw an exception" instead of returning. Here's the
 code to do so:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
 // Correct approach
 class Car {
     ...
@@ -636,7 +665,7 @@ work.
 
 Fixing it is simple; we just change the first line of the function to:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
     void drive(int numMiles) throws Exception {
         ...
 \end{Verbatim}
@@ -658,7 +687,7 @@ simple \texttt{main()} method to do just that.
 You'd be surprised how many beginning programmers try to drive 23 miles like
 this:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
     public static void main(String args[]) {
         drive(23);    // WRONG!
     }
@@ -666,7 +695,7 @@ this:
 
 or this:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
     public static void main(String args[]) {
         Car.drive(23);    // equally WRONG!
     }
@@ -679,7 +708,7 @@ object}. Conceptually, nothing else makes sense. In real life you don't
 places. Instead, you have to drive \textit{a particular car} somewhere. Here's
 how:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
     public static void main(String args[]) {
         Car minivan = new Car("Toyota","Sienna");
         minivan.drive(23);    // correct!
@@ -740,7 +769,7 @@ this just builds a little scaffolding around our call to suspicious methods
 like \texttt{.drive()} so that if and exception is indeed ``thrown" when we
 call it, we can ``catch" is and do something sensible. Here's how:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
     public static void main(String args[]) {
         ...
         // Caravan to Disneyworld -- whoo-hoo!  (Grammy's meeting us there.)
@@ -788,7 +817,7 @@ debugging our program, and we want to print out the values of various
 variables to help us hunt down an error. Printing an \texttt{int} or other
 standard type is straightforward:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
     int numEnchiladas = 3;
     System.out.println("The number of enchiladas is: " + numEnchiladas + ".");
 \end{Verbatim}
@@ -799,7 +828,7 @@ How can such a complex entity be reduced to a string of text?
 
 Heck, let's try it:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
     Car porsche = new Car("Porsche","Carrera");
     porsche.setYearsOld(2);
     System.out.println("My car is: " + porsche + ".");
@@ -842,7 +871,7 @@ be there.)
 
 Here's one:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
     public String toString() {
         return "a " + yearsOld + "-year-old " + make + " " + model;
     }
