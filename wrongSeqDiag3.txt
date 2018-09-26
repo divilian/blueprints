@@ -1,0 +1,6 @@
+participant ":Editor" as editor
+participant "pendingRev:Review" as review
+participant "movie:Movie" as movie
+
+review->+movie: add(pendingrev)
+movie-->-review:

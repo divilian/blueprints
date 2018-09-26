@@ -1,0 +1,33 @@
+participant ":Simulator" as sim
+participant "teams:ArrayList" as al1
+participant "nextTeam:Team" as team
+participant "roster:ArrayList" as al2
+participant "ruth:Ballplayer" as bp1
+participant "dimaggio:Ballplayer" as bp2
+
+sim->+al1:size()
+al1-->-sim: 28
+sim->+al1:get(0)
+al1-->-sim: 
+sim->+team: toString()
+team->team: getCity()
+team->team: getMascot()
+team-->-sim: "\"NY Yankees\""
+sim->+team: bestHitter()
+team->+al2:size()
+al2-->-team: 2
+team->+al2:get(0)
+al2-->-team:ruth
+team->+bp1:getBattingAvg()
+bp1->bp1:getNumHits()
+bp1->bp1:getNumAtBats()
+bp1-->-team:.342
+team->+al2:get(1)
+al2-->-team:dimaggio
+team->+bp2:getBattingAvg()
+bp2->bp2:getNumHits()
+bp2->bp2:getNumAtBats()
+bp2-->-team:.325
+team-->-sim:ruth
+sim->+bp1: toString()
+bp1-->-sim: "\"Babe Ruth (3)\""
