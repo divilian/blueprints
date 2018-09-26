@@ -1,0 +1,26 @@
+
+\chapter{Sequence diagrams}
+
+Class diagrams are the bread-and-butter of UML. They depict the static
+features of software systems: the classes, methods, and associations between
+them. Complementary to class diagrams are another type of UML artifact called
+\textbf{sequence diagrams}. They show the \textit{dynamic} interrelations
+between objects as a system's code executes.
+
+Each sequence diagram depicts one scenario, or flow through the system. Unlike
+a class diagram, which is sort of ``always true" and shows all the permanent,
+reliable features of the program in question, every sequence diagram shows its
+own path: its own thread of execution in a particular, hypothetical scenario.
+After all, nearly every time you run a program, something different happens,
+either because the user makes different choices, network and system latencies
+cause various tasks to end at different times, or a random number generator is
+involved. A sequence diagram selects just \textit{one} possible outcome and
+highlights it start to finish so that an example of how the classes are
+intended to interact is unveiled.
+
+Sequence diagrams are designed to be perused in conjunction with their
+corresponding class diagrams. I always tell students: ``when you look at a
+sequence diagram, only look at it with one eyeball; keep the other eyeball on
+the class diagram." As we'll see, both diagrams have to be ``in sync" with
+each other, since information presented on one must be compatible with what's
+on the other.
