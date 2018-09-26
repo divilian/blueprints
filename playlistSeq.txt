@@ -1,0 +1,45 @@
+participant TunesMgr as tm
+participant PlaylistFactory as plfc
+participant ":PlaylistFactory" as plf
+participant "SettingsCenter" as scc
+participant ":SettingsCenter" as sc
+participant "pl:Playlist" as pl
+participant "s1:Song" as s1
+participant "s2:Song" as s2
+participant ":MP3Stream" as mp3
+
+tm->+plfc:instance()
+plfc-->-tm:
+
+tm->+plf:genSampleList("pop")
+plf->+pl:new()
+pl-->-plf:
+plf->+s1:new("Bad Blood","Swift","badBlood.mp3")
+s1-->-plf:
+plf->+pl:add(s1)
+pl-->-plf:
+plf->+s2:new("Roar","Perry","roar.mp3")
+s2-->-plf:
+plf->+pl:add(s2)
+pl-->-plf:
+plf-->-tm: pl
+
+tm->+pl: shuffle()
+pl-->-tm:
+
+tm->+pl: getNumSongs()
+pl-->-tm: 2
+
+tm->+pl: play()
+pl->+s2: play()
+s2->s2: genStream(0)
+
+s2->+mp3: new("roar.mp3",0)
+mp3-->-s2:
+s2->+scc: instance()
+scc-->-s2: theInstance
+s2->+sc: getSetting("volume")
+sc-->-s2: 40
+s2->mp3: play(40)
+
+
