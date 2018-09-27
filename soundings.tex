@@ -42,7 +42,10 @@ the class diagram." As we'll see, both diagrams have to be ``in sync" with
 each other, since information presented on one must be compatible with what's
 on the other.
 
-\section{Reverse-engineering a sequence diagram from code}
+\section{Going backwards}
+
+\vspace{-.2in}
+{\large \textbf{Reverse-engineering a sequence diagram from code}}
 
 Flip back to Figure~\ref{fig:fullClassDiag} from chapter~\ref{ch:blueprints}
 (p.~\pageref{fig:fullClassDiag}). This is our baseball simulator example. Keep
@@ -79,8 +82,8 @@ class Simulator {
 }
 \end{Verbatim}
 
-Normally, of course, we \textit{start} with a UML design and then write the
-code to implement it; here, we're going to reverse-engineer the UML sequence
+Normally, we \textit{start} with a UML design and then write the code to
+implement it; but here, we're going to reverse-engineer the UML sequence
 diagram \textit{from} the code. This is simply because you've seen a lot more
 code than sequence diagrams in your life, and I think you'll better understand
 how sequence diagrams work if I show it to you this way first. (In the next
@@ -328,7 +331,7 @@ does indeed have an \texttt{.add()} method.
 \begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{rightWrongSeqDiag.pdf}  %
-\caption{Many wrong ways to draw a sequence diagram arrow...and one right
+\caption{Many wrong ways to draw the sequence diagram arrow...and one right
 way.}
 \label{fig:rightWrongSeqDiag}
 \end{figure}
@@ -362,4 +365,208 @@ Figure~\ref{fig:rightWrongSeqDiag} is the correct one. The third one shows a
 the ``\texttt{m.add(r)}" line would be somewhere in \texttt{Review.java}.
 
 \end{enumerate}
+
+\section{Going forwards}
+
+\vspace{-.2in}
+{\large \textbf{Using a sequence diagram to guide the implementation}}
+
+Now normally we won't be drawing a sequence diagram after we've written the
+code, although that does actually happen sometimes, like when we want to
+illustrate the behavior of a system to a new member of our programming team.
+(It's usually easier for them to see the diagram at a glance than it is for
+them to wade through a bunch of code and try to make sense of it.)
+
+So now we'll start with a design (both class and sequence diagram), and see
+what we can infer about what the code to implement it should look like.
+Figures~\ref{fig:playlistClassDiag} and \ref{fig:playlistSeq} give the
+design, which you are encouraged to study in detail.
+
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{playlistClassDiag.pdf}
+\caption{The playlist program's class diagram.}
+\label{fig:playlistClassDiag}
+
+\end{figure}
+\begin{figure}
+\centering
+\hspace*{-1.5in}
+\includegraphics[width=1.25\textwidth]{playlistSeq.pdf}
+\vspace{.1in}
+\caption{One of the playlist program's sequence diagrams.
+\quad\quad\quad\quad\quad % hack to center caption
+\protect\phantom{.}}
+\label{fig:playlistSeq}
+\end{figure}
+
+Here are some things we can read right off the sequence diagram (starting at
+the top):
+
+\begin{enumerate}
+\itemsep.1em
+
+\item Something in the \texttt{TunesMgr} class will call \texttt{.instance()}
+on the \texttt{PlaylistFactory} class. (Notice that the second box from the
+left is missing a colon, so it must represent the \textit{class}
+\texttt{PlaylistFactory} rather than an object of that type.) Since we're
+calling \texttt{.instance()} on a class rather than an object, it had better
+be \texttt{static}; and when we look at the class diagram, happily it is.
+
+Furthermore, we can easily guess \textit{which} \texttt{TunesMgr} method is
+making that method call, since there's only one listed for it:
+\texttt{main()}. After calling \texttt{.instance()} on the class, it looks
+like it calls \texttt{.genSampleList("pop")} on the object. Putting it all
+together, we can surmise that this code should appear in our
+\texttt{TunesMgr.java} file:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class TunesMgr {
+    public static void main(String args[]) {
+        PlaylistFactory pf = PlaylistFactory.instance();
+        Playlist p = pf.genSampleList("pop");
+        ...to be continued...
+    }
+}
+\end{Verbatim}
+
+All we had to figure out for ourselves was to store the return values in
+variables, which seemed like a good idea.
+
+\item Switching scenes to the \texttt{PlaylistFactory}, we get a good sense of
+the innards of its \texttt{.genSampleList()} method. The first couple of
+arrows coming out of \texttt{:PlaylistFactory} say ``new", which as you may
+guess indicates an \textit{instantiation} and a constructor invocation. In
+the first case, we're instantiating a new \texttt{Playlist} object. Apparently
+the constructor for \texttt{Playlist} doesn't take any arguments (or the
+sequence diagram author didn't bother specifying any). The \texttt{Song}
+object we instantiate next, on the other hand, takes a slew of arguments: a
+song title, artist, and filename.
+
+After creating this new \texttt{Song}, we \texttt{.add()} it to the
+\texttt{Playlist}. We then do the same for another \texttt{Song}. In sum,
+here's the kind of thing that \texttt{.getSampleList()} must contain:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class PlaylistFactory {
+    ...
+    Playlist genSampleList(String genre) {
+        ...
+        Playlist pl = new Playlist();
+        Song s1 = new Song("Bad Blood", "Swift", "badBlood.mp3");
+        pl.add(s1);
+        Song s2 = new Song("Roar", "Perry", "roar.mp3");
+        pl.add(s2);
+		...
+        return pl;
+    }
+    ...
+}
+\end{Verbatim}
+
+Now lest we be too hasty, let's step back for a moment. The above code
+might well not \textit{literally} be in \texttt{.getSampleList()}; after all,
+it refers to specific, hardcoded songs. It also doesn't take into account the
+value of \texttt{genre}; presumably, if we passed ``\texttt{rap}" or
+``\texttt{classical}" as the argument, we'd get a different song selection. So
+I'm not actually saying that you can read the code off the diagram without
+thinking. What the sequence diagram tells us, though, is good information
+about \textit{what kinds of things will happen} in each method. One could
+imagine the real \texttt{.getSampleList()} reading song titles from a file or
+from an Internet source depending on the genre, for instance. Even in that
+case, though, all the sequence diagram essentials would be the same: we'd be
+instantiating a new \texttt{Playlist} and \texttt{Song}s, adding the
+\texttt{Song}s to the list, \textit{etc.}
+
+\item ``Back to \texttt{main()}!" the sequence diagram announces. After
+returning the \texttt{Playlist} (which Figure~\ref{fig:playlistSeq} suggests
+we call ``\texttt{pl}") our \texttt{main()} method commences calling three
+methods on it. We can thus further flesh out our main method as follows:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class TunesMgr {
+    public static void main(String args[]) {
+        PlaylistFactory pf = PlaylistFactory.instance();
+        Playlist p = pf.genSampleList("pop");
+
+        p.shuffle();
+        int num = p.getNumSongs();
+        p.play();
+    }
+}
+\end{Verbatim}
+
+Nothing explicitly told us to save the return value from
+\texttt{.getNumSongs()} in a variable, but we did it anyway. We're also not
+told what specifically we would do with that information -- perhaps display it
+for the user, or estimate the duration of the playlist based on it. At any
+rate, for now we'll just save it and move on.
+
+\item Finally, calling \texttt{.play()} on the \texttt{Playlist} turns around
+and calls \texttt{.play()} on each of its \texttt{Song}s, not surprisingly. We
+can thus deduce something like:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+public class Song {
+    ...
+    private ArrayList<Song> songs;
+    ...
+    public void play() {
+        for (Song s: songs) {
+            s.play();
+        }         
+    }
+    ...
+}
+\end{Verbatim}
+
+\item As for \textit{\texttt{Song}'s} \texttt{.play()}
+method\footnote{Interestingly, note that there are \textit{three} different
+methods called \texttt{.play()} in this design, on each of three different
+classes: \texttt{Playlist}, \texttt{Play}, and \texttt{MP3Stream}.}, it
+apparently involves calling its own \texttt{.genStream()} method, which in
+turn instantiates an \texttt{MP3Stream} object to do the actual playing. After
+this, it gets the Singleton \textit{.instance()} from the
+\texttt{SettingsCenter} (note that arrows can go right-to-left on sequence
+diagrams in addition to left-to-right) and gets the user's \texttt{"volume"}
+setting. Finally, it calls \texttt{.play()} on its \texttt{MP3Stream} to play
+at the correct volume. Putting it all together, we infer this sort of code:
+
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+public class Song {
+    ...
+    public void play() {
+        // (the "0" argument means "start at the beginning of the song")
+        MP3Stream s = this.genStream(0);  
+        int vol = SettingsCenter.instance().getSetting("volume");
+        s.play(vol);
+    }
+    ...
+    public MP3Stream genStream(int pos) {
+        ...
+        return new MP3Stream(this.filename, pos);
+    }
+}
+\end{Verbatim}
+
+Here we choose to chain the calls to \texttt{.instance()} and
+\texttt{.getSetting()} rather than saving the \texttt{SettingsCenter} instance
+to a variable. This is programmer's discretion. 
+
+
+
+\end{enumerate}
+
+Many challenges and questions still remain: how exactly do we go about
+generating sample playlists based on genre? What algorithm will
+\texttt{.shuffle()} use? Do we play all the songs in a row, back to back, or
+do we insert a few seconds of silence in between? How exactly does the
+\texttt{MP3Stream} read the bytes off the disk and send them to the audio
+speakers? \textit{Etc.} These are important decisions, every bit as important
+as what kind of wood and nails to use for each wall we frame. 
+
+But the class diagrams and sequence diagrams have given us a tour of the whole
+house as it was envisioned by the architect. We now have a framework into
+which all the little decisions can be fit. And that's the first step towards
+an elegant and maintainable program.
 
