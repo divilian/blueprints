@@ -126,7 +126,7 @@ first thing we do in \texttt{.printAllStars()}.
 
 \begin{compactenum}
 \item Every arrow is a method call. (Important: method calls are the
-only part of the code that can be shown on a sequence diagram.)
+\textit{only} part of the code that can be shown on a sequence diagram.)
 \item The vertical dashed line where the arrow \textit{starts} is the object
 that makes that call. (In other words, if an arrow starts from a ``:Person"
 box, then somewhere in a method of the \texttt{Person} class we can expect to
@@ -202,11 +202,11 @@ isn't followed by a dashed return value arrow right away. Instead, the skinny
 box extends down the page an inch or more. This is because \textit{we're
 showing what's happening inside \texttt{.toString()}}. In this case, there are
 two bendy arrows going from the \texttt{nextTeam:Team} line \textit{back to
-itself}. These mean that the method calls \texttt{.getCity()} and
+itself}. These mean that the methods \texttt{.getCity()} and
 \texttt{.getMascot()} are being called by the \texttt{Team} object \textit{on
 itself}. This may disorient you at first, but of course there's nothing really
-strange about it. After all, our \texttt{Team.toString()} method looks like
-this:
+strange about an object calling a method on itself. After all, our
+\texttt{Team.toString()} method looks like this:
 
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 public class Team {
@@ -257,7 +257,7 @@ our ``best so far" in a typical find-the-max-element type of loop.
 All of this is faithfully represented in the sequence diagram. First, the
 \texttt{Team} object calls \texttt{.size()} (and gets ``2" back). Then it
 calls \texttt{.get(0)} (and gets back a player; let's say Babe Ruth), and then
-calls \textit{.getBattingAvg()} on it (getting the number .342, a jaw-dropping
+calls \texttt{.getBattingAvg()} on it (getting the number .342, a jaw-dropping
 lifetime average, especially for a power hitter). A moment later, it does the
 same with the second player (say, Joe Dimaggio) and gets his average (still
 amazing, but ``only" .325) for comparison.
@@ -278,7 +278,7 @@ public class Ballplayer {
 \end{Verbatim}
 
 and makes two ``self-calls" to get this \texttt{Ballplayer}'s two relevant
-statistics. Those calls are of course shown as bendy loops.
+statistics. Those calls are again shown as bendy loops.
 
 \item Finally, the \texttt{Team} returns its best hitter (Babe Ruth in this
 scenario) back to the \texttt{Simulator}, which again calls
