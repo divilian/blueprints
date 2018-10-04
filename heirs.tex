@@ -1,0 +1,379 @@
+
+\chapter{Heirs of the kingdom}
+
+If one had to name object-oriented programming's most ``killer feature," a
+good case could be made for \textbf{inheritance}. This specific technique for
+code reuse and modular flexibility underlies much of the ``magic" that happens
+in well-architected OO programs, including most of the design patterns we'll
+consider in later chapters. Developers need to know it, and know it well.
+
+Interestingly, inheritance is used for two distinct (and essentially
+unrelated) reasons to achieve two very different kinds of results. I call
+these ``\textbf{top-down inheritance}" and ``\textbf{bottom-up inheritance},
+for reasons I'll explain; the more standard terms are \textbf{interface
+inheritance} and \textbf{implementation inheritance}, respectively. Curiously,
+when I was a young'un taking object-oriented programming in college, we
+learned \textit{only} about the latter of these, and I was mystified early in
+my career when I saw the former in action and had no idea why the code was
+acting the way it did. Only then did I realize that although bottom-up
+inheritance is indeed useful, top-down inheritance is really the game-changer.
+We'll cover both in this chapter.
+
+\section{``Bottom-up" (implementation) inheritance}
+
+As you know, the Java API contains a class called \texttt{ArrayList}. The
+class diagram below shows an abbreviated version of it. Already there's one
+possibly unfamiliar element to you here: the literal word ``\texttt{Object}".
+It might seem odd to learn that there is a \textit{class} called
+\textit{\texttt{Object}}, but that is indeed the case. And in fact this very
+class will come back later in the chapter and play a major role in Java's
+version of inheritance. For now, just consider that we are working with the
+\textit{non}-generic \texttt{ArrayList} type -- \textit{i.e.} the user will
+not declare ``\texttt{ArrayList<String>}" but plain-ol' ``\texttt{ArrayList}"
+-- so that the things that can be stored in it are ``\textit{any} type of
+\texttt{Object}." That's why we're using the most general possible word here
+as the argument of \texttt{.add()}, \texttt{.remove()}, \textit{etc.}
+
+\begin{wrapfigure}{r}{5.5cm}
+\vspace{-.2in}
+\includegraphics[width=0.4\textwidth]{arrayList.pdf}
+\caption{An abbreviated \texttt{ArrayList} class.}
+\label{fig:abbrArrayList}
+\end{wrapfigure}
+
+Now suppose we were writing a program that needed to manage a bunch of
+list-like data, and that \texttt{ArrayList} was just the ticket...except that
+it was missing one or more important features. For example, maybe in addition
+to adding, removing, counting, \textit{etc.}, we also needed the ability to
+\textit{count the number of unique elements} in a list. Our ``dream code" is
+in Figure~\ref{fig:dreamCountUnique}.
+
+\begin{figure}[hb]
+\centering
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+public static void main(String args[]) {
+   ArrayList n = new ArrayList();
+   n.add("Harry");
+   n.add("Ron");
+   n.add("Hermione");
+   n.add("Harry");
+   n.add("Harry");
+   n.add("Dumbledore");
+ 
+   System.out.println(n.get(3));         // prints "Harry"
+   System.out.println(n.size());         // prints 6
+   System.out.println(n.countUnique());  // *should print 4 (but no such method)
+}
+\end{Verbatim}
+\caption{Some code we'd \textit{like} to be able to write in our hypothetical
+program.}
+\label{fig:dreamCountUnique}
+\end{figure}
+
+In our non-dream world, this code works except for the last line, which of
+course contains a method we just made up. It's sad that \texttt{ArrayList}
+meets all our needs except this one teensy one.
+
+Several ways to get around this limitation come to mind. We could use a
+\textbf{has-a} association between \texttt{ArrayList} and a new class of our
+devising, ``\texttt{CountUniqueArrayList}." Each \texttt{CountUniqueArrayList}
+would have an \texttt{ArrayList} ``under the hood" which it would use to
+actually store the data. Figure~\ref{fig:countUnique1} gives the idea.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{countUnique1.pdf}  % 700x190
+\caption{A first approach to enhancing a regular \texttt{ArrayList}.....}
+\label{fig:countUnique1}
+\end{figure}
+
+We could code our \texttt{.countUnique()} in a variety of ways, and now the
+last line of Figure~\ref{fig:dreamCountUnique} would work like a charm.
+Trouble is...the other lines wouldn't work anymore. Obviously we have to be
+able to do ``normal" \texttt{ArrayList} things with our class as well as
+calling our new special method. So we'd have to duplicate all the other
+\texttt{ArrayList} methods on our new class, and have them ``pass through" the
+arguments to the underlying \texttt{ArrayList} that it holds. The result is
+the unwieldy, repetitive monstrosity in Figure~\ref{fig:countUnique2}, which
+is obviously not a good solution. Here's what each of our ``pass-through"
+methods would look like:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+public class CountUniqueArrayList {
+    private ArrayList al;
+
+    public void add(Object o) {
+        al.add(o);
+    }
+    public int size() {
+        return al.size();
+    }
+    ...etc...
+}\end{Verbatim}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{countUnique2.pdf}  % 700x190
+\caption{.....but this necessitates duplicating all the original methods.}
+\label{fig:countUnique2}
+\end{figure}
+
+At the very least, this is clumsy, duplicative, and error-prone. But it could
+be even worse, if the \texttt{ArrayList} class evolves. Suppose the Java API
+expands to include a \texttt{.shuffle()} method on \texttt{ArrayList}, to
+randomly jumble the contents of the list? Every \texttt{ArrayList} in every
+line of Java code in the world could instantly take advantage of that. But our
+stunted \texttt{CountUniqueArrayList} could not: it would have to be changed
+to add a \texttt{.shuffle()} pass-through method before it could do what any
+other \texttt{ArrayList} could.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.7\textwidth]{inheritanceArrows.pdf}
+\caption{Diagrammatic elements for inheritance. (Compare with
+Figure~\ref{fig:assocArrows}.)}
+\label{fig:inheritanceArrows}
+\end{figure}
+
+The solution is to use inheritance. \textit{Instead of ``\textbf{has-a}," an
+inheritance association means ``\textbf{is-a}."} (See
+Figure~\ref{fig:inheritanceArrows}.) Instead of each
+\texttt{CountUniqueArrayList} \textit{having} an \texttt{ArrayList} under the
+hood, we're declaring that a \texttt{CountUniqueArrayList} in fact \textit{is}
+an \texttt{ArrayList}. This gives it all the rights and privileges of any
+\texttt{ArrayList} including all of its methods and instance variables. All
+the code in Figure~\ref{fig:dreamCountUnique} \textit{instantly just flat
+works}. The UML equivalent is shown in Figure~\ref{fig:countUnique3}.
+
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{countUnique3.pdf}
+\caption{Bottom-up inheritance solves our design conundrum. (Note carefully the
+open-triangle arrowhead.)}
+\label{fig:countUnique3}
+\end{figure}
+
+This may seem like cheating. Surely if we want to call a method on an object,
+we're entitled to see that method in the UML diagram for that object's class?
+Clearly, \texttt{.add()}, \texttt{.get()}, and \texttt{.size()} do not appear
+in \texttt{CountUniqueArrayList}'s box. But the magic of inheritance makes it
+work anyway. The rule is that you can call a method on an object if that
+method is defined on the object's class...or any \textbf{superclass}.
+\texttt{ArrayList} is said to be the superclass of
+\texttt{CountUniqueArrayList}. And that brings us to a slew of equivalent
+terminology.
+
+\begin{samepage}
+All of these expressions mean exactly the same thing:
+\begin{center}
+A is-a B\\
+A inherits from B\\
+A specializes B\\
+A is a subclass of B\\
+A is a subtype of B\\
+A is a derived class of B\\
+B generalizes A\\
+B is the superclass of A\\
+B is the supertype of A\\
+B is the base class of A\\
+\end{center}
+\end{samepage}
+
+You know something's an important concept when there are a zillion equivalent
+terms for it. And so it is with inheritance.
+
+Sometimes we say ``A is a class, and B is its superclass." Other times we say
+``B is a class, and A is a subclass." These aren't contradictory statements --
+it's like saying I'm both a son (of my mom and dad) and also a father (of my
+three kids). You can totally be a son and a father at the same time. And a
+class can be both a superclass and a subclass.
+
+By the way, if you have sharp eyes, you'll have noticed I said ``or
+\textit{any} superclass" a few paragraphs ago. That's because if A inherits
+from B, B can in turn inherit from some other class, which can itself inherit,
+\textit{etc.} All the classes and their related sub/superclasses form what's
+known as an \textbf{inheritance hierarchy}.
+
+\subsection{Under the hood}
+
+You might wonder how this magic works behind the scenes. It's actually pretty
+simple. When we instantiate a \texttt{CountUniqueArrayList}, we not only
+allocate memory for all the \texttt{CountUniqueArrayList}-specific parts (if
+any), but also for its superclass parts.
+
+Let's take a different example so that we know what the ``parts" actually
+are.\footnote{It may or may not surprise you that I honestly don't know what
+instance variables the \texttt{java.util.ArrayList} class has, or what they're
+named. This is a perfect example of the wonders of encapsulation: millions of
+people across the globe use \texttt{ArrayList}s every day, and do not know or
+care how they function internally!} Figure~\ref{fig:studentClass} shows two
+classes in an inheritance relationship: a \texttt{Student} \textbf{is-a}
+\texttt{Person}. While a \texttt{Person} in general has a \texttt{name} and 
+and \texttt{age}, the special type of person called a ``\texttt{Student}" also
+has an \texttt{eagleOneID} and a \texttt{gpa}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{studentClass.pdf}
+\caption{A \texttt{Student} is a special kind of \texttt{Person}, but a
+genuine \texttt{Person} nonetheless.}
+\label{fig:studentClass}
+\end{figure}
+
+\begin{samepage}
+Now when we instantiate each of these classes:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+    public static void main(String args[]) {
+        Person tony = new Person();
+        tony.setName("Tony Stark");
+        tony.setAge(39);
+
+        Student peter = new Student();
+        peter.setName("Peter Parker");
+        peter.setAge(17);
+        peter.setGPA(3.85);
+        peter.setEagleOneID("000518989");
+    }
+\end{Verbatim}
+\end{samepage}
+
+the objects of each type look like Figure~\ref{fig:studentObject}. See how the
+\texttt{Student} object has \textit{both} the required \texttt{Student} and
+\texttt{Person} instance variables, since it is both a \texttt{Student} and a
+\texttt{Person}. To Java, the fact that the \texttt{Person} ``stuff" is in a
+separate little chamber inside the \texttt{Student} box is just a detail.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{studentObject.pdf}
+\caption{A \texttt{Student}, and an ordinary \texttt{Person}, in the heap.}
+\label{fig:studentObject}
+\end{figure}
+
+The reason I call this technique ``bottom-up inheritance" is that in order to
+use the special features of your new class, \textit{you need to know you have
+an instance of the subclass.} In the code above, we couldn't call
+\texttt{.setGPA()} on an ordinary \texttt{Person}: it would have to be a
+\texttt{Student}. We couldn't call \texttt{.countUnique()} on just any Joe
+\texttt{ArrayList} -- only \texttt{CountUniqueArrayList}s have that special
+method. Hence, the code that uses the classes views the hierarchy ``from the
+bottom-up"; \textit{i.e.}, from the perspective of the subclass. In fact, if
+all we instantiate are \texttt{Student}s (not \texttt{Person}s), then our
+\texttt{main()} method doesn't even need to know there \textit{is} a
+superclass. To \texttt{main()}, it's all about \texttt{Student}s, and the fact
+that you can do ordinary person-ish things to a \texttt{Student} -- like set
+its \texttt{age}, or ask it to \texttt{.work()} or \texttt{.sleep()} -- seem
+just like other aspects of \texttt{Student}s.
+
+The conventional term for this, ``implementation inheritance," comes from the
+fact that the reason we're inheriting is \textit{to steal the implementation.}
+Someone has already gone to the trouble of writing an \texttt{ArrayList} class
+-- or a \texttt{Person} class -- and we don't want to reinvent the wheel. So
+we make use of that implementation (the code in the methods) and just add
+whatever else we want to the mix.
+
+\section{``Top-down" (interface) inheritance}
+
+Now top-down inheritance is where the real action is.
+
+Let's go back to our \texttt{ArrayList} example, and this time I'm going to
+write a different subclass, called ``\texttt{SortedArrayList}."
+Figure~\ref{fig:sortedAL} shows this arrangement. The open-triangle arrow and
+the word ``is-a" are just the same. The one thing that might strike you as
+odd, though, is that the methods on the subclass are \textit{also all on the
+superclass}. Hey, we already had an \texttt{.add()}, an \texttt{.insert()},
+and a \texttt{.set()}: what good is our new class that just duplicates this?
+As it turns out, a \textit{lot}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{sortedAL.pdf}
+\caption{Top-down inheritance in action.}
+\label{fig:sortedAL}
+\end{figure}
+
+To explain why, first let me articulate my motive for creating the
+\texttt{SortedArrayList} type in the first place. I might have a program that
+needs to store various bits of data in \texttt{ArrayList}s -- a common enough
+task -- but it needs some of those lists to \textit{always remain in sorted
+order}. Exactly what ``in order" means depends on the data type, but we could
+expect for \texttt{Integer}s it would be numerical order, for \texttt{String}s
+alphabetical order, \textit{etc.}
+
+It's easy to imagine a program that would need this feature. Perhaps it needs
+to print the various lists in some kind of reliable sequence, or to perform
+fast lookup via a binary search. Anyway, the point is: if I create a
+\texttt{SortedArrayList}, I'm doing so because I want a guarantee that no
+matter what I do to that list, I can always get the stuff out quickly, and
+sorted.
+
+Now if you think it through, you'll realize this is a different kind of
+situation than we had with \texttt{CountUniqueArrayList}. Previously, we had a
+\textit{new feature} we wanted to add to an existing class -- an
+\texttt{ArrayList} could do many things, but not count its number of distinct
+elements, and so we tacked that feature on to the top of it. But now, we don't
+want a new feature so much as \textit{different behavior for the original
+features.} We don't want to add any new methods, but have \textit{the existing
+methods act differently.} And thus is the essence of top-down inheritance.
+
+Before we see it in action, let's think about the implementation. You'll
+notice that in Figure~\ref{fig:sortedAL} only \textit{some} of the methods
+appear in the subclass. These are called \textbf{overridden} methods: we say
+that \texttt{SortedArrayList}'s \texttt{.add()} ``overrides" the base class's
+\texttt{.add()}. Now can you figure out why those particular three methods are
+the ones we chose to override?
+
+If you're sharp, you'll realize that those three methods are the only ones
+which, if we called the ordinary \texttt{ArrayList} version, would threaten to
+jeopardize the sorted nature of the list:
+
+\begin{itemize}
+\itemsep.1em
+
+\item If we have a sorted list, and \texttt{.add()} an item to it, our new
+expanded list might be unsorted if \texttt{.add()} just tacks the new item on
+to the end. Hence, \underline{\textbf{we must override \texttt{.add()}}} with
+a version that adds the new element \textit{in the correct place}.
+
+\item If I have a sorted list, and \texttt{.remove()} an element from it, the
+shorter list will still be sorted. So the superclass's \texttt{.remove()}
+doesn't mess anything up, and we can stick with it. No need to add a version
+to \texttt{SortedArrayList} at all.
+
+\item Whether the list's elements are sorted or not, \texttt{.size()} acts the
+same for Pete's sake, so we hardly need to override it.
+
+\item On the other hand, if we \texttt{.insert()} an element at a specific
+location, we'll mostly likely disturb the ordered-ness, so
+\underline{\textbf{we must override \texttt{.insert()}}} as well, so that it
+puts the new element only where it truly belongs.
+
+\item The \texttt{.get()} method is an easy call: retrieving element \#9 out
+of a list doesn't have any different behavior if the elements are sorted or
+not, so we leave that one out.
+
+\item Lastly, though, \underline{\textbf{we must override \texttt{.set()}}}
+since changing one element's value could throw it out of kilter, requiring
+resorting.
+
+\end{itemize}
+
+If you followed all that, you'll realize that the choice of which methods to
+override in the subclass wasn't an arbitrary one. It was dictated directly by
+the behavior we wanted our subclass to guarantee and preserve. Methods whose
+default implementations (in the superclass) threaten to jeopardize that must
+be replaced with versions appropriate to the subclass.
+
+The word ``override" is a good one, and it conveys almost exactly what it
+means, although don't make the mistake of thinking that the ordinary
+\texttt{ArrayList}'s \texttt{.add()} method is completely obliterated by what
+we've done. \textit{Au contraire}, for plain-jane \texttt{ArrayList}s all over
+the world, that original \texttt{.add()} code will still run. Only if the
+object in question is one of our special subtype -- only if it's a
+\texttt{SortedArrayList} in addition to being a plan \texttt{ArrayList} --
+will our new method be substituted. Put another way, we're not ``overriding
+the \texttt{.add()} method for \textit{everybody}," just for objects of our
+new special type.
+
