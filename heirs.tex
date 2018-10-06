@@ -149,8 +149,7 @@ works}. The UML equivalent is shown in Figure~\ref{fig:countUnique3}.
 \begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{countUnique3.pdf}
-\caption{Bottom-up inheritance solves our design conundrum. (Note carefully the
-open-triangle arrowhead.)}
+\caption{Bottom-up inheritance in action. (Note the open-triangle arrowhead.)}
 \label{fig:countUnique3}
 \end{figure}
 
@@ -343,7 +342,7 @@ doesn't mess anything up, and we can stick with it. No need to add a version
 to \texttt{SortedArrayList} at all.
 
 \item Whether the list's elements are sorted or not, \texttt{.size()} acts the
-same for Pete's sake, so we hardly need to override it.
+same for Pete's sake, so we hardly need to override that one.
 
 \item On the other hand, if we \texttt{.insert()} an element at a specific
 location, we'll mostly likely disturb the ordered-ness, so
@@ -355,25 +354,164 @@ of a list doesn't have any different behavior if the elements are sorted or
 not, so we leave that one out.
 
 \item Lastly, though, \underline{\textbf{we must override \texttt{.set()}}}
-since changing one element's value could throw it out of kilter, requiring
-resorting.
+since changing one element's value could throw the ordered-ness out of kilter,
+requiring resorting.
 
 \end{itemize}
 
 If you followed all that, you'll realize that the choice of which methods to
 override in the subclass wasn't an arbitrary one. It was dictated directly by
 the behavior we wanted our subclass to guarantee and preserve. Methods whose
-default implementations (in the superclass) threaten to jeopardize that must
-be replaced with versions appropriate to the subclass.
+default implementations (in the superclass) wouldn't work for our new type (in
+this case, those that threatened to jeopardize the order) must be replaced
+with versions appropriate to the subclass.
 
 The word ``override" is a good one, and it conveys almost exactly what it
 means, although don't make the mistake of thinking that the ordinary
 \texttt{ArrayList}'s \texttt{.add()} method is completely obliterated by what
-we've done. \textit{Au contraire}, for plain-jane \texttt{ArrayList}s all over
+we've done. \textit{Au contraire}, for plain-Jane \texttt{ArrayList}s all over
 the world, that original \texttt{.add()} code will still run. Only if the
 object in question is one of our special subtype -- only if it's a
 \texttt{SortedArrayList} in addition to being a plan \texttt{ArrayList} --
 will our new method be substituted. Put another way, we're not ``overriding
 the \texttt{.add()} method for \textit{everybody}," just for objects of our
 new special type.
+
+\subsection{Test your intuition}
+
+\begin{samepage}
+Okay, now to drill the concept all the way home. I want to ask you a question.
+Before reading on, consider the code below and ask
+yourself ``what will its output be?" (Commit to an answer before you
+continue.)
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+    public static void main(String args[]) {
+        SortedArrayList sal = new SortedArrayList();
+        sal.add("Thor");
+        sal.add("Bruce Banner");
+        sal.add("Captain America");
+    
+        getMad(sal);
+    
+        for (int i=0; i<sal.size(); i++) {
+            System.out.println("Hero #" + i + " is " + sal.get(i));
+        }
+    }
+
+    private static void getMad(ArrayList al) {
+        al.set(0,"Hulk");
+    }
+\end{Verbatim}
+\end{samepage}
+
+To figure this out, we first observe that the code is instantiating our
+\textit{new} special kind of \texttt{ArrayList}: a \texttt{SortedArrayList}.
+Therefore, we know that when \texttt{sal.add()} is called, \textit{it's our
+new \texttt{.add()}} that will get executed. (Later in \texttt{main()}, we
+call \texttt{sal.size()}, and this will of course trigger the ordinary
+\texttt{.size()} since we didn't override that method.)
+
+Now the big question, and the point of this exercise, is to consider what
+happens \textit{inside} the \texttt{getMad()} function. Note very carefully
+that \texttt{getMad()} takes an argument of type \textit{\texttt{ArrayList}},
+not \texttt{SortedArrayList}. So \texttt{getMad()}, you might say, is itself
+unaware that \texttt{SortedArrayList}s even exist, let alone that it's about
+to be given one.
+
+So I ask you: will \texttt{ArrayList}'s ordinary \texttt{.set()} method be
+called, or will it be \texttt{SortedArrayList}'s new,
+ensure-the-list-stays-sorted \texttt{.set()} that will take over?
+
+The critical answer is: \textit{the subclass's method will be called, even
+though the function itself doesn't know it's dealing with a subclass.}
+\texttt{SortedArrayList.set()} will be called in this case, which will swap
+\texttt{Hulk} with \texttt{Captain America} to keep the list alphabetically
+sorted, giving this output:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+    Hero #0 is Captain America
+    Hero #1 is Hulk
+    Hero #2 is Thor
+\end{Verbatim}
+
+This surprises lots and lots of folks. It certainly surprised me when I
+learned it (considerably after graduating college). I originally reasoned as
+follows: ``\texttt{getMad()} was written to take an ordinary
+\texttt{ArrayList}, and hence its code was designed with only
+\texttt{ArrayList}s in mind. Surely this means that our three-hero-list, when
+\texttt{getMad()} receives it, will be treated just as any normal
+\texttt{ArrayList} would be. All that special overriding method stuff only
+happens when we \textit{know} we're dealing with a \texttt{SortedArrayList} in
+particular."
+
+The exact opposite is true. And it turns out that's how we want it to be.
+Consider this very example: what good is a \texttt{SortedArrayList} if it
+doesn't stay sorted? That was the whole point of the subclass! Yet we'd be
+threatening to violate this very principle if we ever passed it into contexts
+which didn't know it needed to be sorted, and hence unwittingly jumbled it up.
+We must guarantee that \textit{every time} \texttt{.add()},
+\texttt{.insert()}, or \texttt{.set()} is called on it, our new functionality
+is triggered, whether or not the user of the object even knew that.
+
+
+\subsection{``Masquerading" and ``smuggling"}
+
+Now why do I call this ``top-down inheritance?" The reason is that unlike with
+bottom-up inheritance, you can use objects of your new subclass
+\textit{without knowing they're of that subclass, or that there even is a
+subclass.} As a user of the classes -- like \texttt{main()}, above -- you're
+looking at the inheritance hierarchy from the top down.
+
+A couple of other descriptive words I like to use for this are ``masquerading"
+and ``smuggling." In the above example, the \texttt{SortedArrayList}
+\texttt{sal} is masquerading as an \texttt{ArrayList} -- pretending to be one
+for the sake of the \texttt{getMad()} function. (And of course it's not
+actually ``pretending" because a \texttt{SortedArrayList} truly
+\mbox{\textbf{is-a}} \texttt{ArrayList}.) From \texttt{main()}'s point of
+view, we smuggled a \texttt{SortedArrayList} into the \texttt{getMad()}
+function, in cognito. Little did \texttt{getMad()} know that it wasn't even
+dealing with an ordinary object of the base class. It was fooled by the
+disguise.
+
+\subsection{Why this matters}
+
+The reason this idea is so powerful is that it allows programmers to decouple
+the \textit{what} from the \textit{how}.
+
+A chunk of code that only knows about the superclass (like \texttt{ArrayList})
+can dictate \textit{what} to do with it. ``First I'll \texttt{.add()} these
+three elements, then I'll \texttt{.remove()} one, then get the
+\texttt{.size()}, \textit{etc.}"
+
+In response to these method calls, the object itself -- perhaps of a
+specialized subclass -- decides \textit{how} to carry out each one. An
+ordinary \texttt{ArrayList} tacks the new element onto the end when it's told
+to \texttt{.add()} one, whereas a \texttt{SortedArrayList} decides to stick it
+in the appropriate place to preserve the order. The original code chunk can be
+blissfully ignorant of how the details of \texttt{.add()}, \texttt{.insert()},
+\textit{etc.}~work for any particular type of \texttt{ArrayList}.
+
+If you're a videogamer, think of it in Smash Bros.~terms. Every character in
+the game looks different, has different attack stats, different animations for
+punching and falling, a different ``up smash" and ``side special," and so
+forth. But the main game engine code that coordinates the interaction between
+characters on a stage doesn't have to worry about all those details. It can
+simply say, ``hey, character \#1, your player just input a dash-left. Display
+the appropriate animation please." The object for character \#1, who may
+happen to be Zelda, then displays her determinedly zooming to the left with
+her hair flowing behind her.
+
+The game then says, "hey, character \#4, you just got punched. First, tell me
+your weight class so I know how far the knockback should be." If character \#4
+is Peach, her object responds, ``I'm in the medium weight class." The game
+then says, ``thanks. Now display your `hit stun' animation from your current
+position up to coordinates 562, 431." The Peach object then shows her
+character flying through the air with her umbrella in a tizzy.
+
+For even moderately complex programs, this ability to compartmentalize these
+two jobs is crucial -- otherwise you end up with a 500-line function that's a
+mass of spaghetti code. Software engineers call this decoupling
+``\textbf{separation of concerns}," and it is among the most important
+principles in all of software development.
 
