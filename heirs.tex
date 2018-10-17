@@ -128,6 +128,7 @@ stunted \texttt{CountUniqueArrayList} could not: it would have to be changed
 to add a \texttt{.shuffle()} pass-through method before it could do what any
 other \texttt{ArrayList} could.
 
+\label{page:inheritanceArrows}
 \begin{figure}
 \centering
 \includegraphics[width=0.7\textwidth]{inheritanceArrows.pdf}
@@ -144,7 +145,9 @@ hood, we're declaring that a \texttt{CountUniqueArrayList} in fact \textit{is}
 an \texttt{ArrayList}. This gives it all the rights and privileges of any
 \texttt{ArrayList} including all of its methods and instance variables. All
 the code in Figure~\ref{fig:dreamCountUnique} \textit{instantly just flat
-works}. The UML equivalent is shown in Figure~\ref{fig:countUnique3}.
+works}. The UML equivalent is shown in Figure~\ref{fig:countUnique3}. Note
+carefully that we use an open-triangle arrowhead to designate inheritance, and
+that there are no other navigability, multiplicity, or role indicators.
 
 \begin{figure}
 \centering
@@ -522,15 +525,68 @@ principles in all of software development.
 
 A common question at this point is whether top-down and bottom-up inheritance
 can be combined in a single class. The answer is yes! If you create a
-subclass \texttt{B} of another class \texttt{A}, you could have some methods
-of \texttt{B} override the existing methods of \texttt{A}, and you could also
-have some brand new methods in \texttt{B} that weren't present in \texttt{A}.
+subclass \texttt{A} of another class \texttt{B}, you could have some methods
+of \texttt{A} override the existing methods of \texttt{B}, and you could also
+have some brand new methods in \texttt{A} that weren't present in \texttt{B}.
 
-Any code that deals with \texttt{A} objects will automatically work for
-\texttt{B} objects also, and your new method implementations will be called
+Any code that deals with \texttt{B} objects will automatically work for
+\texttt{A} objects also, and your new method implementations will be called
 when it does. And you can write code that calls your brand new methods, as
-long as that code \textit{knows it's dealing with a \texttt{B}}.
+long as that code \textit{knows it's dealing with a \texttt{A}}.
 
 It's not super common to combine the techniques, but I've seen it done.
 
+\section{A word of warning}
+
+I'll finish this chapter with an observation from my years coding. Inheritance
+tends to be both an \textit{underused} feature and an \textit{overused}
+feature.
+
+What I mean is that programmers (even experienced ones, sadly) sometimes fail
+to recognize situations in which inheritance would be appropriate, and their
+code becomes less elegant and more brittle as a result. Even more worrying,
+I've seen more than one ``inheritance-happy" programmer in my career use it
+where it's \textit{not} called for. And this turns out to be even worse.
+
+Although there are shades of grey, the basic rule for knowing when inheritance
+is appropriate can actually be boiled down to a single principle:
+\textbf{Remember that ``is-a" means ``is-a."} The time \textit{not} to use
+inheritance is when you see some code that you want to reuse, but you really
+\textit{don't} have a conceptual ``subtype" in mind.
+
+An actual example: suppose your team is building a database system for 5k and
+10k race results. There's a \texttt{Runner} class with inst vars like
+\texttt{name} and \texttt{gender} and \texttt{dateOfBirth}. Then you say,
+``all right: to record a performance in a particular race, we need information
+like the name, birth date, \textit{etc.} of the runner, plus the bib number,
+finish time, date and location of the race."
+
+You may be tempted (as a colleague of mine once was) to create a
+\texttt{Performance} class which \textit{inherits} from \texttt{Runner}. After
+all, every \texttt{Performance} object would then possess all the necessary
+attributes -- those of the racer, and those of the race. What's not to like?
+
+Well, there are two problems. One is conceptual: could one possibly claim that
+a \texttt{Performance} \textbf{is-a} \texttt{Runner}?! Obviously not. The very
+fact that you could call \texttt{.getGender()} on a \texttt{Performance}
+object, or pass a \texttt{Performance} to a \texttt{Race.register()}
+method defies logic.
+
+The other problem is practical: as these two nonsensically-joined classes
+evolve, more pressure builds in the system that exposes the design flaw. When
+a data entry mistake is corrected, for example, changing a \texttt{Runner}'s
+name from \texttt{"Stanly"} to \texttt{"Stanley"}, only one of Stanley's
+performances will have its \texttt{name} corrected; the other independent
+copies for his other performances remain out of date. Even worse, suppose the
+need arises for different (legitimate) subtypes of \texttt{Runner}:
+\texttt{AmateurRunner} and \texttt{CompetitiveRunner}, say. Now
+the \texttt{Performance} class is really in a bind: it only inherits from the
+more general type, and would have to proliferate itself awkwardly
+(``\texttt{AmateurPerformance}" and ``\texttt{CompetitivePerformance}") just
+to stay in sync.
+
+The lesson here is that your object-oriented model should strive to faithfully
+reflect conceptual reality; it should not use design features in gimmicky ways
+to achieve short-term programming wins. Always ask yourself ``does this choice
+of classes really make \textit{sense}?" as your guiding question.
 

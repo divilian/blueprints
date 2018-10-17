@@ -1,0 +1,695 @@
+
+\chapter{Heirs of the kingdom (2 of 2)}
+
+I split what was once a long inheritance chapter into two. So you're probably
+back from a snack break, a nap, or a game of Ultimate. Let's get warmed up
+again.
+
+A class diagram for a ``Zoo" program is in Figure~\ref{fig:zooClass}. Study
+the code on the following page (Figure~\ref{fig:zooCode}) and predict its
+output.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{zooClass.pdf}
+\caption{A class diagram for the Zoo program.}
+\label{fig:zooClass}
+\end{figure}
+
+We have an \texttt{Animal} class with a number of subclasses, and one of them
+even has its \textit{own} subclass. In each case, we override one, both, or
+neither of the base class's methods.
+
+\begin{figure}
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+class Animal {                                 class Bird extends Animal {
+  public void makeNoise() {                      public void makeNoise() {
+    System.out.println("Growl!");                  System.out.println("Chirp chirp");
+  }                                              }
+  public void move(int distance) {               public void move(int distance) {
+    for (int i=0; i<distance; i++) {               System.out.println("Flap flap swoosh!");
+      System.out.print("tramp ");                }
+    }                                          }
+    System.out.println();                      
+  }
+}                                              class Duck extends Bird {
+                                                 public void makeNoise() {
+                                                   System.out.println("Quack quack");
+class Cow extends Animal { }                     }
+  public void makeNoise() {                    }
+    System.out.println("Mooooo");              
+  }
+}                                              class Bear extends Animal { }
+
+
+class Zoo {
+  public static void main(String args[]) {
+    ArrayList<Animal> zoo = new ArrayList<Animal>();
+    zoo.add(new Animal());
+    zoo.add(new Bird());
+    zoo.add(new Cow());
+    zoo.add(new Bear());
+    zoo.add(new Duck());
+    generateCacophony(zoo);
+  }
+
+  private static void generateCacophony(ArrayList<Animal> animals) {
+    for (Animal a: animals) {
+      a.makeNoise();
+      a.move(3);
+      System.out.println();
+    }
+  }
+}\end{Verbatim}
+\caption{The Zoo program.}
+\label{fig:zooCode}
+\end{figure}
+
+\begin{samepage}
+The output of the program, as you can easily verify, is:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+Growl!
+tramp tramp tramp 
+
+Chirp chirp
+Flap flap swoooooosh!
+
+Mooooo
+tramp tramp tramp 
+
+Growl!
+tramp tramp tramp 
+
+Quack quack
+Flap flap swoooooosh!
+\end{Verbatim}
+\end{samepage}
+
+Lots of top-down inheritance here. Notice that the \texttt{Bear} class is
+completely unchanged from its superclass: evidently, the generic animal
+behavior works fine for bears, at least as far as moving and making noise
+goes. This is not an error.
+
+You also may have noticed that the \texttt{Bird}'s \texttt{.move()} method
+completely ignores its \texttt{distance} argument. That, too, is not a
+problem.
+
+Finally, and most importantly, note that the \texttt{Duck} class does not
+override \texttt{.move()}, but its superclass (\texttt{Bird}) does, and so a
+\texttt{Duck} will ``\texttt{Flap flap swoosh}" like ordinary \texttt{Bird}s
+do. The rule is: when a method is called on an object, the code in its class
+is called, unless the class doesn't define that method. In that case, Java
+looks for the method in its immediate superclass, then its superclass's
+superclass, \textit{etc.}~all the way up the inheritance hierarchy, calling
+the first one it finds. This makes sense: since a \texttt{Duck} \textbf{is-a}
+\texttt{Bird}, it is sensible to make it move like a \texttt{Bird} rather than
+like a generic \texttt{Animal}.
+
+\section{Getting abstract}
+
+\subsection{Abstract methods}
+
+In all these cases, it was up to the subclass to decide whether to override a
+method or not. If the subclass was happy with the base class's behavior (like
+\texttt{Cow} was with \texttt{.move()}, or \texttt{Bear} was with everything)
+it could just ignore that method and default to ordinary animal behavior.
+
+What if we had a method, though, where there was no reasonable default
+behavior to define? Let's add a method \texttt{.getNumChromosomes()} which
+will return the number of DNA molecules in that species. Unlike making noise,
+which we might plausibly say is ``growling, unless further specified for a
+particular animal," perhaps there isn't any ``default number of chromosomes"
+that makes sense.\footnote{Consider: a fruit fly has only 8 chromosomes, while
+a tasmanian devil has 14, a human has 46, a potato 48, a silkworm 56, and a
+catfish 104. Given these examples, what default value would have any merit?}
+
+Note that we still want to be able to call \texttt{.getNumChromosomes()} on
+\textit{any} \texttt{Animal}, no matter what type. So it's no good to just
+leave the method out of the \texttt{Animal} class and only define it on
+subclasses.
+
+\begin{samepage}
+The solution to our dilemma is to make \texttt{.getNumChromosomes()} an
+\textbf{abstract method}. ``Abstract" means that even though it's defined in a
+superclass -- with a name, parameter list, and return type -- there's not
+actually any \textit{code} for it there! Here's what it looks like:
+
+\begin{verbatim}
+class Animal {
+    abstract public int getNumChromosomes();
+    ...
+}
+\end{verbatim}
+\end{samepage}
+
+\begin{samepage}
+It looks a little strange, with a semicolon prematurely truncating the method
+signature. But by doing this, we're declaring that even though there's no
+method \textit{body} for \texttt{.getNumChromosomes()} in the \texttt{Animal}
+class, we still want to be able to call it on an \texttt{Animal}. Individual 
+subclasses provide their own implementation; for example:
+
+\begin{verbatim}
+class Cow extends Animal {
+    public int getNumChromosomes() {
+        return 60;
+    }
+    ...
+}
+\end{verbatim}
+\end{samepage}
+
+Notice that the subclasses do \textit{not} include the keyword \texttt{abstract}
+on the method.
+
+\subsection{Abstract classes}
+
+\begin{samepage}
+Now I know what you're thinking. ``This is all fine, but what if we have a
+plain-old-\texttt{Animal} object and call \texttt{.getNumChromosomes()} on
+it?" 
+
+\begin{verbatim}
+    Cow c = new Cow();
+    int numc = c.getNumChromosomes();   <-- returns 60
+    Animal a = new Animal();
+    int numa = a.getNumChromosomes();   <-- ???
+\end{verbatim}
+
+There's no code to run for a generic \texttt{Animal}, so what value would we
+get back?
+\end{samepage}
+
+This is indeed a dilemma, and Java solves it in the only sensible way: it says
+\textit{you can't make a plain-old-\texttt{Animal} anymore.} The rule is: if
+any method of a class is abstract, \textbf{the class itself must be abstract},
+which means it is \textit{un-instantiatable.} In other words, the Java
+compiler forces us to amend our \texttt{Animal} class as follows:
+
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+abstract class Animal {                         
+  public void makeNoise() {            
+    System.out.println("Growl!");      
+  }                                    
+  public void move(int distance) {     
+    for (int i=0; i<distance; i++) {   
+      System.out.print("tramp ");      
+    }                                  
+    System.out.println();              
+  }
+  abstract public int getNumChromosomes();
+}                                      
+\end{Verbatim}
+
+If we ever try to execute the code ``\texttt{new Animal()}", Java will stop us
+with a compilation error.
+
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true]
+Animal.java:5: error: Animal is abstract; cannot be instantiated
+        new Animal();
+        ^
+1 error
+\end{Verbatim}
+
+\begin{samepage} Note that every intantiatable subclass needs to be
+non-\texttt{abstract}, and therefore \textit{it must have a body for every one
+of its methods}, defined in either itself or in one of its superclasses. For
+example, as soon as we add the \texttt{abstract}
+\texttt{.getNumChromosomes()}, our \texttt{Cow.java} won't compile either:
+
+\scriptsize
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true]
+Cow.java:4: error: Cow is not abstract and does not override abstract
+method getNumChromosomes() in Animal
+    class Cow extends Animal {}
+    ^
+1 error
+\end{Verbatim}
+\normalsize
+\end{samepage}
+
+So we'll need to define \texttt{.getNumChromosomes()} in \texttt{Cow} and
+\texttt{Bear} (or else make them \texttt{abstract}). What about \texttt{Duck}
+and \texttt{Bird}? It depends on which of these classes (if either) we want to
+be \texttt{abstract}. If we want to be able to ``\texttt{new Bird()}" and also
+``\texttt{new Duck()}", then at \textit{least} \texttt{Bird} will have to
+provide a \texttt{.getNumChromosomes()} method. (And \texttt{Duck}'s would be
+optional. If in fact \texttt{Duck}s have a different number of chromosomes
+than ordinary \texttt{Bird}s, we'd want to also make one on the \texttt{Duck}
+class.) If, on the other hand, we're happy for \texttt{Bird} to be abstract
+(and thus non-instantiatable), we could choose to define it \textit{only} on
+\texttt{Duck} and call it a day. It all depends on what makes sense for the
+domain.
+
+Putting all this abstract stuff together, here are the rules:
+
+\begin{enumerate}
+\itemsep.1em
+\item A class cannot be instantiated if it's declared \texttt{abstract}. (Only
+its subclasses possibly can be.)
+\item If there is any \texttt{abstract} method on a class, the class itself
+must be declared \texttt{abstract}.
+\item If a class \texttt{A} inherits from some other class \texttt{B}, and
+\texttt{B} has abstract method(s) on it, \texttt{A} must provide
+implementation(s) for all of those methods, or else \texttt{A} be declared 
+\texttt{abstract} as well.
+\end{enumerate}
+
+\subsection{UML notation}
+
+There are two different ways to mark a method or class as \texttt{abstract} in
+UML. One is to put the name of the method or class in italics. That works well
+if you're using a design tool like ArgoUML or Rationale Rose to create your
+diagrams. Otherwise, if you're doing it by hand, you add a
+(``$\ll$abstract$\gg$") stereotype. I've shown both approaches in
+Figure~\ref{fig:zooClassAbstract}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{zooClassAbstract.pdf}
+\caption{Using \textit{italics}, and the $\ll$abstract$\gg$ stereotype, to
+indicate abstract classes and methods.}
+\label{fig:zooClassAbstract}
+\end{figure}
+
+\section{That's super}
+
+\subsubsection{Calling a superclass's methods with ``\texttt{super.}"}
+
+Occasionally, it will make sense for a method in a class to explicitly call a
+method in its superclass. For instance, suppose we said, ``When asked to make
+noise, a \texttt{Duck} should `\texttt{Quack quack}' but then \textit{also} do
+whatever ordinary \texttt{Bird}s usually do." We would write that as follows:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class Duck extends Bird {
+  public void makeNoise() {
+    System.out.println("Quack quack");
+    super.makeNoise();
+  }
+}
+\end{Verbatim}
+
+The ``\texttt{super.}" prefix (pronounced ``super dot") says to call the
+version of \texttt{.makeNoise()} that's defined in the \texttt{Bird}
+class, not the \texttt{Duck} one. (And a good thing, too: otherwise we'd have
+an infinite loop with \texttt{.makeNoise()} repeatedly calling itself!)
+Written this way, a \texttt{Duck} will make this noise:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+Quack quack
+Chirp chirp
+\end{Verbatim}
+
+As another example, we might define a class \texttt{Chipmunk} that moves twice
+as rapidly as normal animals. If we defined its \texttt{.move()} method thus:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class Chipmunk extends Animal {
+  public void move(int distance) {
+    int doubleDist = distance * 2;
+    super.move(doubleDist);
+  }
+}
+\end{Verbatim}
+
+then calling \texttt{.move(3)} on a \texttt{Chipmunk} object would print this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+tramp tramp tramp tramp tramp tramp
+\end{Verbatim}
+
+By the way, students often ask whether they can call
+\texttt{super.super.move()} to invoke the ``grandparent's method." The answer
+is \textbf{no}, for reasons having to do with encapsulation. It's fine for a
+\texttt{Duck} to know it's a subclass of \texttt{Bird}, but it shouldn't know
+what \texttt{Bird}'s superclass is, nor even that it \textit{has} a
+superclass. That knowledge (which we would be baking in to our program through
+a ``\texttt{super.super.}" call) is outside the realm of the \texttt{Duck}
+class, and therefore should not be known to it. If later, for instance, we
+refactor our code and make \texttt{Bird} its own class instead of inheriting
+from \texttt{Animal}, \texttt{Duck} would break if it had a
+``\texttt{super.super.}".
+
+\subsubsection{Invoking a superclass's constructor with ``\texttt{super}" (no
+dot)}
+
+You've known ever since p.~\pageref{page:instantiateConstructor} that whenever
+an object is instantiated, one of that class's constructors is called. This is
+indeed the case, but here's a new wrinkle: when an object is instantiated,
+\textit{a constructor in its superclass is also called.} This is because in
+order to ``set up" the \texttt{Duck} stuff (initialize its inst vars,
+\textit{etc.}), we also need to set up its \texttt{Bird} stuff, and for that
+matter its \texttt{Animal} stuff. Since a \texttt{Duck} \textbf{is-a}
+\texttt{Bird}, which in turn \textbf{is-a} \texttt{Animal}, it's imperative
+that we have a valid \texttt{Animal} object before trying to make it a
+special kind of \texttt{Animal} (and similarly, a valid \texttt{Bird} before
+we make a special kind of \texttt{Bird}).
+
+This usually happens automatically, but can need some special coaxing if
+you're passing arguments to constructors. An example is the code snippet in
+Figure~\ref{fig:inhConstrCode} (whose class diagram is in
+Figure~\ref{fig:inhConstrClass}). Here, the only constructor for the
+\texttt{Person} class is one that takes a \texttt{String} argument; hence, we
+must pass it a \texttt{String} if we want to instantiate one. In the
+\texttt{Student} constructor (which takes a couple arguments of its own) we
+call ``\texttt{super(name)}" which passes the \texttt{name} the subclass was
+given and passes it up to its superclass's constructor. In the
+\texttt{Professor} constructor, we take a \texttt{"Dr. "} on to the front of
+the name before passing it the superclass. Note that there's no ``dot" after
+these \texttt{super()}s; that's how we indicate we want to call the
+constructor, rather than an ordinary method.
+
+Somewhat weirdly, in Java the call to \texttt{super()} must be the
+\textit{first} line of the constructor. That's because Java says, ``a
+\texttt{Student} is a special type of \texttt{Person}. So if you want to be a
+\texttt{Student}, you have to first be a fully-baked \texttt{Person}. Only
+then will we get around to the \texttt{Student}-specific stuff. (Note this
+restriction does \textit{not} apply to ``\texttt{super.}" (``super dot")
+method calls; they can be put anywhere.
+
+\begin{figure}[ht]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+class Person {                    
+    private String name;          
+    protected Person(String name) {         class Professor extends Person {
+        this.name = name;                       private String dept;
+    }                                           Professor(String name, String dept) {
+}                                                   super("Dr. " + name);
+                                                    this.dept = dept;
+class Student extends Person {                  }
+    private double gpa;                     }
+    private int year;
+    Student(String name, int year) {
+        super(name);
+        this.gpa = 0.0;
+        this.year = 1;  // Freshman
+    }
+}
+\end{Verbatim}
+\caption{The interaction between constructors in an inheritance hierarchy.}
+\label{fig:inhConstrClass}
+\end{figure}
+
+One other thing on this \texttt{Person}/\texttt{Professor}/\texttt{Student}
+example: we have defined the \texttt{Person} constructor to have
+\textbf{\texttt{protected}} visibility. As you may recall from
+Figure~\ref{fig:visibilityLevels} on p.~\pageref{fig:visibilityLevels},
+\texttt{protected} visibility (denoted in UML with a hashtag) means that it
+can only be called by a class in the same package \textit{or a subclass}. It's
+useful in situations like this that involve inheritance: by making the
+\texttt{Person} constructor \texttt{protected}, we're saying that no one
+outside the package can instantiate a plain-old \texttt{Person}: instead they
+must instantiate a subtype, which can then call the constructor from below.
+This is related, but not quite the same, as declaring a method
+\texttt{abstract}. (The difference being that \texttt{abstract} classes can't
+be instantiated \textit{anywhere}, even in the same package.)
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{inhConstrClass.pdf}
+\caption{The class diagram for Figure~\ref{fig:inhConstrCode}.}
+\label{fig:inhConstrCode}
+\end{figure}
+
+
+\section{Pure abstraction: Java interfaces}
+
+We've now seen several examples of superclasses. Sometimes they have all
+concrete (opposite of abstract) methods, and a subclass can pick and choose
+which ones it wants to override. Sometimes, they have one or more
+\texttt{abstract} methods, which the subclass \textit{must} override, or else
+be un-instantiatable.
+
+What if we push that idea all the way in the abstract direction: a ``pure"
+abstract class, with only abstract methods? Is that any use?
+
+Yes, and probably more than you realize right now. I'll get to the reasons
+this is so powerful in a page or two, but for now let's just learn the syntax.
+In Java, instead of a pure abstract class, you can create something called an
+\textbf{interface}, which is essentially the same thing but which gives
+considerable more flexibility. An interface is a template of sorts, with
+\textit{no instance variables} and \textit{no method bodies}. Classes that
+\textbf{implement} an interface promise to create a method body for each of
+the methods in the interface.
+
+In UML (see Figure~\ref{fig:interface}), an interface looks almost exactly
+like a class. The only differences are: (1) there are
+(sometimes\footnote{Designers aren't consistent about this, I've found. Some
+do include all three compartments for an interface, even though the middle one
+must by definition be empty.}) only two compartments instead of three, and (2)
+the stereotype $\ll$interface$\gg$ appears in the name box.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{interface.pdf}
+\caption{Two classes that implement interfaces.}
+\label{fig:interface}
+\end{figure}
+
+We indicate ``implements an interface" with a \textit{dashed} line that
+otherwise looks exactly like an inheritance arrow (recall
+Figure~\ref{fig:inheritanceArrows} from p.~\pageref{page:inheritanceArrows}).
+
+In Figure~\ref{fig:interface}, both of the classes in our racers 
+application need to store and load objects from the database. Hence, both of
+them implement the \texttt{Storable} interface, which defines two methods, one
+for storing and one for loading. The code for that much would look like:
+
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+interface Storable {
+    void store(DBConnection c);
+    void load(DBConnection c);
+}
+
+class Race implements Storable {            class Runner implements Storable {                        
+    private Date date;                          private String name;
+    private String loc;                         private String gender;
+    private int maxRunners;                     public void store(DBConnection c) {
+    public void store(DBConnection c) {              ...
+        ...                                     }
+    }                                           public void load(DBConnection c) {
+    public void load(DBConnection c) {               ...
+        ...                                     }
+    }                                       }                                          
+}                                            
+\end{Verbatim}
+
+Some Java syntax idiosyncrasies: an \texttt{interface} has only method
+signatures (return type, method name, parameter lists) followed by a
+semicolon, just as with abstract methods. However, the methods are
+\textit{not} marked as \texttt{abstract}, nor \texttt{public} nor anything
+else. Note also that we don't say the class ``\texttt{extends}" the interface,
+but rather ``\texttt{implements}" it.
+
+In the same figure, we have \texttt{Runner} also implementing another
+interface: \texttt{Participant}. Presumably there are also other types of
+participants (volunteers, walkers, wheelchair racers, walkers, rock bands that
+play on the sidewalks) that can \texttt{.register()} for races, and if they
+want to be able to participate, their classes must implement this one-method
+interface. We augment the code as follows:
+
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+interface Participant {
+    int registerFor(Race r);
+}
+
+class Runner implements Storable, Participant {                        
+    private String name;
+    private String gender;
+    public void store(DBConnection c) {
+         ...
+    }
+    public void load(DBConnection c) {
+         ...
+    }
+    int registerFor(Race r) {
+        ...
+    }
+}                                            
+\end{Verbatim}
+
+Take note of the fact that the \texttt{Runner} class definition has
+\textit{two} \texttt{interface} names in its declaration line, separated by a
+comma. And now we come to the reason Java \texttt{interface}s matter:
+\textit{because a class can implement more than one of them.}
+
+You might be thinking, ``okay, but couldn't we just have inherited from more
+than one abstract class, and accomplished the same thing without this new
+`interface' notion?" The answer is \textbf{no}: Java does not allow
+\textbf{multiple inheritance}, which is when a class has more than one
+superclass. The reasons are somewhat lengthy to explain, and will be omitted
+here, but suffice to say that languages that choose to support multiple
+inheritance (C++ is among them) have some knotty problems to solve. For
+instance, what if class \texttt{A} inherits from both \texttt{B} and
+\texttt{C}, and both \texttt{B} and \texttt{C} have their own
+\texttt{.doThis()} method. What code, then, would this line trigger?
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
+        A a = new A();
+        a.doThis();       <-- ? Whose "doThis()"?
+\end{Verbatim}
+
+How can it choose between \texttt{B}'s and \texttt{C}'s perfectly acceptable
+implementations of \texttt{.doThis()}? Or should it run both of them, and if
+so in what order?
+
+James Gosling and the other designers of Java took a look at this problem and
+decided that multiple inheritance wasn't worth the hassle. I happen to think
+they were right, and for one simple reason: although programmers often want to
+use multiple \textit{top-down} inheritance, they rarely want to use multiple
+\textit{bottom-up} inheritance. And it's the latter that gives rise to all the
+paradoxes and strange corner cases. As long as a class simply wants to
+masquerade as one of several different things (as opposed to wanting to steal
+method implementations and inst vars from more than one superclass), multiple
+``inheritance" turns out not to be a big deal. One of Java's big wins was
+allowing multiple interfaces to be implemented, not multiple classes to be
+inherited from, thereby sidestepping the whole issue.
+
+\begin{samepage}
+So the bottom line is that in Java, a class can \textit{inherit} from only one
+class, but it can \textit{implement} as many interfaces as it likes. If you do
+both, you declare yourself like this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+class Runner extends Athlete implements Participant, Storable {
+    ...
+}
+\end{Verbatim}
+\end{samepage}
+
+Put another way, you only have one inheritance relationship to ``spend," so
+use it wisely. Only inherit from something if it truly is an ``\textbf{is-a}"
+relationship, and there's meaningful code you get to reuse by so doing.
+
+\subsection{Example: \texttt{java.lang.Comparable}}
+
+Here's an example of the kind of thing that interfaces make easy. Let's say I
+have a class called \texttt{Resort} that represents high-falutin' vacation
+destinations. It has inst vars like \texttt{name}, \texttt{city},
+\texttt{rating} (from $\star$ to $\star\star\star\star\star$), and
+\texttt{price} (from \$ to \$\$\$\$).
+
+We also have a \texttt{ReservationSystem} application that allows travel
+agents to browse available rooms, book hotels for customers, \textit{etc.}
+We'll use a \textbf{has-a} relationship for that (see
+Figure~\ref{fig:resortClass}).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{resortClass.pdf}
+\caption{Using the \texttt{Comparable} interface to enable sorting.}
+\label{fig:resortClass}
+\end{figure}
+
+Now one of the things \texttt{ReservationSystem} is likely to want to do is
+\textit{sort} the \texttt{Resort} objects in its list. There's a function in
+\texttt{java.util.Collections} class called \texttt{sort()} that does just
+that, in fact. We'd like to write code like this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+class ReservationSystem {
+    private ArrayList<Resort> resorts;
+    ...
+    private void printAvailableResorts() {
+
+        // Determine availability...
+
+        java.util.Collections.sort(resorts);
+
+        // Print results...
+    }
+}
+\end{Verbatim}
+
+The trouble is, even though \texttt{Collections} has an efficient, bug-free
+sorting algorithm all coded up for us to use, it doesn't know \textit{what
+``sorted" means for \texttt{Resort}s.} For a list of integers, we'd expect
+``sorted" to mean ``in numerical order." For \texttt{String}s, we'd expect
+alphabetical order. But what about \texttt{Resort}s?
+
+It turns out that \texttt{Collections.sort()} works for any collection of
+objects that implement the \texttt{Comparable} interface from
+\texttt{java.lang}. That interface has just one method, \texttt{.compareTo()},
+which compares the object it's called on with another object. The
+specification says it should return a negative number if \texttt{this} should
+come before the argument in sorted order, and a positive number if the
+argument should come first.
+
+Let's say we want to sort our \texttt{Resort}s alphabetically by name. Then we
+could just write:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+class Resort implements Comparable<Resort> {
+    private String name;
+    private int rating;
+    private int price;
+    private String city;
+    ...
+    public int compareTo(Resort r) {
+        return this.name.compareTo(r.name);
+    }
+}
+\end{Verbatim}
+
+It's a weird-looking one-liner, but what this \texttt{.compareTo()}
+implementation does is pass the buck to its \texttt{name} field. It says, in
+effect, ``if you want to know whether I come before or after the resort
+\texttt{r}, just look at whether my \texttt{name} comes before or after
+\texttt{r}'s \texttt{name} alphabetically."
+
+Or, perhaps I want to sort by decreasing rating (5 stars first, 1 star last).
+Then I could write:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+class Resort implements Comparable<Resort> {
+    private String name;
+    private int rating;
+    private int price;
+    private String city;
+    ...
+    public int compareTo(Resort r) {
+        return r.rating - this.rating;
+    }
+}
+\end{Verbatim}
+
+Now, if I'm a 4-star hotel and \texttt{r} is a 2-star hotel, \texttt{r.rating
+- this.rating} will be a negative number, putting me first.
+
+You could detect equal ratings and break the tie by the price, or sort by
+reverse length of \texttt{city} name, or anything else you dream up. The magic
+here is that we decoupled the sorting algorithm from the details of how
+objects are compared. The \texttt{Collections.sort()} method is perfectly
+happy as long as we keep our promise to implement \texttt{Comparable} and
+provide a way to compare two \texttt{Resort} objects.
+
+
+\section{\texttt{java.lang.Object}}
+
+One other difference between C++ and Java is that Java has a
+\textbf{single-rooted inheritance hierarchy}. This means that in Java, if you
+trace \textit{any} class's ancestry up from superclass to superclass, you
+eventually reach a common point. That point is called the \texttt{Object}
+class from the \texttt{java.lang} package. \textit{All} classes, regardless of
+who wrote them, are ultimately subtypes of \texttt{Object}.
+
+It doesn't seem that way when we look at the code, since we saw
+``\texttt{class Bear extends Animal}" yet ``\texttt{class Animal}...(extends
+nothing, presumably)". But if you don't explicitly list a subtype via
+\texttt{extends}, Java implicitly substitutes \texttt{Object} as the
+superclass.
+
+This has a couple of nice benefits. For one, there are methods on the
+\texttt{Object} class that all objects are therefore guaranteed to inherit;
+among them are \texttt{.equals()} and \texttt{.toString()}. For another, it is
+possible to treat \textit{all} objects indistinguishably in certain contexts.
+We saw this with the pre-generic collection classes like \texttt{ArrayList}.
+The reason we can have a plain \texttt{ArrayList} hold absolutely anything --
+say, two \texttt{String}s, three \texttt{Ballplayer}s and a \texttt{Duck} --
+is that the list is treating them all as the ultimate supertype
+(\texttt{Object}), in true top-down inheritance fashion. In C++ there isn't
+really any way to do that, since if you have two classes that don't explicitly
+inherit from a common type, they simply have nothing in common.
+
