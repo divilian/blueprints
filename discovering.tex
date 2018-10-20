@@ -1,5 +1,5 @@
 
-\chapter{Discovering the design}
+\chapter{The art of software design}
 
 This chapter marks a watershed of sorts. Up to this point, we've been doing
 \textbf{analysis} instead of \textbf{synthesis}. Analysis is when you look at
@@ -8,4 +8,416 @@ and seek to understand it, usually by breaking it down into its constituent
 parts. Synthesis, on the other hand, is designing something that doesn't
 already exist. Instead of scrutinizing a UML diagram, we're creating a UML
 diagram; instead of examining a method, we're writing a method.
+
+Until now, I've presented you with example after example of classes and
+methods already written, and diagrams illustrating their various parts. But
+now it's time to ask the question: ``how do we figure out what the right
+classes and methods \textit{are} in the first place?" It's all well and good
+for someone to hand us \texttt{Ballplayer}, \texttt{Team}, and
+\texttt{Simulator} classes. But how did we know to create those particular
+classes? Why not \texttt{Pitch}, \texttt{Catch}, and \texttt{Hit}? Why not
+\texttt{FirstBaseman}, \texttt{Shortstop} and \texttt{Outfielder}? Why not
+\texttt{NationalLeague} and \texttt{AmericanLeague}?
+
+Going from the general idea of a program to a list of classes is tricky. It's
+as much an art as a science. It calls for intuition and imagination more than
+adherence to a set of rules. Nevertheless, there are principles that guide the
+selection of good classes, and we'll talk about them in this chapter.
+
+Of all the OO pioneers who weighed in on the question of how to arrive at a
+good design, the one who had the most influence on me was Rebecca Wirfs-Brock,
+who invented the technique called \textbf{responsibility-driven design}. I'm
+highly indebted to her, and recommend the original book authored by her and
+her colleagues.\footnote{Wirfs-Brock, Wilkerson, Wiener, \textit{Designing
+Object-Oriented Software.} Prentice Hall, 1991.}
+
+\section{``Discovering the design"}
+
+I don't know who first coined the phrase ``discovering the design" (it
+certainly wasn't me; it might have been Wirfs-Brock) but when I originally
+heard it my ears perked up. It sounded strangely paradoxical. ``Design" was
+something you brought to the table and imposed on your world, right? Not
+something you found already there. ``Design" seemed like a matter of
+\textit{invention}, not \textit{discovery}; it was surely something you did to
+a steam engine, not to a planet.
+
+Yet hidden in this phrase is a powerful technique for OO design that attempts
+to \textit{let the requirements speak for themselves.} One of Rebecca
+Wirfs-Brock's great ideas was to begin with a written description of a
+software program in action, and to cull from the language clues as to what the
+``correct" classes are.
+
+Let me immediately clarify that ``correct" does not mean ``there is one and
+only one `right' set of classes" for a particular program. In fact, there are
+many such choices, some better than others, some downright awful. What we
+mean by ``the correct classes" is a set of classes (and their corresponding
+inst vars and methods) that will:
+
+\begin{compactitem}
+\item represent the domain well
+\item work seamlessly together
+\item be amenable to adaptation as the system requirements evolve
+\item distribute the responsibilities evenly among several classes
+\item neither duplicate nor omit important functionality
+\end{compactitem}
+
+You get the picture. A good design is elegant, flexible, maintainable, and
+robust to change. Many choices of classes will not meet these goals. A few
+will. ``The correct set of classes" means \textit{any} set of classes that
+will do so reasonably well.
+
+\section{Straight from the horse's mouth}
+
+Wirfs-Brock's procedure is paraphrased in Figure~\ref{fig:discovering}. We
+have to somehow come up with a written description to kick things off. Often,
+a \textbf{requirements document} has been authored by someone higher-up on our
+company's food chain, and can be mined for much gold. Sometimes, we ourselves
+take a step back and bang out a few paragraphs that describe what users do and
+experience as they work with the system.
+
+\setlength{\fboxsep}{10pt}
+\begin{figure}
+\centering
+\fbox{\parbox{.85\textwidth}{
+Start with a written description of the software, and:
+\begin{compactenum}
+\itemsep.03in
+\item Identify all noun phrases.
+\item Eliminate obviously bad ones:
+    \begin{compactenum}
+    \item probable duplicates
+    \item nouns that aren't instantiate-able
+    \item things you obviously wouldn't represent
+    \item likely \textit{attributes} of a class, not classes themselves
+    \end{compactenum}
+\item See which of the remaining ones ``feel right." Identify what each one
+\textbf{knows} and can \textbf{do}. These are your \textbf{candidate classes}.
+
+\end{compactenum}
+}}
+\vspace{.1in}
+\caption{Procedure for ``discovering the design."}
+\label{fig:discovering}
+\end{figure}
+
+The essential point is that the requirements themselves speak loudly about
+what classes would be appropriate for the program it describes. Let's see how.
+
+\subsection{Nouns, and only nouns}
+
+If you flash back to \textit{Schoolhouse Rock} or \textit{Sesame Street},
+you'll remember your grammatical parts of speech and realize that a
+\textbf{noun} is the right kind of word for a class name. Every object (and
+therefore the class it's an instance of) is a ``person, place, or thing," not
+an action word, modifier, or anything else.
+
+Further, not just not any old noun will do. Consider the list in
+Figure~\ref{fig:nouns}: these are all nouns, but only \textit{one} makes a
+valid class name. Can you find it?
+
+\setlength{\fboxsep}{1pt}
+\begin{figure}[hb]
+\centering
+\fbox{\parbox{.85\textwidth}{
+\begin{multicols}{3}
+\begin{compactitem}
+\renewcommand\labelitemi{\freakingtilde}
+\item happiness
+\item Justin Bieber
+\item oxygen
+\columnbreak
+\item crocodile
+\item teamwork
+\item width
+\columnbreak
+\item communism
+\item recreation
+\item London
+\end{compactitem}
+\end{multicols}
+}}
+\vspace{.1in}
+\caption{All nouns...but not all good class names.}
+\label{fig:nouns}
+\end{figure}
+
+I claim the only legit class name in this list is
+\underline{\textit{crocodile}}. Here's why. First, some of these entries are
+``proper nouns" which means they refer to specific instances of things, rather
+than categories. In English, we almost always use \textit{capital letters} to
+denote proper nouns, which means when you see ``Justin Bieber" and ``London"
+you can immediately roll your eyes and move on.
+
+Second, most of the other nouns aren't \textit{instantiate-able}. Here's the
+litmus test for whether a noun is instantiate-able: can you meaningfully
+put the word ``a" (or ``an") before it? And can you meaningfully make it
+plural and put a number (like thirteen) before it?
+
+Clearly not. All of these phrases are plainly ridiculous:
+
+\begin{multicols}{2}
+\begin{compactitem}
+\item four happinesses (?)
+\item eleven oxygens\footnote{One could imagine a chemical analysis program
+that dealt with oxygen atoms, among other things, and I've heard chemists
+speak loosely of things like ``an extra oxygen" or say ``that molecule has
+five oxygens." I still like \texttt{OxygenAtom} much, much better as a class
+name even here, though.} (?)
+\item a teamwork (?)
+\columnbreak
+\item three communisms (?)
+\item a communism (?)
+\item nineteen recreations (?)
+\end{compactitem}
+\end{multicols}
+
+Remember, the only thing we ever really do to a class is make instances of it,
+to which we can do things. If you can't imagine a ``\texttt{new Communism()}"
+or ``an \texttt{ArrayList} of \texttt{Happiness}es," it has no business being
+a class.
+
+The closest contender to crocodile is the word \textit{width}. There may be
+cases where this is a sensible class, but the reason I discard it is that a
+width is almost certainly a \textit{modifier} of some other object, rather
+than an object itself. One could imagine \texttt{Building}, \texttt{Image},
+and \texttt{Rectangle} objects that all had an instance variable called
+\texttt{width}; it's harder to imagine ``a width" as an entity in its own
+right, with its own properties and operations.
+
+\subsubsection{Noun phrases}
+
+By the way, it's often the case that instead of a bare noun, we use a
+\textbf{noun phrase} as a class name. A noun phrase is simply a noun with one
+or more modifiers. ``Grizzly bear," ``chess tournament," and ``public liberal
+arts college" are examples.
+
+\subsubsection{Singular, not plural}
+
+Finally, it should hardly be worth stating that all class names must be
+\textbf{singular}, not plural. I don't work in ``a buildings," but a
+\textit{building}; and nobody has ``a dogs" as a pet. When we instantiate an
+object, we're going to say ``\texttt{Crocodile alice = new Crocodile()}", not 
+``\texttt{Crocodiles alice = new Crocodiles()}".
+
+\subsection{Carrying out the process}
+
+\textbf{1. Identify all noun phrases.} Okay. We begin our semi-automated
+process of deriving class names by starting with a written description of the
+program's requirements. Here's a short example:
+
+\setlength{\fboxsep}{10pt}
+\begin{center}
+\large
+\fbox{\parbox{.85\textwidth}{
+\textsf{A bicycle store needs to manage its inventory. Shipments of various
+models of bicycles are received every week from its suppliers, and customers
+place individual orders for bikes and other accessories from the store. The
+store manager must be able to place orders from vendors, maintain
+contact information so they can be confirmed or canceled, and view lists of
+the incoming products and their expected arrival dates. The manager also must
+be able to record multi-item orders from individual customers, accept and
+record down payments, and track inventory levels to ensure that enough items
+are ordered to satisfy customer demand.}}}
+\end{center}
+
+Rebecca Wirfs-Brock's process from Figure~\ref{fig:discovering} calls for
+sifting through the requirements description and \textit{circling all the noun
+phrases}. Unless it's an exact duplicate of one that previously occurred, be
+conservative and circle every one. It would be a good exercise for you to do
+this yourself in the box above, and then compare with my answer:
+
+\setlength{\fboxsep}{10pt}
+\begin{center}
+\large
+\fbox{\parbox{.85\textwidth}{
+\textsf{A \bluebox{bicycle store} needs to manage its \bluebox{inventory.}
+\bluebox{Shipments} of various
+\bluebox{models} of \bluebox{bicycles} are received every \bluebox{week} from its
+\bluebox{suppliers}, and \bluebox{customers}
+place \bluebox{individual orders} for \bluebox{bikes} and other
+\bluebox{accessories} from the \bluebox{store}. The
+\bluebox{store manager} must be able to place \bluebox{orders} from
+\bluebox{vendors}, maintain
+\bluebox{contact information} so they can be confirmed or canceled, and view
+\bluebox{lists} of
+the \bluebox{incoming products} and their \bluebox{expected arrival dates}. The
+\bluebox{manager} also must
+be able to record \bluebox{multi-item orders} from \bluebox{individual
+customers}, accept and
+record \bluebox{down payments}, and track \bluebox{inventory levels} to ensure
+that enough \bluebox{items}
+are ordered to satisfy \bluebox{customer demand}.}}}
+\end{center}
+
+This is the raw material for the rest of the process. If we make everything
+singular and lower-case, this leaves us with the following list:
+
+\begin{samepage}
+\begin{multicols}{3}
+\small
+\begin{compactitem}
+\renewcommand\labelitemi{\raisebox{0.25ex}{\tiny$\bullet$}}
+\item bicycle store
+\item inventory
+\item shipment
+\item model
+\item bicycle
+\item week
+\item supplier
+\item customer
+\item individual order
+\columnbreak
+\item bike
+\item accessory
+\item store
+\item store manager
+\item order
+\item vendor
+\item contact information
+\item list
+\item incoming product
+\columnbreak
+\item expected arrival date
+\item manager
+\item multi-item order
+\item individual customer
+\item down payment
+\item inventory level
+\item item
+\item customer demand
+\end{compactitem}
+\end{multicols}
+\end{samepage}
+
+\textbf{2a. Eliminate probable duplicates.} According to
+Figure~\ref{fig:discovering}, the next step is to eliminate likely duplicates.
+Obviously things like ``bicycle" and ``bike" refer to the same conceptual
+entity, of course; we're hardly going to have a \texttt{Bicycle} class and a
+separate \texttt{Bike} class in our program!
+
+This isn't always 100\% straightforward, but it's usually 99\% so. Different
+synonyms and turns of phrase are pretty easy to detect. I think we can be
+pretty safe boiling this list down into a slightly smaller one, where
+duplicates are shown:
+
+\begin{samepage}
+\begin{multicols}{2}
+\small
+\begin{compactitem}
+\renewcommand\labelitemi{\raisebox{0.25ex}{\small$\bullet$}}
+\item bicycle store == store
+\item inventory
+\item shipment
+\item model
+\item bicycle == bike
+\item week
+\item supplier == vendor
+\item customer == individual customer
+\item individual order == order == multi-item order
+\columnbreak
+\item accessory
+\item store manager == manager
+\item contact information
+\item list
+\item incoming product
+\item expected arrival date
+\item down payment
+\item inventory level
+\item item
+\item customer demand
+\end{compactitem}
+\end{multicols}
+\end{samepage}
+
+The choice of which synonym to retain is mostly aesthetic. All other things
+being equal, I usually choose the shorter one.
+
+\vspace{.1in}
+\textbf{2b. Eliminate nouns that aren't instantiate-able.} Now we apply our
+test: ``can we put `a/an' or a number before the noun phrase, and have it make
+sense?"
+
+Actually almost all of these remaining entries pass that test, with the
+exception of \textit{inventory}, \textit{inventory level}, and
+\textit{customer demand}, and possibly \textit{contact information}. While one
+could indeed envision ``two different inventories," ``four inventory levels,"
+and ``five customer demands" in other contexts, it's pretty clear from the
+text that these are being used as abstract concepts, not individual objects.
+``Contact information" is a closer call, but by inspecting the requirements
+again, we can see that this is really an attribute of
+\textit{vendor/supplier}. We'll therefore strike the idea of a
+``\texttt{ContactInformation}" class. We're now down to:
+
+\begin{samepage}
+\begin{multicols}{3}
+\small
+\begin{compactitem}
+\item store
+\item shipment
+\item model
+\item bicycle
+\item week
+\columnbreak
+\item supplier
+\item customer
+\item order
+\item accessory
+\item manager
+\columnbreak
+\item list
+\item incoming product
+\item expected arrival date
+\item down payment
+\item item
+\end{compactitem}
+\end{multicols}
+\end{samepage}
+
+\vspace{.1in}
+
+\textbf{2c. Eliminate things you obviously wouldn't represent.} When you look
+at some of these surviving noun phrases, you scratch your head. Would we
+really have a ``\texttt{Week}" class? Surely not. Also, although this program
+is no doubt intended for the manager of a store, does it really make sense to
+represent the \texttt{Manager} and \texttt{Store} as objects? We'll cross out
+all three of these.
+
+\vspace{.1in}
+
+\textbf{2d. Eliminate likely \textit{attributes} of a class, not classes
+themselves.} Now things are getting somewhat subjective, but some of these
+remaining nouns seem ``too small" to be their own class. Consider
+\textit{expected arrival date}. Surely this is better modeled as a property of
+an order, rather than its own individual object. The same could be said for
+\textit{down payment}. Generally speaking, noun phrases that seem to refer to
+bits of data that have an obvious ``home" in another class ought to be modeled
+as inst vars, not classes.
+
+So now all that remains are:
+
+\vspace{-.3in}
+\begin{samepage}
+\begin{center}
+\parbox{.8\textwidth}{
+\begin{multicols}{2}
+\begin{compactitem}
+\item shipment
+\item model
+\item bicycle
+\item supplier
+\item customer
+\columnbreak
+\item order
+\item accessory
+\item list
+\item incoming product
+\item item
+\end{compactitem}
+\end{multicols}
+}
+\end{center}
+\end{samepage}
+
+\textbf{3. See which of the remaining ones ``feel right."}
+
 
