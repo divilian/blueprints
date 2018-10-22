@@ -1,5 +1,5 @@
 
-\chapter{The art of software design}
+\chapter{Doing design (1 of 2)}
 
 This chapter marks a watershed of sorts. Up to this point, we've been doing
 \textbf{analysis} instead of \textbf{synthesis}. Analysis is when you look at
@@ -70,7 +70,8 @@ will do so reasonably well.
 
 Wirfs-Brock's procedure is paraphrased in Figure~\ref{fig:discovering}. We
 have to somehow come up with a written description to kick things off. Often,
-a \textbf{requirements document} has been authored by someone higher-up on our
+a \textbf{requirements specification}\footnote{Sometimes called a ``req spec"
+-- pronounced ``reck speck."} has been authored by someone higher-up on our
 company's food chain, and can be mined for much gold. Sometimes, we ourselves
 take a step back and bang out a few paragraphs that describe what users do and
 experience as they work with the system.
@@ -90,8 +91,8 @@ Start with a written description of the software, and:
     \item things you obviously wouldn't represent
     \item likely \textit{attributes} of a class, not classes themselves
     \end{compactenum}
-\item See which of the remaining ones ``feel right." Identify what each one
-\textbf{knows} and can \textbf{do}. These are your \textbf{candidate classes}.
+\item The remaining ones are your \textbf{candidate classes}. See which of
+them ``feel right." Identify what each one \textbf{knows} and can \textbf{do}.
 
 \end{compactenum}
 }}
@@ -199,7 +200,7 @@ Finally, it should hardly be worth stating that all class names must be
 object, we're going to say ``\texttt{Crocodile alice = new Crocodile()}", not 
 ``\texttt{Crocodiles alice = new Crocodiles()}".
 
-\subsection{Carrying out the process}
+\section{Carrying out the process}
 
 \textbf{1. Identify all noun phrases.} Okay. We begin our semi-automated
 process of deriving class names by starting with a written description of the
@@ -257,34 +258,34 @@ singular and lower-case, this leaves us with the following list:
 \small
 \begin{compactitem}
 \renewcommand\labelitemi{\raisebox{0.25ex}{\tiny$\bullet$}}
-\item bicycle store
-\item inventory
-\item shipment
-\item model
-\item bicycle
-\item week
-\item supplier
-\item customer
-\item individual order
+\item \textsf{bicycle store}
+\item \textsf{inventory}
+\item \textsf{shipment}
+\item \textsf{model}
+\item \textsf{bicycle}
+\item \textsf{week}
+\item \textsf{supplier}
+\item \textsf{customer}
+\item \textsf{individual order}
 \columnbreak
-\item bike
-\item accessory
-\item store
-\item store manager
-\item order
-\item vendor
-\item contact information
-\item list
-\item incoming product
+\item \textsf{bike}
+\item \textsf{accessory}
+\item \textsf{store}
+\item \textsf{store manager}
+\item \textsf{order}
+\item \textsf{vendor}
+\item \textsf{contact information}
+\item \textsf{list}
+\item \textsf{incoming product}
 \columnbreak
-\item expected arrival date
-\item manager
-\item multi-item order
-\item individual customer
-\item down payment
-\item inventory level
-\item item
-\item customer demand
+\item \textsf{expected arrival date}
+\item \textsf{manager}
+\item \textsf{multi-item order}
+\item \textsf{individual customer}
+\item \textsf{down payment}
+\item \textsf{inventory level}
+\item \textsf{item}
+\item \textsf{customer demand}
 \end{compactitem}
 \end{multicols}
 \end{samepage}
@@ -305,26 +306,26 @@ duplicates are shown:
 \small
 \begin{compactitem}
 \renewcommand\labelitemi{\raisebox{0.25ex}{\small$\bullet$}}
-\item bicycle store == store
-\item inventory
-\item shipment
-\item model
-\item bicycle == bike
-\item week
-\item supplier == vendor
-\item customer == individual customer
-\item individual order == order == multi-item order
+\item \textsf{bicycle store == store}
+\item \textsf{inventory}
+\item \textsf{shipment}
+\item \textsf{model}
+\item \textsf{bicycle == bike}
+\item \textsf{week}
+\item \textsf{supplier == vendor}
+\item \textsf{customer == individual customer}
+\item \textsf{individual order == order == multi-item order}
 \columnbreak
-\item accessory
-\item store manager == manager
-\item contact information
-\item list
-\item incoming product
-\item expected arrival date
-\item down payment
-\item inventory level
-\item item
-\item customer demand
+\item \textsf{accessory}
+\item \textsf{store manager == manager}
+\item \textsf{contact information}
+\item \textsf{list}
+\item \textsf{incoming product}
+\item \textsf{expected arrival date}
+\item \textsf{down payment}
+\item \textsf{inventory level}
+\item \textsf{item}
+\item \textsf{customer demand}
 \end{compactitem}
 \end{multicols}
 \end{samepage}
@@ -332,92 +333,370 @@ duplicates are shown:
 The choice of which synonym to retain is mostly aesthetic. All other things
 being equal, I usually choose the shorter one.
 
-\vspace{.1in}
+\vspace{.3in}
 \textbf{2b. Eliminate nouns that aren't instantiate-able.} Now we apply our
 test: ``can we put `a/an' or a number before the noun phrase, and have it make
 sense?"
 
 Actually almost all of these remaining entries pass that test, with the
-exception of \textit{inventory}, \textit{inventory level}, and
-\textit{customer demand}, and possibly \textit{contact information}. While one
-could indeed envision ``two different inventories," ``four inventory levels,"
-and ``five customer demands" in other contexts, it's pretty clear from the
-text that these are being used as abstract concepts, not individual objects.
-``Contact information" is a closer call, but by inspecting the requirements
-again, we can see that this is really an attribute of
-\textit{vendor/supplier}. We'll therefore strike the idea of a
-``\texttt{ContactInformation}" class. We're now down to:
+exception of \textit{customer demand}, and possibly \textit{contact
+information}. While one could indeed envision ``four ``five customer demands"
+in other contexts, it's pretty clear from the text that this is being used as
+an abstract concept, not an individual object. ``Contact information" is a
+closer call, but by inspecting the requirements again, we can see that this is
+really an attribute of \textit{vendor/supplier}. We'll therefore strike the
+idea of a ``\texttt{ContactInformation}" class. We're now down to:
 
-\begin{samepage}
 \begin{multicols}{3}
 \small
 \begin{compactitem}
-\item store
-\item shipment
-\item model
-\item bicycle
-\item week
+\item \textsf{store}
+\item \textsf{inventory}
+\item \textsf{shipment}
+\item \textsf{model}
+\item \textsf{bicycle}
+\item \textsf{week}
 \columnbreak
-\item supplier
-\item customer
-\item order
-\item accessory
-\item manager
+\item \textsf{supplier}
+\item \textsf{customer}
+\item \textsf{order}
+\item \textsf{accessory}
+\item \textsf{manager}
 \columnbreak
-\item list
-\item incoming product
-\item expected arrival date
-\item down payment
-\item item
+\item \textsf{list}
+\item \textsf{incoming product}
+\item \textsf{expected arrival date}
+\item \textsf{down payment}
+\item \textsf{inventory level}
+\item \textsf{item}
 \end{compactitem}
 \end{multicols}
-\end{samepage}
 
-\vspace{.1in}
 
 \textbf{2c. Eliminate things you obviously wouldn't represent.} When you look
 at some of these surviving noun phrases, you scratch your head. Would we
 really have a ``\texttt{Week}" class? Surely not. Also, although this program
-is no doubt intended for the manager of a store, does it really make sense to
-represent the \texttt{Manager} and \texttt{Store} as objects? We'll cross out
-all three of these.
+will no doubt be used by the manager of a store, does it really make sense to
+represent the \texttt{Manager} as an object? We'll cross out both of these.
 
-\vspace{.1in}
 
-\textbf{2d. Eliminate likely \textit{attributes} of a class, not classes
-themselves.} Now things are getting somewhat subjective, but some of these
-remaining nouns seem ``too small" to be their own class. Consider
-\textit{expected arrival date}. Surely this is better modeled as a property of
-an order, rather than its own individual object. The same could be said for
-\textit{down payment}. Generally speaking, noun phrases that seem to refer to
-bits of data that have an obvious ``home" in another class ought to be modeled
-as inst vars, not classes.
+\textbf{2d. Eliminate likely \textit{attributes} of a class.} Things are
+getting a bit more subjective, but some of these remaining nouns definitely
+seem ``too small" to be their own classes. Consider \textit{expected arrival
+date}. Surely this is better modeled as a property of an order, rather than
+its own individual object. The same could be said for \textit{down payment}
+and \textit{inventory level}. Generally speaking, noun phrases that seem to
+refer to bits of data that have an obvious ``home" in another class ought to
+be modeled as inst vars, not classes.
 
 So now all that remains are:
 
-\vspace{-.3in}
+\vspace{-.2in}
 \begin{samepage}
 \begin{center}
 \parbox{.8\textwidth}{
 \begin{multicols}{2}
 \begin{compactitem}
-\item shipment
-\item model
-\item bicycle
-\item supplier
-\item customer
+\item \textsf{store}
+\item \textsf{inventory}
+\item \textsf{shipment}
+\item \textsf{model}
+\item \textsf{bicycle}
+\item \textsf{supplier}
 \columnbreak
-\item order
-\item accessory
-\item list
-\item incoming product
-\item item
+\item \textsf{customer}
+\item \textsf{order}
+\item \textsf{accessory}
+\item \textsf{list}
+\item \textsf{incoming product}
+\item \textsf{item}
+\end{compactitem}
+\end{multicols}
+}
+\end{center}
+\end{samepage}
+\vspace{-.1in}
+
+We dub these our \textbf{candidate classes}, which essentially means ``those
+noun phrases which each have a very good chance of actually turning into a
+class in our program." We're not 100\% committed to them yet, but they pass
+muster enough to deserve a deep think.
+
+\vspace{.3in}
+
+\pagebreak
+\textbf{3a. See which of the remaining ones ``feel right."} We've come a long
+way semi-mechanically. Now it's time to allow ourselves the luxury of turning
+over in our minds each candidate class, ``trying it on," so to speak. 
+
+It's here that a clear picture of our software system emerges. When I look at
+the ten candidate classes, here's what comes to mind:
+
+\begin{itemize}
+\itemsep.1em
+
+\item First, and most importantly, I realize that the word ``order" was used
+in \textit{two different ways} in the requirements description. You may have
+actually noticed this earlier when we scratched out ``expected arrival date"
+and ``down payment" in step 2d. Those were both aspects of an order...but what
+\textit{sort} of order? If we go back to the Bible (the req spec) we see these
+two phrases:
+
+\begin{quote}
+\textsf{``...customers place individual orders for bikes and other accessories
+from the store..."}
+\end{quote}
+
+\vspace{-.3in}
+\begin{center}
+and
+\end{center}
+\vspace{-.2in}
+
+\begin{quote}
+\textsf{``...The store manager must be able to place orders from vendors..."}
+\end{quote}
+
+Aha! Different beasts entirely.
+
+This sort of post-noun-phrase-stage epiphany isn't uncommon. English words are
+used in a variety of ways, which makes them versatile and suggestive, yet
+imprecise. Here, we clearly have two different notions of ``order": (1) a
+contract for delivery from one of our big suppliers like Trek or Cannondale
+(which might include a dozen bikes or more), and (2) a customer's reservation
+of a particular model/color/style of bike, which he or she is anxiously
+waiting to take home for its first ride. We're going to have to invent at
+least one noun phrase of our own here, since the req spec author double-dipped
+on the word ``order"; perhaps we'll call the first one a
+\texttt{PurchaseOrder} and the second one a \texttt{CustomerRequest}. (In
+situations like this, I think it's better to \textit{avoid} using the original
+word altogether, since it was ambiguous to begin with and therefore may
+encourage confusion down the road.)
+
+\item Second, I notice that some of these nouns have overlapping meanings, and
+I sense that \textit{inheritance} might be applicable. In particular, consider
+these four noun phrases:
+
+\begin{quote}
+\begin{center}
+\textsf{bicycle \quad \quad \quad accessory \quad \quad \quad incoming product
+\quad \quad \quad
+item}
+\end{center}
+\end{quote}
+
+These clearly all refer to things that can be purchased. When we go back to
+the Bible, we see that the modifier ``incoming" on \textit{product} really
+refers to the temporary state of a product (\textit{i.e.}, one in transit from
+a supplier), not a fundamentally distinct kind of thing. So I'm going to be
+bold, ditch ``incoming," and make these two assertions:
+
+\begin{compactenum}
+\item \textsf{item == product}
+\item \textsf{bicycle} and \textsf{accessory} are two different kinds
+(subclasses) of \textsf{item}
+\end{compactenum}
+
+\end{itemize}
+
+With these changes, our list is now:
+\vspace{-.2in}
+\begin{samepage}
+\begin{center}
+\parbox{.9\textwidth}{
+\begin{multicols}{2}
+\begin{compactitem}
+\item \textsf{store}
+\item \textsf{inventory}
+\item \textsf{shipment}
+\item \textsf{model}
+\item \textsf{bicycle} (subclass of \textsf{item})
+\item \textsf{supplier}
+\columnbreak
+\item \textsf{customer}
+\item \textsf{purchase order}
+\item \textsf{customer request}
+\item \textsf{accessory} (subclass of \textsf{item})
+\item \textsf{list}
+\item \textsf{item}
 \end{compactitem}
 \end{multicols}
 }
 \end{center}
 \end{samepage}
 
-\textbf{3. See which of the remaining ones ``feel right."}
+\vspace{.1in}
 
 
+\textbf{3b. Identify what each one \textit{knows} and can \textit{do}.}
+
+% add reference to chapter number
+
+As you'll recall from our chapter on encapsulation, a well-conceived class
+combines both \textbf{state} and related \textbf{behavior}. This is the
+cornerstone of good object-oriented design.
+
+Hence at this stage, we apply this litmus test to the candidate classes that
+remain. One tool to facilitate this procedure is creating a set of \textbf{CRC
+cards}, which stands for ``Class, Responsibilities, Collaborations." The idea
+is for your design team to create a literal $3\times5$ card for each candidate
+class, put them on a flat workspace so you can move them around and compare
+and group them, and see whether they seem to fit into a cohesive whole.
+
+The \textbf{Class} for each card is just the class name (which can be fluid as
+you try to zero in on the best name). The \textbf{Responsibilities} are the
+state (``what an object of that type knows") and the behavior (``what an
+object can do"), which I usually designate in separate sections. Finally, the
+\textbf{Collaborations} are a list of other classes the class is likely to
+work closely with to accomplish its job.
+
+If you try to make a CRC card for a class, and have trouble coming up with
+appropriate contents (particularly the Responsibilities section), that's a red
+flag that perhaps this isn't a good class after all.
+
+\begin{samepage}
+Let's start at the top.
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\texttt{Shipment}:\\
+\hline
+\begin{tabular}{rl}
+\textit{Knows}: & which vendor is delivering it\\
+& which purchase order it is fulfilling\\
+& the expected arrival date\\
+& the items in each shipment \\
+\textit{Can}: & receive and add to inventory\\
+& cancel \\
+& update status \\
+\hline
+\textit{Collaborates}: & \texttt{PurchaseOrder}, \texttt{Item}, \texttt{Inventory}, \texttt{Supplier}\\
+\end{tabular}\\
+\hline
+\end{tabular}
+\end{center}
+\end{samepage}
+
+Our \texttt{Shipment} class looks like a good one. It clearly bears the
+hallmarks of good OO design: it has state (information about what's in the
+shipment, when it's due, and who it's from) and associated behavior (accept
+it, cancel it, get an updated status).
+
+You might be thinking, ``that's great, Stephen, but how did you know what to
+write in that box?" I admit it's not a turn-the-crank process. This is part of
+the design process that's \textit{art}, not science. Basically, though, you
+have to try to create a little egocentric world in your mind, the center of
+which is the class in question. 
+
+Here, I said to myself, ``let's view the entire world through the lens of a
+Shipment. First, in the real world, what ought a shipment to `know'?" The
+answer is things that relate directly to that shipment. The items it should
+contain and the expected date of receipt are good examples; the number of
+bicycles in the store is not, nor is a customer's contact information. Then, I
+asked ``in the real world, what actions pertain to a shipment?" The main one,
+of course, is to receive that shipment, which involves paying for it and
+adding the items to the store. We also might ask the supplier for an update if
+the shipment is past date, or even decide to cancel it and go with another
+vendor if it's taking too long.
+
+The important thing here isn't to get all the ``knows" and ``cans" 100\%
+right -- things will evolve as our understanding evolves. It's more important
+to recognize that there \textit{are} clear ``knows" and ``cans" for this
+class, which certifies it as a bona fide entity within our object-oriented
+system.
+
+The ``Collaborates:" list consists of those other classes we've identified as
+likely co-participants in various system functions. A \texttt{Shipment} is
+related to a \texttt{PurchaseOrder}, of course, since the former is the
+fulfillment of the latter. Its also comprised of \texttt{Item}s, and will need
+to update the \texttt{Inventory} levels when it arrives. It may need to call
+methods directly on the \texttt{Supplier} class in the case where updates or
+cancellations are necessary. Often the collaborations list just helps us
+organize our thoughts (and our $3\times5$ cards) by grouping related classes
+together.
+
+Let's walk through a couple of other CRC cards.
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\texttt{Accessory}:\\
+\hline
+\begin{tabular}{rl}
+\textit{Knows}: & its name\\
+& its manufacturer\\
+& its part \#\\
+& its cost \\
+& its compatible bicycle models \\
+\textit{Can}: & purchase \\
+& find quantity in stock\\
+& add to customer request  \\
+\hline
+\textit{Collaborates}: & \texttt{CustomerRequest}, \texttt{Model}, \texttt{Inventory}\\
+\end{tabular}\\
+\hline
+\end{tabular}
+\end{center}
+
+An \texttt{Accessory} -- which we've tentatively identified as a subclass of
+\texttt{Item} -- has attributes like name and cost, and also knows which bike
+models (if any) it is compatible with. This prevents a customer from ordering
+the wrong kind of bike seat or fender for a particular bicycle, for instance.
+It can also be purchased (duh), either on the spot or as part of a special
+customer order. It can also provide its quantity information by interfacing
+with the \texttt{Inventory} class. Speaking of which...
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\texttt{Inventory}:\\
+\hline
+\begin{tabular}{rl}
+\textit{Knows}: & the quantity of each item in the store \\
+\textit{Can}: & add items when shipments arrive \\
+& remove items when purchases are made \\
+& find quantity in stock \\
+\hline
+\textit{Collaborates}: & \texttt{Item} (and subclasses)\\
+\end{tabular}\\
+\hline
+\end{tabular}
+\end{center}
+
+I smell a Singleton. Our store is likely going to have a single
+\texttt{Inventory} object which can be used to query and update its item
+quantities. By the way, you may have noticed that one of the ``Can" items --
+``find quantity in stock" -- was listed on the CRC card for both
+\texttt{Accessory} and \texttt{Inventory}. This isn't wrong; probably an
+\texttt{Accessory} object, when asked for its current quantity, will turn
+around and query the \texttt{Inventory} singleton to produce that answer.
+We've discovered a key shared function between classes.
+
+That's the inventory of the store, and now for the \texttt{Store} itself:
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\texttt{Store}:\\
+\hline
+\begin{tabular}{rl}
+\textit{Knows}: & its inventory \\
+\textit{Can}: & ? \\
+\hline
+\textit{Collaborates}: & \texttt{Inventory} \\
+\end{tabular}\\
+\hline
+\end{tabular}
+\end{center}
+
+If we didn't realize it before, this is the moment when we discover that our
+\texttt{Store} class is weak sauce. Turns out there really isn't anything for
+a \texttt{Store} object to know or do, other than manage its inventory, which
+of course is the job of the \texttt{Inventory} class. The CRC card process
+revealed a false infiltrator, and we discard (literally) the \texttt{Store}.
+
+You get the idea. I'll leave the other CRC cards as an exercise for the
+reader. Remember, there are no hard-and-fast right answers to this process:
+many different designs are possible, and it's only important to get a set of
+classes that are cohesive, modular, encapsulated, and work well together.
