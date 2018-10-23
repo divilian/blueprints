@@ -700,3 +700,448 @@ You get the idea. I'll leave the other CRC cards as an exercise for the
 reader. Remember, there are no hard-and-fast right answers to this process:
 many different designs are possible, and it's only important to get a set of
 classes that are cohesive, modular, encapsulated, and work well together.
+
+
+\vspace{3in}
+
+\pagebreak
+
+\section{A longer example}
+
+Figure~\ref{fig:uno} gives a second, longer example of a req spec. We'll
+develop this example in the remainder of this chapter and in the next one. In
+particular, it involves a non-trivial inheritance hierarchy.
+
+First, test yourself on identifying noun phrases, and see if you find the same
+ones marked in Figure~\ref{fig:unoNouns}.
+
+\begin{figure}
+\centering
+\small
+\setlength{\fboxsep}{10pt}
+\fbox{\parbox{.91\textwidth}{
+
+\textsf{To test his intro student's algorithmic development skills, a
+professor is developing an Uno simulation program. The simulator simulates a
+number of consecutive Uno games, each of which has four players participating
+in it. Students write their own Player classes, which are called by the
+simulator in order to play cards and call colors after wilds are played.}
+
+\vspace{.1in}
+
+\textsf{Uno is a game played with a special deck of cards of various types.
+Most cards have a color (red, blue, yellow, or green) and feature either a
+number on them (from 0 to 9) or else a special action (like ``reverse,"
+``skip," \textit{etc.}) Some cards are ``wild" cards, which do not have any
+particular color, and thus can be played at any time.}
+
+\vspace{.1in}
+
+\textsf{When play begins, the deck is shuffled, cards are dealt to each
+player's hand, and one card is turned face up in the middle of the virtual
+table, called the ``up card." Each player in turn gets a chance to play, by
+playing a card from their hand on top of the up card. That up card is then
+replaced by the new up card. If the deck is ever exhausted (\textit{i.e.},
+runs out of cards) the discarded cards are reshuffled and placed beside the up
+card to be drawn anew. The object of the game is to be the first player to
+``go out" by playing all cards from your hand.}
+
+\vspace{.1in}
+
+\textsf{In order to be legally played, a card must match according to certain
+rules (either the color of the card played, or the rank of the card played,
+must match the up card.) Some cards have special effects, involving reversing
+the direction of play, skipping over player's turns, or causing unfortunate
+players to have to draw additional cards from the deck.}
+
+\vspace{.1in}
+
+\textsf{When one player wins a round, he/she gets awarded points based on the
+cards remaining in other players' hands. Each type of card has ``forfeit
+cost," or point value that determines how much it is worth. As it runs, the
+simulator maintains the cumulative scores of the players as they each win
+games, so that at the end of 50,000 games, an overall winner can be declared.}
+}}
+
+\vspace{.1in}
+\caption{The requirements specification for a game simulator.}
+\label{fig:uno}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}
+\centering
+\small
+\setlength{\fboxsep}{10pt}
+\fbox{\parbox{1\textwidth}{
+
+\textsf{To test his \bluebox{intro student}'s algorithmic development
+\bluebox{skills}, a \bluebox{professor} is developing an \bluebox{Uno
+simulation program}. The \bluebox{simulator} simulates a number of consecutive
+\bluebox{Uno games}, each of which has four \bluebox{players} participating in
+it. \bluebox{Students} write their own \bluebox{Player classes}, which are
+called by the simulator in order to play \bluebox{cards} and call
+\bluebox{colors} after \bluebox{wilds} are played.}
+
+\vspace{.1in}
+
+\textsf{Uno is a \bluebox{game} played with a special \bluebox{deck} of cards
+of various \bluebox{types}. Most cards have a color (red, blue, yellow, or
+green) and feature either a \bluebox{number} on them (from 0 to 9) or else a
+special \bluebox{action} (like ``reverse," ``skip," \textit{etc.}) Some cards
+are \bluebox{``wild" cards}, which do not have any particular color, and thus
+can be played at any \bluebox{time}.}
+
+\vspace{.1in}
+
+\textsf{When play begins, the deck is shuffled, cards are dealt to each
+player's \bluebox{hand}, and one card is turned face up in the middle of the
+\bluebox{virtual table}, called the ``\bluebox{up card}." Each player in turn
+gets a \bluebox{chance} to play, by playing a card from their hand on top of
+the up card. That up card is then replaced by the new up card. If the deck is
+ever exhausted (\textit{i.e.}, runs out of cards) the \bluebox{discarded
+cards} are reshuffled and placed beside the up card to be drawn anew. The
+\bluebox{object} of the game is to be the first player to ``go out" by playing
+all cards from your hand.}
+
+\vspace{.1in}
+
+\textsf{In order to be legally played, a card must match according to certain
+\bluebox{rules} (either the color of the card played, or the \bluebox{rank} of
+the card played, must match the up card.) Some cards have \bluebox{special
+effects}, involving reversing the \bluebox{direction of play}, skipping over
+player's \bluebox{turns}, or causing \bluebox{unfortunate players} to have to
+draw additional cards from the deck.}
+
+\vspace{.1in}
+
+\textsf{When one player wins a \bluebox{round}, he/she gets awarded
+\bluebox{points} based on the cards remaining in other players' hands. Each
+type of card has ``\bluebox{forfeit cost}," or \bluebox{point value} that
+determines how much it is worth. As it runs, the simulator maintains the
+\bluebox{cumulative scores} of the players as they each win games, so that at
+the end of 50,000 games, an overall \bluebox{winner} can be declared.} }}
+
+\vspace{.1in}
+\caption{Noun phrases.}
+\label{fig:unoNouns}
+\end{figure}
+
+Our mechanical noun phrase extraction produces this list:
+
+\begin{samepage}
+\begin{multicols}{3}
+\small
+\begin{compactitem}
+\renewcommand\labelitemi{\raisebox{0.25ex}{\tiny$\bullet$}}
+\item \textsf{intro student}
+\item \textsf{skill}
+\item \textsf{professor}
+\item \textsf{Uno simulation program}
+\item \textsf{simulator}
+\item \textsf{Uno game}
+\item \textsf{player}
+\item \textsf{student}
+\item \texttt{Player} \textsf{class}
+\item \textsf{card}
+\item \textsf{color}
+\item \textsf{wild}
+\columnbreak
+\item \textsf{game}
+\item \textsf{deck}
+\item \textsf{type}
+\item \textsf{number}
+\item \textsf{``wild" card}
+\item \textsf{time}
+\item \textsf{hand}
+\item \textsf{virtual table}
+\item \textsf{``up" card}
+\item \textsf{chance}
+\item \textsf{discarded card}
+\item \textsf{object}
+\columnbreak
+\item \textsf{rule}
+\item \textsf{rank}
+\item \textsf{special effect}
+\item \textsf{direction of play}
+\item \textsf{turn}
+\item \textsf{unfortunate player}
+\item \textsf{round}
+\item \textsf{point}
+\item \textsf{``forfeit cost"}
+\item \textsf{point value}
+\item \textsf{cumulative score}
+\item \textsf{winner}
+\end{compactitem}
+\end{multicols}
+\end{samepage}
+
+Note that this req spec somewhat unusually refers to a specific
+object-oriented \textit{class} (\texttt{Player}) which will of course become
+one of our actual classes in the end.
+
+\vspace{.1in}
+\textbf{2a. Eliminate probable duplicates.} After eliminating likely
+duplicates, our list is shrunk to:
+
+\begin{samepage}
+\begin{multicols}{3}
+\small
+\begin{compactitem}
+\renewcommand\labelitemi{\raisebox{0.25ex}{\tiny$\bullet$}}
+\item \textsf{student}
+\item \textsf{skill}
+\item \textsf{professor}
+\item \textsf{simulator}
+\item \textsf{game}
+\item \textsf{player}
+\item \textsf{card}
+\item \textsf{color}
+\item \textsf{``wild" card}
+\columnbreak
+\item \textsf{deck}
+\item \textsf{type}
+\item \textsf{number}
+\item \textsf{time}
+\item \textsf{hand}
+\item \textsf{virtual table}
+\item \textsf{``up" card}
+\item \textsf{chance}
+\item \textsf{object}
+\columnbreak
+\item \textsf{rule}
+\item \textsf{rank}
+\item \textsf{special effect}
+\item \textsf{direction of play}
+\item \textsf{turn}
+\item \textsf{point}
+\item \textsf{``forfeit cost"}
+\item \textsf{cumulative score}
+\end{compactitem}
+\end{multicols}
+\end{samepage}
+
+An interesting decision here involved the terms \textsf{game} and
+\textsf{round}. The former is used in a couple of different senses: Uno itself
+is a ``game," yet the word ``game" is also used to mean a single deal of the
+cards, at the end of which one player goes out. Curiously, there's no noun in
+the description for ``the overall match" which comprises 50,000 games. We may
+find we need such a class. In any event, I scratched \textsf{round} in favor
+of \textsf{game} in the list above.
+
+\vspace{.1in}
+\textbf{2b. Eliminate nouns that aren't instantiate-able.} After getting rid
+of the non-instantiate-able stuff, we shrink further to:
+
+\begin{samepage}
+\begin{multicols}{3}
+\small
+\begin{compactitem}
+\renewcommand\labelitemi{\raisebox{0.25ex}{\tiny$\bullet$}}
+\item \textsf{student}
+\item \textsf{professor}
+\item \textsf{simulator}
+\item \textsf{game}
+\item \textsf{player}
+\item \textsf{card}
+\item \textsf{color}
+\columnbreak
+\item \textsf{``wild" card}
+\item \textsf{deck}
+\item \textsf{type}
+\item \textsf{number}
+\item \textsf{hand}
+\item \textsf{virtual table}
+\item \textsf{``up" card}
+\columnbreak
+\item \textsf{rank}
+\item \textsf{special effect}
+\item \textsf{direction of play}
+\item \textsf{turn}
+\item \textsf{point}
+\item \textsf{``forfeit cost"}
+\item \textsf{cumulative score}
+\end{compactitem}
+\end{multicols}
+\end{samepage}
+
+It's worth drawing attention here to the noun ``\textsf{rule}," which I
+discarded. I find that many students' inclination is to keep \textsf{rule} as
+a class, whereas I think the description makes it clear that ``rules in
+general, according to which the game is played" is what's intended. And that
+would steer us away from instantiating some number of \texttt{Rule} objects.
+
+\vspace{.1in}
+\pagebreak
+\textbf{2c. Eliminate things you obviously wouldn't represent.} The only ones
+I got rid of on this step were (ironically) \textsf{student} and
+\textsf{professor}. Nothing personal.
+
+\vspace{.1in}
+\textbf{2d. Eliminate likely \textit{attributes} of a class.} I think you'll
+agree that \textsf{color}, \textsf{type}, \textsf{number}, and \textsf{rank}
+are best suited as attributes of a \texttt{Card} class, not as classes in
+their own right. Too, \textsf{direction of play} -- which is simply
+``clockwise" or ``counter-clockwise" -- seems like a property of the
+\textsf{game}. Similar thinking leads to deleting \textsf{point} and
+\textsf{cumulative score} (attributes of the \texttt{Player}s) and
+\textsf{forfeit cost} (an attribute of a \texttt{Card}.) We're now left with
+only:
+
+\begin{samepage}
+\begin{multicols}{3}
+\small
+\begin{compactitem}
+\renewcommand\labelitemi{\raisebox{0.25ex}{\tiny$\bullet$}}
+\item \textsf{simulator}
+\item \textsf{game}
+\item \textsf{player}
+\item \textsf{card}
+\columnbreak
+\item \textsf{``wild" card}
+\item \textsf{deck}
+\item \textsf{hand}
+\item \textsf{virtual table}
+\columnbreak
+\item \textsf{``up" card}
+\item \textsf{special effect}
+\item \textsf{turn}
+\end{compactitem}
+\end{multicols}
+\end{samepage}
+
+
+\textbf{3a. See which of the remaining ones ``feel right."} This is honestly a
+pretty darn good list. If I were to nitpick it further, I'd probably say that
+\textsf{``up" card} will probably turn out to be an instance variable of
+\textit{type} \texttt{Card}, rather than its own class. I'd wager that
+\textsf{turn} doesn't end up being a full-blown class either, since ``whose
+turn it is" is better served with an inst var.
+
+The \textsf{``wild" card} noun phrase is quite literally going to become a
+wild card for us, as we'll discover in the next chapter. It conceals what is
+really going to be a deep inheritance hierarchy, in which the different types
+of cards are all subclasses of \texttt{Card}. This is where the
+\textsf{special effect}s come into play as well -- in the end, I didn't model
+this as its own class, but rather embedded the functionality into the
+\texttt{Card} subclasses. Either way's okay, though.
+
+\vspace{.1in}
+\textbf{3b. Identify what each one \textit{knows} and can \textit{do}.}
+I'll sign off this chapter by taking a crack at CRC cards for some of the
+classes that are going to survive the whole design vetting. These are quality
+classes that will ensure a solid design that's robust for the present and the
+future!
+
+\small
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\texttt{Simulation}:\\
+\hline
+\begin{tabular}{rl}
+\textit{Knows}: & the name of each player \\
+& the \texttt{Player} subclass for each player \\
+& how many games have been played so far \\
+\textit{Can}: & start the simulation \\
+& provide results (final scores) \\
+\hline
+\textit{Collaborates}: & \texttt{Game}, \texttt{Player} (and subclasses)\\
+\end{tabular}\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\texttt{Card}:\\
+\hline
+\begin{tabular}{rl}
+\textit{Knows}: & its type \\
+& its color (if applicable) \\
+& its number (if applicable) \\
+& its ``forfeit cost" \\
+& whether it can be legally played on an up card \\
+& whether the player who played it can call a new color \\
+\textit{Can}: & perform any special effect appropriate to its type \\
+\hline
+\textit{Collaborates}: & \texttt{Hand}, \texttt{Deck} \\
+\end{tabular}\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\texttt{Deck}:\\
+\hline
+\begin{tabular}{rl}
+\textit{Knows}: & which face-down cards it contains, in order \\
+& which face-up cards have been discarded \\
+\textit{Can}: & draw a new card \\
+& report whether it's currently empty (exhausted) \\
+& reshuffle (when empty) \\
+\hline
+\textit{Collaborates}: & \texttt{Card} (and subclasses)\\
+\end{tabular}\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\texttt{Game}:\\
+\hline
+\begin{tabular}{rl}
+\textit{Knows}: & which player's turn it is \\
+& the current direction of play \\
+\textit{Can}: & advance to the next player \\
+& reverse the direction \\
+& observe the end of the game, and report scores \\
+\hline
+\textit{Collaborates}: & \texttt{Player} (and subclasses), \texttt{Hand} \\
+\end{tabular}\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\texttt{Hand}:\\
+\hline
+\begin{tabular}{rl}
+\textit{Knows}: & which cards are being held \\
+& whether its owner calls ``Uno!" (meaning just one card) \\
+& whether its owner has just won (having zero cards) \\
+\textit{Can}: & add a card (when the player must draw) \\
+& count the ``forfeit costs" of all its cards \\
+\hline
+\textit{Collaborates}: & \texttt{Player} (and subclasses), \texttt{Card}\\
+\end{tabular}\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\texttt{Player}:\\
+\hline
+\begin{tabular}{rl}
+\textit{Knows}: & its hand \\
+& all cards that have been played since last shuffle \\
+\textit{Can}: & select which card to play on the ``up card" \\
+& choose a color to call immediately after playing a wild \\
+\hline
+\textit{Collaborates}: & \texttt{Card}, \texttt{Game} \\
+\end{tabular}\\
+\hline
+\end{tabular}
+\end{center}
+
+\end{document}
