@@ -36,8 +36,8 @@ Object-Oriented Software.} Prentice Hall, 1991.}
 I don't know who first coined the phrase ``discovering the design" (it
 certainly wasn't me; it might have been Wirfs-Brock) but when I originally
 heard it my ears perked up. It sounded strangely paradoxical. ``Design" was
-something you brought to the table and imposed on your world, right? Not
-something you found already there. ``Design" seemed like a matter of
+something one brought to the table and imposed on one's world, right? Not
+something one found already there. ``Design" seemed like a matter of
 \textit{invention}, not \textit{discovery}; it was surely something you did to
 a steam engine, not to a planet.
 
@@ -293,8 +293,8 @@ singular and lower-case, this leaves us with the following list:
 \textbf{2a. Eliminate probable duplicates.} According to
 Figure~\ref{fig:discovering}, the next step is to eliminate likely duplicates.
 Obviously things like ``bicycle" and ``bike" refer to the same conceptual
-entity, of course; we're hardly going to have a \texttt{Bicycle} class and a
-separate \texttt{Bike} class in our program!
+entity; we're hardly going to have a \texttt{Bicycle} class and a separate
+\texttt{Bike} class in our program!
 
 This isn't always 100\% straightforward, but it's usually 99\% so. Different
 synonyms and turns of phrase are pretty easy to detect. I think we can be
@@ -340,7 +340,7 @@ sense?"
 
 Actually almost all of these remaining entries pass that test, with the
 exception of \textit{customer demand}, and possibly \textit{contact
-information}. While one could indeed envision ``four ``five customer demands"
+information}. While one could indeed envision ``four or five customer demands"
 in other contexts, it's pretty clear from the text that this is being used as
 an abstract concept, not an individual object. ``Contact information" is a
 closer call, but by inspecting the requirements again, we can see that this is
@@ -379,6 +379,7 @@ really have a ``\texttt{Week}" class? Surely not. Also, although this program
 will no doubt be used by the manager of a store, does it really make sense to
 represent the \texttt{Manager} as an object? We'll cross out both of these.
 
+\vspace{.2in}
 
 \textbf{2d. Eliminate likely \textit{attributes} of a class.} Things are
 getting a bit more subjective, but some of these remaining nouns definitely
@@ -465,13 +466,15 @@ imprecise. Here, we clearly have two different notions of ``order": (1) a
 contract for delivery from one of our big suppliers like Trek or Cannondale
 (which might include a dozen bikes or more), and (2) a customer's reservation
 of a particular model/color/style of bike, which he or she is anxiously
-waiting to take home for its first ride. We're going to have to invent at
-least one noun phrase of our own here, since the req spec author double-dipped
-on the word ``order"; perhaps we'll call the first one a
-\texttt{PurchaseOrder} and the second one a \texttt{CustomerRequest}. (In
-situations like this, I think it's better to \textit{avoid} using the original
-word altogether, since it was ambiguous to begin with and therefore may
-encourage confusion down the road.)
+waiting to take home for its first ride. More succinctly, one kind we buy, and
+the other kind we sell.
+
+We're going to have to invent at least one noun phrase of our own here, since
+the req spec author double-dipped on the word ``order"; perhaps we'll call the
+first one a \texttt{PurchaseOrder} and the second one a
+\texttt{CustomerRequest}. (In situations like this, I think it's better to
+\textit{avoid} using the original word altogether, since it was ambiguous to
+begin with and therefore may encourage confusion down the road.)
 
 \item Second, I notice that some of these nouns have overlapping meanings, and
 I sense that \textit{inheritance} might be applicable. In particular, consider
@@ -1043,9 +1046,9 @@ future!
 \begin{tabular}{rl}
 \textit{Knows}: & the name of each player \\
 & the \texttt{Player} subclass for each player \\
+& how many total games to simulate \\
 & how many games have been played so far \\
-\textit{Can}: & start the simulation \\
-& provide results (final scores) \\
+\textit{Can}: & play some number of games and compute final scores \\
 \hline
 \textit{Collaborates}: & \texttt{Game}, \texttt{Player} (and subclasses)\\
 \end{tabular}\\
@@ -1079,10 +1082,10 @@ future!
 \texttt{Deck}:\\
 \hline
 \begin{tabular}{rl}
-\textit{Knows}: & which face-down cards it contains, in order \\
+\textit{Knows}: & the contents of a standard Uno deck \\
+& which face-down cards it contains, in order \\
 & which face-up cards have been discarded \\
 \textit{Can}: & draw a new card \\
-& report whether it's currently empty (exhausted) \\
 & reshuffle (when empty) \\
 \hline
 \textit{Collaborates}: & \texttt{Card} (and subclasses)\\
@@ -1099,7 +1102,8 @@ future!
 \begin{tabular}{rl}
 \textit{Knows}: & which player's turn it is \\
 & the current direction of play \\
-\textit{Can}: & advance to the next player \\
+\textit{Can}: & start a simulation of a single Uno game \\
+& advance to the next player \\
 & reverse the direction \\
 & observe the end of the game, and report scores \\
 \hline
@@ -1116,9 +1120,9 @@ future!
 \hline
 \begin{tabular}{rl}
 \textit{Knows}: & which cards are being held \\
-& whether its owner calls ``Uno!" (meaning just one card) \\
-& whether its owner has just won (having zero cards) \\
-\textit{Can}: & add a card (when the player must draw) \\
+\textit{Can}: & defer to its controlling \texttt{Player} object to choose a card \\
+& defer to its controlling \texttt{Player} object to call a color \\
+& add a card (when the player must draw) \\
 & count the ``forfeit costs" of all its cards \\
 \hline
 \textit{Collaborates}: & \texttt{Player} (and subclasses), \texttt{Card}\\
