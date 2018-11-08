@@ -94,12 +94,12 @@ The answer is the Factory pattern. With it, we turn over control of the actual
 instantiation to the factory class, rather than burdening the client code with
 it.
 
-Suppose that our simulator is more sophisticated than the toy example from
-Chapter~\ref{ch:memoryMatters}. Perhaps different positions have different
-kinds of stats: pitchers (with ``earned-run average" (ERA) and ``innings
-pitched") are completely different than position players (who have batting
-averages and runs-batted-in (RBI's) instead). It might make sense to use an
-inheritance hierarchy here with subclasses of \texttt{Ballplayer}, as shown in
+Suppose that our simulator is more sophisticated than the original toy example
+from Chapter~\ref{ch:memoryMatters}. Different positions have different kinds
+of stats: pitchers (with ``\texttt{koDominance}") are completely different
+than position players (who have \texttt{numHits} and \texttt{numAtBats}
+instead). It might make sense to use an inheritance hierarchy here with
+subclasses of \texttt{Ballplayer}, as shown in
 Figure~\ref{ballplayerInheritance}.
 
 \begin{figure}[ht]
@@ -112,16 +112,16 @@ class Ballplayer {
 }
 
 class Pitcher extends Ballplayer {
-    private double era;
-    private double inningsPitched;
+    private double koDominance;
+    private int numKos;
 
     public Pitcher(String name) { this.name = name; }
 }
 
 class PositionPlayer extends Ballplayer {
     private String position;
-    private double battingAvg;
-    private int rbis;
+    private int numHits;
+    private int numAtBats;
 
     public PositionPlayer(String name, String pos) {
         this.name = name;
@@ -157,4 +157,104 @@ anything about those subtypes. Notice that the return value of
 \texttt{.create()} is the general type \texttt{Ballplayer}, not any of the
 specific types. If we later add additional subclasses, only the factory class
 has to be updated, not the code that (unknowingly) uses them.
+
+\section{Random type generation and the Factory pattern}
+
+In games and simulations, it's common to instantiate objects according to some
+random pattern, rather than specifying each type of object deterministically.
+
+Imagine a fantasy-genre videogame in which the player acts as a swordsman or
+Valkyrie and wanders through dungeon levels looking for monsters to slay. We
+might have a \texttt{MonsterFactory} class to generate monsters as they are
+encountered. Maybe on the first (and easiest) level of the game, half of the
+monsters we create are \texttt{Goblin}s and the other half are
+\texttt{TempleGuard}s. And both of these have ``easy" statistics --
+\textit{i.e.}, low values for \texttt{hitPoints}, \texttt{armorClass}, and
+\texttt{speed}. When the player gets to level two, however, not only will the
+stats of these basic creatures get buffed, but now an occasional
+\texttt{Vampire} will enter the mix.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{monsterFactory.pdf}
+\caption{The factory pattern in a randomly-generated setting.}
+\label{fig:monsterFactory}
+\end{figure}
+
+The Factory pattern makes this easy. All we need to do is encapsulate the
+functionality for creating monsters into the \texttt{.create()} method, as
+shown in Figure~\ref{fig:monsterFactoryCode}. Then, whenever our program needs
+to create a new bad guy, this line of code suffices:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+  Monster newMonster = MonsterFactory.instance().create();
+\end{Verbatim}
+
+When the player completes a level and is ready for the next challenge, our
+client code simply calls:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+  int currLevel = MonsterFactory.instance().getLevel();
+  MonsterFactory.instance().setLevel(currLevel + 1);
+\end{Verbatim}
+
+and away we go.
+
+\begin{figure}
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class MonsterFactory {
+    private int level;
+    private java.util.Random rng;
+    
+    ...singleton stuff...
+
+    Monster create() {
+        Monster m = null;
+        switch (level) {
+            case 1:
+                double randomNumber = rng.nextDouble();
+                if (randomNumber < .5) {
+                    m = new Goblin();
+                } else {
+                    m = new TempleGuard();
+                }
+                m.setHitPoints(rng.nextInt(8));
+                m.setArmorClass(rng.nextInt(8));
+                m.setSpeed(rng.nextInt(5));
+                break;
+            case 2:
+                double randomNumber = rng.nextDouble();
+                if (randomNumber < .4) {
+                    m = new Goblin();
+                } else if (randomNumber < .8) {
+                    m = new TempleGuard();
+                } else {
+                    m = new Vampire();
+                }
+                m.setHitPoints(rng.nextInt(8) + 5);
+                m.setArmorClass(rng.nextInt(8) + 4);
+                m.setSpeed(rng.nextInt(10));
+                break;
+        }
+        return m;
+    }
+}
+\end{Verbatim}
+\caption{A factory to generate baddies randomly, based on the game's level.}
+\label{fig:monsterFactoryCode}
+\end{figure}
+
+(By the way, if you're not familiar with the \texttt{java.util.Random} class,
+it's a simple way of generating random numbers. I usually instantiate one and
+call it \texttt{rng} for \textbf{r}andom \textbf{n}umber \textbf{g}enerator.
+Then, every time you call \texttt{.nextDouble()} it returns a uniform random
+floating-point number between 0 and 1. The \texttt{.nextInt(n)} method returns
+a random integer from 0 to \texttt{n}-1.)
+
+Hopefully you're getting the gist, here: if the instantiation process for an
+object is a bit complex, it makes sense to separate it into its own class.
+This way, you don't have to duplicate the logic in separate places, and you
+don't have to clutter your client code with a giant \texttt{switch} or
+\texttt{if-else} construct right in the middle of instantiating and using an
+object.
 
