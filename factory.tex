@@ -24,17 +24,17 @@ process is more complicated. Our new line of code will be this:
 \end{Verbatim}
 
 The sharp-eyed reader will see the \texttt{.instance()} and wonder if this is
-using the \textbf{Singleton} pattern. The answer is yes! \textit{Factories are
-most often singletons.} This is simply because although our baseball simulator
-will create lots of \texttt{Ballplayer}s, it will only need one
-\texttt{BallplayerFactory}.\footnote{As with all design patterns, you should
-use standard nomenclature. If the word ``factory" seems clunky or contrived to
-you, I get it, but accept it as part of the OOP culture and use it. Don't try
-to come up with your own synonym of ``factory" (like ``creator" or
-``instantiator") and use that instead, since you'll just confuse your fellow
-programmers. The word ``factory," like the word ``singleton," is baked into
-the software development community's consciousness, and thus serves as an
-excellent terse-yet-precise communication of purpose.}
+using the \textbf{Singleton} pattern. The answer is yes! In fact,
+\textit{factories are nearly always singletons.} This is simply because
+although our baseball simulator will create lots of \texttt{Ballplayer}s, it
+will only need one \texttt{BallplayerFactory}.\footnote{As with all design
+patterns, you should use standard nomenclature. If the word ``factory" seems
+clunky or contrived to you, I get it, but accept it as part of the OOP culture
+and use it. Don't try to come up with your own synonym of ``factory" (like
+``creator" or ``instantiator") and use that instead, since you'll just confuse
+your fellow programmers. The word ``factory," like the word ``singleton," is
+baked into the software development community's consciousness, and thus serves
+as an excellent terse-yet-precise communication of purpose.}
 
 Patterns interleave and play off one another all the time. Here, we have a
 factory class that uses the classic Singleton pattern:
