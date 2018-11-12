@@ -1,2 +1,132 @@
 
 \chapter{Documenting an API}
+
+``\textbf{API}" -- which historically stands for ``Application Programming
+Interface" -- is one of the dumber acronyms you'll encounter. And worse, it's
+commonly used to mean two different things: (1) a set of classes (and their
+methods) which a programmer could make use of in their own code, and (2) the
+documentation describing those classes/methods.\footnote{By the way, the term
+``API" isn't used only for object-oriented software. One could write some
+old-school procedural code (with functions and data structures, rather than
+encapsulated classes and methods), describe it, and call that an API as well.}
+
+In common lingo, people speak of ``programming to an API," which means
+``writing some code which conforms to those documented classes/methods." Every
+time you've used an \texttt{ArrayList} or a \texttt{Scanner}, in fact, you
+have been doing this. Instantiating such objects, calling methods on them, and
+(importantly) reading the documentation at
+\url{https://docs.oracle.com/javase/8/docs/api/} to find out how they
+operate is all part of leveraging the built-in Java API for your own purposes.
+
+These days, when people talk about using an API, they often mean writing code
+that connects over the Internet to some publicly-available service or database
+of information. Nearly every major Internet player these days -- Google,
+Youtube, Instagram, Flickr, eBay, Twitter, Dropbox, Spotify, Amazon,
+\texttt{data.gov}, GeoDB cities, \textit{etc.} -- has a publicly-accessible
+API. This allows you to write code (in any language) to connect to it and
+query it for information, perform commands, make purchases, and so forth.
+Browse \url{dev.twitter.com} to get an idea of the rich functionality
+available to anyone with the technical savvy to understand and exploit an API.
+
+It's an interconnected, collaborative world. Developers rarely write all the
+code themselves anymore, all on an isolated island. Instead, they share code
+and for others to use, and take advantage of what's been shared with them. If
+you can figure out how to effectively do that, you've increased your
+programming potential a hundredfold.
+
+\section{The importance of good documentation}
+
+Now in order to make it possible for other developers to use the code you so
+painstakingly wrote, it must be \textbf{documented} in a way that is clear,
+complete, and unambiguous. To appreciate the importance of this, I want to
+lead you in a thought experiment.
+
+First, pretend you're back in the 1990's, a glorious time to be young and
+alive. In particular, pretend that \textit{GPS and cell phones are not yet
+commonly available.} (Believe it or not, this was true in the recent past.)
+
+Let's suppose it's Friday night, and you're going to a party at the apartment
+of your acquaintance Biff. Biff lives up in North Stafford, and you've never
+been to his place before. Luckily, your close friend Filbert is also going to
+the party, and he's been to Biff's on many occasions. You're picking him up at
+8pm.
+
+Consider the following two scenarios.
+
+\begin{description}
+
+\item[Scenario A:] You'll pick up Filbert (and possibly one or two others), and
+drive together to Biff's apartment.
+
+\item[Scenario B:] Filbert calls you at the last minute and says that he's
+getting a ride with somebody else. He gives you \textit{written directions} to
+Biff's, however, so that you can get to the party on your own.
+
+\end{description}
+
+My question: in which of the above two scenarios are you \textit{more} likely
+to successfully arrive at the party without getting lost? Or are both cases
+equally likely?
+
+The careless thinker might at first conclude that the two cases are equally
+likely. After all, they both depend on Filbert's knowledge of how to get to
+Biff's. In one case, Filbert's verbalizing the directions as you drive, and in
+the other case, he's laying them all out for you in advance. But
+theoretically, as long as Filbert knows how to get there, you'll be successful
+in both scenarios.
+
+Theoretically. But in the real world, as everyone knows, it usually doesn't
+work like that. In scenario A, and Filbert in the passenger seat, you have the
+chance to interactively ask about every intersection and every turn. In
+scenario B, \textit{Filbert had to specify everything perfectly in advance.}
+He had to describe the route with no errors, since there would be no chance to
+make corrections en route. He had to anticipate every question you might have,
+since he wouldn't be there to answer them. That's a lot of pressure on Filbert
+to give good directions.
+
+Consider the following very realistic possibilities:
+
+\begin{itemize}
+\itemsep.1em
+
+\item Filbert wrote ``left" when he meant ``right" in step 3 of the directions
+because he's human.
+
+\item Filbert just plain forgot step 5 of the directions because he's human.
+
+\item When he wrote, ``turn left at the next opportunity," he meant ``at the
+next intersection," and assumed that would be obvious to you. However, you
+quite naturally thought he meant ``the very next possible left," which was
+down a side road.
+
+\item A road is closed, or there's a traffic jam, and you need to go around it
+in order to make it to the party on time.
+
+\item \textit{Etc.}
+
+\end{itemize}
+
+You can think of a dozen more. In all these cases, having Filbert with you in
+the car allows you to clarify ambiguities, fill in omissions, ask questions as
+they arise, and change course in response to unexpected circumstances. With
+the written directions, you have none of those options. Put another way,
+Filbert isn't even at your disposal in Scenario B: your only asset is
+Filbert's brain dump, as he was conceiving it at 6:13pm.
+
+And by the way: most people are pretty bad at giving directions.
+
+\subsection{Collaborating with someone you'll never meet}
+
+In case the above analogy isn't plain, Scenario A corresponds to a software
+development team where your teammates are just down the hall. They're just an
+email or a Slack away. You can ask questions, report bugs, or even request
+alterations as the need arises. The pressure is off, as far as documentation
+is concerned. In fact, why even bother trying to document everything
+exhaustively in advance, if your teammates can ask focused questions in real
+time?
+
+Scenario B corresponds to you using a public API. The instructions written by
+a developer you will never meet are \textit{your one and only chance} to
+comprehend how to use the thing. Those instructions had better be darned good,
+because there is no chance to ask questions on the road. They'd better clearly
+and exhaustively contain \textit{everything} you're likely to want to know.
