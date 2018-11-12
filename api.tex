@@ -130,3 +130,211 @@ a developer you will never meet are \textit{your one and only chance} to
 comprehend how to use the thing. Those instructions had better be darned good,
 because there is no chance to ask questions on the road. They'd better clearly
 and exhaustively contain \textit{everything} you're likely to want to know.
+
+By the way: most people are pretty bad at writing clear and complete
+documentation. The good news is that it's possible to improve this through
+discipline, practice, and painstaking effort.
+
+\section{JavaDoc: mechanics}
+
+One of Java's supplementary (but in retrospect, killer) features was the
+\texttt{javadoc} utility shipped with the JDK. 
+
+The idea behind JavaDoc is to combine two previously incompatible aspects of
+code documentation. On the one hand, one could argue that the English text
+describing how to use a software component (like a class, method, or package)
+ought to be maintained right alongside the code itself. This promotes keeping
+the two in sync.
+
+On the other hand, there are clearly many advantages to presenting the
+documentation in a rich, interactive, point-and-click hypertext format rather
+than embedded into plain-text. So we seem to have two conflicting desires: to
+keep the documentation close to (and embedded in) the code, and to author it
+in a more flexible (and ideally, web-browser-accessible) way outside the code.
+
+JavaDoc's innovation was to say: ``go ahead and store the documentation in the
+\texttt{.java} files themselves, to promote consistency. But we'll create a
+separate tool that can examine the \texttt{.java} files and extract the
+documentation portions. The tool will then assemble those into a mini-website
+that other programmers can conveniently browse."
+
+To accomplish this, we use a special syntax to denote ``JavaDoc comments."
+Recall that one style of comment in Java is the multi-liner:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+/*
+ * This is a regular Java comment, and will be ignored by javac.
+ */
+\end{Verbatim}
+
+JavaDoc comments are the same, except that they have a \textit{double}
+asterisk at the beginning:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+/**
+ * This is a special JavaDoc comment, which will be ignored by javac,
+ * but will be extracted by javadoc.
+ */
+\end{Verbatim}
+
+You can place JavaDoc comments in three places:
+
+\begin{itemize}
+\itemsep.1em
+
+\item Immediately before a class definition, to provide a description of that
+class, and hints as to its usage.
+
+\item Immediately before a method definition, to describe what the method
+does, how to call it, and what will happen in exceptional conditions.
+
+\item In a special file called ``\texttt{package.html}", which will be placed
+in the source directory for a package, if you're using Java packages.
+
+\end{itemize}
+
+The \texttt{javadoc} utility will automatically identify and extract the
+English text stored in JavaDoc comments in any of these three places, and
+assemble them into HTML files in the appropriate way.
+
+\subsection{Markup and tags}
+
+There are also a couple of cosmetic options you can take advantage of in
+JavaDoc comments. First of all, any valid HTML tag can be used directly in the
+comment, and will be formatted appropriately in the final mini-website. If
+you're familiar with HTML tags like ``\texttt{$<$b$>$}" (for boldface),
+``\texttt{$<$tt$>$}" (for a monospace, typewriter font) or
+``\texttt{$<$ul$>$}" and ``\texttt{$<$li$>$}" (for bulleted lists), you can
+use them to style your text.
+
+Second, there are special tags called ``JavaDoc tags" that can be used to set
+apart certain meta-information and put them in a special place in the final
+HTML product. The most important ones are:
+
+\small
+\begin{tabular}{|c|c|l|}
+\hline
+Tag/syntax & Location & Purpose\\
+
+\hline
+\hline
+
+\texttt{@author} \ Filbert & class & 
+\makecell[l]{
+The primary or original author of the class.\\
+Using the first name, username, or initials of the\\
+author are common choices.}\\
+
+\hline
+
+\texttt{@param} \ \texttt{name} \ description & method & 
+\makecell[l]{
+What one of the arguments to the method means.\\
+``\texttt{name}" is either the name or the type of argument.\\
+``description" should begin with a lower-case letter\\
+and end with a period.}\\
+
+\hline
+
+\texttt{@return} \ description & method & 
+\makecell[l]{
+How the return value of the method should be\\
+interpreted. ``description" should begin with a\\
+lower-case letter and end with a period.}\\
+
+\hline
+
+\texttt{@throws} \ type \ description & method & 
+\makecell[l]{
+What type of exception might be thrown from the\\
+method and how it should be interpreted.\\
+``description" should begin with the word ``if" and\\
+end with a period.}\\
+
+\hline
+\texttt{\{@link className\}} & anywhere &
+\makecell[l]{
+Create a clickable hyperlink to the class named.}\\
+
+\hline
+
+\texttt{\{@link className\#method\}} & anywhere &
+\makecell[l]{
+Create a clickable hyperlink to the method named.}\\
+
+\hline
+
+\texttt{@deprecated} \ explanation & class/method & 
+\makecell[l]{
+Mark this class or method as old and not to be used\\
+by new code. (Still supported temporarily for older\\
+code, but intended to be phased out.)}\\
+
+\hline
+
+\end{tabular}
+\normalsize
+
+A representative example is shown in Figure~\ref{fig:javadocTags}, the HTML
+for which appears in Figure~\ref{fig:javadocApi}.
+
+\begin{figure}[ht]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+/**
+ * A <tt>Ballplayer</tt> represents a historical baseball player and the
+ * composite statistics over his career. Each <tt>Ballplayer</tt> object
+ * is associated with one {@link Team} even if he played for multiple
+ * teams in his actual career.
+ * @author SD
+ */
+public class Ballplayer {
+    ...
+    /**
+     * Constructs a new <tt>Ballplayer</tt> object with "empty" stats
+     *   (<i>i.e.</i>, all set to their initial, default values.)
+     * @param name the real (no nicknames) first and last name of the player.
+     * @param uni the most well-known uniform number he played under.
+     * @param team the mascot name (not city) of the {@link Team} he is most
+     *   commonly associated with.
+     * @throws NoTeamException if the <tt>team</tt> parameter does not
+     *   correspond to the mascot name of any known {@link Team}.
+     */
+    public Ballplayer(String name, int uni, String team) throws NoTeamException {
+        ...
+    }
+    
+    /**
+     * Returns the player's career batting average, measured as total hits
+     *   divided by total "at bats." If the number of "at bats" is zero,
+     *   returns 0.0 rather than give a divide-by-zero error.
+     * @deprecated This method should be eschewed in favor of more recently
+     *   developed stats such as {@link Ballplayer#getOnBasePercentage} and
+     *   {@link Ballplayer#getSluggingPercentage}.
+     * @return the batting average on a 0.0-to-1.0 scale.
+     */
+    public double getBattingAvg() {
+        ...
+    }
+}
+\end{Verbatim}
+
+\caption{HTML and JavaDoc tags in action.}
+\label{fig:javadocTags}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{javadoc1.png}
+
+\vspace{.1in}
+
+\includegraphics[width=0.9\textwidth]{javadoc2.png}
+
+\vspace{.1in}
+
+\caption{The generated HTML for the code in Figure~\ref{fig:javadocTags}.}
+\label{fig:javadocApi}
+\end{figure}
+\section{JavaDoc: content}
+
+
