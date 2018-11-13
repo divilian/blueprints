@@ -161,20 +161,21 @@ that other programmers can conveniently browse."
 To accomplish this, we use a special syntax to denote ``JavaDoc comments."
 Recall that one style of comment in Java is the multi-liner:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-/*
- * This is a regular Java comment, and will be ignored by javac.
- */
+\vspace{-.2in}
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=none]
+    /*
+     * This is a regular Java comment, and will be ignored by javac.
+     */
 \end{Verbatim}
 
 JavaDoc comments are the same, except that they have a \textit{double}
 asterisk at the beginning:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-/**
- * This is a special JavaDoc comment, which will be ignored by javac,
- * but will be extracted by javadoc.
- */
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=none]
+    /**
+     * This is a special JavaDoc comment, which will be ignored by javac,
+     * but will be extracted by javadoc.
+     */
 \end{Verbatim}
 
 You can place JavaDoc comments in three places:
@@ -209,8 +210,13 @@ use them to style your text.
 
 Second, there are special tags called ``JavaDoc tags" that can be used to set
 apart certain meta-information and put them in a special place in the final
-HTML product. The most important ones are:
+HTML product. The most important ones are shown in Figure~\ref{fig:taglist},
+though there are others. Each development team acquires their own culture,
+policies, and procedures that call for different pieces of information to be
+highlighted.
 
+\begin{figure}[ht]
+\centering
 \small
 \begin{tabular}{|c|c|l|}
 \hline
@@ -219,7 +225,7 @@ Tag/syntax & Location & Purpose\\
 \hline
 \hline
 
-\texttt{@author} \ Filbert & class & 
+\texttt{@author} \ Jezebel & class & 
 \makecell[l]{
 The primary or original author of the class.\\
 Using the first name, username, or initials of the\\
@@ -273,12 +279,17 @@ code, but intended to be phased out.)}\\
 \hline
 
 \end{tabular}
+\vspace{.1in}
+\caption{Some commonly-used JavaDoc tags, and their meanings.}
+\label{fig:taglist}
+\end{figure}
 \normalsize
 
-A representative example is shown in Figure~\ref{fig:javadocTags}, the HTML
-for which appears in Figure~\ref{fig:javadocApi}.
+A representative example showing many of these tags is in
+Figure~\ref{fig:javadocTags}, the HTML for which appears in
+Figure~\ref{fig:javadocApi}.
 
-\begin{figure}[ht]
+\begin{figure}
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 /**
  * A <tt>Ballplayer</tt> represents a historical baseball player and the
@@ -322,7 +333,87 @@ public class Ballplayer {
 \label{fig:javadocTags}
 \end{figure}
 
-\begin{figure}[ht]
+
+\subsection{Generating the mini-website}
+
+To actually generate the HTML in Figure~\ref{fig:javadocApi}, you'll need to
+run the \texttt{javadoc} command with some options. Generally, if I'm running
+on a Google Cloud instance, this is how I run it:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+$ sudo javadoc -d /var/www/html -author *.java
+\end{Verbatim}
+
+The word ``\texttt{sudo}" at the start of this sentence means ``please allow
+me to execute the following command as the \textbf{root} user of the system";
+\textit{i.e.}, the super user who has all privileges. The reason this is
+necessary is that the directory \texttt{/var/www/html}, which this command
+says to write content in, is by default not writeable by ordinary mortals. You
+have to temporarily become Superman in order to write to it, which will
+require typing your password to confirm you're really Clark Kent.
+
+The ``\texttt{-d /var/www/html}" bit is a command option with a parameter. The
+\texttt{-d} stands for ``directory" and it says that the HTML that
+\texttt{javadoc} generates should be written to this directory. It's a
+system-specific thing; on Debian Linux (which I install on Google Cloud) this
+is the directory that Apache Web Server will look in to serve up content to
+browsers that connect to it. (More on that in a moment.) In other contexts,
+like if you have a user directory on a shared machine that you don't have
+control over, you can often substitute something like ``\texttt{-d
+/home/yourusername/public\_html}" which will write the content to your
+account's own directory for hosting HTML content to the world.
+
+The ``\texttt{-author}" part of the command says ``yes, please \textit{do}
+extract \texttt{@author} information and include it in the HTML. (The default
+is to not do that, which I've never understood.) Semi-related: by default
+\texttt{javadoc} only includes the \textbf{public} classes and methods in the
+HTML it generates, since JavaDoc is normally used to document public APIs.
+Sometimes there are reasons to produce JavaDoc content for \textit{everything}
+in the class files -- private, public, or anything else -- and to do this you
+merely need to include a ``\texttt{-private}" option here as well.
+
+Finally, the ``\texttt{*.java}" means to generate HTML for all the Java source
+files in the current directory. If you're using packages, you can instead
+replace ``\texttt{*.java}" with a sequence of fully-specified package names
+that can be located via the \texttt{CLASSPATH} variable. Note that you
+do have to tell \texttt{javadoc} to generate the \textit{entire} mini-website
+at once; if you make just a change or two to one \texttt{.java} file, you
+can't just regenerate the HTML for that one because then the entire
+mini-website will consist of nothing \textit{but} that one class.
+
+\subsubsection{Starting the Web server and connecting}
+
+After all the JavaDoc's mini-website content has been generated, you can
+access it via your browser. You can find out whether Apache Web Server is
+running by typing:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+$ sudo systemctl status apache2
+\end{Verbatim}
+
+at the command line. If it gives a message like ``whoa, apache2 not
+installed," then you'll need to install it via:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+$ sudo apt install apache2
+\end{Verbatim}
+
+If it says it's not currently running, then you'll need to start it via:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+$ sudo systemctl start apache2
+\end{Verbatim}
+
+Lastly, when this seems to be working, figure out what the external IP address
+is of your machine (it'll be four numbers, each in the range 0-255, set apart
+by periods; for example, 35.237.255.14). Then, you can point your browser to
+\url{http://thatIPAddress} and you should be able to see your
+prettily-formatted HTML website like in Figure~\ref{fig:javadocApi}.
+
+
+
+
+\begin{figure}
 \centering
 \includegraphics[width=0.9\textwidth]{javadoc1.png}
 
@@ -335,6 +426,13 @@ public class Ballplayer {
 \caption{The generated HTML for the code in Figure~\ref{fig:javadocTags}.}
 \label{fig:javadocApi}
 \end{figure}
+
+
 \section{JavaDoc: content}
 
+Okay, so that's all the minutiae of how to get the JavaDoc syntax right and
+generate the website. You have to know it, but it's not the important part.
+The truly important question in all this is less-easily defined: how to
+actually write quality documentation that will communicate effectively to
+programmers I may never meet?
 
