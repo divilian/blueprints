@@ -29,10 +29,10 @@ Browse \url{dev.twitter.com} to get an idea of the rich functionality
 available to anyone with the technical savvy to understand and exploit an API.
 
 It's an interconnected, collaborative world. Developers rarely write all the
-code themselves anymore, all on an isolated island. Instead, they share code
-and for others to use, and take advantage of what's been shared with them. If
-you can figure out how to effectively do that, you've increased your
-programming potential a hundredfold.
+code themselves anymore on a little isolated island. Instead, they share code
+for others to use, and take advantage of what's been shared with them. If you
+can figure out how to effectively do that, you've increased your programming
+potential a hundredfold.
 
 \section{The importance of good documentation}
 
@@ -76,8 +76,8 @@ theoretically, as long as Filbert knows how to get there, you'll be successful
 in both scenarios.
 
 Theoretically. But in the real world, as everyone knows, it usually doesn't
-work like that. In scenario A, and Filbert in the passenger seat, you have the
-chance to interactively ask about every intersection and every turn. In
+work like that. In scenario A, with Filbert in the passenger seat, you have the
+chance to interactively ask about every intersection and every turn. But in
 scenario B, \textit{Filbert had to specify everything perfectly in advance.}
 He had to describe the route with no errors, since there would be no chance to
 make corrections en route. He had to anticipate every question you might have,
@@ -95,11 +95,11 @@ because he's human.
 \item Filbert just plain forgot step 5 of the directions because he's human.
 
 \item When he wrote, ``turn left at the next opportunity," he meant ``at the
-next intersection," and assumed that would be obvious to you. However, you
-quite naturally thought he meant ``the very next possible left," which was
-down a side road.
+next \textit{intersection}," and assumed that would be obvious to you.
+However, you (quite naturally) thought he meant ``the very next possible
+left," which was down a side road.
 
-\item A road is closed, or there's a traffic jam, and you need to go around it
+\item A road is closed, or there's a traffic jam, and you need to improvise
 in order to make it to the party on time.
 
 \item \textit{Etc.}
@@ -138,19 +138,24 @@ discipline, practice, and painstaking effort.
 \section{JavaDoc: mechanics}
 
 One of Java's supplementary (but in retrospect, killer) features was the
-\texttt{javadoc} utility shipped with the JDK. 
+\texttt{javadoc} utility shipped with the JDK. The idea behind JavaDoc was to
+combine two previously incompatible aspects of code documentation. The key
+question is: where should the documentation be kept?
 
-The idea behind JavaDoc is to combine two previously incompatible aspects of
-code documentation. On the one hand, one could argue that the English text
-describing how to use a software component (like a class, method, or package)
-ought to be maintained right alongside the code itself. This promotes keeping
-the two in sync.
+On the one hand, it seems that the English text describing how to use a
+software component (like a class, method, or package) ought to be maintained
+right alongside the code itself, in the source file. This promotes keeping the
+code and the docs in sync.
 
 On the other hand, there are clearly many advantages to presenting the
-documentation in a rich, interactive, point-and-click hypertext format rather
-than embedded into plain-text. So we seem to have two conflicting desires: to
-keep the documentation close to (and embedded in) the code, and to author it
-in a more flexible (and ideally, web-browser-accessible) way outside the code.
+documentation in a rich, interactive, point-and-click hypertext format. Then
+the user can browse it non-linearly, read it with pretty formatting, avoid
+having to step around the code itself to read the next bit of documentation,
+\textit{etc.} 
+
+So we seem to have two conflicting desires: to keep the documentation close to
+(and embedded in) the code, and to author it in a more flexible (and ideally,
+web-browser-accessible) way outside the code.
 
 JavaDoc's innovation was to say: ``go ahead and store the documentation in the
 \texttt{.java} files themselves, to promote consistency. But we'll create a
@@ -410,6 +415,23 @@ by periods; for example, 35.237.255.14). Then, you can point your browser to
 \url{http://thatIPAddress} and you should be able to see your
 prettily-formatted HTML website like in Figure~\ref{fig:javadocApi}.
 
+\subsubsection{Firewall settings}
+
+If you can't reach your JavaDoc site via the above URL, your problem might be
+that your Google Cloud firewall is blocking the traffic. At the time of this
+writing, here's how to fix that problem:
+
+\begin{compactenum}
+
+\item Go to \url{https://console.cloud.google.com/networking/firewalls/list}.
+\item Click ``Create firewall rule."
+\item Give it a name like ``\texttt{allowhttp}".
+\item Choose ``All instances in the network" from the ``Targets" drop-down.
+\item Make sure direction is ``Ingress" and action is ``Allow".
+\item For ``Source IP ranges" put ``\texttt{0.0.0.0/0}".
+\item Click TCP under ``Specified protocols and ports", and put in \texttt{80}.
+\item Click ``Create" to create the rule.
+\end{compactenum}
 
 
 
@@ -431,8 +453,156 @@ prettily-formatted HTML website like in Figure~\ref{fig:javadocApi}.
 \section{JavaDoc: content}
 
 Okay, so that's all the minutiae of how to get the JavaDoc syntax right and
-generate the website. You have to know it, but it's not the important part.
-The truly important question in all this is less-easily defined: how to
-actually write quality documentation that will communicate effectively to
-programmers I may never meet?
+generate the website. You have to know this, but it actually isn't the
+important part. The truly important question in all this is less-easily
+defined: how to actually write quality documentation that will communicate
+effectively to programmers I may never meet?
+
+The answer is at once super simple and extremely nuanced. Here is the one and
+only rule that should guide your API documentation process:
+
+\begin{samepage}
+\begin{quote}
+
+\textbf{\textsf{``Put yourself in the shoes of a Java developer who has never
+seen your code before. Write whatever that person would need to know in order
+to use your code properly."}}
+
+\end{quote}
+\end{samepage}
+
+You might be surprised how much students (and professionals) struggle
+implementing this advice. It turns out that the human brain has a very
+difficult time envisioning what it's like to \textit{not already know}
+something. ``Putting yourself in someone else's shoes" just doesn't come
+naturally, it seems. Nevertheless, you \textit{must} do it, otherwise your
+documentation will be pretty useless.\footnote{As an aside, this same mantra
+-- ``put yourself in the shoes of someone who doesn't already know" -- is the
+essence of another common activity: \textit{teaching}. With few exceptions,
+I've discovered that a good teacher is one who can mentally put themselves in
+the shoes of their students, and remember what it was like to not already know
+the material. Conversely, bad teachers are inevitably poor at this exact
+skill, which is why it can sometimes seem as if they're assuming you already
+possess the knowledge before they began to teach it!}
+
+
+\subsection{Class documentation}
+
+Classes are the easier of the two main components (the other being methods) to
+write JavaDoc for. That's because the purpose of class JavaDoc is mostly to
+orient the reader to the class's purpose and what it collaborates with. Still,
+it's certainly possible to leave important information undefined or ambiguous.
+
+Let's take a look a bad attempt to document the \texttt{Team} class from the
+baseball simulator example, followed by a good one.
+
+First attempt:
+\vspace{-.15in}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+/**
+ * A <tt>Team</tt> represents a group of {@link Ballplayer}s who play baseball
+ * together.
+ */
+public class Team {
+    ...
+}
+\end{Verbatim}
+
+This JavaDoc succinctly sums up what the \texttt{Team} class is for, but I
+claim it leaves out at least two important pieces of \textit{non-obvious}
+information. ``Non-obvious" is the key word here: the stuff that would be
+obvious to a reader isn't particularly important to document. It's the things
+that \textit{aren't} immediately clear that deserve attention.
+
+One thing this JavaDoc is missing is the motivating \textit{reason} for using
+the class. A fellow developer might read this and say, ``okay, a \texttt{Team}
+is a group of \texttt{Ballplayer}s, but if that's all it is, I'll just use
+\texttt{ArrayList} instead, since I'm more familiar with it." It's a fair
+point: our JavaDoc hasn't made the sale as to why it's worth using.
+
+Okay, so why \textit{is} it worth using? At least two reasons are (1) it can
+be used as input to the \texttt{Simulator} class, in order to simulate a
+virtual ballgame, and (2) it has useful methods on it that provide summary
+statistics for the entire team. So let's say that:
+
+Second attempt:
+\vspace{-.15in}
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+/**
+ * A <tt>Team</tt> represents a group of {@link Ballplayer}s who play baseball
+ * together, and can compute summary statistics about the group's past
+ * performance. Two <tt>Team</tt> objects are required to run a single-game
+ * simulation (see {@link Simulator#simSingleGame}.) Methods like {@link 
+ * Team#getTeamBattingAverage()} and {@link Team#getWonLossRecord()} can be 
+ * called to get aggregate information about the team's performance.
+ */
+public class Team {
+    ...
+}
+\end{Verbatim}
+
+Better. And now for the second thing I found missing. One crucial aspect of
+documentation to include -- and one that is easily overlooked -- is the
+\textit{assumptions} the developer was making when she wrote the class, but
+which a user of the class might not make. In this case, a glaring question is:
+``can a \texttt{Ballplayer} be a member of more than one \texttt{Team}?" Frank
+Robinson, for instance, was a Hall of Fame outfielder for both the Cincinnati
+Reds and the Baltimore Orioles. What would happen if I attempted to add him to
+two different \texttt{Team} objects? Is it perfectly okay? Is it forbidden,
+but not checked by the code? Or will adding him to the second object trigger a
+run-time exception?
+
+It's imperative that we know, because all three of the above behaviors are
+reasonable. In order to use this \texttt{Team} class, we need to know which
+one is the true behavior.
+
+So let's add that information in, together with an author tag, and call it
+done (at least for now):
+
+\pagebreak
+Final attempt:
+\vspace{-.15in}
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+/**
+ * <p>A <tt>Team</tt> represents a group of {@link Ballplayer}s who play
+ * baseball together, and can compute summary statistics about the group's
+ * past performance. Two <tt>Team</tt> objects are required to run a
+ * single-game simulation (see {@link Simulator#simSingleGame}.) Methods
+ * like {@link Team#getTeamBattingAverage()} and {@link 
+ * Team#getWonLossRecord()} can be called to get aggregate information
+ * about the team's performance.</p>
+ * 
+ * Note that a <tt>Ballplayer</tt> can be a member of <i>any number</i> of
+ * teams. (This will happen if a player was traded during his career, for
+ * instance.) In this case, the summary statistics for each <tt>Team</tt>, 
+ * and its performance in a simulation, will take place as though that
+ * player's entire career stats applied to <i>each</i> of his teams.
+ *
+ * @author Stephen
+ */
+public class Team {
+    ...
+}
+\end{Verbatim}
+
+Apparently, \texttt{Stephen} has decided to write the \texttt{Team} code to
+deliberately \textit{allow} a ballplayer to be a member of more than one team.
+This JavaDoc also spells out a possibly unexpected caveat of this decision:
+the system doesn't separately keep track of which stats a player accumulated
+on which of his teams, but simply lumps them all together in a single
+\texttt{Ballplayer}. This has an important impact on what to expect from the
+simulator's behavior, if (for instance) a player was traded late in his
+career. If you have an aging Ricky Henderson on your L.A. Dodgers squad, that
+team is going to benefit from \textit{all} Ricky's legendary base-stealing,
+even though almost all of it occurred with different teams earlier in his
+career.
+
+The point is that this clarifies an important case that perhaps wasn't obvious
+at first. In general, it's really easy to think of only the ``sunny day"
+scenarios, and to write the documentation describing what is normally pretty
+obvious anyway. It's harder to step out of the box and recognize what cases
+\textit{aren't} so obvious -- in this example, the multiple-team-players
+question -- and give the user of the class guidance on what to expect.
+
+
 
