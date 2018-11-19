@@ -1,0 +1,66 @@
+
+\chapter{Team software development}
+
+At some point in your career (perhaps now), you will begin to work on projects
+that are too big for any one person to complete in an acceptable amount of
+time. The solution, of course, is to work on a \textbf{team} with other
+software developers. Working on a team brings up a host of other issues, some
+technical and some social.
+
+\section{Team-based version control with \texttt{git}}
+
+Waaaay back in \chapref{ch:gettingOff} (p.~\pageref{introduceGit}) I briefly
+introduced the \texttt{git} version control system. Hopefully you've been
+using it all along to do the simple process of ``committing" code to your
+\textbf{repo} in individual snapshots. This is a habit you'll want to continue
+to ingrain in your cerebral cortex. Commits are the building blocks of any
+version control system, including \texttt{git}; without them, you don't have
+anything to work with.
+
+Now it's time to learn a little more about \texttt{git}, and especially how it
+works in a team environment.
+
+Figure~\ref{fig:filbertGit} shows the environment you've been using so far: a
+single developer, with a single repo. I use the term \textbf{workspace} to
+mean ``the directory (and possibly subdirectories) in which the developer's
+files actually exist." In Figure~\ref{fig:filbertGit}, the developer is
+Filbert. His workspace is shown as a yellow oval, which matches the ovals in
+Figure~\ref{fig:tree} (p.~\pageref{fig:tree}) that represented ordinary Linux
+directories. This yellow oval contains the ``bleeding edge" of what Filbert is
+working on: as soon as he saves any file from \texttt{vim}, the file in that
+directory is instantly updated based on what he just typed, warts and all.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.4\textwidth]{filbertGit.pdf}
+\caption{A single developer's repo and workspace.}
+\label{fig:filbertGit}
+\end{figure}
+
+Filbert's personal git repo is shown as a green box. At this point, you should
+view a repo as a sort of ``mysterious" thing that somehow maintains a record
+of all the previous changes to all the project's files, yet in a way you don't
+need to understand. Using \texttt{git} commands from the command line is the
+only way we will inspect and command it.\footnote{If you're curious, it is
+maintained in a hidden directory called ``\texttt{.git}" -- note the initial
+dot -- inside the top-level directory of your workspace. If you \texttt{cd} in
+there, you'll see all kinds of crazy stuff under the hood. Do \textit{not}
+modify any of it, or you'll probably break your repo and lose all its contents!}
+
+Also shown is a purple diamond called the \textbf{staging area}. Normally you
+don't think too hard about the purple diamond explicitly, but it is there, and
+the command ``\texttt{git status}" will only fully make sense if you recognize
+its use. Essentially, the staging area is for changes that the developer is
+``about to commit" (or ``fixin' to commit," as they sometimes say in the
+South) but hasn't actually pulled the trigger on yet. When you execute the two
+commands ``\texttt{git add}" and ``\texttt{git commit}", back to back, the
+\texttt{add} puts a snapshot of the change to the staging area, and
+\texttt{commit} actually records it in the repo. If you're in the habit of
+using ``\texttt{git commit -a}" to commit your files, it effectively does both
+the add and the commit all in one step.\footnote{Beware a common pitfall with
+``\texttt{git commit -a}": it only commits changes to \textit{existing} files,
+not \textit{new} files. If you create a brand new \texttt{.java} file in your
+workspace, representing a new class, you must explicitly ``\texttt{git add}"
+it to your repo before committing it. I can't tell you how many times one of
+my colleagues (or myself *shame*) has broken a build by committing all of
+their changes \textit{except} for the new files.}
