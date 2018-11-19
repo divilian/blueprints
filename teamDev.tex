@@ -11,9 +11,9 @@ technical and some social.
 
 Waaaay back in \chapref{ch:gettingOff} (p.~\pageref{introduceGit}) I briefly
 introduced the \texttt{git} version control system. Hopefully you've been
-using it all along to do the simple process of ``committing" code to your
-\textbf{repo} in individual snapshots. This is a habit you'll want to continue
-to ingrain in your cerebral cortex. Commits are the building blocks of any
+using it all along to do the simple process of ``committing'' code to your
+repo in individual snapshots. This is a habit you'll want to continue to
+ingrain in your cerebral cortex. Commits are the building blocks of any
 version control system, including \texttt{git}; without them, you don't have
 anything to work with.
 
@@ -21,14 +21,15 @@ Now it's time to learn a little more about \texttt{git}, and especially how it
 works in a team environment.
 
 Figure~\ref{fig:filbertGit} shows the environment you've been using so far: a
-single developer, with a single repo. I use the term \textbf{workspace} to
-mean ``the directory (and possibly subdirectories) in which the developer's
-files actually exist." In Figure~\ref{fig:filbertGit}, the developer is
-Filbert. His workspace is shown as a yellow oval, which matches the ovals in
-Figure~\ref{fig:tree} (p.~\pageref{fig:tree}) that represented ordinary Linux
-directories. This yellow oval contains the ``bleeding edge" of what Filbert is
-working on: as soon as he saves any file from \texttt{vim}, the file in that
-directory is instantly updated based on what he just typed, warts and all.
+single developer, with a single \textbf{repo}. I use the term
+\textbf{workspace} to mean ``the directory (and possibly subdirectories) in
+which the developer's files actually exist.'' In Figure~\ref{fig:filbertGit},
+the developer is Filbert. His workspace is shown as a yellow oval, which
+matches the ovals in Figure~\ref{fig:tree} (p.~\pageref{fig:tree}) that
+represented ordinary Linux directories. This yellow oval contains the
+``bleeding edge'' of what Filbert is working on: as soon as he saves any file
+from \texttt{vim}, the file in that directory is instantly updated based on
+what he just typed, warts and all.
 
 \begin{figure}[ht]
 \centering
@@ -38,29 +39,165 @@ directory is instantly updated based on what he just typed, warts and all.
 \end{figure}
 
 Filbert's personal git repo is shown as a green box. At this point, you should
-view a repo as a sort of ``mysterious" thing that somehow maintains a record
+view a repo as a sort of ``mysterious'' thing that somehow maintains a record
 of all the previous changes to all the project's files, yet in a way you don't
 need to understand. Using \texttt{git} commands from the command line is the
 only way we will inspect and command it.\footnote{If you're curious, it is
-maintained in a hidden directory called ``\texttt{.git}" -- note the initial
+maintained in a hidden directory called ``\texttt{.git}'' -- note the initial
 dot -- inside the top-level directory of your workspace. If you \texttt{cd} in
 there, you'll see all kinds of crazy stuff under the hood. Do \textit{not}
 modify any of it, or you'll probably break your repo and lose all its contents!}
 
 Also shown is a purple diamond called the \textbf{staging area}. Normally you
 don't think too hard about the purple diamond explicitly, but it is there, and
-the command ``\texttt{git status}" will only fully make sense if you recognize
+the command ``\texttt{git status}'' will only fully make sense if you recognize
 its use. Essentially, the staging area is for changes that the developer is
-``about to commit" (or ``fixin' to commit," as they sometimes say in the
+``about to commit'' (or ``fixin' to commit,'' as they sometimes say in the
 South) but hasn't actually pulled the trigger on yet. When you execute the two
-commands ``\texttt{git add}" and ``\texttt{git commit}", back to back, the
+commands ``\texttt{git add}'' and ``\texttt{git commit}'', back to back, the
 \texttt{add} puts a snapshot of the change to the staging area, and
 \texttt{commit} actually records it in the repo. If you're in the habit of
-using ``\texttt{git commit -a}" to commit your files, it effectively does both
-the add and the commit all in one step.\footnote{Beware a common pitfall with
-``\texttt{git commit -a}": it only commits changes to \textit{existing} files,
-not \textit{new} files. If you create a brand new \texttt{.java} file in your
-workspace, representing a new class, you must explicitly ``\texttt{git add}"
-it to your repo before committing it. I can't tell you how many times one of
-my colleagues (or myself *shame*) has broken a build by committing all of
-their changes \textit{except} for the new files.}
+using ``\texttt{git commit -a}'' to commit your files, it effectively does both
+the add and the commit all in one step.
+
+\label{commitPitfall}
+Beware a common pitfall with ``\texttt{git commit -a}'', though: it only
+commits changes to \textit{existing} files, not \textit{new} files. If you
+create a brand new \texttt{.java} file in your workspace, representing a new
+class, you must explicitly ``\texttt{git add}'' it to your repo before
+committing it. I can't tell you how many times one of my colleagues (or myself
+*shame*) has broken a build by committing all of their changes \textit{except}
+for the new files.
+
+Just to repeat the basic instructions for reproducing
+Figure~\ref{fig:filbertGit}:
+
+\begin{compactenum}
+\item The command ``\texttt{mkdir someDirectoryName}'' creates the workspace,
+under whatever directory you're currently in (which can be seen via
+``\texttt{pwd}'').
+\item The command ``\texttt{cd someDirectoryName}'' actually goes into that
+directory (remember that \texttt{mkdir} alone does \textit{not} change your
+current directory).
+\item The command ``\texttt{git init .}'' creates the green box and the purple
+diamond.
+\item You use ``\texttt{vim}'' to edit files directly in your workspace (yellow
+oval).
+\item When you want to snapshot the current version of one of your files, in
+anticipation of doing a commit, you type ``\texttt{git add nameOfFile}''. This
+adds the current contents to the purple diamond. You can now proceed editing
+further, or go straight to the commit.
+\item To actually commit, type ``\texttt{git commit}'', enter a comment in the
+editor, and quit the editor.
+\end{compactenum}
+
+\subsection{Understanding \texttt{git status} and \texttt{git log}}
+
+Two extremely common commands for inspecting your workspace are ``\texttt{git
+status}'' and ``\texttt{git log}''.
+
+The first one tells you the current state of your workspace as compared with
+your repo. The output might look something like this:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+$ git status
+On branch master
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+    modified:   Cat.java
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+    modified:   Cat.java
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+    Cat.class
+    Hairball.class
+    Hairball.java
+\end{Verbatim}
+
+\pagebreak
+Several things of interest here:
+
+\begin{itemize}
+
+\item The ``\texttt{On branch master}'' means you're on the main, default code
+line. Later in your career, you'll discover that \texttt{git} allows you to
+create \textbf{branch}es, which are independently developed bits of code that
+are normally brought back together and merged later. For now, just ignore this
+line.
+
+\item The output lists \texttt{Cat.java} as the only ``change to be
+committed.'' This means that an updated version of \texttt{Cat.java} is
+\textit{in your purple diamond.} If we were to follow up this command with a
+``\texttt{git commit}'', that version of \texttt{Cat.java} would be committed
+to the repo for posterity.
+
+\item Somewhat weirdly, the output shows \texttt{Cat.java} as being in the
+``changes \textit{not} staged for commit'' section as well! What the heck is
+going on here -- is \texttt{Cat.java} going to be committed, or not?
+
+The answer to that question is ``both.'' Apparently, there been several
+different changes to \texttt{Cat.java}, only \textit{some} of which were
+present the last time we did a ``\texttt{git add}'', and therefore in the
+purple box. Other changes to this same file were made \textit{after} the
+``\texttt{git add}'', and so they are in the yellow oval only. In a moment,
+I'll teach you how to find out which changes are in which category. For now,
+just grasp the fact that the same file can be in both sections of the
+``\texttt{git status}'' output.
+
+\item The ``untracked'' files are the files in your directory (yellow oval)
+that \texttt{git} doesn't yet know about. This is a good sanity check for not
+making the ``oops I did a \texttt{git commit -a} but forgot to add my new
+files" problem I mentioned earlier (p.~\pageref{commitPitfall}). In this case,
+\texttt{Hairball.java} is
+potentially such a file, and this message may remind you to ``\texttt{git
+add}'' it.
+
+\item The other entries under ``untracked'' are compiled \texttt{.class}
+files, not \texttt{.java} source files. \textbf{Normally, we \textit{want}
+those to be untracked}, and so it's actually good that they're not set up as
+part of the commit. Some developers, however (myself included) find this
+message annoying. The way to fix it is to create a (hidden) file in your
+project directory called ``\texttt{.gitignore}". All files whose names match
+something in the ``\texttt{.gitignore}" file will be ignored entirely by
+\texttt{git}, and hence not mentioned in a cries-wolf warning message.
+
+Here's an example \texttt{.gitignore} file:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+.gitignore
+*.class
+\end{Verbatim}
+
+There are two lines. The first is a bit of a mind-blower: it's the name of the
+\texttt{.gitignore} file itself! By including the line ``\texttt{.gitignore}''
+in our \texttt{.gitignore}, we're telling \texttt{git} to not do version
+control on \texttt{.gitignore} itself. The second line says ``also please
+ignore any file that ends with \texttt{.class}''.
+
+\item Finally, notice the helpful comments in the ``\texttt{git status}''
+output: they're great for telling you exactly how to change things if
+necessary. For instance, if we decide we don't want to check in that first set
+of changes to \texttt{Cat.java} after all, we run the command ``\texttt{git
+reset HEAD Cat.java}" to remove it from the purple diamond. On the other hand,
+if we want \textit{all} our changes in \texttt{Cat.java} to be committed (old
+and new), we do ``\texttt{git add Cat.java}" which will update the purple
+diamond's copy to match the workspace. Finally, if we decide to actually ditch
+the \texttt{Cat.java} changes entirely, the command is ``\texttt{git checkout
+-{}- Cat.java}'' to discard them. (Notice the double-hyphen, and also the
+spaces on either side of it: it's a weird syntax but you have to use it.)
+
+
+\end{itemize}
+
+
+
+
+
+
+\subsection{Using \texttt{git} with more than one human}
+
+
