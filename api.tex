@@ -500,8 +500,8 @@ First attempt:
 \vspace{-.15in}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 /**
- * A <tt>Team</tt> represents a group of {@link Ballplayer}s who play baseball
- * together.
+ * A <tt>Team</tt> represents a group of {@link Ballplayer}s who play
+ * baseball together.
  */
 public class Team {
     ...
@@ -605,4 +605,186 @@ obvious anyway. It's harder to step out of the box and recognize what cases
 question -- and give the user of the class guidance on what to expect.
 
 
+\subsection{Method documentation}
 
+Method documentation is a higher-stakes affair than class documentation,
+simply because there are more details to remember and to get right. It's not
+often that a fellow developer gets off in the weeds about what a class is even
+used for; but it's not rare for them to code to a method incorrectly because
+the JavaDoc is spurious or misleading.
+
+Taking again the baseball example, let's look a bad attempt to document the
+\texttt{.getOPS()} method.
+
+First attempt:
+\vspace{-.15in}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+public class Ballplayer {
+    ...
+    /**
+     * Return the player's OPS.
+     */
+    public double getOPS() {
+        ...
+    }
+}
+\end{Verbatim}
+
+This is an example of wasting time typing. The programmer might as well have
+typed nothing at all, since ``returning" was implied in ``\texttt{get}..." and
+\texttt{OPS} remains undefined. Let's try again.
+
+Second attempt:
+\vspace{-.15in}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+public class Ballplayer {
+    ...
+    /**
+     * Return the player's career OPS (On-base-plus-slugging) statistic,
+     * defined as the player's on-base percentage plus his slugging 
+     * percentage.
+     */
+    public double getOPS() {
+        ...
+    }
+}
+\end{Verbatim}
+
+This is much more useful, at least, since it defines for a reader who may not
+be familiar with the more advanced Sabermetric stats what ``OPS" even is.
+Still a few things missing, though. For one, the on-base percentage and
+slugging percentage are both defined on a 0.0-to-1.0 scale rather than a
+0-to-100 scale, and so ``percentage" is a very misleading (incorrect,
+actually) word. We don't want to move away from standard baseball
+conventions, so we'll keep the terms but then make the scale clear in a note
+in the JavaDoc.
+
+Speaking of standard baseball conventions...all the stats like batting
+average, slugging percentage, OPS, \textit{etc.} are traditionally reported to
+exactly \textit{three} decimal places. We say ``Simpson is hitting .325," not
+"Simpson is hitting .3257886442." Another question that arises, then, is: do
+methods like \texttt{.getBattingAvg()} and \texttt{.getOPS()} return a figure
+rounded to the three decimal places of convention, or do they return
+hits-divided-by-at-bats (or whatever) with all possible precision? One can see
+advantages to doing it either way; the point here is that the JavaDoc must
+specify which it is.
+
+Whether to document here what ``on-base percentage" and ``slugging percentage"
+themselves are is a judgment call. If there are other methods on the
+\texttt{Ballplayer} class specifically for those two stats, then it's probably
+better to link to them in the \texttt{.getOPS()} JavaDoc rather than duplicate
+the text.
+
+Finally, you always have to ask yourself ``what corner cases are there?" What
+scenarios might unfold that are unusual and need special treatment? Here, the
+important one turns out to be a ballplayer \textit{with no at-bats.} In this
+case, both his on-base percentage and his slugging percentage will have a
+denominator of \textit{zero}, which is an illegal mathematical operation.
+(``Zero hits divided by zero at bats" is not zero, but undefined.)
+Traditionally, players with no batting chances are reported as having a .000
+batting average, slugging percentage, on-base percentage, \textit{etc.}, so it
+makes sense for our method to do that here. When it does, though, it's
+strictly speaking going beyond the definition of ``successes divided by
+attempts" that all these averages are based on.
+
+Answering all these questions adequately, then, leads to this JavaDoc:
+
+\pagebreak
+Final attempt:
+\vspace{-.15in}
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+public class Ballplayer {
+    ...
+    /**
+     * Return the player's career OPS (On-base-plus-slugging) statistic,
+     * defined as the player's on-base percentage plus his slugging 
+     * percentage. On-base "percentage" is computed on a 0-to-1 scale, not
+     * 0-to-100 (and slugging "percentage" is similar, though it can be as
+     * high as 4.0 (all home runs)), so this method's return value should
+     * not be interpreted as a "percentage" either.
+     * 
+     * Although OPS is typically reported to three decimal places, this method
+     * will not perform any rounding to ensure that; full precision to as many
+     * decimal places as the system allows will be reported.
+     *
+     * For <tt>Ballplayer</tt>s with zero plate appearances, this method will
+     * return 0, not a divide-by-zero error.
+     *
+     * @return the player's career OPS statistic.
+     */
+    public double getOPS() {
+        ...
+    }
+}
+\end{Verbatim}
+
+You may be thinking that the \texttt{@return} line at the end doesn't really
+add anything useful. You would be correct. I included it only for
+completeness; in general, it's fine to leave out redundant information. Some
+developers like to use the ``\texttt{@}" tags religiously, while others like
+to put key information in the running text of the JavaDoc. This is a stylistic
+choice, and either way is okay. The crucial thing is that \textit{the
+information has to be present somewhere.}
+
+You also may be thinking that it's tough to come up with all this stuff. You
+would also be correct about that. Once you see me explain that ``zero plate
+appearances" is a non-obvious special case, or that it's an open question
+whether the method would round to three decimal places, you can probably say
+``oh yeah, we'd better mention that detail." Of course, the challenge is to
+recognize what those details are \textit{before} they're pointed out to you.
+
+Honestly, I can think of no way to make this easier other than (1) practice,
+and (2) really truly trying to put yourself in the mindset of a new developer.
+It's hard to pretend you're someone else -- and to momentarily, deliberately
+forget what you know -- but it's not impossible. And as I said earlier, it's
+really the key to communication of all kinds.
+
+\section{How to lose a battle through bad documentation}
+
+I'll close this chapter with a somewhat humorous anecdote which was
+nevertheless deadly serious in its ramifications.
+
+On the eve of the Civil War's Battle of Fredericksburg, on December 11, 1862,
+General Ambrose Burnside was running the show for the Union. His northern
+soldiers outnumbered the Confederates almost two-to-one, and they had had
+months to prepare their crossing of the Rappanhannock river and the siege of
+the town. Abe Lincoln and the other civilian leaders of the north expected a
+great, perhaps decisive, victory.
+
+Battles sometimes come down to small things. In this case, Burnside was so
+swamped with preparations the night before the battle that he had only one
+hour of sleep. That may explain the quality (or lack thereof) of his
+last-minute orders to his generals. Here's an excerpt of what he wrote to
+Major General William Franklin in the wee hours of the morning:
+
+
+\begin{center}
+\large
+\fbox{\begin{varwidth}{\textwidth}
+\centering
+\Fontskrivan 
+``Keep your whole command in position for a rapid movement down the \\
+Old Richmond Road and send a division at least to seize, if possible, \\
+the height near Capt. Hamilton's, taking care to keep it well supported \\
+and its line of retreat open." 
+\end{varwidth}
+}
+\end{center}
+
+\normalsize
+
+Franklin's reaction, upon reading this note at 4am, could be described as:
+``\textit{\textbf{Huh??}}''
+
+If Burnside had had at least another few hours of sleep, he would doubtlessly
+have written more coherently about what he wanted. But without clear
+directions, and guided only by the above gibberish, Franklin couldn't really
+figure out what to do. His troops floundered ineffectively most of the day.
+This helped produce 12,653 casualties, two mortally wounded Union generals,
+and an unprecedented disaster that came perilously close to ending the Civil
+War prematurely in favor of the South.
+
+It just goes to show how absolutely crucial written communication can be. All
+the armies in the world -- and all the Java coding chops in the world -- will
+profit you nothing if you can't effectively give instructions on how to use
+them.
