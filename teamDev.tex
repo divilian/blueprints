@@ -272,7 +272,7 @@ $ git config --global format.pretty "(%h) %Cblue%an%Creset: %Cgreen%s %Creset(%a
 \end{Verbatim}
 
 which looks bizarre, but there's a method to its madness. Each one of these
-control characters (starting with a ``\texttt{\%}") specifies a certain piece
+control characters (starting with a ``\texttt{\%}'') specifies a certain piece
 of information or formatting. The result, when I type \texttt{git log} is
 this:
 
@@ -401,6 +401,203 @@ changes (\textit{i.e.}, the one he started with), and the second is the hash
 of the commit he himself made (the one he ended with). This process gives us
 fine-grained resolution in examining the past and identifying errors.
 
+% Rolling back to a previous version (git checkout)
+
+
 \subsection{Using \texttt{git} with more than one human}
+
+In a team environment, the \texttt{git} tool works much the same way, but with
+an added level of complexity to ``join'' the developers together. Look at the
+revised picture in Figure~\ref{fig:teamGit}.
+
+\begin{figure}
+\centering
+\includegraphics[width=1.1\textwidth]{teamGit.pdf}  % 700x550
+\caption{A development team's repos and workspaces.}
+\label{fig:teamGit}
+\end{figure}
+
+We now have two developers working on this feline program: Filbert and his
+colleague Betty Lou. The picture is considerably more complex. First, notice
+that the three salmon-colored squares represent \textit{different machines}
+which communicate only over the Internet. Filbert and Betty Lou each have
+their own laptop to do development on. And in addition, there is a third
+machine involved: a publicly-available hosting service like BitBucket,
+SourceForge, or github. Think of this public repo as the team's ``home base'':
+despite the fact that at any given moment Filbert and Betty Lou may be writing
+new code for the project, the latest stable version is always available in the
+repo.
+
+There are also some new \texttt{git} verbs we need to learn about to make this
+picture work. To wit:
+
+\begin{itemize}
+\item \texttt{git clone}: Normally, the way this whole process kicks off is
+that someone creates the initial version of the repo on github, and the other
+team members \textbf{clone} copies of it. ``Clone'' is exactly what it sounds
+like: it means to make an exact duplicate.
+
+github makes it easy to do this in a variety of ways. Perhaps the most common
+is when one developer starts with an embryonic version of the code base,
+creates his/her own local git repo, and then ``pushes'' (see below) this to a
+new github project. It's also possible to start on github with a brand-new
+blank project. At the time of this writing, a very helpful and obvious green
+``New'' button is present on the github main account screen, with instructions
+to follow for each of these different starting techniques.\footnote{Services
+like github and BitBucket are free to use, by the way, as long as you keep
+your repo public and visible to the world. The idea is that they're trying to
+promote open source software, so in exchange for sharing your ideas, they're
+giving you free storage space and tools. Some services even have free private
+repos, sometimes in exchange for viewing ads.}
+
+On the github project page, you'll see a button that says ``Clone or
+download,'' and which will display a specific URL to your project if you click
+on it. Then, on your local machine, you can go to the directory you want to be
+the parent of your project, and type something like:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+$ git clone https://github.com/stuff/projectName.git projectName
+\end{Verbatim}
+
+which will populate your filesystem with a copy of all the repo's files.
+
+\pagebreak
+\item \texttt{git push}: As usual, you'll constantly be making your own local
+commits to your own copy of the repo as you work. You should do this every
+time you reach a stopping point.
+
+A new operation in the team environment is the ``\texttt{git push}''. It says
+``take the updated contents of my own local repo (which have already been
+committed) and propagate them up to the team repo in github.'' This is how you
+share your changes with your teammates.
+
+Rule of thumb: making a local \texttt{commit} should be a common operation.
+Doing a \texttt{push}, on the other hand, is rarer: you only do it when your
+teammates need your latest code, and when your code is stable enough to
+warrant making it ``the new normal'' in the team repo.
+
+Last thing on \texttt{git push}: you normally don't do a \texttt{push} until
+\textit{after} doing a \texttt{pull} to make sure you have your teammate's
+latest code integrated in yours. See next bullet.
+
+\item \texttt{git pull}: The inverse process of \texttt{push} is
+\texttt{pull}. It means, ``go to github, fetch whatever changes have been made
+by my fellow developers, and integrate them into my repo so I have the latest
+and greatest.''
+
+Now here's where \texttt{git} is fancy, and dare I say, seemingly magic.
+Suppose you've been editing code for the project at the same time your
+teammates are, and furthermore you're actually editing \textit{the same
+files}. Doesn't that seem like it would be a nightmare? Doesn't it seem like
+you would each be making incompatible changes, and that one person's work is
+ultimately doomed to be wiped out by the other person's changes?
+
+That fear is indeed true if you're thinking of your code ``a file at a time.''
+But \texttt{git} is smart enough to consider your code ``a \textit{line} at a
+time.'' So if Filbert and Betty Lou are both making changes to
+\texttt{Hairball.java}, but they're working on \textit{different parts} of
+that file, it turns out that git can automatically and intelligently
+\textbf{merge} the changes without you even having to worry about it.
+
+When you do a \texttt{git pull} operation, \textit{read the output carefully.}
+About 95\% of the time, it will give you happy messages like this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+Auto-merging Hairball.java
+Merge made by the 'recursive' strategy.
+ Hairball.java | 1 +
+ 1 file changed, 1 insertion(+)
+\end{Verbatim}
+
+This is git's way of saying, ``your teammate was editing the same file(s) as
+you, but it's chill; I figured out how to put their changes into your copy
+without messing up anything you were doing.'' When this first happened to me,
+I admit I was fearful, and couldn't comprehend how it could really be smart
+enough to integrate those changes without me checking. But I've since learned
+to stop worrying and love the bomb, and it really is ``all good.''
+
+The other 5\% of the time, you're not so lucky, and you'll get a sad message
+that says:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+Auto-merging Hairball.java
+CONFLICT (content): Merge conflict in Hairball.java
+Automatic merge failed; fix conflicts and then commit the result.
+\end{Verbatim}
+
+This situation is called a \textbf{conflict} and essentially means that you
+and your teammate were working in the same \textit{part} of the file and made
+incompatible changes. Perhaps one of you changed line 57 in one way, and the
+other of you changed line 57 in a different way. Or perhaps one of you changed
+line 90, while the other completely deleted lines 85-95. In these cases, git
+can't figure out what you want to do, so it throws it back to you and asks you
+to manually resolve it.
+
+Resolving it is generally pretty easy. You open up the offending file(s) in
+\texttt{vim}, and look for the markers ``$<<<<<$'', ``$=====$'', and
+``$>>>>>$''. Here's the kind of thing you'll see:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+...
+<<<<<<< HEAD
+ * <tt>Cats</tt> are wonderful creatures that make good 
+ * house pets.
+=======
+ * A <tt>Cat</tt> is a small fuzzy animal that coerces humans
+ * into paying enormous sums of money and weekends of labor
+ * in exchange for being "cute."
+>>>>>>> c6812dcd33b977de0e7f0e9cab1eb1376bcfda88
+...
+\end{Verbatim}
+
+Here's how to decipher that. The lines between the ``$<<<<<$ \texttt{HEAD}''
+and the ``$=====$'' are what \textit{you} had in your version of the file. In
+this example, you changed the \texttt{Cat} class JavaDoc entirely by rewriting
+it in a more feline-friendly way. Meanwhile, your teammate (whose code is
+marked between the ``$=====$'' and the ``$>>>>>$ \texttt{c6812...}'') made a
+smaller change to that comment, changing ``furry'' to ``fuzzy.'' All that
+matters now is what you want to do about these changes. It's your job as a
+developer to restore that part of the \texttt{Cat.java} file to be
+\textit{what your team wants the code to look like moving forward.} Perhaps
+you keep your change, perhaps you keep your teammate's, perhaps it's a
+combination of both. But after fixing it up the way it should be (with maybe a
+phone call or chat session with your colleague to make sure you're on the same
+page), you will have removed the ``$<<<<<$'' and ``$=====$'' and ``$>>>>>$''
+markers and can ``\texttt{git add}" and commit your changes. Finally, you can
+then push the combined changes to the team repo, and everything goes on hunky
+dory.
+
+Normally, the only time you end up in the 5\% conflict case (instead of the
+95\% auto-merge case) is when you and your teammates aren't communicating well
+(or enough). Two developers both editing the same lines of code and not
+realizing that the other person is doing it is usually a sign that you need to
+work more closely together or be more explicit about who's working on what. A
+simple email or text often does the trick.
+
+\end{itemize}
+
+Bottom line: using the \texttt{git} verbs \texttt{add}, \texttt{commit},
+\texttt{pull}, and \texttt{push} properly is your key to ensuring your team
+has a living, breathing, healthy, working repository of shared code.
+
+Here are the most common pitfalls I see:
+
+\begin{compactitem} \item Forgetting to do a \texttt{pull} before trying a
+\texttt{push}. git won't allow you to \texttt{push} into a repo if you're
+out-of-date. You must first \texttt{pull} the recent changes so you're all in
+sync, and \textit{then} you can \texttt{push} your new changes to it. \item
+Forgetting to do a local \texttt{commit} before trying to \texttt{pull}. git
+won't let you pull changes from another repo if you have car parts all over
+your own garage. Make sure you check everything in and have a clean local
+workspace before doing that.\footnote{An alternative to a full local commit
+here is the ``\texttt{git stash}'' command which I've found useful. Doing a
+``\texttt{stash}'' is different than a \texttt{commit}, since you're not
+actually marking version control with labeled changes. Instead, you're sort of
+sweeping stuff under the rug to make your workspace temporarily clean, for the
+sake of doing an important \texttt{pull} operation from your teammates. You
+can then pull your stuff back out from under your rug and continue. For
+details, type ``\texttt{man git stash}'' and read carefully.}
+
+\end{compactitem}
 
 
