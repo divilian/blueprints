@@ -300,6 +300,8 @@ Colloquially, comparing two versions of something is called ``\textbf{doing a
 diff},'' named after the Linux ``\texttt{diff}'' command. Here's my favorite
 way of comparing versions.
 
+\subsubsection{The \texttt{vimdiff} comparison tool}
+
 First, make these changes to your \texttt{git} profile\footnote{By the way,
 any time you want to see \textit{all} of your \texttt{git} configuration
 settings, you can do so with the command ``\texttt{git config -e -{}-global}''.
@@ -328,16 +330,41 @@ between them. (Note that if there are long sequences of lines that were
 unchanged, sometimes \texttt{vimdiff} ``folds them up'' so that it's easier to
 skip over them.) 
 
-Don't attempt to use \texttt{vimdiff} to edit, though. If you're comparing two
-versions of a file and find a mistake, quit out of \texttt{vimdiff} and enter
-plain-ol' \texttt{vim} to fix it. (Incidentally, to quit \texttt{vimdiff} you
-have to enter ``\texttt{:q}'' \textit{twice}, once for each of the panes.
-Sometimes it's quicker to use the ``\texttt{:qa}'' (for ``quit all'') sequence
-instead.)
+\begin{figure}
+\centering
+\includegraphics[width=1.1\textwidth]{catDiff.png}
+\vspace{-.05in}
+\caption{Using ``\texttt{git difftool}'' when configured with ``\texttt{vimdiff}''.}
+\label{fig:catDiff}
+\end{figure}
 
-So that's generally how \texttt{vimdiff} (which is triggered from \texttt{git
-difftool}) works. Now, how do you specify what versions of the files you want
-to compare?
+Figure~\ref{fig:catDiff} shows what \texttt{vimdiff} looks like when you run
+it. Its vertically-split pane shows two versions of the same file, with the
+differences between the two in various colors. It is plain from the figure
+that the differences between the two \texttt{Cat.java} versions are:
+
+\begin{compactenum}
+\item The JavaDoc class comment has an extra phrase.
+\item A new ``\texttt{breed}'' inst var has been added.
+\item A bug has been fixed by changing the ``\texttt{args[1]}'' in the
+\texttt{for} loop to ``\texttt{args[0]}''.
+\end{compactenum}
+
+Super cool, and easy to see at a glance. Learn to use this often in your
+debugging and other code base investigations.
+
+Don't attempt to use \texttt{vimdiff} to \textit{edit} your file, though. If
+you're comparing two versions of a file and find a mistake, quit out of
+\texttt{vimdiff} and enter plain-ol' \texttt{vim} to fix it. (Incidentally, to
+quit \texttt{vimdiff} you have to enter ``\texttt{:q}'' \textit{twice}, once
+for each of the panes. Sometimes it's quicker to use the ``\texttt{:qa}'' (for
+``quit all'') sequence instead.)
+
+\subsubsection{Specifying the versions to compare}
+
+Okay. So that's how \texttt{vimdiff} (which is triggered from \texttt{git
+difftool}) works in general. Now, how do you specify what versions of the
+files you want to compare?
 
 If you just type the command with no other arguments:
 
