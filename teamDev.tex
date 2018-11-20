@@ -25,11 +25,11 @@ single developer, with a single \textbf{repo}. I use the term
 \textbf{workspace} to mean ``the directory (and possibly subdirectories) in
 which the developer's files actually exist.'' In Figure~\ref{fig:filbertGit},
 the developer is Filbert. His workspace is shown as a yellow oval, which
-matches the ovals in Figure~\ref{fig:tree} (p.~\pageref{fig:tree}) that
-represented ordinary Linux directories. This yellow oval contains the
-``bleeding edge'' of what Filbert is working on: as soon as he saves any file
-from \texttt{vim}, the file in that directory is instantly updated based on
-what he just typed, warts and all.
+matches the ovals from way back in Figure~\ref{fig:tree}
+(p.~\pageref{fig:tree}) that represented ordinary Linux directories. This
+yellow oval contains the ``bleeding edge'' of what Filbert is working on: as
+soon as he saves any file from \texttt{vim}, the file in that directory is
+instantly updated based on what he just typed, warts and all.
 
 \begin{figure}[ht]
 \centering
@@ -69,7 +69,7 @@ committing it. I can't tell you how many times one of my colleagues (or myself
 *shame*) has broken a build by committing all of their changes \textit{except}
 for the new files.
 
-Just to repeat the basic instructions for reproducing
+Anyway, just to repeat the basic instructions for reproducing
 Figure~\ref{fig:filbertGit}:
 
 \begin{compactenum}
@@ -81,8 +81,8 @@ directory (remember that \texttt{mkdir} alone does \textit{not} change your
 current directory).
 \item The command ``\texttt{git init .}'' creates the green box and the purple
 diamond.
-\item You use ``\texttt{vim}'' to edit files directly in your workspace (yellow
-oval).
+\item You use ``\texttt{vim}'' to create/edit files like \texttt{Cat.java} and
+\texttt{Hairball.java} directly in your workspace (blue rectangles).
 \item When you want to snapshot the current version of one of your files, in
 anticipation of doing a commit, you type ``\texttt{git add nameOfFile}''. This
 adds the current contents to the purple diamond. You can now proceed editing
@@ -91,13 +91,13 @@ further, or go straight to the commit.
 editor, and quit the editor.
 \end{compactenum}
 
-\subsection{Understanding \texttt{git status} and \texttt{git log}}
+\subsection{Understanding \texttt{git status}}
 
 Two extremely common commands for inspecting your workspace are ``\texttt{git
-status}'' and ``\texttt{git log}''.
+status}'' and ``\texttt{git log}''. Let's look at each in turn.
 
-The first one tells you the current state of your workspace as compared with
-your repo. The output might look something like this:
+The \texttt{git status} command tells you the current state of your workspace
+as compared with your repo. The output might look something like this:
 
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 $ git status
@@ -124,79 +124,255 @@ Several things of interest here:
 \begin{itemize}
 
 \item The ``\texttt{On branch master}'' means you're on the main, default code
-line. Later in your career, you'll discover that \texttt{git} allows you to
-create \textbf{branch}es, which are independently developed bits of code that
-are normally brought back together and merged later. For now, just ignore this
-line.
+``trunk.'' Later in your career, you'll discover that you sometimes want to
+create \textbf{branch}es, which are independently developed sequences of
+changes for some specific purpose. They are normally brought back together and
+merged into the trunk at a later time.
 
-\item The output lists \texttt{Cat.java} as the only ``change to be
-committed.'' This means that an updated version of \texttt{Cat.java} is
-\textit{in your purple diamond.} If we were to follow up this command with a
-``\texttt{git commit}'', that version of \texttt{Cat.java} would be committed
-to the repo for posterity.
+\item The output lists \texttt{Cat.java} as a ``change to be committed.'' This
+means that an updated version of \texttt{Cat.java} is \textit{in your purple
+diamond.} If we were to follow up this command with a ``\texttt{git commit}'',
+that version of \texttt{Cat.java} would be committed to the repo for
+posterity.
 
 \item Somewhat weirdly, the output shows \texttt{Cat.java} as being in the
 ``changes \textit{not} staged for commit'' section as well! What the heck is
 going on here -- is \texttt{Cat.java} going to be committed, or not?
 
-The answer to that question is ``both.'' Apparently, there been several
-different changes to \texttt{Cat.java}, only \textit{some} of which were
-present the last time we did a ``\texttt{git add}'', and therefore in the
-purple box. Other changes to this same file were made \textit{after} the
-``\texttt{git add}'', and so they are in the yellow oval only. In a moment,
-I'll teach you how to find out which changes are in which category. For now,
-just grasp the fact that the same file can be in both sections of the
-``\texttt{git status}'' output.
+The answer to that question is ``both.'' When a file shows up in both lists,
+it means there have been several \textit{different} changes to it, only
+\textit{some} of which were present the last time a ``\texttt{git add}'' was
+performed, and which are therefore in the purple box. Other changes to this
+same file were made \textit{after} the ``\texttt{git add}'', and so they are
+in the yellow oval only. In a moment, I'll teach you how to find out which
+changes are in which category. For now, just grasp the fact that the same file
+can be in both sections of the ``\texttt{git status}'' output.
 
-\item The ``untracked'' files are the files in your directory (yellow oval)
-that \texttt{git} doesn't yet know about. This is a good sanity check for not
-making the ``oops I did a \texttt{git commit -a} but forgot to add my new
-files" problem I mentioned earlier (p.~\pageref{commitPitfall}). In this case,
-\texttt{Hairball.java} is
-potentially such a file, and this message may remind you to ``\texttt{git
-add}'' it.
+\item The ``untracked'' files are the files in your workspace that
+\texttt{git} doesn't yet know about. Looking at this list is a good way to
+avoid making the ``oops I did a \texttt{git commit -a} but forgot to add my
+new files'' problem I mentioned earlier (p.~\pageref{commitPitfall}). In this
+case, \texttt{Hairball.java} is potentially such a file, and this message
+reminds us that we may want to ``\texttt{git add}'' it. If we don't, our next
+commit will \textit{only} have the (first set of) \texttt{Cat} changes, not
+the \texttt{Hairball} changes.
 
 \item The other entries under ``untracked'' are compiled \texttt{.class}
 files, not \texttt{.java} source files. \textbf{Normally, we \textit{want}
 those to be untracked}, and so it's actually good that they're not set up as
 part of the commit. Some developers, however (myself included) find this
 message annoying. The way to fix it is to create a (hidden) file in your
-project directory called ``\texttt{.gitignore}". All files whose names match
-something in the ``\texttt{.gitignore}" file will be ignored entirely by
-\texttt{git}, and hence not mentioned in a cries-wolf warning message.
+project directory called ``\texttt{.gitignore}''. \textit{All files whose names
+match something in the ``\texttt{.gitignore}'' file will be ignored entirely by
+\texttt{git}}, and hence not be mentioned in a cries-wolf warning message.
 
-Here's an example \texttt{.gitignore} file:
+\begin{samepage}
+Here's an example \texttt{.gitignore} file, which you can edit like any other
+file in \texttt{vim}:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 .gitignore
 *.class
 \end{Verbatim}
+\end{samepage}
 
 There are two lines. The first is a bit of a mind-blower: it's the name of the
 \texttt{.gitignore} file itself! By including the line ``\texttt{.gitignore}''
 in our \texttt{.gitignore}, we're telling \texttt{git} to not do version
-control on \texttt{.gitignore} itself. The second line says ``also please
-ignore any file that ends with \texttt{.class}''.
+control on \texttt{.gitignore} itself. (Without that, we'll feel like we're
+stuck in a Monty Python skit where we create a \texttt{.gitignore} to avoid
+annoying warning messages, only for the \texttt{.gitignore} file itself to
+cause another annoying warning message.)
 
-\item Finally, notice the helpful comments in the ``\texttt{git status}''
-output: they're great for telling you exactly how to change things if
-necessary. For instance, if we decide we don't want to check in that first set
-of changes to \texttt{Cat.java} after all, we run the command ``\texttt{git
-reset HEAD Cat.java}" to remove it from the purple diamond. On the other hand,
-if we want \textit{all} our changes in \texttt{Cat.java} to be committed (old
-and new), we do ``\texttt{git add Cat.java}" which will update the purple
-diamond's copy to match the workspace. Finally, if we decide to actually ditch
-the \texttt{Cat.java} changes entirely, the command is ``\texttt{git checkout
--{}- Cat.java}'' to discard them. (Notice the double-hyphen, and also the
-spaces on either side of it: it's a weird syntax but you have to use it.)
+The second line says ``also please ignore any file that ends with
+\texttt{.class}''. Now, we know that anything that shows up in the ``untracked
+files'' section of \texttt{git status} really is something to think hard about.
 
+\item Finally, notice the helpful comments that ``\texttt{git status}''
+provides: they're great for telling you exactly how to change things if
+necessary. For instance:
+
+\begin{compactitem}
+
+\item If we decide we don't want to check in that first set of
+\texttt{Cat.java} changes after all, we run the command ``\texttt{git reset
+HEAD Cat.java}'' to remove it from the purple diamond.
+
+\item If we want \textit{all} our changes in \texttt{Cat.java} to be committed
+(the old pre-\texttt{-git-add} ones and the newer ones), we do ``\texttt{git
+add Cat.java}'' which will update the purple diamond's copy to match the
+workspace.
+
+\item If we decide to actually ditch the \texttt{Cat.java} changes entirely,
+the command is ``\texttt{git checkout -{}- Cat.java}'' to discard them.
+(Notice the double-hyphen, and also the spaces on either side of it: it's a
+weird syntax but you have to use it.)
+
+\end{compactitem}
 
 \end{itemize}
 
+\subsection{Understanding \texttt{git log}}
 
+While \texttt{git status} is a detailed look at the present, ``\texttt{git
+log}'' is a detailed look at the \textit{past}. With it, we can see the time,
+author, and description of every change that's been made during our whole
+project.
 
+I personally find the default \texttt{git log} output pretty wordy. It uses
+multiple lines per commit, which to me is TMI and fills up my screen too
+quickly:
 
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+$ git log
+commit 928ab4924f1c5ddd3b9e2a1c7b507b1b60cf745d
+Author: Betty Lou <bettylou@umw.edu>
+Date:   2018-11-03
 
+    Fix NPE bug caused by multiple hairballs.
+
+commit 7813b199f40051df14b23a418bce37ccb51a986d
+Author: Filbert <filbert@umw.edu>
+Date:   2018-11-02
+
+    Add support for multiple, simultaneous hairballs.
+
+commit bdb0fa3071a220bfaccb0d687046e73873a6381d
+Author: Betty Lou <bettylou@umw.edu>
+Date:   2018-10-21
+
+    Make most setters private.
+
+commit e4471910b8d27c819e4e0df39804ab607cd16c5c
+Author: Jezebel <jezebel@umw.edu>
+Date:   2018-10-15
+
+    Add Cat.java, Hairball.java.
+\end{Verbatim}
+
+Notice that the entries are in reverse-chronological order (most recent at the
+top), which is what you want to get used to. Each five-line section represents
+one commit. The big hairy numbers immediately after the word \texttt{commit}
+are called the commit's \textbf{hash}. That just means that every commit has a
+unique number, randomly/automatically generated by \texttt{git}, so that you
+can unambiguously refer to it. (More on why to do this in a moment.)
+
+The \texttt{Author} and \texttt{Date} elements are self-explanatory, and the
+rest of the text is the actual message that the developer typed when doing the
+\texttt{git commit}.
+
+It turns out that \texttt{git} provides a great deal of fine-grained control
+over what this output looks like. (Right away, that tells you that people look
+at git logs a \textit{lot} and need them to be just the right format to
+quickly cull maximum information from them.) I like mine to be all on one
+line, and in color. To do this, I execute the line:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=none]
+$ git config --global format.pretty "(%h) %Cblue%an%Creset: %Cgreen%s %Creset(%ad)"
+\end{Verbatim}
+
+which looks bizarre, but there's a method to its madness. Each one of these
+control characters (starting with a ``\texttt{\%}") specifies a certain piece
+of information or formatting. The result, when I type \texttt{git log} is
+this:
+
+\definecolor{darkgreen}{rgb}{0,.65,0}
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\footnotesize,samepage=true,frame=single]
+$ git log
+(928ab49) \textcolor{blue}{Betty Lou}: \textcolor{darkgreen}{Fix NPE bug caused by multiple hairballs.} (2018-11-03)
+(7813b19) \textcolor{blue}{Filbert}: \textcolor{darkgreen}{Add support for multiple, simultaneous hairballs.} (2018-11-02)
+(bdb0fa3) \textcolor{blue}{Betty Lou}: \textcolor{darkgreen}{Make most setters private.} (2018-10-21)
+(e447191) \textcolor{blue}{Jezebel}: \textcolor{darkgreen}{Add Cat.java, Hairball.java.} (2018-10-15)
+\end{Verbatim}
+
+Easier on the eyes, IMO. Run the command ``\texttt{man git config}'' to see
+all the options. Btw, you may be wondering what good it does to only list the
+first few characters of the commit hash. It turns out that for most commands
+that use it, you only have to type the first few characters anyway (just
+enough to guarantee uniqueness) and the short version is waaaay easier to look
+at.
+
+\subsection{Comparing versions}
+
+A very common operation for a developer is to compare two versions (of the
+code base, or of a single file) to see what changed between them.
+Colloquially, comparing two versions of something is called ``\textbf{doing a
+diff},'' named after the Linux ``\texttt{diff}'' command. Here's my favorite
+way of comparing versions.
+
+First, make these changes to your \texttt{git} profile\footnote{By the way,
+any time you want to see \textit{all} of your \texttt{git} configuration
+settings, you can do so with the command ``\texttt{git config -e -{}-global}''.
+It will bring up all your settings in a text file for you to browse in
+\texttt{vim}. You can even edit this file directly to make changes to
+settings, although be very careful not to mistype anything. Stuff can go
+haywire if you do!}:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+$ git config --global merge.tool vimdiff
+$ git config --global diff.tool vimdiff
+$ git config --global difftool.prompt false
+\end{Verbatim}
+
+This tells \texttt{git} to use the ``\texttt{vimdiff}'' tool to do
+side-by-side comparisons. Then, ``\texttt{git difftool}'' is your principal
+way of bringing up a comparison. When you run it, you will get a somewhat
+strange-looking window that seems to be running \textit{two} copies of
+\texttt{vim}: one on the left and one on the right. All your \texttt{vim}
+positioning commands -- \texttt{h}, \texttt{j}, \texttt{k}, \texttt{l}, the
+arrow keys, \texttt{CTRL-U} and \texttt{CTRL-D}, even search with
+``\texttt{/}'' -- move the cursor around just as in normal \texttt{vim}. As
+you scroll up or down, both panes will scroll together. The changes from one
+version to another will appear in color so you can easily see what's changed
+between them. (Note that if there are long sequences of lines that were
+unchanged, sometimes \texttt{vimdiff} ``folds them up'' so that it's easier to
+skip over them.) 
+
+Don't attempt to use \texttt{vimdiff} to edit, though. If you're comparing two
+versions of a file and find a mistake, quit out of \texttt{vimdiff} and enter
+plain-ol' \texttt{vim} to fix it. (Incidentally, to quit \texttt{vimdiff} you
+have to enter ``\texttt{:q}'' \textit{twice}, once for each of the panes.
+Sometimes it's quicker to use the ``\texttt{:qa}'' (for ``quit all'') sequence
+instead.)
+
+So that's generally how \texttt{vimdiff} (which is triggered from \texttt{git
+difftool}) works. Now, how do you specify what versions of the files you want
+to compare?
+
+If you just type the command with no other arguments:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+$ git difftool
+\end{Verbatim}
+
+you'll be comparing \textit{your workspace} (yellow oval) against \textit{your
+staging area} (purple diamond). This shows you the things that you have
+changed \textit{since your last \texttt{git add}}. This is useful when asking,
+``I'm about to do a commit...have I forgotten anything I meant to include?''
+
+If you add the ``\texttt{-{}-staged}'' argument:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+$ git difftool --staged
+\end{Verbatim}
+
+you'll be comparing \textit{your staging area} (purple diamond) with the
+\textit{repo} (green box). This is useful when asking, ``if I do a commit
+right now, exactly what changes will be recorded?''
+
+Finally, to compare \textit{any two versions}, include the first few letters
+of the commit hash of each. For instance, this command:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+$ git difftool bdb0fa3 7813b19
+\end{Verbatim}
+
+will examine the changes Filbert made when he added multi-hairball support.
+(Refer to the commit hashes in the \texttt{git log} output, above.) The first
+hash identifies the commit Filbert was working with when he began making
+changes (\textit{i.e.}, the one he started with), and the second is the hash
+of the commit he himself made (the one he ended with). This process gives us
+fine-grained resolution in examining the past and identifying errors.
 
 \subsection{Using \texttt{git} with more than one human}
 
