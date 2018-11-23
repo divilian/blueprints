@@ -25,18 +25,19 @@ consider before reading further.)
 Here's my answer. It is certainly important to design and code things well so
 that your software product will be robust, flexible, and extensible for the
 long haul. But if you can only excel at one of the two above requirements, my
-advice is to make darn sure it's the first one. If you screw up the second
-one, you're going to have a bunch of pissed-off customers, and of course
-nobody wants that. Twitter and Facebook will light up with complaints about
-how your product is buggy, doesn't do what was advertised, has trouble
-integrating with other software, keeps missing release dates, and so forth.
-Yes, indeed that's a headache.
+advice is to make darn sure it's the first one.
+
+If you screw up the second one, you're going to have a bunch of pissed-off
+customers, and of course nobody wants that. Twitter and Facebook will light up
+with complaints about how your product is buggy, doesn't do what was
+advertised, has trouble integrating with other software, keeps missing release
+dates, and so forth. Yes, indeed that's a headache.
 
 But if you screw up the first one, you're going to have \textit{no} customers.
 And believe me, that's a lot worse. Your well-built, snazzy-looking, bug-free
 little product isn't going to get any airtime on social media because
-\textit{nobody cares}. It simply isn't something they find worth using, and so
-all the great engineering in the world isn't going to be of any use.
+\textit{nobody cares}. It simply isn't something people find worth using, and
+so all the great engineering in the world isn't going to be of any use.
 
 Incidentally, if there's lots of complaining on the Internet about how your
 product is buggy, that's actually a really nice situation to have. It means
@@ -47,17 +48,18 @@ have a market and a chance at a big success.
 
 Here's another thought experiment: why, if \#1 is the most important thing to
 get right, do we spend almost the entire Computer Science curriculum teaching
-students how to do \#2 well? Think about it: just about every course you've
-taken (and will ever take) involves some aspect of \#2.
+students how to do \#2 well? Think about it: just about every CPSC course
+you've taken (and will ever take) involves some aspect of \#2.
 
-I think the answer to this is multifold, but much of it comes down to the fact
-that \#1 is just harder to teach. It's certainly not as predictable as \#2.
-Not as much is known about it. For the various aspects of \#2, there are quite
-a few reliable and even quantifiable techniques that the Computer Science
-community has discovered and which have stood the test of time. If you follow
-best practices, you're going to end up building your code right. But knowing
-what program to write in the first place is a different realm entirely, and it
-requires a lot of intuition about people and their fickleness. 
+I think there are several answers to this, but much of it comes down to the
+fact that \#1 is just harder to teach. It's certainly not as predictable as
+\#2 is. Not as much is known about it. For the various aspects of \#2, there
+are quite a few reliable and even quantifiable techniques that the Computer
+Science community has discovered and which have stood the test of time. If you
+follow best practices, you're going to end up building your code right. But
+knowing what program to write in the first place is a different realm
+entirely, and it requires a lot of intuition about people and their
+fickleness. 
 
 Steve Jobs was a genius at \#1, and he had Steve Wozniak as his wingman doing
 \#2. When top engineers came and went at Apple, the company could survive the
@@ -67,7 +69,59 @@ wasn't there, though, you could sure see the difference.
 \section{Capturing requirements}
 
 This chapter is a brief foray into a different phase of the \textbf{software
-lifecycle} than you're used to studying.
+development lifecycle} than you're used to studying. A simplified picture of
+this process is given in Figure~\ref{fig:swDevCycle}. Each box represents an
+\textbf{artifact}, which as you may remember from p.~\pageref{artifact} means
+the tangible result of some software development process. The arrows between
+boxes are precisely those processes.
 
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth]{swDevCycle.pdf}
+\caption{A simplified depiction of the software development lifecycle.}
+\label{fig:swDevCycle}
+\end{figure}
+
+Any application starts with an \textbf{idea}, of course, which is ``something
+that could exist, but doesn't yet.'' For bite-size projects, one could set to
+work coding up the idea directly, dispensing with most of this diagram. But
+for larger projects this doesn't work very well. The first problem is that
+there is often not enough detail specified about ``the idea" yet to know what
+to build. The activity of \textbf{requirements formulation} is intended to
+remedy this situation. There have been various methodologies proposed for
+coaxing a more detailed description of what the proposed software is supposed
+to actually \textit{do}, one of which (Use Cases) is the subject of this
+chapter. Regardless of how they are elucidated, though, the result is some
+form of \textbf{requirements specification} (or ``req spec") as we first saw
+on p.\pageref{reqSpec}.
+
+Churning out a \textbf{design document} from a req spec is the subject of
+\textbf{design}, of course, which we covered in chapters \ref{design1} and
+\ref{design2}. The term ``\textbf{implementation}" is a fancy word for
+``coding," and means converting a design into a programming language like
+Java. The \textbf{testing} phase typically involves both \textbf{unit testing}
+and \textbf{system testing}, which work at different levels of granularity to
+ensure that each individual software component works according to its
+specification, and that the system as a whole does. Finally,
+\textbf{deploying} the product to the user base is the culmination of a
+release cycle, and is usually cause for much celebration (and sometimes,
+alcohol.)
+
+As I indicated, Figure~\ref{fig:swDevCycle} is simplified to the point of
+being na\"{i}ve. For one thing, in a real life software process the various
+phases loop back upon each other: you always learn things in one phase (say,
+design) that make you go back and revise the work in an earlier phase (say,
+requirements formulation). Also, it's rare that an entire, fully-functional
+system gets built in just one execution of this step-by-step chain. Today's
+software teams \textbf{iterate} through this process, or portions thereof,
+multiple times as they converge on a fully-implemented product. 
+
+For now, though, this diagram suffices for our needs. My only real motive for
+showing it to you is to help you mentally place this chapter's content in the
+proper overall position. \textit{This chapter is about the
+\textbf{requirements formulation} phase of the process.} Unlike everything
+else we've discussed, we're not writing code here, or even figuring out a UML
+design. We're simply describing \textbf{what} our object-oriented program
+needs to do, when it is ultimately built.
 
 
