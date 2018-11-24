@@ -11,12 +11,12 @@ need to do two important things:
 \item Build the thing right.
 \end{compactenum}
 
-By the first of these requirements, I mean you have to create a product that
-actually helps people, that truly meets a need, lessens some pain, scratches
-an itch, or makes their life better in some way. The second one means you have
-to engineer it well: to make it efficient and proficient, with an elegant
-design that is easily maintainable, reasonably bug-free, and adaptable to
-future technology changes.
+By the first of these items, I mean you have to create a product that actually
+helps people, that truly meets a need, lessens some pain, scratches an itch,
+or makes their life better in some way. The second one means you have to
+engineer it well: to make it efficient and proficient, with an elegant design
+that is easily maintainable, reasonably bug-free, and adaptable to future
+technology changes.
 
 Thought experiment: if your project team could only manage to do well at
 \textit{one} of these activities, which would you choose? (Take a moment and
@@ -24,8 +24,8 @@ consider before reading further.)
 
 Here's my answer. It is certainly important to design and code things well so
 that your software product will be robust, flexible, and extensible for the
-long haul. But if you can only excel at one of the two above requirements, my
-advice is to make darn sure it's the first one.
+long haul. But if you can only excel at one of the two above items, my advice
+is to make darn sure it's the first one.
 
 Here's why. If you screw up the second one, you're going to have a bunch of
 pissed-off customers, and of course nobody wants that. Twitter and Facebook
@@ -91,14 +91,20 @@ Any application starts with an \textbf{idea}, of course, which is ``something
 that could exist, but doesn't yet.'' For bite-size projects, one could set to
 work coding up the idea directly, dispensing with most of this diagram. But
 for larger projects this doesn't work very well. The first problem is that
-there is often not enough detail specified about ``the idea" yet to know what
-to build. The activity of \textbf{requirements formulation} is intended to
-remedy this situation. There have been various methodologies proposed for
-coaxing a more detailed description of what the proposed software is supposed
-to actually \textit{do}, one of which (Use Cases) is the subject of this
-chapter. Regardless of how they are elucidated, though, the result is some
-form of \textbf{requirements specification} (or ``req spec") as we first saw
-on p.\pageref{reqSpec}.
+there is often not enough detail specified about ``the idea'' yet to know how
+to proceed. In other words, the design team doesn't yet fully know what the
+\textbf{requirements}\footnote{``\textbf{Requirement}'' is just a loose term
+for ``something the proposed software system is \textit{required} to do.''
+Whatever form they may ultimately take, ``the requirements'' spell out what
+the design team needs to know in order to build what's expected of them. The
+requirements are a sort of contract between the management and engineering
+teams.} are for the system they're being tasked to build. The activity of
+\textbf{requirements formulation} is intended to remedy this situation. There
+have been various methodologies proposed for coaxing a more detailed
+description of what the proposed software is supposed to actually \textit{do},
+one of which (Use Cases) is the subject of this chapter. Regardless of how
+they are elucidated, though, the result is some form of \textbf{requirements
+specification} (or ``req spec") as we first saw on p.\pageref{reqSpec}.
 
 Churning out a \textbf{design document} from a req spec is the subject of
 \textbf{design}, of course, which we covered in chapters \ref{design1} and
@@ -132,8 +138,7 @@ showing it to you is to help you mentally place this chapter's content in the
 proper overall position, namely:
 
 \begin{quote}
-\textit{This chapter is about the \textbf{requirements formulation} phase of
-the process.}
+\textit{This chapter concerns the \textbf{requirements formulation} phase.}
 \end{quote} 
 
 Unlike everything else we've discussed, we're not writing code here, or even
@@ -182,4 +187,86 @@ specify the ``what,'' leaving you, as the ``how'' person, with insufficient
 information about how you might proceed. A well-functioning organization is
 one where everyone understands and honors these boundaries and is thus able to
 carry out a complex task composed of many interlocking levels.
+
+
+\section{Use Cases}
+
+Use Cases are one methodology for capturing\footnote{``Capturing'' means
+``identifying and then precisely describing.''} requirements. Rather than
+describing the entire system in a block of text, as in our examples on
+p.~\pageref{blockRequirements1} and
+p.~\pageref{blockRequirements2}, we isolate and identify individual units of
+functionality that a user of the system has available to her, and describe
+each one. Each of these units of functionality is called a \textbf{use case}
+(pronounced ``YOOS case,'' not ``YUZE case.'')
+
+Here are some important terms:
+
+\begin{description}
+\item[Actor:] A role that a person plays when interacting with a system.
+\item[Use Case (UC):] A function of the system that yields a result of value to an
+Actor.
+\item[UC description:] A detailed specification of exactly what happens
+when the Actor executes the use case, including any important variants.
+\item[UC diagram:] A mostly-useless picture showing which Actors are
+intended to perform which UCs. Can be used to impress managers, and
+makes a good cover page.
+\end{description}
+
+You can see that I'm slightly cynical about that last item. Unlike other UML
+diagrams we've seen (class diagrams and sequence diagrams), a Use Case diagram
+contains \textit{almost zero information}. That's because the UC descriptions
+-- which are the important part of all this -- tell you everything the diagram
+tells you, and much more.
+
+For the record, though, Figure~\ref{fig:amazonUcDiag} presents a UC diagram
+for an online bookseller (like Amazon). The large rectangle represents the
+\textbf{system boundary}; in other words, the stuff inside the box is
+functionality present inside the software system being described. Actors are
+shown as stick figures, and UCs as ovals. A line from the former to the latter
+means ``a person acting as this role can execute this use case.'' The
+``«uses»'' arrows (with an open-triangle, like inheritance on a UML class
+diagram) indicate a sort of ``subroutine'' relationship: in this case, the use
+case ``Buy book'' will entail running the ``Add item to card,'' ``Checkout,''
+and ``Update inventory'' use cases.
+
+\begin{figure}
+\centering
+\includegraphics[width=1.1\textwidth]{amazonUcDiag.pdf}
+\caption{A Use Case diagram for an online bookseller.}
+\label{fig:amazonUcDiag}
+\end{figure}
+
+\subsubsection{About actors}
+
+There's a couple things worth mentioning about Actors. For one, different
+actors can sometimes execute the same UC. In our diagram, both the Anonymous
+User and Registered User actors can ``Search for books,'' and both the
+Registered User and the Critic can ``Login.'' This is clear from the diagram,
+and easy enough to understand. The second thing worth mentioning, however, is
+not explicit on the diagram, but is equally important: \textbf{an actor is a
+\textit{role} that a person may play, not the person herself.}
+
+What I mean is this. Someone might look at Figure~\ref{fig:amazonUcDiag} and
+say, ``wait a minute -- mightn't a Critic who writes book reviews also
+sometimes buy books on the site? Isn't it limiting to disallow Critics from
+buying books?'' The answer is: the same human being may indeed sometimes
+review books, and sometimes buy books. But \textit{she is acting in different
+roles when she does so.} When this person writes a book review, she is in the
+role of a ``Critic'' actor; when she makes a purchase, she is acting as a
+``Registered User'' actor. So the Actors simply represent the various
+different capacities in which human beings can act as they use the system.
+There is certainly nothing preventing a person from embodying different roles
+at different times.
+
+\subsection{UC descriptions}
+
+I mentioned that UC \textit{diagrams} are almost completely worthless. Their
+main value-add in my experience is simply to look pretty and make a
+nice-looking cover sheet for your Use Case model. But make no mistake, the
+real work of the requirements phase -- and the important information -- is
+found in the \textbf{Use Case description}s.
+
+
+
 
