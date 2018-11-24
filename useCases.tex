@@ -12,11 +12,11 @@ need to do two important things:
 \end{compactenum}
 
 By the first of these requirements, I mean you have to create a product that
-actually helps people, that truly meets a need, lessens a pain, scratches an
-itch, or makes their life better in some way. The second one means you have to
-engineer it well: to make it efficient and proficient, with an elegant design
-that is easily maintainable, reasonably bug-free, and compatible with future
-technology changes in a fairly painless way.
+actually helps people, that truly meets a need, lessens some pain, scratches
+an itch, or makes their life better in some way. The second one means you have
+to engineer it well: to make it efficient and proficient, with an elegant
+design that is easily maintainable, reasonably bug-free, and adaptable to
+future technology changes.
 
 Thought experiment: if your project team could only manage to do well at
 \textit{one} of these activities, which would you choose? (Take a moment and
@@ -27,11 +27,11 @@ that your software product will be robust, flexible, and extensible for the
 long haul. But if you can only excel at one of the two above requirements, my
 advice is to make darn sure it's the first one.
 
-If you screw up the second one, you're going to have a bunch of pissed-off
-customers, and of course nobody wants that. Twitter and Facebook will light up
-with complaints about how your product is buggy, doesn't do what was
-advertised, has trouble integrating with other software, keeps missing release
-dates, and so forth. Yes, indeed that's a headache.
+Here's why. If you screw up the second one, you're going to have a bunch of
+pissed-off customers, and of course nobody wants that. Twitter and Facebook
+will light up with complaints about how your product is buggy, doesn't do what
+was advertised, has trouble integrating with other software, keeps missing
+release dates, and so forth. And yes, that can indeed be a headache.
 
 But if you screw up the first one, you're going to have \textit{no} customers.
 And believe me, that's a lot worse. Your well-built, snazzy-looking, bug-free
@@ -68,12 +68,17 @@ wasn't there, though, you could sure see the difference.
 
 \section{Capturing requirements}
 
-This chapter is a brief foray into a different phase of the \textbf{software
-development lifecycle} than you're used to studying. A simplified picture of
-this process is given in Figure~\ref{fig:swDevCycle}. Each box represents an
-\textbf{artifact}, which as you may remember from p.~\pageref{artifact} means
-the tangible result of some software development process. The arrows between
-boxes are precisely those processes.
+This chapter is a brief look at \#1. It's a different phase of the
+\textbf{software development lifecycle} than you're used to focusing on. A
+simplified picture of this lifecycle is given in Figure~\ref{fig:swDevCycle}.
+Each box represents an \textbf{artifact}, which as you may remember
+(p.~\pageref{artifact}) means the tangible result of some software development
+activity. The arrows between boxes are labeled with those activities, or
+``processes.'' During the time that your development team is working on a
+particular process (sometimes called ``being in a particular \textbf{phase}'')
+they are focused on producing the artifact at the end of the arrowhead. That
+artifact will capture the result of their thinking in a tangible form, where
+it can then be the input to the next phase.
 
 \begin{figure}
 \centering
@@ -97,15 +102,14 @@ on p.\pageref{reqSpec}.
 
 Churning out a \textbf{design document} from a req spec is the subject of
 \textbf{design}, of course, which we covered in chapters \ref{design1} and
-\ref{design2}. The term ``\textbf{implementation}" is a fancy word for
-``coding," and means converting a design into a programming language like
-Java. The \textbf{testing} phase typically involves both \textbf{unit testing}
-and \textbf{system testing}, which work at different levels of granularity to
-ensure that each individual software component works according to its
-specification, and that the system as a whole does. Finally,
-\textbf{deploying} the product to the user base is the culmination of a
-release cycle, and is usually cause for much celebration (and sometimes,
-alcohol.)
+\ref{design2}. The term ``\textbf{implementation}'' is a fancy word for
+``coding'' in a programming language like Java. The \textbf{testing} phase
+typically involves both \textbf{unit testing} and \textbf{system testing},
+which work at different levels of granularity to ensure that each individual
+software component works according to its specification, and that the system
+as a whole does. Finally, \textbf{deploying} the product to the user base is
+the culmination of a release cycle, and is usually cause for much celebration
+(and sometimes, alcohol.)
 
 As I indicated, Figure~\ref{fig:swDevCycle} is simplified to the point of
 being na\"{i}ve. For one thing, in a real life software process the various
@@ -114,14 +118,68 @@ design) that make you go back and revise the work in an earlier phase (say,
 requirements formulation). Also, it's rare that an entire, fully-functional
 system gets built in just one execution of this step-by-step chain. Today's
 software teams \textbf{iterate} through this process, or portions thereof,
-multiple times as they converge on a fully-implemented product. 
+multiple times as they converge on a fully-implemented product. Moreover,
+larger projects have different groups of people working on different parts of
+the lifecycle: a ``requirements team'' with input from marketing, a ``design
+team'' led by an architect that focuses on strategic implementation concerns,
+a ``programming team'' to actually write the code, ``test teams'' and ``QA
+(quality assurance) teams'' to handle the last few phases, \textit{etc.}
+Figure~\ref{fig:swDevCycle} is really a caricature of the necessary phases,
+and one simple way they might fit together.
 
-For now, though, this diagram suffices for our needs. My only real motive for
+For now, though, the diagram suffices for our needs. My only real motive for
 showing it to you is to help you mentally place this chapter's content in the
-proper overall position. \textit{This chapter is about the
-\textbf{requirements formulation} phase of the process.} Unlike everything
-else we've discussed, we're not writing code here, or even figuring out a UML
-design. We're simply describing \textbf{what} our object-oriented program
-needs to do, when it is ultimately built.
+proper overall position, namely:
 
+\begin{quote}
+\textit{This chapter is about the \textbf{requirements formulation} phase of
+the process.}
+\end{quote} 
+
+Unlike everything else we've discussed, we're not writing code here, or even
+figuring out a UML design. We're simply describing \textbf{what} our
+object-oriented program needs to do, when it is ultimately built.
+
+\subsection{``What'' vs. ``how''}
+
+The dichotomy between ``what'' and ``how'' runs deep through human thought,
+well beyond just software development. Think of a military hierarchy in
+wartime. The general may decide that \textbf{what} needs to happen in a
+particular campaign is to cut off enemy access to a water source, and focus
+troops in the western flatter region where the enemy is vulnerable. The
+Lieutenant Generals who work under him, however, need to take those ``whats''
+and figure out ``\textbf{how}'' to make each of them happen. The Lt.~Gen.
+assigned to the water source task may decide that a quiet amphibious landing
+upstream from the source, simultaneously with a small group of shock troops at
+water's edge as a distraction, is just the ticket. So that's \textbf{what}
+this Lt.~Gen. decides to do. Each of his or her Colonels then need to unpack
+those overarching plans to the next level and decide \textbf{how} to implement
+them. And so forth. Every level of the hierarchy is a ``what'' for the
+higher-up and a ``how'' for the underling. The same phenomenon is seen in the
+Org Chart for a business, a government agency, a sports team, or even a
+family.
+
+Another pair of terms for this phenomenon are \textbf{strategy} and
+\textbf{tactics}. Think of ``strategy'' as the ``what,'' and ``tactics'' as
+the ``how.'' To continue the military analogy: sending a group of aircraft to
+intercept an incoming bomber squadron might be considered a \textit{strategic}
+decision. One of those aircraft banking left and then gaining altitude in a
+flanking maneuver, however, is a \textit{tactical} move. And this dichotomy
+persists throughout all levels of the plan: something that's a ``what'' to a
+major becomes a ``how'' for his captain to solve, and ``what'' his captain
+decides gets fleshed out in ``how'' his lieutenants decide to operationalize
+it, \textit{etc.}
+
+By the way, you'll sometimes hear people complain about
+``\textbf{micromanaging}.'' Here's my definition of the term: when someone
+``above'' you in the hierarchy is supposed to tell you \textbf{what} to do,
+but instead starts telling you \textbf{how} to do it, they're micromanaging
+you. It's a chafing feeling, and can quickly lead to resentment, because your
+colleague is really overstepping their bounds. They should be outlining what
+the requirements of the task are, and deferring to you on how specifically to
+make that happen. On the other extreme are managers who fail to completely
+specify the ``what,'' leaving you, as the ``how'' person, with insufficient
+information about how you might proceed. A well-functioning organization is
+one where everyone understands and honors these boundaries and is thus able to
+carry out a complex task composed of many interlocking levels.
 
