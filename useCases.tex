@@ -104,7 +104,7 @@ have been various methodologies proposed for coaxing a more detailed
 description of what the proposed software is supposed to actually \textit{do},
 one of which (Use Cases) is the subject of this chapter. Regardless of how
 they are elucidated, though, the result is some form of \textbf{requirements
-specification} (or ``req spec") as we first saw on p.\pageref{reqSpec}.
+specification} (or ``req spec'') as we first saw on p.\pageref{reqSpec}.
 
 Churning out a \textbf{design document} from a req spec is the subject of
 \textbf{design}, of course, which we covered in chapters \ref{design1} and
@@ -225,7 +225,7 @@ for an online bookseller (like Amazon). The large rectangle represents the
 functionality present inside the software system being described. Actors are
 shown as stick figures, and UCs as ovals. A line from the former to the latter
 means ``a person acting as this role can execute this use case.'' The
-``«uses»'' arrows (with an open-triangle, like inheritance on a UML class
+``$<<$uses$>>$'' arrows (with an open-triangle, like inheritance on a UML class
 diagram) indicate a sort of ``subroutine'' relationship: in this case, the use
 case ``Buy book'' will entail running the ``Add item to card,'' ``Checkout,''
 and ``Update inventory'' use cases.
@@ -263,10 +263,306 @@ at different times.
 
 I mentioned that UC \textit{diagrams} are almost completely worthless. Their
 main value-add in my experience is simply to look pretty and make a
-nice-looking cover sheet for your Use Case model. But make no mistake, the
-real work of the requirements phase -- and the important information -- is
-found in the \textbf{Use Case description}s.
+nice-looking cover sheet for your Use Case model. Make no mistake, the real
+work of the requirements phase -- and the important information it reveals --
+is found in the \textbf{Use Case description}s.
+
+Each UC has a written description that narrates exactly how the actor and the
+system interact when that function is carried out. Often a requirements team
+will use a Use Case \textbf{template}, which is nothing more than a form with
+required fields to fill in. If you Google for Use Case templates, you'll find
+a zillion of them, most of them far too complex (IMO). Here's the one I like
+to use:
+
+\begin{center}
+\fbox{\parbox{.70\textwidth}{
+\textsf{Name:}\\
+\textsf{Synopsis:}\\
+\textsf{Actors:}\\
+\textsf{Precondition(s):}\\
+\textsf{Sunny Day flow:}
+
+\quad \quad \textsf{1.}
+
+\quad \quad \textsf{2.}
+
+\quad \quad \textsf{3.}
+
+\textsf{Rainy Day \#1 flow:}
+
+\quad \quad \textsf{1.}
+
+\quad \quad \textsf{2.}
+
+\quad \quad \textsf{3.}
+
+\textsf{Rainy Day \#2 flow:}
+
+\quad \quad \textsf{1.}
+
+\quad \quad \textsf{2.}
+
+\quad \quad \textsf{3.}
+}}
+\end{center}
+
+Here's what goes in each field:
+\vspace{-.1in}
+
+\begin{description}
+\item[Name:] The UC's name. Use Cases should always be \textbf{verb phrases},
+never nouns or other parts of speech. They're titled according to
+\textit{something the actor does.}
+\item[Synopsis:] A concise (one-or-two sentence) description of the function.
+This is mostly necessary so that when someone's flipping through a stack of UC
+descriptions, they can quickly orient themselves and find the one(s) they're
+looking for.
+\item[Actors:] The names of the Actors who are intended to use this
+functionality.
+\item[Precondition(s):] A short list of assumptions that \textit{must be true}
+before this UC can even apply. This helps orient the reader as to where in the
+grand scheme of things this functionality is expected to take place.
+\item[Sunny Day flow:] Each of a UC's ``flows'' is a step-by-step narrative of
+what takes place. The ``Sunny Day'' flow (also sometimes called the ``primary
+flow'') describes what happens \textit{when all goes as expected}. There is
+almost always only \textit{one} Sunny Day flow, because there's typically only
+one ``way'' things can go right.
+\item[Rainy Day flow(s):] The Rainy Day flows explain exceptional conditions
+or errors; in other words, what the system should do when things
+\textit{don't} go as expected. There are often several Rainy Day flows, since
+there's often several different ways things can go wrong.
+\end{description}
+
+Figure~\ref{fig:registerUC} gives an example Use Case description for the
+``Register'' UC mentioned before. Note especially the level of detail
+provided. The description avoids mentioning User Interface specifics (like
+where the button is positioned, or what color it is) but it does specify
+visual details \textit{where they impact the functionality}, such as ``dummy
+characters'' in the password. The line between specifying too little and
+specifying too much is admittedly a bit fuzzy at times, and every development
+team settles on their own preferred practices.
+
+The general rule is: the UC flows must be specified in enough detail that the
+design \& programming teams know \textit{what} they're supposed to make the
+system do. Inevitably there will be details that the implementers have to
+supply themselves, but the goal is to keep this to a minimum. The UC
+descriptions, in essence, form a \textbf{contract} between the requirements
+and design/programming teams.
+
+Note also the pointers embedded in the flows: ``See Rainy Day \#1,'' ``Include
+Login,'' and ``Go to Sunny Day step 3.'' These mean just what you think they
+mean. The first and the last of this triad direct the reader to jump to a
+different step. The second one refers to another Use Case entirely, specifying
+that when this UC ends, the appropriate next experience for the actor is the
+Login UC's sunny day flow.
+
+\begin{figure}
+\begin{center}
+\fbox{\parbox{.85\textwidth}{
+\textsf{Name: Register}\\
+\textsf{Synopsis: An anonymous user creates a unique identity with the system,
+to be used to identify this user in this and future sessions.}\\
+\textsf{Actors: Anonymous User}\\
+\textsf{Precondition(s): The user is not logged on.}\\
+\textsf{Sunny Day flow:}
+\begin{compactenum}
+\item \textsf{From the main bookseller.com home page, a ``Create login''
+button is visible.}
+\item \textsf{The user clicks this button.}
+\item \textsf{The user is presented with a ``create a user id'' page, and is instructed to
+enter (and re-enter, for accuracy) their e-mail address and password.}
+\item \textsf{The user enters their e-mail address and password, re-typing their e-mail
+address a second time to ensure accuracy. (See Rainy Day \#1.) When entering
+text in the password field, a dummy character appears for each keystroke
+rather than the actual character pressed.}
+\item \textsf{The system presents a ``successful registration'' page. $<$Include
+Login$>$}
+\end{compactenum}
+
+\textsf{Rainy Day \#1}
+\begin{compactenum}
+
+\item \textsf{
+If the e-mail addresses do not match, the system presents a message indicating
+this, and prompts again for e-mail address and password. $<$Go to Sunny Day step
+3.$>$}
+\end{compactenum}
+
+}}
+\end{center}
+\caption{A sample Use Case description.}
+\label{fig:registerUC}
+\end{figure}
+
+\subsection{Tips for good Use Case descriptions}
+
+The most important general rule for Use Case descriptions, as with all other
+documentation, is this: \textbf{spend time writing useful information, not
+doing busy work.} A lot of students find writing Use Cases a drag, because
+they think they need to force themselves to write a bunch of text documenting
+what's obvious anyway. Don't do that. Documentation is expensive (in terms of
+person-hours) to write, to read, and to maintain. So don't over-generate it.
+Make all your documentation crisp, information-rich, and to the point. Make it
+as long as it needs to be, but no longer.
+
+Here are some other guidelines:
+
+\begin{compactitem}
+\item Never use the name of a class, method, or variable in a UC description.
+Remember: UCs are for requirements, not design or implementation.
+\item Avoid phrases like ``\textit{etc.},'' ``for example,'' and ``and so
+on.'' Those are almost always indicators that you are postponing making
+important requirements-level decisions until the design phase. The requirement
+phase is where you want to nail those down. (I remember a student team who was
+working on a social network project, and in one of their Use Cases they wrote,
+``the user's profile is displayed, containing their username, password,
+hobbies, relationship status, \textit{etc.}'' I told them, ``the design team
+-- who you'll be passing these requirements on to -- doesn't know how to write
+code for `\textit{etc.}'!'')
+\item Make your Use Case descriptions only as long and as detailed as they
+need to be, no more. (And this will vary widely between Use Cases.)
+\item Focus on the user's \textit{intent}. Why is she using this
+functionality? What benefit does she gain?
+\item Identify, and be explicit about, what information is passed back and
+forth between the user and the system.
+\item Note that Rainy Day flows must specify \textit{what the system is
+supposed to do} in each exceptional case, not just \textit{that} an
+exceptional case may happen. (For example, it is not sufficient for a Rainy
+Day flow to say, ``Rainy Day \#1: the two passwords the user typed don't
+match. End of Rainy Day \#1.'' It's true that you have identified a possible
+error case that might occur. But the purpose of the Rainy Day flow is to tell
+the implementation team how they should \textit{handle} that case.
+\end{compactitem}
+
+\section{A more complex example}
+
+I'll end this chapter with one more Use Case description that isn't quite as
+obvious as the ``Register'' example. This one is for a text-based adventure
+game like the classic \textit{Zork} games of the 1980's. Players type text
+commands (like ``north'' or ``take pickaxe'' or ``examine painting'') to
+specify what action they want to take in a virtual world, and read
+descriptions of the rooms, items, and other things they encounter.
+
+\pagebreak
+Figure~\ref{fig:duelUCUnder} gives a \textbf{\textit{bad}} Use Case
+description for a combat scenario. It is bad because it is underspecified:
+many questions will remain in the minds of the design \& implementation teams
+after reading this puzzling description. I claim that
+Figure~\ref{fig:duelUCGood}, on the other hand, adequately tells the reader
+what the system should do, in sufficient detail so as to be implementable.
+See if you agree.
+
+\definecolor{darkred}{rgb}{.75,0,0}
+
+\begin{figure}
+\begin{center}
+\small
+\fbox{\parbox{.85\textwidth}{
+\textsf{\textbf{Name:} Duel with monster}
+
+\vspace{.05in}
+\textsf{\textbf{Synopsis:} A combat sequence is initiated between the player
+and one hostile NPC (non-player character) in the current room.}
+
+\vspace{.05in}
+\textsf{\textbf{Actor:} Player}
+
+\vspace{.05in}
+\textsf{\textbf{Sunny Day flow:}}
+\begin{compactenum}
+\item \textsf{The player begins the combat by attacking the monster.}
+\textbf{\textit{\color{darkred}How does the player do this? What command(s) will trigger a combat?}}
+\item \textsf{Either the adventurer or the monster is victorious, based on the
+combatants' levels, strength scores, and weapons.}
+\textbf{\textit{\color{darkred}How is this
+decided? How are the various statistics combined to determine a winner? Is
+there any randomness involved? Is the entire combat resolved in a single step,
+or are there multiple attacks before a death?}}
+\item \textsf{The player can attempt to exit the combat at any time by typing
+``\texttt{flee}.''} \textbf{\textit{\color{darkred}The phrase ``at any time'' implies the
+action is ongoing, with punctuated intervals. But this is not explained. The
+word ``attempt'' suggests that the flee attempt might not be successful. How
+is this determined?}}
+\item \textsf{If the adventurer dies, the game ends.}
+\textbf{\textit{\color{darkred}What does the user experience here? Is there an option to restart at a previous save point? Is there an exit message? Does the system just crash?}}
+\item \textsf{If the monster dies, the system prints an appropriate message
+and the player scores points for the combat.} \textbf{\textit{\color{darkred}What is the message? How many points? Are they told that they scored a certain number of points, or is this just present in their total the next time they ask for their score?}}
+\end{compactenum}
+}}
+\end{center}
+\caption{A \textbf{bad} (underspecified) UC description for the combat Use
+Case, with {\color{darkred} \textbf{\textit{unresolved questions}}}.}
+\label{fig:duelUCUnder}
+\end{figure}
 
 
+\begin{figure}
+\begin{center}
+\small
+\fbox{\parbox{.85\textwidth}{
+\textsf{\textbf{Name:} Duel with monster}
 
+\vspace{.05in}
+\textsf{\textbf{Synopsis:} A combat sequence is initiated between the player
+and one hostile NPC (non-player character) in the current room.}
+
+\vspace{.05in}
+\textsf{\textbf{Actor:} Player}
+
+\vspace{.05in}
+\textsf{\textbf{Preconditions:} The player is currently in a room with an NPC who is
+``hostile'' (as opposed to ``friendly.'') The NPC is currently still alive --
+\textit{i.e.}, its ``number of wounds'' is less than 3. The player is in
+possession of an item which has an attack event associated with one of its
+item-specific commands.}
+
+\vspace{.05in}
+\textsf{\textbf{Sunny Day flow:}}
+\begin{compactenum}
+\item \textsf{The player begins the combat by attacking the monster.}
+\item \textsf{With equal probability, the system randomly decides which party
+will be successful in the attack: the adventurer, or the NPC.}
+    \begin{compactitem}
+    \itemsep.1em
+    \item \textsf{If the player is chosen, one of the following colorful
+messages is displayed: ``\texttt{you hit the nameOfNPC!}'' or ``\texttt{the
+nameOfNPC is wounded!}'' The NPC's number of wounds is incremented by 1.}
+    \item \textsf{If the NPC is chosen, one of the following colorful messages
+is displayed: ``\texttt{the nameOfNPC sneaks in an attack!}'' or
+``\texttt{pain rushes through your body!}'' The adventurer's number of wounds
+is incremented by 1.}
+    \end{compactitem}
+\item \textsf{If neither the adventurer's nor NPC's number of wounds is equal
+to 3, the player can attack again (return to step 1) or issue another command
+instead. In the latter case, the wound counts remain for both adventurer and
+NPC (they are not reset back to 0).}
+\item \textsf{If the adventurer's wound count is equal to 3, the system prints
+``\texttt{thou art slain!}'' Go to $<$Finish game$>$.}
+\item \textsf{If the NPC's wound count is equal to 3, the system prints
+``\texttt{the nameOfNPC is dead!}'' A new item called ``nameOfNPCCorpse'' is
+now present in the
+room. The adventurer's score is increased by 20.}
+\end{compactenum}
+\vspace{.05in}
+\textsf{\textbf{Rainy Day \#1 flow:}}
+\begin{compactenum}
+\item \textsf{The player terminates the combat by entering a command other
+than an item-specific command associated with an attack event.}
+\item \textsf{In this case, play resumes as though the adventurer had never
+entered combat -- any legal command can be entered with its usual effect. The
+wound counts of both combatants, however, are maintained indefinitely.}
+\end{compactenum}
+\textsf{\textbf{Rainy Day \#2 flow:}}
+\begin{compactenum}
+\item \textsf{The player attempts to surrender to the monster by typing
+``\texttt{surrender}.''}
+\item \textsf{The attempt to surrender is denied. The system prints the
+message ``\texttt{nameOfNPC takes no prisoners!}'' and the adventurer dies.
+(Go to Sunny Day step 4.)}
+\end{compactenum}
+}}
+\end{center}
+\caption{A \textbf{good} UC description for the combat Use Case.}
+\label{fig:duelUCGood}
+\end{figure}
 
