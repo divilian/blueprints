@@ -1,0 +1,28 @@
+
+Fiddly
+------
+Rename all chapters "vanilla."
+Change closing quotes to curlies.
+High-res graphics.
+
+Substantive
+-----------
+Ian's "why learn CLI?"
+Embedded "TODOs".
+Software crisis / encapsulation chapter.
+Persistence/hydration chapter.
+In second inheritance chapter, do Pokemon example and define instanceof and
+    polymorphism.
+Move "Exceptions" to separate chapter, and explain stack traces.
+Second design chapter.
+Design pattern chapters:
+    - Decorator
+    - Strategy
+    - Iterator
+    - Observer
+    - Template Method
+
+Down the road
+-------------
+Preface.
+Exercises.
