@@ -6,7 +6,6 @@ High-res graphics.
 
 Substantive
 -----------
-Ian's "why learn CLI?"
 Embedded "TODOs".
 Software crisis / encapsulation chapter.
 Persistence/hydration chapter.

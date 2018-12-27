@@ -4,16 +4,118 @@
 
 Before we begin our study of object-oriented systems proper, we'll introduce
 the command-line toolset we'll be using to construct our programs. We'll take
-each of the most important tools out of the toolbox and lay them down before
-us on a little mat, and learn what they're for.
+each of the most important tools out of our toolbox, lay them out before us on
+a little mat, and learn what they're for.
 
-\section{Why CLI is worthwhile to learn and very much a cutting-edge practice}
+\section{Why the command line?}
 
-Insert stuff from Ian here.
+Developing software in a command-line environment (sometimes abbreviated
+``CLI'' for \textbf{command-line interface}, as opposed to a
+``GUI\footnote{Commonly pronounced ``gooey.''}'' or \textbf{graphical user
+interface}) involves typing white text in little black boxes. It requires
+memorizing and regurgitating a variety of obscure commands. It demands exact
+adherence to an inconsistent syntax, and exacts heavy penalties for mistakes,
+all while providing only a very crude and clunky-looking interface.
+
+It's natural to wonder why we would want to do this. After all, aren't
+computer systems immeasurably more sophisticated now? If even end users run
+fancy, graphical, forgiving apps, shouldn't computer scientists expect even
+easier-to-use and sexier-looking stuff?
+
+It may seem so, and in terms of the \textit{power} the tools provide, we'll
+discover that indeed software developers are aptly equipped. But in some ways
+it's a false expectation to assume that our toolset would be as \textit{easy}
+to operate as that of an everyday user. After all, which is easier: to drive a
+car, or to be a mechanic? Even though I enjoy cruise control and
+auto-adjusting seats, I don't find it strange at all to learn that mechanics
+still use socket wrenches to adjust piston assemblies.
+
+Much of what makes a CLI so powerful is its expressiveness. A driver can press
+any of the three or four cruise control functions the manufacturer provided.
+But a mechanic can take any of hundreds of tools, tweak dozens of different
+parts, and combine these adjustments in uncountable ways. That's the kind of 
+flexibility the command line provides.
+
+The difference between a CLI and a GUI is that with the latter, the user can
+essentially do \textit{only what the tool designer anticipated she would want
+to do.} There's no way she can express something that isn't one of the
+tailor-made menu options.
+
+When you use the command line, think of it as composing sentences, word by
+word. A GUI comes with a repertoire of standard sentences you can choose from.
+That makes it easy to do standard things, and hard to make silly mistakes. But
+a CLI, being inherently language-based, is immeasurably more flexible. You can
+write any (legal, grammatically correct) sentence you choose, even one the
+designers of the CLI never thought of, and even one that you didn't know you'd
+want to type until a moment ago. The bits and pieces can be combined in a
+myriad of ways, just as nouns and verbs can.
+
+There are other reasons as well that many developers live on the command line.
+Among them are\footnote{Thanks to Ian Finlayson for capturing much of this
+list.}:
+
+\begin{itemize}
+\itemsep.1em
+
+\item \textbf{Speed.} It turns out to be way, way faster to type commands --
+in combination with the various shortcuts and recall/edit operations -- than
+it is to sift through menu options and such with a mouse. Trust me.
+
+\item \textbf{Remote access.} When you're running programs on your own device,
+it's possible to do it with a GUI. But computer scientists very often have to
+connect over the network to distant machines in order to tell them what to do.
+Every time you need to configure a web server, for instance, or update a
+publicly-accessible database, or run a time-consuming job on a parallel
+cluster, or correct the data on your mobile device, you need a way to issue
+commands to another machine through a very low-bandwidth channel. Opening a
+command line ``shell'' to that remote device is by far the most common and
+effective way to do this.
+
+\item \textbf{Scriptability.} There's just no good way to automate a sequence
+of GUI operations. To explain to someone else how to accomplish something, you
+have to painfully walk them through each operation (``go to the Start menu and
+find Accessories, then in the Math menu choose Calculator...when it comes up,
+right-click in the background and enable Advanced Options...'') which is
+tedious and error-prone. It'd be nice if you could just send them a custom
+command which would do all that. As a matter of fact, it would be nice if
+\textit{you} could make a custom command which would do all that, so that you
+could execute it many times without rehashing the same rigmarole. You'll find
+that CLIs are eminently automatable in this way. You can create custom
+commands called ``scripts'' that are combinations of other interacting
+commands, and in this way you become master of your whole world.
+
+\item \textbf{Consistency.} Graphical user interfaces are more different from
+each other than CLIs are. Partly this is because nearly any CLI you're likely
+to use is Unix/Linux-based\footnote{For our purposes, you can consider the
+terms ``Unix'' and ``Linux'' exact synonyms. The Mac OS X command line
+(available through the ``Terminal'' app) is Unix-based, too. Windows machines
+aren't, but programs like ``Cygwin'' can be downloaded for free and provide a
+Linux-like command-line veneer over the operating system.}, and hence they all
+``speak the same language.'' It's great to be able to log on to different
+laptops, web servers, your phone, your Kindle, or a Raspberry Pi and get the
+same prompt that understands the same stuff.
+
+\item \textbf{Stability.} CLIs rarely change. When they do, it's very very
+rarely in a non-backwards-compatible way. Every time a new graphical user
+interface is released, you have to go through a period of hunting around and
+finding out where everything is. With Unix/Linux, you can literally run
+commands that were written last century and they will likely still work as is.
+
+\end{itemize}
+
+There's always a few students who despite the above benefits, resist learning
+this material at first. I get it. It's like learning a new language, and the
+immense effort to understand an alien world sure doesn't feel like it's going
+to pay off any time soon. All I can say is that if you're not convinced it's
+worth it, for now just think of it as something you have to master ``just
+because your professor and the industry says so.'' My hope is that by the end
+of this course, you're pleasantly surprised by seeing some payoff for your
+hard work.
+
 
 \section{The filesystem}
 
-The backdrop for all our use of the Linux command-line interface is the
+Okay. The backdrop for all our use of the Linux command-line interface is the
 \textbf{filesystem}.\footnote{Often, not always, written as a single word as I
 have it here.} Any general-purpose computer, no matter its architecture or OS,
 has an area of permanent storage for user data. Interestingly, and
@@ -98,11 +200,11 @@ in the same directory. (Convince yourself of that fact.)
 \subsubsection{Only one surprise}
 
 So far this is pretty easy. And it won't get much harder. But here's the one
-thing you have to get used to: on the command-line, \textit{we won't ever
-actually see that filesystem picture visually.} It's there, but we don't
-explicitly view it in graphical form. Instead, there will be a textual way of
-referring to every file and directory. It's straightforward, but a bit of a
-shock to those coming from point-and-click systems like Windows.
+thing you have to get used to: with a CLI, \textit{we won't ever actually see
+that filesystem picture visually.} It's there, but we don't explicitly view it
+in graphical form. Instead, there will be a textual way of referring to every
+file and directory. It's straightforward, but can be a bit of a shock to those
+coming from point-and-click systems like Windows.
 
 \subsection{The ``current'' (or ``working'') directory}
 
@@ -128,7 +230,7 @@ common trouble spots for beginning Linux programmers.
 
 Okay, back to the filesystem as a whole. At the top of the tree is the
 \textbf{root directory}, which has no parents. (This is often disorienting to
-non-computer-scientists, since most of the world is used to trees growing
+non-computer-scientists, since in the real world trees actually grow
 \textit{up}, not down. But in computer science, we always draw trees growing
 down from the root.)
 
@@ -163,7 +265,7 @@ something different}. The first one means ``the root directory, which is
 called slash.'' But the second one is merely a separator, delimiting the
 \texttt{unitedstates} from the \texttt{B.java}. So this path means
 ``\textit{start at the root directory}, go down to its \texttt{unitedstates}
-entry (which is a directory), and then you have the \texttt{B.java} file.''
+entry (which is a directory), and there you have the \texttt{B.java} file.''
 
 Similarly, the path to \texttt{loveLetter.txt} is:
 
