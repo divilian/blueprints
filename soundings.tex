@@ -7,14 +7,14 @@ features of software systems: the classes, methods, and associations that
 connect them. Complementary to class diagrams are another type of UML
 artifact\footnote{By the way, the term \textbf{artifact} in software
 engineering means ``a document, diagram, computer program, or some other
-tangible deliverable that results from carrying out a development activity."
+tangible deliverable that results from carrying out a development activity.''
 The measurable progress a development team makes consists of the various
 artifacts they produce along the way.} called \textbf{sequence diagrams}. They
 show the \textit{dynamic} interrelations between objects as a system's code
 executes.
 
 Each sequence diagram depicts one scenario, or flow through the system. Unlike
-a class diagram, which is sort of ``always true" and shows all the permanent
+a class diagram, which is sort of ``always true'' and shows all the permanent
 and unvarying features of the program in question, every sequence diagram
 shows its own path: its own thread of execution in a particular, hypothetical
 scenario. After all, nearly every time you run a program, something different
@@ -24,7 +24,7 @@ generator is involved. A sequence diagram selects just \textit{one} possible
 outcome and highlights it start-to-finish so that an example of how the
 classes are intended to interact is unveiled.
 
-I think of a sequence diagram as a ``sounding" in the nautical sense. In
+I think of a sequence diagram as a ``sounding'' in the nautical sense. In
 ancient times, ship captains who suspected they were approaching land would
 test how deep the water was by probing it with a sounding line. Modern ships
 do the equivalent with sonar. A sounding is an exploratory investigation down
@@ -39,7 +39,7 @@ tells a different story.
 Sequence diagrams are designed to be perused in conjunction with their
 corresponding class diagrams. I always tell students: ``when you look at a
 sequence diagram, only look at it with one eyeball; keep the other eyeball on
-the class diagram." As we'll see, both diagrams have to be ``in sync" with
+the class diagram.'' As we'll see, both diagrams have to be ``in sync'' with
 each other, since information presented on one must be compatible with what's
 on the other.
 
@@ -52,7 +52,7 @@ Flip back to Figure~\ref{fig:fullClassDiag} from chapter~\ref{ch:blueprints}
 (p.~\pageref{fig:fullClassDiag}). This is our baseball simulator example. Keep
 your finger in this page for reference as you follow along in this section.
 
-We're going to begin our ``sounding" through this program by starting in the
+We're going to begin our ``sounding'' through this program by starting in the
 \texttt{Simulator} class's \texttt{.printAllStars()} method. Its job is to
 print out the names of the teams and their all-time greatest hitters, like
 this:
@@ -108,7 +108,7 @@ your bearings, note these two important aspects of sequence diagrams:
 participate in this scenario \textbf{\textit{appear across the top}} of the
 diagram. There is no inherent meaning to the order in which they appear, but
 often objects that are involved earlier in the code path are on the left side.
-\item The dashed line that extends down the page from each box ``goes with"
+\item The dashed line that extends down the page from each box ``goes with''
 that object. Horizontal arrows that originate from (or point to) that line are
 methods that object calls (or that are called on it).
 \item \textit{\textbf{Time goes down.}} In other words, as the code path
@@ -118,9 +118,9 @@ executes in time, we move progressively further down the page.
 \subsection{What the arrows mean}
 
 So we begin by looking at the upper-left corner, where the top-most arrow goes
-from the ``\texttt{:Simulator}" box to the ``\texttt{teams:ArrayList}" box,
-and is labeled ``\texttt{size()}". As I'm sure you can guess, this corresponds
-to the line of code: ``\texttt{int numTeams = teams.size();}" which is the
+from the ``\texttt{:Simulator}'' box to the ``\texttt{teams:ArrayList}'' box,
+and is labeled ``\texttt{size()}''. As I'm sure you can guess, this corresponds
+to the line of code: ``\texttt{int numTeams = teams.size();}'' which is the
 first thing we do in \texttt{.printAllStars()}.
 
 {\huge $\star$} Here's how you interpret \textit{any} arrow on a sequence diagram:
@@ -129,12 +129,12 @@ first thing we do in \texttt{.printAllStars()}.
 \item Every arrow is a method call. (Important: method calls are the
 \textit{only} part of the code that can be shown on a sequence diagram.)
 \item The vertical dashed line where the arrow \textit{starts} is the object
-that makes that call. (In other words, if an arrow starts from a ``:Person"
+that makes that call. (In other words, if an arrow starts from a ``:Person''
 box, then somewhere in a method of the \texttt{Person} class we can expect to
 find this method being called.)
 \item The vertical dashed line where the arrow \textit{ends} is the object on
 which the method is \textit{being} called. (In other words, if an arrow ends
-on a ``:Book" box, then we're calling the method on that \texttt{Book}
+on a ``:Book'' box, then we're calling the method on that \texttt{Book}
 object.)
 \item The writing on the arrow is the name of the method being called, plus
 any parameters.
@@ -145,7 +145,7 @@ So, that first arrow in Figure~\ref{fig:baseballSeqDiag} means:
 \begin{center}
 \begin{tabular}{m{.1in} m{4in}}
 \huge $\star$ & \large ``Somewhere in a method of the \texttt{Simulator} class, we're calling
-\texttt{.size()} on an \texttt{ArrayList} object named \texttt{teams}."
+\texttt{.size()} on an \texttt{ArrayList} object named \texttt{teams}.''
 \end{tabular}
 \end{center}
 
@@ -155,10 +155,10 @@ the secret to understanding sequence diagrams.)
 
 Notice that the arrow terminates on the top of a skinny box that extends a
 centimeter or so down the \texttt{teams:ArrayList}'s vertical dashed line.
-This skinny box represents \textit{the time during which the program is ``in"
+This skinny box represents \textit{the time during which the program is ``in''
 the \texttt{.size()} method.} It's not actually intended to specify a duration
 of time (like, ``the \texttt{.size()} method will take 1.4 milliseconds to
-complete") but rather the-fact-that-it's-being-executed at all. Later, we'll
+complete'') but rather the-fact-that-it's-being-executed at all. Later, we'll
 see that these skinny boxes can be (much) taller if we want our sequence
 diagram to show detail about what happens \textit{inside} that method.
 
@@ -171,30 +171,30 @@ you don't lose your place.
 \begin{enumerate}
 \itemsep.1em
 
-\item The dashed vertical line pointing left with a ``28" written on it is the
+\item The dashed vertical line pointing left with a ``28'' written on it is the
 \textit{return value}. In this particular scenario, apparently there are 28
 teams (\textit{i.e.}, 28 entries in the \texttt{ArrayList}).
 
 \item The next call is to \texttt{.get()} the first entry in the list. Observe
-how the line says literally ``\texttt{.get(0)}" whereas the code has
-``\texttt{.get(i)}", with \texttt{i} being a loop variable. This is perfectly
+how the line says literally ``\texttt{.get(0)}'' whereas the code has
+``\texttt{.get(i)}'', with \texttt{i} being a loop variable. This is perfectly
 fine. It means that as the code executes, the call to \texttt{ArrayList.get()}
 is effectively passed the value \texttt{0} as an argument the first time it's
 called, which is of course true. \textit{The fact that a loop is required is
 implicit.} The designer, who created this sequence diagram, isn't spelling out
-details like ``use a loop here" for the programmer. Instead, she's
+details like ``use a loop here'' for the programmer. Instead, she's
 illustrating the intended pattern of method calls between objects -- the
 programmer will infer the need for loops, local variables, \textit{etc.}
 
-\item The dashed ``return value" line is blank. That's okay too: it means the
+\item The dashed ``return value'' line is blank. That's okay too: it means the
 designer didn't bother to specify a name for it. (Get used to design diagrams
 containing differing levels of information in different places.)
 
 \item Then \texttt{.toString()} is called on the returned \texttt{Team}
 object. Why? Because we're \texttt{System.out.println()}'ing it, and as you'll
 recall from p.~\pageref{pg:toString}, the \texttt{.toString()} method is
-automatically invoked for any object that tries to be ``printed." So even
-though our code doesn't explicitly say ``\texttt{.toString()}" in it, the
+automatically invoked for any object that tries to be ``printed.'' So even
+though our code doesn't explicitly say ``\texttt{.toString()}'' in it, the
 method is nevertheless called, and is thus dutifully shown on the sequence
 diagram.
 
@@ -221,11 +221,11 @@ public class Team {
 }
 \end{Verbatim}
 
-Calling a method on ``\texttt{this}" is exactly what's indicated by those
+Calling a method on ``\texttt{this}'' is exactly what's indicated by those
 bendy arrows.
 
-\item Now, finally, we get our dashed arrow back to ``\texttt{:Simulator}",
-with a return value of ``\texttt{NY Yankees}". The control flow thus transfers
+\item Now, finally, we get our dashed arrow back to ``\texttt{:Simulator}'',
+with a return value of ``\texttt{NY Yankees}''. The control flow thus transfers
 from \texttt{.toString()} back to \texttt{.printAllStars()}.
 
 \item Next up is the \texttt{.bestHitter()} method, called later on in that
@@ -253,15 +253,15 @@ public class Team {
 You can see that after getting the size of the roster (in this case, only two
 players since this is a long enough example as it is!) we get each
 \texttt{Ballplayer} in turn, ask for his batting average, and compare it to
-our ``best so far" in a typical find-the-max-element type of loop.
+our ``best so far'' in a typical find-the-max-element type of loop.
 
 All of this is faithfully represented in the sequence diagram. First, the
-\texttt{Team} object calls \texttt{.size()} (and gets ``2" back). Then it
+\texttt{Team} object calls \texttt{.size()} (and gets ``2'' back). Then it
 calls \texttt{.get(0)} (and gets back a player; let's say Babe Ruth), and then
 calls \texttt{.getBattingAvg()} on it (getting the number .342, a jaw-dropping
 lifetime average, especially for a power hitter). A moment later, it does the
 same with the second player (say, Joe Dimaggio) and gets his average (still
-amazing, but ``only" .325) for comparison.
+amazing, but ``only'' .325) for comparison.
 
 \item More detail is shown inside the calls to
 \texttt{Ballplayer.getBattingAvg()}. That code looks like this:
@@ -278,7 +278,7 @@ public class Ballplayer {
 }
 \end{Verbatim}
 
-and makes two ``self-calls" to get this \texttt{Ballplayer}'s two relevant
+and makes two ``self-calls'' to get this \texttt{Ballplayer}'s two relevant
 statistics. Those calls are again shown as bendy loops.
 
 \item Finally, the \texttt{Team} returns its best hitter (Babe Ruth in this
@@ -363,7 +363,7 @@ in the \texttt{.approve()} method \textit{of the \texttt{Editor} class.} That
 tells us that the \textit{bottom} of the four sequence diagrams in
 Figure~\ref{fig:rightWrongSeqDiag} is the correct one. The third one shows a
 \textit{\texttt{Review}} making the method call, but if that were the case,
-the ``\texttt{m.add(r)}" line would be somewhere in \texttt{Review.java}.
+the ``\texttt{m.add(r)}'' line would be somewhere in \texttt{Review.java}.
 
 \end{enumerate}
 
@@ -436,7 +436,7 @@ variables, which seemed like a good idea.
 
 \item Switching scenes to the \texttt{PlaylistFactory}, we get a good sense of
 the innards of its \texttt{.genSampleList()} method. The first couple of
-arrows coming out of \texttt{:PlaylistFactory} say ``new", which as you may
+arrows coming out of \texttt{:PlaylistFactory} say ``new'', which as you may
 guess indicates an \textit{instantiation} and a constructor invocation. In
 the first case, we're instantiating a new \texttt{Playlist} object. Apparently
 the constructor for \texttt{Playlist} doesn't take any arguments (or the
@@ -468,8 +468,8 @@ class PlaylistFactory {
 Now lest we be too hasty, let's step back for a moment. The above code
 might well not \textit{literally} be in \texttt{.getSampleList()}; after all,
 it refers to specific, hardcoded songs. It also doesn't take into account the
-value of \texttt{genre}; presumably, if we passed ``\texttt{rap}" or
-``\texttt{classical}" as the argument, we'd get a different song selection. So
+value of \texttt{genre}; presumably, if we passed ``\texttt{rap}'' or
+``\texttt{classical}'' as the argument, we'd get a different song selection. So
 I'm not actually saying that you can read the code off the diagram without
 thinking. What the sequence diagram tells us, though, is good information
 about \textit{what kinds of things will happen} in each method. One could
@@ -479,9 +479,9 @@ case, though, all the sequence diagram essentials would be the same: we'd be
 instantiating a new \texttt{Playlist} and \texttt{Song}s, adding the
 \texttt{Song}s to the list, \textit{etc.}
 
-\item ``Back to \texttt{main()}!" the sequence diagram announces. After
+\item ``Back to \texttt{main()}!'' the sequence diagram announces. After
 returning the \texttt{Playlist} (which Figure~\ref{fig:playlistSeq} suggests
-we call ``\texttt{pl}") our \texttt{main()} method commences calling three
+we call ``\texttt{pl}'') our \texttt{main()} method commences calling three
 methods on it. We can thus further flesh out our main method as follows:
 
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]

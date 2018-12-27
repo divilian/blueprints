@@ -7,7 +7,7 @@ I split what was once a long inheritance chapter into two. So you're probably
 back from a snack break, a nap, or a game of Ultimate. Let's get warmed up
 again.
 
-A class diagram for a ``Zoo" program is in Figure~\ref{fig:zooClass}. Study
+A class diagram for a ``Zoo'' program is in Figure~\ref{fig:zooClass}. Study
 the code on the following page (Figure~\ref{fig:zooCode}) and predict its
 output.
 
@@ -99,7 +99,7 @@ problem.
 
 Finally, and most importantly, note that the \texttt{Duck} class does not
 override \texttt{.move()}, but its superclass (\texttt{Bird}) does, and so a
-\texttt{Duck} will ``\texttt{Flap flap swoosh}" like ordinary \texttt{Bird}s
+\texttt{Duck} will ``\texttt{Flap flap swoosh}'' like ordinary \texttt{Bird}s
 do. The rule is: when a method is called on an object, the code in its class
 is called, unless the class doesn't define that method. In that case, Java
 looks for the method in its immediate superclass, then its superclass's
@@ -121,7 +121,7 @@ What if we had a method, though, where there was no reasonable default
 behavior to define? Let's add a method \texttt{.getNumChromosomes()} which
 will return the number of DNA molecules in that species. Unlike making noise,
 which we might plausibly say is ``growling, unless further specified for a
-particular animal," perhaps there isn't any ``default number of chromosomes"
+particular animal,'' perhaps there isn't any ``default number of chromosomes''
 that makes sense.\footnote{Consider: a fruit fly has only 8 chromosomes, while
 a tasmanian devil has 14, a human has 46, a potato 48, a silkworm 56, and a
 catfish 104. Given these examples, what default value would have any merit?}
@@ -133,7 +133,7 @@ subclasses.
 
 \begin{samepage}
 The solution to our dilemma is to make \texttt{.getNumChromosomes()} an
-\textbf{abstract method}. ``Abstract" means that even though it's defined in a
+\textbf{abstract method}. ``Abstract'' means that even though it's defined in a
 superclass -- with a name, parameter list, and return type -- there's not
 actually any \textit{code} for it there! Here's what it looks like:
 
@@ -170,7 +170,7 @@ on the method.
 \begin{samepage}
 Now I know what you're thinking. ``This is all fine, but what if we have a
 plain-old-\texttt{Animal} object and call \texttt{.getNumChromosomes()} on
-it?" 
+it?'' 
 
 \begin{verbatim}
     Cow c = new Cow();
@@ -204,7 +204,7 @@ abstract class Animal {
 }                                      
 \end{Verbatim}
 
-If we ever try to execute the code ``\texttt{new Animal()}", Java will stop us
+If we ever try to execute the code ``\texttt{new Animal()}'', Java will stop us
 with a compilation error.
 
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true]
@@ -234,8 +234,8 @@ method getNumChromosomes() in Animal
 So we'll need to define \texttt{.getNumChromosomes()} in \texttt{Cow} and
 \texttt{Bear} (or else make them \texttt{abstract}). What about \texttt{Duck}
 and \texttt{Bird}? It depends on which of these classes (if either) we want to
-be \texttt{abstract}. If we want to be able to ``\texttt{new Bird()}" and also
-``\texttt{new Duck()}", then at \textit{least} \texttt{Bird} will have to
+be \texttt{abstract}. If we want to be able to ``\texttt{new Bird()}'' and also
+``\texttt{new Duck()}'', then at \textit{least} \texttt{Bird} will have to
 provide a \texttt{.getNumChromosomes()} method. (And \texttt{Duck}'s would be
 optional. If in fact \texttt{Duck}s have a different number of chromosomes
 than ordinary \texttt{Bird}s, we'd want to also make one on the \texttt{Duck}
@@ -264,7 +264,7 @@ There are two different ways to mark a method or class as \texttt{abstract} in
 UML. One is to put the name of the method or class in italics. That works well
 if you're using a design tool like ArgoUML or Rationale Rose to create your
 diagrams. Otherwise, if you're doing it by hand, you add a
-(``$\ll$abstract$\gg$") stereotype. I've shown both approaches in
+(``$\ll$abstract$\gg$'') stereotype. I've shown both approaches in
 Figure~\ref{fig:zooClassAbstract}.
 
 \begin{figure}
@@ -277,12 +277,12 @@ indicate abstract classes and methods.}
 
 \section{That's super}
 
-\subsubsection{Calling a superclass's methods with ``\texttt{super.}"}
+\subsubsection{Calling a superclass's methods with ``\texttt{super.}''}
 
 Occasionally, it will make sense for a method in a class to explicitly call a
 method in its superclass. For instance, suppose we said, ``When asked to make
 noise, a \texttt{Duck} should `\texttt{Quack quack}' but then \textit{also} do
-whatever ordinary \texttt{Bird}s usually do." We would write that as follows:
+whatever ordinary \texttt{Bird}s usually do.'' We would write that as follows:
 
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Duck extends Bird {
@@ -293,7 +293,7 @@ class Duck extends Bird {
 }
 \end{Verbatim}
 
-The ``\texttt{super.}" prefix (pronounced ``super dot") says to call the
+The ``\texttt{super.}'' prefix (pronounced ``super dot'') says to call the
 version of \texttt{.makeNoise()} that's defined in the \texttt{Bird}
 class, not the \texttt{Duck} one. (And a good thing, too: otherwise we'd have
 an infinite loop with \texttt{.makeNoise()} repeatedly calling itself!)
@@ -323,25 +323,25 @@ tramp tramp tramp tramp tramp tramp
 \end{Verbatim}
 
 By the way, students often ask whether they can call
-\texttt{super.super.move()} to invoke the ``grandparent's method." The answer
+\texttt{super.super.move()} to invoke the ``grandparent's method.'' The answer
 is \textbf{no}, for reasons having to do with encapsulation. It's fine for a
 \texttt{Duck} to know it's a subclass of \texttt{Bird}, but it shouldn't know
 what \texttt{Bird}'s superclass is, nor even that it \textit{has} a
 superclass. That knowledge (which we would be baking in to our program through
-a ``\texttt{super.super.}" call) is outside the realm of the \texttt{Duck}
+a ``\texttt{super.super.}'' call) is outside the realm of the \texttt{Duck}
 class, and therefore should not be known to it. If later, for instance, we
 refactor our code and make \texttt{Bird} its own class instead of inheriting
 from \texttt{Animal}, \texttt{Duck} would break if it had a
-``\texttt{super.super.}".
+``\texttt{super.super.}''.
 
-\subsubsection{Invoking a superclass's constructor with ``\texttt{super}" (no
+\subsubsection{Invoking a superclass's constructor with ``\texttt{super}'' (no
 dot)}
 
 You've known ever since p.~\pageref{page:instantiateConstructor} that whenever
 an object is instantiated, one of that class's constructors is called. This is
 indeed the case, but here's a new wrinkle: when an object is instantiated,
 \textit{a constructor in its superclass is also called.} This is because in
-order to ``set up" the \texttt{Duck} stuff (initialize its inst vars,
+order to ``set up'' the \texttt{Duck} stuff (initialize its inst vars,
 \textit{etc.}), we also need to set up its \texttt{Bird} stuff, and for that
 matter its \texttt{Animal} stuff. Since a \texttt{Duck} \textbf{is-a}
 \texttt{Bird}, which in turn \textbf{is-a} \texttt{Animal}, it's imperative
@@ -356,10 +356,10 @@ Figure~\ref{fig:inhConstrClass}). Here, the only constructor for the
 \texttt{Person} class is one that takes a \texttt{String} argument; hence, we
 must pass it a \texttt{String} if we want to instantiate one. In the
 \texttt{Student} constructor (which takes a couple arguments of its own) we
-call ``\texttt{super(name)}" which passes the \texttt{name} the subclass was
+call ``\texttt{super(name)}'' which passes the \texttt{name} the subclass was
 given and passes it up to its superclass's constructor. In the
 \texttt{Professor} constructor, we take a \texttt{"Dr. "} on to the front of
-the name before passing it the superclass. Note that there's no ``dot" after
+the name before passing it the superclass. Note that there's no ``dot'' after
 these \texttt{super()}s; that's how we indicate we want to call the
 constructor, rather than an ordinary method.
 
@@ -368,7 +368,7 @@ Somewhat weirdly, in Java the call to \texttt{super()} must be the
 \texttt{Student} is a special type of \texttt{Person}. So if you want to be a
 \texttt{Student}, you have to first be a fully-baked \texttt{Person}. Only
 then will we get around to the \texttt{Student}-specific stuff. (Note this
-restriction does \textit{not} apply to ``\texttt{super.}" (``super dot")
+restriction does \textit{not} apply to ``\texttt{super.}'' (``super dot'')
 method calls; they can be put anywhere.
 
 \begin{figure}[ht]
@@ -424,7 +424,7 @@ which ones it wants to override. Sometimes, they have one or more
 \texttt{abstract} methods, which the subclass \textit{must} override, or else
 be un-instantiatable.
 
-What if we push that idea all the way in the abstract direction: a ``pure"
+What if we push that idea all the way in the abstract direction: a ``pure''
 abstract class, with only abstract methods? Is that any use?
 
 Yes, and probably more than you realize right now. I'll get to the reasons
@@ -450,7 +450,7 @@ the stereotype $\ll$interface$\gg$ appears in the name box.
 \label{fig:interface}
 \end{figure}
 
-We indicate ``implements an interface" with a \textit{dashed} line that
+We indicate ``implements an interface'' with a \textit{dashed} line that
 otherwise looks exactly like an inheritance arrow (recall
 Figure~\ref{fig:inheritanceArrows} from p.~\pageref{page:inheritanceArrows}).
 
@@ -482,8 +482,8 @@ Some Java syntax idiosyncrasies: an \texttt{interface} has only method
 signatures (return type, method name, parameter lists) followed by a
 semicolon, just as with abstract methods. However, the methods are
 \textit{not} marked as \texttt{abstract}, nor \texttt{public} nor anything
-else. Note also that we don't say the class ``\texttt{extends}" the interface,
-but rather ``\texttt{implements}" it.
+else. Note also that we don't say the class ``\texttt{extends}'' the interface,
+but rather ``\texttt{implements}'' it.
 
 In the same figure, we have \texttt{Runner} also implementing another
 interface: \texttt{Participant}. Presumably there are also other types of
@@ -519,7 +519,7 @@ comma. And now we come to the reason Java \texttt{interface}s matter:
 
 You might be thinking, ``okay, but couldn't we just have inherited from more
 than one abstract class, and accomplished the same thing without this new
-`interface' notion?" The answer is \textbf{no}: Java does not allow
+`interface' notion?'' The answer is \textbf{no}: Java does not allow
 \textbf{multiple inheritance}, which is when a class has more than one
 superclass. The reasons are somewhat lengthy to explain, and will be omitted
 here, but suffice to say that languages that choose to support multiple
@@ -545,7 +545,7 @@ use multiple \textit{top-down} inheritance, they rarely want to use multiple
 paradoxes and strange corner cases. As long as a class simply wants to
 masquerade as one of several different things (as opposed to wanting to steal
 method implementations and inst vars from more than one superclass), multiple
-``inheritance" turns out not to be a big deal. One of Java's big wins was
+``inheritance'' turns out not to be a big deal. One of Java's big wins was
 allowing multiple interfaces to be implemented, not multiple classes to be
 inherited from, thereby sidestepping the whole issue.
 
@@ -561,8 +561,8 @@ class Runner extends Athlete implements Participant, Storable {
 \end{Verbatim}
 \end{samepage}
 
-Put another way, you only have one inheritance relationship to ``spend," so
-use it wisely. Only inherit from something if it truly is an ``\textbf{is-a}"
+Put another way, you only have one inheritance relationship to ``spend,'' so
+use it wisely. Only inherit from something if it truly is an ``\textbf{is-a}''
 relationship, and there's meaningful code you get to reuse by so doing.
 
 \subsection{Example: \texttt{java.lang.Comparable}}
@@ -607,8 +607,8 @@ class ReservationSystem {
 
 The trouble is, even though \texttt{Collections} has an efficient, bug-free
 sorting algorithm all coded up for us to use, it doesn't know \textit{what
-``sorted" means for \texttt{Resort}s.} For a list of integers, we'd expect
-``sorted" to mean ``in numerical order." For \texttt{String}s, we'd expect
+``sorted'' means for \texttt{Resort}s.} For a list of integers, we'd expect
+``sorted'' to mean ``in numerical order.'' For \texttt{String}s, we'd expect
 alphabetical order. But what about \texttt{Resort}s?
 
 It turns out that \texttt{Collections.sort()} works for any collection of
@@ -639,7 +639,7 @@ It's a weird-looking one-liner, but what this \texttt{.compareTo()}
 implementation does is pass the buck to its \texttt{name} field. It says, in
 effect, ``if you want to know whether I come before or after the resort
 \texttt{r}, just look at whether my \texttt{name} comes before or after
-\texttt{r}'s \texttt{name} alphabetically."
+\texttt{r}'s \texttt{name} alphabetically.''
 
 Or, perhaps I want to sort by decreasing rating (5 stars first, 1 star last).
 Then I could write:
@@ -678,8 +678,8 @@ class from the \texttt{java.lang} package. \textit{All} classes, regardless of
 who wrote them, are ultimately subtypes of \texttt{Object}.
 
 It doesn't seem that way when we look at the code, since we saw
-``\texttt{class Bear extends Animal}" yet ``\texttt{class Animal}...(extends
-nothing, presumably)". But if you don't explicitly list a subtype via
+``\texttt{class Bear extends Animal}'' yet ``\texttt{class Animal}...(extends
+nothing, presumably)''. But if you don't explicitly list a subtype via
 \texttt{extends}, Java implicitly substitutes \texttt{Object} as the
 superclass.
 

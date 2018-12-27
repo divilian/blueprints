@@ -89,7 +89,7 @@ simply no way to reference them.
 
 If you're unsure that there's truly no way, ask yourself this question: ``what
 line of code could we write to (say) change one of the \texttt{Ball} object's
-color from red to blue?" The answer is: there is no possible line of code we
+color from red to blue?'' The answer is: there is no possible line of code we
 could write to do that. To even get off the ground we'd have to start with a
 \textit{name}, and there is no name we could possibly use to get at either of
 those red \texttt{Ball} objects.
@@ -129,7 +129,7 @@ in principle a thing of the past.
 
 As with most good things, there are downsides too. One downside to Java's
 approach is that the garbage collector thread decides to run ``any time it
-damn well pleases." As developers, we don't ever tell Java to get off its butt
+damn well pleases.'' As developers, we don't ever tell Java to get off its butt
 and take out the trash (although there is a way to suggest this); rather, we
 just wait for it to run when it periodically thinks it needs to. This isn't
 normally a problem, but it can be in mission-critial real-time applications
@@ -149,9 +149,9 @@ Java's way of handling it is much appreciated.
 
 You've probably used \texttt{import} in almost every Java program you've ever
 written. Yet I've found most developers don't really understand what it does.
-Java itself is partially to blame here: the word ``import" is a poor choice of
-words, since nothing is ``imported" at all.\footnote{Also, the fact that it
-begins with a lower-case \texttt{i} just like C++'s ``\texttt{\#include}"
+Java itself is partially to blame here: the word ``import'' is a poor choice of
+words, since nothing is ``imported'' at all.\footnote{Also, the fact that it
+begins with a lower-case \texttt{i} just like C++'s ``\texttt{\#include}''
 statement does reinforces this misconception -- C++'s \texttt{\#include}
 actually \textit{does} include/import content.}
 
@@ -198,21 +198,21 @@ when possible, the Java gods invented the \texttt{import} statement. The
 \textit{only} thing it does is tell Java ``I don't really feel like typing out
 \texttt{java.util.ArrayList} every time. That's a pain. So Java, please know
 that when I type \texttt{ArrayList} in this file, I really mean
-\texttt{java.util.ArrayList}."
+\texttt{java.util.ArrayList}.''
 
 The right-side of Figure~\ref{fig:dontNeedImport} is exactly the same program,
 but now using the \texttt{import} statement to avoid a little typing.
 
 Whether the savings are worth it in any particular case is up to you. My point
 here is just to demonstrate that the statement ``\texttt{import
-java.util.ArrayList}" does \textit{not} do anything remotely like ``go and
+java.util.ArrayList}'' does \textit{not} do anything remotely like ``go and
 find the \texttt{ArrayList} code in the \texttt{java.util} package, and bring
-it in here so I can use it." Nor is it true that ``unless you import that
-class, you can't use it." Both are common Java myths.
+it in here so I can use it.'' Nor is it true that ``unless you import that
+class, you can't use it.'' Both are common Java myths.
 
 \subsubsection{Don't \texttt{import *}}
 
-By the way, you may have seen the use of ``\texttt{*}" syntax, like this:
+By the way, you may have seen the use of ``\texttt{*}'' syntax, like this:
 
 \begin{Verbatim}[fontsize=\small,samepage=true]
 import java.util.*;
@@ -222,20 +222,20 @@ import edu.umw.stephen.coolclasses.*;
 
 This isn't a good idea. The reason is that it's ambiguous. Suppose in my code
 I refer to a class called \texttt{Scanner}. Which \texttt{Scanner} do I mean?
-Should Java assume I wanted to avoid typing ``\texttt{java.util.Scanner}" or
-``\texttt{com.google.search.engines.Scanner}" or
-``\texttt{edu.umw.stephen.coolclasses.Scanner}"? It has no way of knowing. So
+Should Java assume I wanted to avoid typing ``\texttt{java.util.Scanner}'' or
+``\texttt{com.google.search.engines.Scanner}'' or
+``\texttt{edu.umw.stephen.coolclasses.Scanner}''? It has no way of knowing. So
 if more than one of those packages defines a class with the same name (which
 is very possible), Java will at best not compile, and at worst give unexpected
 runtime behavior.
 
-For this reason, using ``\texttt{*}" in \texttt{import} statements is only
+For this reason, using ``\texttt{*}'' in \texttt{import} statements is only
 acceptable when writing quick and dirty one-off code, not for anything that
 will stick around longer than your current coding session.
 
 
 
-\section{Java ``generics"}
+\section{Java ``generics''}
 
 Speaking of misleading terms, let me give you another one.
 
@@ -288,7 +288,7 @@ System.out.println("First item has " + ((String) stuff.get(0)).length() +
 This says, ``Java, I give you my word. I promise the thing at position
 \texttt{0} \textit{will} be a \texttt{String}, and I'll stake my reputation on
 it. Please force it to be treated as a \texttt{String}, and if it turns out
-I'm lying, you can embarrass me at runtime with a program crash."
+I'm lying, you can embarrass me at runtime with a program crash.''
 
 Having to do that is a rather high price to pay for the flexibility of being
 able to store any old thing in \texttt{stuff}. That's why back in 2004, Java
@@ -306,27 +306,27 @@ stuff.add(new Car("Mazda", "MX-5"));    // Compile error
 
 Our \texttt{stuff} is no longer a plain old \texttt{ArrayList}, but
 specifically an \texttt{ArrayList<String>} (pronounced ``array list of
-strings.") This tells Java, ``please don't let me put anything into this
+strings.'') This tells Java, ``please don't let me put anything into this
 \texttt{ArrayList} \textit{except} \texttt{String}s. I'm asking for this
-restriction because it's for my own good."
+restriction because it's for my own good.''
 
 When we do this, trying to insert a \texttt{Car} (or anything else) will bomb
 at compile time, as it should. And now, we don't have to typecast anything we
 get out of it: since Java knows it would only have put \texttt{String}s in, it
 knows that it will only get \texttt{String}s out. Therefore,
-``\texttt{stuff.get(0).length()}" works just fine, no cast necessary.
+``\texttt{stuff.get(0).length()}'' works just fine, no cast necessary.
 
 This is a good feature, and you should pretty much always use it. My only
-complaint is that I think the word ``generic" is almost exactly the wrong word
+complaint is that I think the word ``generic'' is almost exactly the wrong word
 for it. They practically couldn't have chosen a worse term. Saying you have
-``a generic \texttt{ArrayList}" sounds like it ought to mean the
+``a generic \texttt{ArrayList}'' sounds like it ought to mean the
 \textit{first} style (above), where the type wasn't specifically mentioned and
 therefore any object was fair game to put in it. But in actual fact, ``a
-generic \texttt{ArrayList}" means ``a specific, decidedly \textit{non}-generic
-\texttt{ArrayList} that is declared to only hold values of a certain type." Go
+generic \texttt{ArrayList}'' means ``a specific, decidedly \textit{non}-generic
+\texttt{ArrayList} that is declared to only hold values of a certain type.'' Go
 figure.
 
-\section{``Wrapper" classes}
+\section{``Wrapper'' classes}
 
 This is a good time to explain the usage of Java's \textbf{wrapper} classes.
 Recall that there are two kinds of Java variables: those that store primitive
@@ -349,12 +349,12 @@ So this means we can't do this:
     ArrayList<int> uniformNumbers = new ArrayList<int>();     // NOPE
 \end{Verbatim}
 
-because there's no such thing as ``an \texttt{ArrayList} of \texttt{int}s."
+because there's no such thing as ``an \texttt{ArrayList} of \texttt{int}s.''
 That sucks because \texttt{int}s, \texttt{double}s, and \texttt{boolean}s are
 things we'd like to make \texttt{ArrayList}s of all the time.
 
 Fortunately, there's an easy way around this. Each primitive type has a
-``wrapper class" in Java: it is the mold for objects so simple that they don't
+``wrapper class'' in Java: it is the mold for objects so simple that they don't
 do anything except hold a piece of data: an \texttt{int} (or \texttt{char}, or
 \texttt{double}, \textit{etc.}) We could do this, for instance:
 
@@ -365,7 +365,7 @@ do anything except hold a piece of data: an \texttt{int} (or \texttt{char}, or
 \end{Verbatim}
 
 and produce the memory diagram in Figure~\ref{fig:wrapper}. Each object is
-nothing more than a shell that ``wraps" a primitive piece of data.
+nothing more than a shell that ``wraps'' a primitive piece of data.
 
 \begin{figure}[ht]
 \centering
@@ -429,7 +429,7 @@ potential perpetrators. We'll do so in a \texttt{Hashtable} called
 \end{Verbatim}
 
 This instantiation syntax may make you bug-eyed. You'll see that we include
-not one but \textit{two} types inside the ``$\ll...\gg$" markers; in this
+not one but \textit{two} types inside the ``$\ll...\gg$'' markers; in this
 case, both are \texttt{String}s. These two specify \textit{the type of the
 keys, and the type of the values}. Since our keys are text (superhero names)
 and our values are also text (the names of the alter egos) it makes sense to
@@ -444,8 +444,8 @@ value}. If we ran a line of code like this:
     alterEgos.put("Batman","Rich Dude");
 \end{Verbatim}
 
-then the \texttt{String} ``\texttt{Bruce Wayne}" would be permanently removed
-from memory, and replaced by ``\texttt{Rich Dude}".
+then the \texttt{String} ``\texttt{Bruce Wayne}'' would be permanently removed
+from memory, and replaced by ``\texttt{Rich Dude}''.
 
 To retrieve the value that goes with a particular key, we use \texttt{.get()}:
 
@@ -499,9 +499,9 @@ customer IDs.}
 
 One last thing about \texttt{Hashtable}s: you can iterate through them as you
 can iterate through any other collection (like an \texttt{ArrayList}). But
-it's kind of tricky. Remember that there isn't any inherent ``order" to the
+it's kind of tricky. Remember that there isn't any inherent ``order'' to the
 key-value pairs, so you can't say ``give me the first one, then the second,
-then ..., all the way to the end."
+then ..., all the way to the end.''
 
 The way you achieve this is by using an \textbf{\texttt{Enumeration}} object,
 also from the \texttt{java.util} package. This is actually an example of the
@@ -509,11 +509,11 @@ also from the \texttt{java.util} package. This is actually an example of the
 mostly just memorize the approach.
 
 First, you call \texttt{.keys()} on the \texttt{Hashtable} which returns an
-\texttt{Enumeration} of the ``key halves" of the key/value pairs. Think of an
+\texttt{Enumeration} of the ``key halves'' of the key/value pairs. Think of an
 \texttt{Enumeration} as just ``a way to iterate through a group of things, one
-by one." In this case, the ``things" are the \texttt{Hashtable}'s keys. Every
+by one.'' In this case, the ``things'' are the \texttt{Hashtable}'s keys. Every
 time you call \texttt{.nextElement()} on the \texttt{Enumeration} object, it
-gives you the next key and advances the ``cursor" to point further on down the
+gives you the next key and advances the ``cursor'' to point further on down the
 line. When you call \texttt{.hasMoreElements()} on the \texttt{Enumeration},
 it tells you whether or not you can continue further. These two methods are
 just what you need to write a \texttt{while} loop to cycle through all the
@@ -548,7 +548,7 @@ order of insertion) to remember it.
 \section{Sameness vs.~identicality}
 
 Our last odd/end has to do with how Java determines whether two objects are
-``equal" to each other. It turns out that there are two different definitions
+``equal'' to each other. It turns out that there are two different definitions
 of equality, which must be kept firmly separate in your mind:
 \textbf{sameness} and \textbf{identicality}.
 
@@ -560,20 +560,20 @@ variables do you consider to be \textit{equal} to each other?
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{sameness.pdf}
-\caption{What does ``equal" mean?}
+\caption{What does ``equal'' mean?}
 \label{fig:sameness}
 \end{figure}
 
-I think we can agree that \texttt{p2} does not ``equal" any of the others.
-That leaves the other three. Are \texttt{p1} and \texttt{p3} ``equal?" Are
-\texttt{p3} and \texttt{p4} ``equal?"
+I think we can agree that \texttt{p2} does not ``equal'' any of the others.
+That leaves the other three. Are \texttt{p1} and \texttt{p3} ``equal?'' Are
+\texttt{p3} and \texttt{p4} ``equal?''
 
-It all depends on what your definition of ``equal" is, of course. And here's
+It all depends on what your definition of ``equal'' is, of course. And here's
 how Java does it: it says that \texttt{p1} and \texttt{p3} are \textbf{the
-same}, while \texttt{p3} and \texttt{p4} are \textbf{identical}. ``The same"
+same}, while \texttt{p3} and \texttt{p4} are \textbf{identical}. ``The same''
 means that the two reference variables refer to \textit{the very same} object
 in memory. They are literally pointing to the same memory address, and so they
-are pointing to the same ``copy" of the object. This is easy to see by
+are pointing to the same ``copy'' of the object. This is easy to see by
 imagining changes to that object -- if the left-most Josh Gibson changed
 uniform numbers when he was traded from the Homestead Grays to the Pittsburgh
 Crawfords, both \texttt{p1} and \texttt{p3} would automatically see that
@@ -594,8 +594,8 @@ they're duplicate copies, but copies nevertheless.
 Sometimes a programmer cares about one of these conditions, and sometimes the
 other. Java has two syntaxes to distinguish between the two tests.
 
-\textbf{To test for sameness, use ``\texttt{==}". To test for identicality, use
-``\texttt{.equals()}".} Example:
+\textbf{To test for sameness, use ``\texttt{==}''. To test for identicality, use
+``\texttt{.equals()}''.} Example:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
     if (p1 == p3) {
@@ -615,14 +615,14 @@ other. Java has two syntaxes to distinguish between the two tests.
 In the first two lines of that code, we are testing for sameness. So even
 though the objects referred to by \texttt{p3} and \texttt{p4} are spittin'
 images of each other, identical in every conceivable way, they are
-nevertheless \textit{not} ``\texttt{==}" to each other. But they might well be
+nevertheless \textit{not} ``\texttt{==}'' to each other. But they might well be
 \texttt{.equals()} to each other...if we take the special step described next.
 
 \subsection{Overriding \texttt{.equals()}}
 
 It turns out that the last print statement of the preceding code statement
 will actually \textit{not} get printed \textit{unless we inform Java about
-what ``identical" actually means for this class.} By default, Java will fall
+what ``identical'' actually means for this class.} By default, Java will fall
 back to just using the sameness test when \texttt{.equals()} is used. The way
 to tell it how to test for identicality is to \textit{override} the
 \texttt{.equals()} method for the \texttt{Ballplayer} class. Here's how:
@@ -647,7 +647,7 @@ class Ballplayer {
 }
 \end{Verbatim}
 
-We've told Java that for \texttt{Ballplayers}, ``identical" means objects that
+We've told Java that for \texttt{Ballplayers}, ``identical'' means objects that
 have the same \texttt{name}, \texttt{uni}form number, and \texttt{pos}ition.
 We could have done anything else we wanted; for instance:
 
@@ -670,7 +670,7 @@ class Ballplayer {
 \end{Verbatim}
 
 Now any two \texttt{Ballplayer}s whose name started with the same letter would
-be considered ``identical" -- \texttt{Josh Gibson} would be considered
+be considered ``identical'' -- \texttt{Josh Gibson} would be considered
 identical to \texttt{Joe Dimaggio}. This is a weird idea, and not normally
 encouraged. But sometimes a situation does come up where it makes sense to say
 that one object \texttt{.equals()} another even if only \textit{some} of their
@@ -701,7 +701,7 @@ But my choice here was deliberate, and when comparing \texttt{String}s in
 particular \textit{you must always use \texttt{.equals()}} like this. The
 reason is esoteric, and has to do with how Java tries to conserve memory by
 re-using space for different \texttt{String} objects with identical contents.
-The upshot of this is that ``\texttt{==}" \textit{sometimes} works the way you
+The upshot of this is that ``\texttt{==}'' \textit{sometimes} works the way you
 expect, and other times does not. One minute you'll find that
 \texttt{"Satchell" == "Satchell"} and then a moment later you'll discover that
 \texttt{"Buck" != "Buck"}. It'll seem random, and it basically is. But if you

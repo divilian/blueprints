@@ -19,8 +19,8 @@ have it here.} Any general-purpose computer, no matter its architecture or OS,
 has an area of permanent storage for user data. Interestingly, and
 conveniently, they're all organized in pretty much the same way: as a
 \textbf{tree} of \textbf{files} and \textbf{directories}. (Windows/Mac users
-will be familiar with the term ``\textbf{folder}," which \textit{means exactly
-the same thing as ``directory."}) In what follows, we'll be using a different
+will be familiar with the term ``\textbf{folder},'' which \textit{means exactly
+the same thing as ``directory.''}) In what follows, we'll be using a different
 syntax (text instead of visual icons) to work with what is conceptually the
 same organizational structure you're used to on your own computer.
 
@@ -28,8 +28,8 @@ same organizational structure you're used to on your own computer.
 
 A file is simply any named chunk of stuff on your disk. Images, .mp3 tunes,
 Word docs, and (importantly) plain text files are all in this category. On
-Windows, you're used to each of these files having a filesystem ``extension"
-designating its type: ``.doc" means a Word doc, and ``.jpg" means an image
+Windows, you're used to each of these files having a filesystem ``extension''
+designating its type: ``.doc'' means a Word doc, and ``.jpg'' means an image
 file, for example. This is sort of true with Linux, although the rules are
 a bit looser. Not all files have extensions at all, and when they do, it's
 more a signal that they're intended to be treated a certain way than a
@@ -40,7 +40,7 @@ The most important files you'll work with in this class will have a
 with other various supporting files to make all the tools work correctly.
 It's important to realize that \textit{a file is fundamentally just some data,
 which can theoretically be opened and dealt with by any program}. When we say
-that HamletPaper.doc ``\textit{is}" a Word doc, what we really mean is that
+that HamletPaper.doc ``\textit{is}'' a Word doc, what we really mean is that
 its data is formatted in a certain way that the Microsoft Word application
 expects to see, so it can render it on the screen for editing. But it is
 possible to open that same HamletPaper.doc file with other programs and
@@ -48,8 +48,8 @@ manipulate its contents. This may seem sketchy, but it is actually a force for
 good.
 
 In particular, you'll be tempted this semester to think of a \texttt{.java}
-file as ``a \texttt{vim} file," in the same way that you may think of an
-\texttt{.xls} file as ``an Excel file." I hope to eventually break you of this
+file as ``a \texttt{vim} file,'' in the same way that you may think of an
+\texttt{.xls} file as ``an Excel file.'' I hope to eventually break you of this
 habit, as you learn to see files as text or data that is actually independent
 of what kind of program might be used to open and manipulate it.
 
@@ -58,14 +58,14 @@ last italicized phrase is what gives rise to the overall tree structure of the
 filesystem, as discussed in the following section.
 
 By the way, every file and directory \textit{in a particular directory} must
-have a unique name. You can't have a file called ``DireStraits.mp3" and
-another one also called ``DireStraits.mp3" sitting there in the same folder:
+have a unique name. You can't have a file called ``DireStraits.mp3'' and
+another one also called ``DireStraits.mp3'' sitting there in the same folder:
 it's a name collision. However, it's perfectly permissible to have two files
 with the same name in different directories. This is kind of like how there
-isn't more than one ``Stephen" in my immediate family (that would be
+isn't more than one ``Stephen'' in my immediate family (that would be
 confusing\footnote{With apologies to boxing legend George Foreman, who named
-all four of his children ``George." That practice is not
-filesystem-compatible.}), but there are of course many ``Stephens" in the
+all four of his children ``George.'' That practice is not
+filesystem-compatible.}), but there are of course many ``Stephens'' in the
 world.
 
 \subsection{The filesystem tree}
@@ -75,8 +75,8 @@ structure called a \textbf{tree} (see Fig.~\ref{fig:tree}). I have drawn two
 kinds of nodes in this tree: directories (yellow ovals) and files (blue
 boxes). As expected, some of the directories have arrows coming out of them,
 but none of the files do. The elements that a directory is pointing to are the
-contents it contains: \textit{e.g.}, the left-most ``\texttt{america}"
-directory contains another directory (``\texttt{nation}") and also the file
+contents it contains: \textit{e.g.}, the left-most ``\texttt{america}''
+directory contains another directory (``\texttt{nation}'') and also the file
 \texttt{A.txt}. We use the term \textbf{parent directory} to mean the
 directory immediately above an entry in the filesystem; the left-most
 \texttt{A.txt} file's parent directory is the \texttt{america} directory we
@@ -104,21 +104,21 @@ explicitly view it in graphical form. Instead, there will be a textual way of
 referring to every file and directory. It's straightforward, but a bit of a
 shock to those coming from point-and-click systems like Windows.
 
-\subsection{The ``current" (or ``working") directory}
+\subsection{The ``current'' (or ``working'') directory}
 
 One vital concept to grasp is that every time we issue a command or run a
 program in Linux, we are doing so \textit{within the context of a particular
-directory}. Conceptually, we think of being ``in" a certain directory at any
-point in time. We call this directory ``the \textbf{current directory}" or
-``the \textbf{working directory}", and we'll learn commands to find out what
+directory}. Conceptually, we think of being ``in'' a certain directory at any
+point in time. We call this directory ``the \textbf{current directory}'' or
+``the \textbf{working directory}'', and we'll learn commands to find out what
 it is and to change it to something else.
 
-Which one we're ``in" has a crucial impact on what happens when we execute a
+Which one we're ``in'' has a crucial impact on what happens when we execute a
 command. For instance, if our current directory is the far-left
 \texttt{america} directory, and we issue a command that does something to
-``\texttt{A.txt}", it would act on the left-most \texttt{A.txt} file, since
+``\texttt{A.txt}'', it would act on the left-most \texttt{A.txt} file, since
 it's the one within the current directory. But if our current directory were
-\texttt{unitedstates}, ``\texttt{A.txt}" would instead mean the far-right blue
+\texttt{unitedstates}, ``\texttt{A.txt}'' would instead mean the far-right blue
 node.
 
 I've found that failure to understand the current directory is one of the most
@@ -133,22 +133,22 @@ non-computer-scientists, since most of the world is used to trees growing
 down from the root.)
 
 The root directory is the anchor point of the entire filesystem: it ultimately
-contains everything under it. It also has a very strange name: ``\texttt{/}",
-pronounced ``slash." (This is a ``forward slash," by the way, to the left of
-your right-most Shift key, not a ``backslash." Oddly, most Windows systems
-use a backslash ``\texttt{\textbackslash}" for this instead.) Stay awake,
-because this ``\texttt{/}" character will shortly mean something very
+contains everything under it. It also has a very strange name: ``\texttt{/}'',
+pronounced ``slash.'' (This is a ``forward slash,'' by the way, to the left of
+your right-most Shift key, not a ``backslash.'' Oddly, most Windows systems
+use a backslash ``\texttt{\textbackslash}'' for this instead.) Stay awake,
+because this ``\texttt{/}'' character will shortly mean something very
 different as well.
 
 \subsubsection{Paths}
 
 It should be apparent to you that as a consequence of this nested tree
-structure, you can ``reach" every element from the root directory by
+structure, you can ``reach'' every element from the root directory by
 traversing from arrow to arrow. Furthermore, you can do so in only one way.
 For instance, the \texttt{B.java} file can be reached from the root by going
-from ``\texttt{/}" to \texttt{unitedstates} to \texttt{B.java}. And that's the
+from ``\texttt{/}'' to \texttt{unitedstates} to \texttt{B.java}. And that's the
 \textit{only} way to get there. You can reach \texttt{loveLetter.txt} by going
-from ``\texttt{/}" through \texttt{united}, \texttt{states}, and
+from ``\texttt{/}'' through \texttt{united}, \texttt{states}, and
 \texttt{america}, in that order. This is true for every file and directory.
 
 What this means is that every entry has a unique \textbf{path}, and we can
@@ -158,12 +158,12 @@ example. Its path is:
 \quad\quad \texttt{/unitedstates/B.java}
 
 Look very carefully at that string as we dissect it. The most important thing
-to grasp is that the two slash (``\texttt{/}") characters \textit{each mean
+to grasp is that the two slash (``\texttt{/}'') characters \textit{each mean
 something different}. The first one means ``the root directory, which is
-called slash." But the second one is merely a separator, delimiting the
+called slash.'' But the second one is merely a separator, delimiting the
 \texttt{unitedstates} from the \texttt{B.java}. So this path means
 ``\textit{start at the root directory}, go down to its \texttt{unitedstates}
-entry (which is a directory), and then you have the \texttt{B.java} file."
+entry (which is a directory), and then you have the \texttt{B.java} file.''
 
 Similarly, the path to \texttt{loveLetter.txt} is:
 
@@ -185,7 +185,7 @@ A relative path is relative \textit{to the current directory}. And it does
 separated by slashes, indicating where to start descending \textit{from the
 current directory}.
 
-For example, let's say the current directory was ``\texttt{/states}". And
+For example, let's say the current directory was ``\texttt{/states}''. And
 suppose I used this relative path:
 
 \quad\quad \texttt{united/states/mysteryNovel.txt}
@@ -201,7 +201,7 @@ To test your understanding, realize that in this case where the current
 directory is \texttt{/states}, there is no such file called
 \texttt{united/states/america/loveLetter.txt}. In fact, even 
 \texttt{united/states/america} doesn't exist. However, if we changed the
-current directory to be the root (``\texttt{/}"), suddenly the relative path
+current directory to be the root (``\texttt{/}''), suddenly the relative path
 \texttt{united/states/ america/loveLetter.txt} would be legit.
 
 \section{Linux A-B-C's}
@@ -221,15 +221,15 @@ $
 
 To execute a command, you do \textit{not} type the prompt itself: it's just
 there to indicate ``now is an appropriate time and place to enter a Linux
-command." Just type the stuff after it.
+command.'' Just type the stuff after it.
 
 Also, depending on your system and configuration, your prompt may look
 different or have other information in it. One common setting, for instance,
 is for the current directory to always appear as the prompt. (I personally
 hate that, since it makes some commands start at different horizontal
 locations as I work, plus it consumes a lot of space.) No matter what, though,
-just mentally substitute ``the dollar sign" for ``whatever your Linux prompt
-is."
+just mentally substitute ``the dollar sign'' for ``whatever your Linux prompt
+is.''
 
 \newcommand{\bigline}{\begin{center} \line(1,0){300} \end{center}}
 
@@ -239,7 +239,7 @@ is."
 \item \textbf{\texttt{pwd}}
 
 Your first command stands for ``\textbf{p}rint \textbf{w}orking
-\textbf{d}irectory," and simply tells you what the current directory is at any
+\textbf{d}irectory,'' and simply tells you what the current directory is at any
 point in time. For example:
 
 \begin{verbatim}
@@ -247,19 +247,19 @@ $ pwd
 /united/states
 \end{verbatim}
 
-tells you that you're currently ``in" the \texttt{states} directory, which is
+tells you that you're currently ``in'' the \texttt{states} directory, which is
 contained within the \texttt{united} directory, which is contained within the
 root directory.
 
 \textbf{Tip:} get in the habit of typing \texttt{pwd} a \textit{lot},
 especially at first. Get ingrained in your brain the concept of ``where am I
-in the filesystem right now?" because it matters, yet is not in your face
+in the filesystem right now?'' because it matters, yet is not in your face
 except when you type this command.
 
 \bigline
 \item \textbf{\texttt{cd}}
 
-\texttt{cd} stands for ``\textbf{c}hange \textbf{d}irectory" and is how you
+\texttt{cd} stands for ``\textbf{c}hange \textbf{d}irectory'' and is how you
 move to another place. You give it an \textbf{argument} (kind of like passing
 a parameter to a function call in a programming language, although we don't
 use parentheses or commas here) which is where you want to go:
@@ -284,7 +284,7 @@ $ pwd
 /united/states
 \end{verbatim}
 
-we can then say ``go \textit{from here} into the \texttt{america} directory":
+we can then say ``go \textit{from here} into the \texttt{america} directory'':
 
 \begin{verbatim}
 $ cd america
@@ -303,7 +303,7 @@ $ pwd
 /america
 \end{verbatim}
 
-\subsubsection{``Special" directory shortcuts}
+\subsubsection{``Special'' directory shortcuts}
 
 This is a good time to mention that when you are specifying paths, there are
 three very common shortcuts that you'll want to know about.
@@ -313,7 +313,7 @@ three very common shortcuts that you'll want to know about.
 \itemsep1em
 \item The current directory: \texttt{\textbf{.}}
 
-A plain-ol' dot (period) is used to mean ``the current directory." There's no
+A plain-ol' dot (period) is used to mean ``the current directory.'' There's no
 obvious uses for this yet, but believe me, it comes up \textit{all} the time,
 so just memorize it. A useless example for now:
 
@@ -325,13 +325,13 @@ $ pwd
 /united/states/america
 \end{verbatim}
 
-So ``\texttt{./america}" is another way of saying ``\texttt{america}". (Told
+So ``\texttt{./america}'' is another way of saying ``\texttt{america}''. (Told
 you this example was useless.)
 
 \item The parent directory: \texttt{\textbf{..}}
 
 More immediately useful is the double-dot, which means ``the parent of the
-current directory." If we're in \texttt{/united/states} and want to go to
+current directory.'' If we're in \texttt{/united/states} and want to go to
 \texttt{/united}, one way to do it is:
 
 \begin{verbatim}
@@ -351,13 +351,13 @@ $ pwd
 /states/usa
 \end{verbatim}
 
-Here we went to a ``sibling" directory by ``going up one, and then down to a
-different child."
+Here we went to a ``sibling'' directory by ``going up one, and then down to a
+different child.''
 
 \item The home directory: \texttt{\textbf{\freakingtilde}}
 
-A shortcut for ``the home directory" (which means ``the current directory when
-you first log in") is a tilde. It's commonly used in conjunction with other
+A shortcut for ``the home directory'' (which means ``the current directory when
+you first log in'') is a tilde. It's commonly used in conjunction with other
 relative path stuff, like the last double-dot example, above.
 
 Your home directory (which you can verify by just typing \texttt{pwd} when
@@ -380,7 +380,7 @@ you can go to any of your subdirectories.
 \item \textbf{\texttt{ls}}
 
 While \texttt{pwd} tells you what the current directory is, \texttt{ls}
-command (``\textbf{l}i\textbf{s}t") gives you its contents. If I type it while
+command (``\textbf{l}i\textbf{s}t'') gives you its contents. If I type it while
 in the \texttt{/america} directory, for instance, it tells me:
 
 \begin{verbatim}
@@ -392,8 +392,8 @@ there are the two entries from ~Fig.
 
 A few gotchas to be aware of here. First, there's no way from that listing to
 tell that \texttt{nation} is a directory whereas \texttt{A.txt} is a file. If
-you want to see that, you need to add the ``\texttt{-l}" (a minus sign
-followed by the lower-case letter ``ell") option:
+you want to see that, you need to add the ``\texttt{-l}'' (a minus sign
+followed by the lower-case letter ``ell'') option:
 
 \begin{verbatim}
 $ ls -l
@@ -404,26 +404,26 @@ drwxr-xr-x 2 kyloren   sithlords 4096 Sep  5 16:21 nation
 Lots of clutter here. The key points:
 
 \begin{compactitem}[-]
-\item The far-left character on each line is either a ``\texttt{-}" or a
-``\texttt{d}", indicating file or directory.
-\item Files in Linux have ``owners," meaning specific users who created them
+\item The far-left character on each line is either a ``\texttt{-}'' or a
+``\texttt{d}'', indicating file or directory.
+\item Files in Linux have ``owners,'' meaning specific users who created them
 and have permissions to manage them. Both of these entries are evidently owned
 by user \texttt{kyloren}.
 \item The \texttt{17} and \texttt{4096} are file sizes (in bytes).
 \item You can see the date and time each entry was last modified.
 \end{compactitem}
 
-The ``\texttt{-l}" stands for ``\textbf{l}ong file listing." Most Linux
+The ``\texttt{-l}'' stands for ``\textbf{l}ong file listing.'' Most Linux
 commands have a bevy of different options you can specify when you execute
 them, most often beginning with a minus sign.
 
-Another important one for the \texttt{ls} command is ``\texttt{-a}" which
-stands for ``\textbf{a}ll files, please." If that sounds like a strange
+Another important one for the \texttt{ls} command is ``\texttt{-a}'' which
+stands for ``\textbf{a}ll files, please.'' If that sounds like a strange
 option, that's because it is. It turns out that \texttt{ls} by default doesn't
 show you all the files; in particular, \textit{it omits those whose names
 start with a dot (.).} Why? There are reasons. The only time this will be
 relevant to you soon is when you want to work with the \texttt{.bashrc} file,
-as described later in this chapter. You'd have to type ``\texttt{ls -a}" in
+as described later in this chapter. You'd have to type ``\texttt{ls -a}'' in
 your home directory to actually see it in the listing.
 
 
@@ -468,8 +468,8 @@ $ pwd
 /home/kyloren/evilplans
 \end{verbatim}
 
-A useful option to \texttt{mkdir} is the ``\texttt{-p}" option which means
-``make all \textbf{p}arent directories as necessary." This lets us create a
+A useful option to \texttt{mkdir} is the ``\texttt{-p}'' option which means
+``make all \textbf{p}arent directories as necessary.'' This lets us create a
 deeply-nested structure all in one fell swoop:
 
 \begin{verbatim}
@@ -514,7 +514,7 @@ A.txt
 
 \texttt{mv} has pretty much the same effect as \texttt{cp}, except that it
 does not retain the original copy. This command can be used to rename a file
-(``\texttt{\$ mv oldfilename newfilename}") as well as to change a file's
+(``\texttt{\$ mv oldfilename newfilename}'') as well as to change a file's
 location.
 
 \bigline
@@ -560,24 +560,24 @@ of getting a file created and edited with this incredible tool.
 \label{introduceGit}
 
 \texttt{git} is another one that doesn't really fit in this list, since it's
-much more than just ``a command." For now, though, all you need to understand
+much more than just ``a command.'' For now, though, all you need to understand
 is that it's a \textbf{version control system} that allows you to track and
 manage the changes you make to your software over time. Up until now, you've
 been dealing with the paradigm of ``the IDE always has the most recent copy of
-my code, and that's the only version of it that exists." It turns out that
+my code, and that's the only version of it that exists.'' It turns out that
 you'll need much more flexibility than that when you work on large systems.
 
 Here's all you need to know at present:
 
 \begin{compactitem}
-\item The command ``\texttt{\$ git init .}" (don't forget the dot at the end,
+\item The command ``\texttt{\$ git init .}'' (don't forget the dot at the end,
 after a space) creates a git \textbf{repository}
-(or ``\textbf{repo}") in the current directory. That just means that your
+(or ``\textbf{repo}'') in the current directory. That just means that your
 current directory, and everything under it, are now ``under git's
-management.")
-\item You use ``\texttt{git add}" to make git aware of
+management.'')
+\item You use ``\texttt{git add}'' to make git aware of
 one or more files that you want it to track from that point forward. You'll
-type ``\texttt{\$ git add }file1 file2 file3" or however many files you want
+type ``\texttt{\$ git add }file1 file2 file3'' or however many files you want
 to add at that point. Ordinarily you'll want to \texttt{git add} all of your
 \texttt{.java} files.
 \item When you've made a
@@ -588,7 +588,7 @@ $ git commit -a -m "A message describing the change."
 \end{verbatim}
 Each such change is called a \textbf{commit}. Think of it as taking a
 snapshot of your code that you can return to later.
-\item ``\texttt{\$ git status}" and ``\texttt{\$ git log}" are two useful
+\item ``\texttt{\$ git status}'' and ``\texttt{\$ git log}'' are two useful
 commands that show the current state of your files as git sees them, and a
 history of all the different commits you've made. Type them occasionally just
 to get a feel for what kind of information they show.
@@ -605,16 +605,16 @@ Now, finally to some programming stuff. On your Linux system, the Java
 into the form the computer needs to run it) is called \texttt{javac}, and the
 \textbf{virtual machine} (the interpreter that runs your compiled code) is
 called \texttt{java}. Both of these are part of the \textbf{JDK}, or ``Java
-Development Kit," that you install in order to program in Java.\footnote{Just
-to confuse you, the JDK has sometimes been called the ``Java SDK" (``Java
-Software Development Kit") and the ``J2SE" (``Java 2 Standard Edition") in the
+Development Kit,'' that you install in order to program in Java.\footnote{Just
+to confuse you, the JDK has sometimes been called the ``Java SDK'' (``Java
+Software Development Kit'') and the ``J2SE'' (``Java 2 Standard Edition'') in the
 past, and you'll likely run across those acronyms as well. To confuse you even
 more, the software you need to simply \textit{run} a Java program (as opposed
-to writing your own) is called the ``JRE" -- Java Runtime Environment.
+to writing your own) is called the ``JRE'' -- Java Runtime Environment.
 Finally, to confuse you yet further, Java version numbers were originally all
-``one-dot-something" (like ``Java 1.3") but in 2004 they ditched the
-``one-dot" and started naming the versions after the second number alone. (So,
-the successor to ``Java 1.4" was ``Java 5.") This book assumes you're on Java
+``one-dot-something'' (like ``Java 1.3'') but in 2004 they ditched the
+``one-dot'' and started naming the versions after the second number alone. (So,
+the successor to ``Java 1.4'' was ``Java 5.'') This book assumes you're on Java
 8.}
 
 
@@ -633,7 +633,7 @@ the name of \textit{the class that contains your \texttt{main()} method}:
 $ java DestroyGalacticRepublic
 \end{verbatim}
 
-(Notice we don't include ``\texttt{.java}" or ``\texttt{.class}" here, and
+(Notice we don't include ``\texttt{.java}'' or ``\texttt{.class}'' here, and
 notice we don't mention every Java class, only the one that has the
 \texttt{main()}.)
 
@@ -648,7 +648,7 @@ All I can do is promise you it will get easier as you get used to that new
 country. And there will be parts of it you will like -- maybe you'll even like
 it better than the point-and-click country you grew up in.
 
-In the meantime, let's pull together all the steps to get a ``Hello World"
+In the meantime, let's pull together all the steps to get a ``Hello World''
 Java program running on the Linux command line.
 
 \begin{enumerate}
@@ -678,7 +678,7 @@ $ vim HelloWorld.java
 
 \textbf{(You are now in \texttt{vim}. Everything you learned during your
 \texttt{vimtutor} session, and everything you can get from a zillion different
-``vim cheat sheets" on the Internet, is relevant now. Good luck.)}
+``vim cheat sheets'' on the Internet, is relevant now. Good luck.)}
 
 \item Give it these contents:
 \begin{verbatim}

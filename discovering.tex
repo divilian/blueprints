@@ -13,7 +13,7 @@ diagram; instead of examining a method, we're writing a method.
 Until now, I've presented you with example after example of classes and
 methods already written, and diagrams illustrating their various parts. But
 now it's time to ask the question: ``how do we figure out what the right
-classes and methods \textit{are} in the first place?" It's all well and good
+classes and methods \textit{are} in the first place?'' It's all well and good
 for someone to hand us \texttt{Ballplayer}, \texttt{Team}, and
 \texttt{Simulator} classes. But how did we know to create those particular
 classes? Why not \texttt{Pitch}, \texttt{Catch}, and \texttt{Hit}? Why not
@@ -32,13 +32,13 @@ highly indebted to her, and recommend the original book authored by her and
 her colleagues.\footnote{Wirfs-Brock, Wilkerson, Wiener, \textit{Designing
 Object-Oriented Software.} Prentice Hall, 1991.}
 
-\section{``Discovering the design"}
+\section{``Discovering the design''}
 
-I don't know who first coined the phrase ``discovering the design" (it
+I don't know who first coined the phrase ``discovering the design'' (it
 certainly wasn't me; it might have been Wirfs-Brock) but when I originally
-heard it my ears perked up. It sounded strangely paradoxical. ``Design" was
+heard it my ears perked up. It sounded strangely paradoxical. ``Design'' was
 something one brought to the table and imposed on one's world, right? Not
-something one found already there. ``Design" seemed like a matter of
+something one found already there. ``Design'' seemed like a matter of
 \textit{invention}, not \textit{discovery}; it was surely something you did to
 a steam engine, not to a planet.
 
@@ -46,12 +46,12 @@ Yet hidden in this phrase is a powerful technique for OO design that attempts
 to \textit{let the requirements speak for themselves.} One of Rebecca
 Wirfs-Brock's great ideas was to begin with a written description of a
 software program in action, and to cull from the language clues as to what the
-``correct" classes are.
+``correct'' classes are.
 
-Let me immediately clarify that ``correct" does not mean ``there is one and
-only one `right' set of classes" for a particular program. In fact, there are
+Let me immediately clarify that ``correct'' does not mean ``there is one and
+only one `right' set of classes'' for a particular program. In fact, there are
 many such choices, some better than others, some downright awful. What we
-mean by ``the correct classes" is a set of classes (and their corresponding
+mean by ``the correct classes'' is a set of classes (and their corresponding
 inst vars and methods) that will:
 
 \begin{compactitem}
@@ -64,7 +64,7 @@ inst vars and methods) that will:
 
 You get the picture. A good design is elegant, flexible, maintainable, and
 robust to change. Many choices of classes will not meet these goals. A few
-will. ``The correct set of classes" means \textit{any} set of classes that
+will. ``The correct set of classes'' means \textit{any} set of classes that
 will do so reasonably well.
 
 \section{Straight from the horse's mouth}
@@ -72,8 +72,8 @@ will do so reasonably well.
 
 Wirfs-Brock's procedure is paraphrased in Figure~\ref{fig:discovering}. We
 have to somehow come up with a written description to kick things off. Often,
-a \textbf{requirements specification}\footnote{Sometimes called a ``req spec"
--- pronounced ``reck speck."} has been authored by someone higher-up on our
+a \textbf{requirements specification}\footnote{Sometimes called a ``req spec''
+-- pronounced ``reck speck.''} has been authored by someone higher-up on our
 company's food chain, and can be mined for much gold. Sometimes, we ourselves
 take a step back and bang out a few paragraphs that describe what users do and
 experience as they work with the system.
@@ -94,12 +94,12 @@ Start with a written description of the software, and:
     \item likely \textit{attributes} of a class, not classes themselves
     \end{compactenum}
 \item The remaining ones are your \textbf{candidate classes}. See which of
-them ``feel right." Identify what each one \textbf{knows} and can \textbf{do}.
+them ``feel right.'' Identify what each one \textbf{knows} and can \textbf{do}.
 
 \end{compactenum}
 }}
 \vspace{.1in}
-\caption{Procedure for ``discovering the design."}
+\caption{Procedure for ``discovering the design.''}
 \label{fig:discovering}
 \end{figure}
 
@@ -111,7 +111,7 @@ what classes would be appropriate for the program it describes. Let's see how.
 If you flash back to \textit{Schoolhouse Rock} or \textit{Sesame Street},
 you'll remember your grammatical parts of speech and realize that a
 \textbf{noun} is the right kind of word for a class name. Every object (and
-therefore the class it's an instance of) is a ``person, place, or thing," not
+therefore the class it's an instance of) is a ``person, place, or thing,'' not
 an action word, modifier, or anything else.
 
 Further, not just not any old noun will do. Consider the list in
@@ -126,7 +126,7 @@ valid class name. Can you find it?
 \begin{compactitem}
 \renewcommand\labelitemi{\freakingtilde}
 \item happiness
-\item Justin Bieber
+\item Beyonc\'{e}
 \item oxygen
 \columnbreak
 \item crocodile
@@ -146,14 +146,14 @@ valid class name. Can you find it?
 
 I claim the only legit class name in this list is
 \underline{\textit{crocodile}}. Here's why. First, some of these entries are
-``proper nouns" which means they refer to specific instances of things, rather
+``proper nouns'' which means they refer to specific instances of things, rather
 than categories. In English, we almost always use \textit{capital letters} to
-denote proper nouns, which means when you see ``Justin Bieber" and ``London"
+denote proper nouns, which means when you see ``Beyonc\'{e}'' and ``London''
 you can immediately roll your eyes and move on.
 
 Second, most of the other nouns aren't \textit{instantiate-able}. Here's the
 litmus test for whether a noun is instantiate-able: can you meaningfully
-put the word ``a" (or ``an") before it? And can you meaningfully make it
+put the word ``a'' (or ``an'') before it? And can you meaningfully make it
 plural and put a number (like thirteen) before it?
 
 Clearly not. All of these phrases are plainly ridiculous:
@@ -163,8 +163,8 @@ Clearly not. All of these phrases are plainly ridiculous:
 \item four happinesses (?)
 \item eleven oxygens\footnote{One could imagine a chemical analysis program
 that dealt with oxygen atoms, among other things, and I've heard chemists
-speak loosely of things like ``an extra oxygen" or say ``that molecule has
-five oxygens." I still like \texttt{OxygenAtom} much, much better as a class
+speak loosely of things like ``an extra oxygen'' or say ``that molecule has
+five oxygens.'' I still like \texttt{OxygenAtom} much, much better as a class
 name even here, though.} (?)
 \item a teamwork (?)
 \columnbreak
@@ -175,8 +175,8 @@ name even here, though.} (?)
 \end{multicols}
 
 Remember, the only thing we ever really do to a class is make instances of it,
-to which we can do things. If you can't imagine a ``\texttt{new Communism()}"
-or ``an \texttt{ArrayList} of \texttt{Happiness}es," it has no business being
+to which we can do things. If you can't imagine a ``\texttt{new Communism()}''
+or ``an \texttt{ArrayList} of \texttt{Happiness}es,'' it has no business being
 a class.
 
 The closest contender to crocodile is the word \textit{width}. There may be
@@ -184,23 +184,23 @@ cases where this is a sensible class, but the reason I discard it is that a
 width is almost certainly a \textit{modifier} of some other object, rather
 than an object itself. One could imagine \texttt{Building}, \texttt{Image},
 and \texttt{Rectangle} objects that all had an instance variable called
-\texttt{width}; it's harder to imagine ``a width" as an entity in its own
+\texttt{width}; it's harder to imagine ``a width'' as an entity in its own
 right, with its own properties and operations.
 
 \subsubsection{Noun phrases}
 
 By the way, it's often the case that instead of a bare noun, we use a
 \textbf{noun phrase} as a class name. A noun phrase is simply a noun with one
-or more modifiers. ``Grizzly bear," ``chess tournament," and ``public liberal
-arts college" are examples.
+or more modifiers. ``Grizzly bear,'' ``chess tournament,'' and ``public liberal
+arts college'' are examples.
 
 \subsubsection{Singular, not plural}
 
 Finally, it should hardly be worth stating that all class names must be
-\textbf{singular}, not plural. I don't work in ``a buildings," but a
-\textit{building}; and nobody has ``a dogs" as a pet. When we instantiate an
-object, we're going to say ``\texttt{Crocodile alice = new Crocodile()}", not 
-``\texttt{Crocodiles alice = new Crocodiles()}".
+\textbf{singular}, not plural. I don't work in ``a buildings,'' but a
+\textit{building}; and nobody has ``a dogs'' as a pet. When we instantiate an
+object, we're going to say ``\texttt{Crocodile alice = new Crocodile()}'', not 
+``\texttt{Crocodiles alice = new Crocodiles()}''.
 
 \section{Carrying out the process}
 
@@ -295,7 +295,7 @@ singular and lower-case, this leaves us with the following list:
 
 \textbf{2a. Eliminate probable duplicates.} According to
 Figure~\ref{fig:discovering}, the next step is to eliminate likely duplicates.
-Obviously things like ``bicycle" and ``bike" refer to the same conceptual
+Obviously things like ``bicycle'' and ``bike'' refer to the same conceptual
 entity; we're hardly going to have a \texttt{Bicycle} class and a separate
 \texttt{Bike} class in our program!
 
@@ -339,16 +339,16 @@ being equal, I usually choose the shorter one.
 \vspace{.3in}
 \textbf{2b. Eliminate nouns that aren't instantiate-able.} Now we apply our
 test: ``can we put `a/an' or a number before the noun phrase, and have it make
-sense?"
+sense?''
 
 Actually almost all of these remaining entries pass that test, with the
 exception of \textit{customer demand}, and possibly \textit{contact
-information}. While one could indeed envision ``four or five customer demands"
+information}. While one could indeed envision ``four or five customer demands''
 in other contexts, it's pretty clear from the text that this is being used as
-an abstract concept, not an individual object. ``Contact information" is a
+an abstract concept, not an individual object. ``Contact information'' is a
 closer call, but by inspecting the requirements again, we can see that this is
 really an attribute of \textit{vendor/supplier}. We'll therefore strike the
-idea of a ``\texttt{ContactInformation}" class. We're now down to:
+idea of a ``\texttt{ContactInformation}'' class. We're now down to:
 
 \begin{multicols}{3}
 \small
@@ -378,7 +378,7 @@ idea of a ``\texttt{ContactInformation}" class. We're now down to:
 
 \textbf{2c. Eliminate things you obviously wouldn't represent.} When you look
 at some of these surviving noun phrases, you scratch your head. Would we
-really have a ``\texttt{Week}" class? Surely not. Also, although this program
+really have a ``\texttt{Week}'' class? Surely not. Also, although this program
 will no doubt be used by the manager of a store, does it really make sense to
 represent the \texttt{Manager} as an object? We'll cross out both of these.
 
@@ -386,11 +386,11 @@ represent the \texttt{Manager} as an object? We'll cross out both of these.
 
 \textbf{2d. Eliminate likely \textit{attributes} of a class.} Things are
 getting a bit more subjective, but some of these remaining nouns definitely
-seem ``too small" to be their own classes. Consider \textit{expected arrival
+seem ``too small'' to be their own classes. Consider \textit{expected arrival
 date}. Surely this is better modeled as a property of an order, rather than
 its own individual object. The same could be said for \textit{down payment}
 and \textit{inventory level}. Generally speaking, noun phrases that seem to
-refer to bits of data that have an obvious ``home" in another class ought to
+refer to bits of data that have an obvious ``home'' in another class ought to
 be modeled as inst vars, not classes.
 
 So now all that remains are:
@@ -423,15 +423,15 @@ So now all that remains are:
 
 We dub these our \textbf{candidate classes}, which essentially means ``those
 noun phrases which each have a very good chance of actually turning into a
-class in our program." We're not 100\% committed to them yet, but they pass
+class in our program.'' We're not 100\% committed to them yet, but they pass
 muster enough to deserve a deep think.
 
 \vspace{.3in}
 
 \pagebreak
-\textbf{3a. See which of the remaining ones ``feel right."} We've come a long
+\textbf{3a. See which of the remaining ones ``feel right.''} We've come a long
 way semi-mechanically. Now it's time to allow ourselves the luxury of turning
-over in our minds each candidate class, ``trying it on," so to speak. 
+over in our minds each candidate class, ``trying it on,'' so to speak. 
 
 It's here that a clear picture of our software system emerges. When I look at
 the ten candidate classes, here's what comes to mind:
@@ -439,16 +439,16 @@ the ten candidate classes, here's what comes to mind:
 \begin{itemize}
 \itemsep.1em
 
-\item First, and most importantly, I realize that the word ``order" was used
+\item First, and most importantly, I realize that the word ``order'' was used
 in \textit{two different ways} in the requirements description. You may have
-actually noticed this earlier when we scratched out ``expected arrival date"
-and ``down payment" in step 2d. Those were both aspects of an order...but what
+actually noticed this earlier when we scratched out ``expected arrival date''
+and ``down payment'' in step 2d. Those were both aspects of an order...but what
 \textit{sort} of order? If we go back to the Bible (the req spec) we see these
 two phrases:
 
 \begin{quote}
 \textsf{``...customers place individual orders for bikes and other accessories
-from the store..."}
+from the store...''}
 \end{quote}
 
 \vspace{-.3in}
@@ -458,14 +458,14 @@ and
 \vspace{-.2in}
 
 \begin{quote}
-\textsf{``...The store manager must be able to place orders from vendors..."}
+\textsf{``...The store manager must be able to place orders from vendors...''}
 \end{quote}
 
 Aha! Different beasts entirely.
 
 This sort of post-noun-phrase-stage epiphany isn't uncommon. English words are
 used in a variety of ways, which makes them versatile and suggestive, yet
-imprecise. Here, we clearly have two different notions of ``order": (1) a
+imprecise. Here, we clearly have two different notions of ``order'': (1) a
 contract for delivery from one of our big suppliers like Trek or Cannondale
 (which might include a dozen bikes or more), and (2) a customer's reservation
 of a particular model/color/style of bike, which he or she is anxiously
@@ -473,7 +473,7 @@ waiting to take home for its first ride. More succinctly, one kind we buy, and
 the other kind we sell.
 
 We're going to have to invent at least one noun phrase of our own here, since
-the req spec author double-dipped on the word ``order"; perhaps we'll call the
+the req spec author double-dipped on the word ``order''; perhaps we'll call the
 first one a \texttt{PurchaseOrder} and the second one a
 \texttt{CustomerRequest}. (In situations like this, I think it's better to
 \textit{avoid} using the original word altogether, since it was ambiguous to
@@ -492,10 +492,10 @@ item}
 \end{quote}
 
 These clearly all refer to things that can be purchased. When we go back to
-the Bible, we see that the modifier ``incoming" on \textit{product} really
+the Bible, we see that the modifier ``incoming'' on \textit{product} really
 refers to the temporary state of a product (\textit{i.e.}, one in transit from
 a supplier), not a fundamentally distinct kind of thing. So I'm going to be
-bold, ditch ``incoming," and make these two assertions:
+bold, ditch ``incoming,'' and make these two assertions:
 
 \begin{compactenum}
 \item \textsf{item == product}
@@ -544,15 +544,15 @@ cornerstone of good object-oriented design.
 
 Hence at this stage, we apply this litmus test to the candidate classes that
 remain. One tool to facilitate this procedure is creating a set of \textbf{CRC
-cards}, which stands for ``Class, Responsibilities, Collaborations." The idea
+cards}, which stands for ``Class, Responsibilities, Collaborations.'' The idea
 is for your design team to create a literal $3\times5$ card for each candidate
 class, put them on a flat workspace so you can move them around and compare
 and group them, and see whether they seem to fit into a cohesive whole.
 
 The \textbf{Class} for each card is just the class name (which can be fluid as
 you try to zero in on the best name). The \textbf{Responsibilities} are the
-state (``what an object of that type knows") and the behavior (``what an
-object can do"), which I usually designate in separate sections. Finally, the
+state (``what an object of that type knows'') and the behavior (``what an
+object can do''), which I usually designate in separate sections. Finally, the
 \textbf{Collaborations} are a list of other classes the class is likely to
 work closely with to accomplish its job.
 
@@ -590,29 +590,29 @@ shipment, when it's due, and who it's from) and associated behavior (accept
 it, cancel it, get an updated status).
 
 You might be thinking, ``that's great, Stephen, but how did you know what to
-write in that box?" I admit it's not a turn-the-crank process. This is part of
+write in that box?'' I admit it's not a turn-the-crank process. This is part of
 the design process that's \textit{art}, not science. Basically, though, you
 have to try to create a little egocentric world in your mind, the center of
 which is the class in question. 
 
 Here, I said to myself, ``let's view the entire world through the lens of a
-Shipment. First, in the real world, what ought a shipment to `know'?" The
+Shipment. First, in the real world, what ought a shipment to `know'?'' The
 answer is things that relate directly to that shipment. The items it should
 contain and the expected date of receipt are good examples; the number of
 bicycles in the store is not, nor is a customer's contact information. Then, I
-asked ``in the real world, what actions pertain to a shipment?" The main one,
+asked ``in the real world, what actions pertain to a shipment?'' The main one,
 of course, is to receive that shipment, which involves paying for it and
 adding the items to the store. We also might ask the supplier for an update if
 the shipment is past date, or even decide to cancel it and go with another
 vendor if it's taking too long.
 
-The important thing here isn't to get all the ``knows" and ``cans" 100\%
+The important thing here isn't to get all the ``knows'' and ``cans'' 100\%
 right -- things will evolve as our understanding evolves. It's more important
-to recognize that there \textit{are} clear ``knows" and ``cans" for this
+to recognize that there \textit{are} clear ``knows'' and ``cans'' for this
 class, which certifies it as a bona fide entity within our object-oriented
 system.
 
-The ``Collaborates:" list consists of those other classes we've identified as
+The ``Collaborates:'' list consists of those other classes we've identified as
 likely co-participants in various system functions. A \texttt{Shipment} is
 related to a \texttt{PurchaseOrder}, of course, since the former is the
 fulfillment of the latter. Its also comprised of \texttt{Item}s, and will need
@@ -672,8 +672,8 @@ with the \texttt{Inventory} class. Speaking of which...
 
 I smell a Singleton. Our store is likely going to have a single
 \texttt{Inventory} object which can be used to query and update its item
-quantities. By the way, you may have noticed that one of the ``Can" items --
-``find quantity in stock" -- was listed on the CRC card for both
+quantities. By the way, you may have noticed that one of the ``Can'' items --
+``find quantity in stock'' -- was listed on the CRC card for both
 \texttt{Accessory} and \texttt{Inventory}. This isn't wrong; probably an
 \texttt{Accessory} object, when asked for its current quantity, will turn
 around and query the \texttt{Inventory} singleton to produce that answer.
@@ -738,20 +738,20 @@ simulator in order to play cards and call colors after wilds are played.}
 
 \textsf{Uno is a game played with a special deck of cards of various types.
 Most cards have a color (red, blue, yellow, or green) and feature either a
-number on them (from 0 to 9) or else a special action (like ``reverse,"
-``skip," \textit{etc.}) Some cards are ``wild" cards, which do not have any
+number on them (from 0 to 9) or else a special action (like ``reverse,''
+``skip,'' \textit{etc.}) Some cards are ``wild'' cards, which do not have any
 particular color, and thus can be played at any time.}
 
 \vspace{.1in}
 
 \textsf{When play begins, the deck is shuffled, cards are dealt to each
 player's hand, and one card is turned face up in the middle of the virtual
-table, called the ``up card." Each player in turn gets a chance to play, by
+table, called the ``up card.'' Each player in turn gets a chance to play, by
 playing a card from their hand on top of the up card. That up card is then
 replaced by the new up card. If the deck is ever exhausted (\textit{i.e.},
 runs out of cards) the discarded cards are reshuffled and placed beside the up
 card to be drawn anew. The object of the game is to be the first player to
-``go out" by playing all cards from your hand.}
+``go out'' by playing all cards from your hand.}
 
 \vspace{.1in}
 
@@ -765,7 +765,7 @@ players to have to draw additional cards from the deck.}
 
 \textsf{When one player wins a round, he/she gets awarded points based on the
 cards remaining in other players' hands. Each type of card has ``forfeit
-cost," or point value that determines how much it is worth. As it runs, the
+cost,'' or point value that determines how much it is worth. As it runs, the
 simulator maintains the cumulative scores of the players as they each win
 games, so that at the end of 50,000 games, an overall winner can be declared.}
 }}
@@ -796,20 +796,20 @@ called by the simulator in order to play \bluebox{cards} and call
 \textsf{Uno is a \bluebox{game} played with a special \bluebox{deck} of cards
 of various \bluebox{types}. Most cards have a color (red, blue, yellow, or
 green) and feature either a \bluebox{number} on them (from 0 to 9) or else a
-special \bluebox{action} (like ``reverse," ``skip," \textit{etc.}) Some cards
-are \bluebox{``wild" cards}, which do not have any particular color, and thus
+special \bluebox{action} (like ``reverse,'' ``skip,'' \textit{etc.}) Some cards
+are \bluebox{``wild'' cards}, which do not have any particular color, and thus
 can be played at any \bluebox{time}.}
 
 \vspace{.1in}
 
 \textsf{When play begins, the deck is shuffled, cards are dealt to each
 player's \bluebox{hand}, and one card is turned face up in the middle of the
-\bluebox{virtual table}, called the ``\bluebox{up card}." Each player in turn
+\bluebox{virtual table}, called the ``\bluebox{up card}.'' Each player in turn
 gets a \bluebox{chance} to play, by playing a card from their hand on top of
 the up card. That up card is then replaced by the new up card. If the deck is
 ever exhausted (\textit{i.e.}, runs out of cards) the \bluebox{discarded
 cards} are reshuffled and placed beside the up card to be drawn anew. The
-\bluebox{object} of the game is to be the first player to ``go out" by playing
+\bluebox{object} of the game is to be the first player to ``go out'' by playing
 all cards from your hand.}
 
 \vspace{.1in}
@@ -825,7 +825,7 @@ draw additional cards from the deck.}
 
 \textsf{When one player wins a \bluebox{round}, he/she gets awarded
 \bluebox{points} based on the cards remaining in other players' hands. Each
-type of card has ``\bluebox{forfeit cost}," or \bluebox{point value} that
+type of card has ``\bluebox{forfeit cost},'' or \bluebox{point value} that
 determines how much it is worth. As it runs, the simulator maintains the
 \bluebox{cumulative scores} of the players as they each win games, so that at
 the end of 50,000 games, an overall \bluebox{winner} can be declared.} }}
@@ -859,11 +859,11 @@ Our mechanical noun phrase extraction produces this list:
 \item \textsf{deck}
 \item \textsf{type}
 \item \textsf{number}
-\item \textsf{``wild" card}
+\item \textsf{``wild'' card}
 \item \textsf{time}
 \item \textsf{hand}
 \item \textsf{virtual table}
-\item \textsf{``up" card}
+\item \textsf{``up'' card}
 \item \textsf{chance}
 \item \textsf{discarded card}
 \item \textsf{object}
@@ -876,7 +876,7 @@ Our mechanical noun phrase extraction produces this list:
 \item \textsf{unfortunate player}
 \item \textsf{round}
 \item \textsf{point}
-\item \textsf{``forfeit cost"}
+\item \textsf{``forfeit cost''}
 \item \textsf{point value}
 \item \textsf{cumulative score}
 \item \textsf{winner}
@@ -905,7 +905,7 @@ duplicates, our list is shrunk to:
 \item \textsf{player}
 \item \textsf{card}
 \item \textsf{color}
-\item \textsf{``wild" card}
+\item \textsf{``wild'' card}
 \columnbreak
 \item \textsf{deck}
 \item \textsf{type}
@@ -913,7 +913,7 @@ duplicates, our list is shrunk to:
 \item \textsf{time}
 \item \textsf{hand}
 \item \textsf{virtual table}
-\item \textsf{``up" card}
+\item \textsf{``up'' card}
 \item \textsf{chance}
 \item \textsf{object}
 \columnbreak
@@ -923,7 +923,7 @@ duplicates, our list is shrunk to:
 \item \textsf{direction of play}
 \item \textsf{turn}
 \item \textsf{point}
-\item \textsf{``forfeit cost"}
+\item \textsf{``forfeit cost''}
 \item \textsf{cumulative score}
 \end{compactitem}
 \end{multicols}
@@ -931,9 +931,9 @@ duplicates, our list is shrunk to:
 
 An interesting decision here involved the terms \textsf{game} and
 \textsf{round}. The former is used in a couple of different senses: Uno itself
-is a ``game," yet the word ``game" is also used to mean a single deal of the
+is a ``game,'' yet the word ``game'' is also used to mean a single deal of the
 cards, at the end of which one player goes out. Curiously, there's no noun in
-the description for ``the overall match" which comprises 50,000 games. We may
+the description for ``the overall match'' which comprises 50,000 games. We may
 find we need such a class. In any event, I scratched \textsf{round} in favor
 of \textsf{game} in the list above.
 
@@ -954,29 +954,29 @@ of the non-instantiate-able stuff, we shrink further to:
 \item \textsf{card}
 \item \textsf{color}
 \columnbreak
-\item \textsf{``wild" card}
+\item \textsf{``wild'' card}
 \item \textsf{deck}
 \item \textsf{type}
 \item \textsf{number}
 \item \textsf{hand}
 \item \textsf{virtual table}
-\item \textsf{``up" card}
+\item \textsf{``up'' card}
 \columnbreak
 \item \textsf{rank}
 \item \textsf{special effect}
 \item \textsf{direction of play}
 \item \textsf{turn}
 \item \textsf{point}
-\item \textsf{``forfeit cost"}
+\item \textsf{``forfeit cost''}
 \item \textsf{cumulative score}
 \end{compactitem}
 \end{multicols}
 \end{samepage}
 
-It's worth drawing attention here to the noun ``\textsf{rule}," which I
+It's worth drawing attention here to the noun ``\textsf{rule},'' which I
 discarded. I find that many students' inclination is to keep \textsf{rule} as
 a class, whereas I think the description makes it clear that ``rules in
-general, according to which the game is played" is what's intended. And that
+general, according to which the game is played'' is what's intended. And that
 would steer us away from instantiating some number of \texttt{Rule} objects.
 
 \vspace{.1in}
@@ -990,7 +990,7 @@ I got rid of on this step were (ironically) \textsf{student} and
 agree that \textsf{color}, \textsf{type}, \textsf{number}, and \textsf{rank}
 are best suited as attributes of a \texttt{Card} class, not as classes in
 their own right. Too, \textsf{direction of play} -- which is simply
-``clockwise" or ``counter-clockwise" -- seems like a property of the
+``clockwise'' or ``counter-clockwise'' -- seems like a property of the
 \textsf{game}. Similar thinking leads to deleting \textsf{point} and
 \textsf{cumulative score} (attributes of the \texttt{Player}s) and
 \textsf{forfeit cost} (an attribute of a \texttt{Card}.) We're now left with
@@ -1006,12 +1006,12 @@ only:
 \item \textsf{player}
 \item \textsf{card}
 \columnbreak
-\item \textsf{``wild" card}
+\item \textsf{``wild'' card}
 \item \textsf{deck}
 \item \textsf{hand}
 \item \textsf{virtual table}
 \columnbreak
-\item \textsf{``up" card}
+\item \textsf{``up'' card}
 \item \textsf{special effect}
 \item \textsf{turn}
 \end{compactitem}
@@ -1019,14 +1019,14 @@ only:
 \end{samepage}
 
 
-\textbf{3a. See which of the remaining ones ``feel right."} This is honestly a
+\textbf{3a. See which of the remaining ones ``feel right.''} This is honestly a
 pretty darn good list. If I were to nitpick it further, I'd probably say that
-\textsf{``up" card} will probably turn out to be an instance variable of
+\textsf{``up'' card} will probably turn out to be an instance variable of
 \textit{type} \texttt{Card}, rather than its own class. I'd wager that
 \textsf{turn} doesn't end up being a full-blown class either, since ``whose
-turn it is" is better served with an inst var.
+turn it is'' is better served with an inst var.
 
-The \textsf{``wild" card} noun phrase is quite literally going to become a
+The \textsf{``wild'' card} noun phrase is quite literally going to become a
 wild card for us, as we'll discover in the next chapter. It conceals what is
 really going to be a deep inheritance hierarchy, in which the different types
 of cards are all subclasses of \texttt{Card}. This is where the
@@ -1069,7 +1069,7 @@ future!
 \textit{Knows}: & its type \\
 & its color (if applicable) \\
 & its number (if applicable) \\
-& its ``forfeit cost" \\
+& its ``forfeit cost'' \\
 & whether it can be legally played on an up card \\
 & whether the player who played it can call a new color \\
 \textit{Can}: & perform any special effect appropriate to its type \\
@@ -1127,7 +1127,7 @@ future!
 \textit{Can}: & defer to its controlling \texttt{Player} object to choose a card \\
 & defer to its controlling \texttt{Player} object to call a color \\
 & add a card (when the player must draw) \\
-& count the ``forfeit costs" of all its cards \\
+& count the ``forfeit costs'' of all its cards \\
 \hline
 \textit{Collaborates}: & \texttt{Player} (and subclasses), \texttt{Card}\\
 \end{tabular}\\
@@ -1143,7 +1143,7 @@ future!
 \begin{tabular}{rl}
 \textit{Knows}: & its hand \\
 & all cards that have been played since last shuffle \\
-\textit{Can}: & select which card to play on the ``up card" \\
+\textit{Can}: & select which card to play on the ``up card'' \\
 & choose a color to call immediately after playing a wild \\
 \hline
 \textit{Collaborates}: & \texttt{Card}, \texttt{Game} \\

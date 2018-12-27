@@ -28,11 +28,11 @@ using the \textbf{Singleton} pattern. The answer is yes! In fact,
 \textit{factories are nearly always singletons.} This is simply because
 although our baseball simulator will create lots of \texttt{Ballplayer}s, it
 will only need one \texttt{BallplayerFactory}.\footnote{As with all design
-patterns, you should use standard nomenclature. If the word ``factory" seems
+patterns, you should use standard nomenclature. If the word ``factory'' seems
 clunky or contrived to you, I get it, but accept it as part of the OOP culture
-and use it. Don't try to come up with your own synonym of ``factory" (like
-``creator" or ``instantiator") and use that instead, since you'll just confuse
-your fellow programmers. The word ``factory," like the word ``singleton," is
+and use it. Don't try to come up with your own synonym of ``factory'' (like
+``creator'' or ``instantiator'') and use that instead, since you'll just confuse
+your fellow programmers. The word ``factory,'' like the word ``singleton,'' is
 baked into the software development community's consciousness, and thus serves
 as an excellent terse-yet-precise communication of purpose.}
 
@@ -63,9 +63,9 @@ class BallplayerFactory {
 Badda-boom.
 
 Now I know what you're thinking. You're thinking ``wow, that's a whole lot of
-code to do nothing but ``\texttt{new} up a \texttt{Ballplayer}," which we were
+code to do nothing but ``\texttt{new} up a \texttt{Ballplayer},'' which we were
 doing before with one line of code and a lot less work. What's the point of
-all this?"
+all this?''
 
 The answer is that oftentimes \textit{the code which needs to instantiate an
 object isn't aware of what specific subtype of object it needs.} Read that
@@ -85,9 +85,9 @@ To the client code, all that exists are \texttt{Animal}s, and those objects
 can be directed to move, make noise, or anything else.
 
 That was all great, but one thing we didn't address was ``how do those objects
-come into existence in the first place?" Somewhere the specific subtype
+come into existence in the first place?'' Somewhere the specific subtype
 \textit{has} to be mentioned in the code, or else there's no way to
-``\texttt{new}" it. How can we be blissfully ignorant of the subtypes if we're
+``\texttt{new}'' it. How can we be blissfully ignorant of the subtypes if we're
 the one who has to instantiate them?
 
 The answer is the Factory pattern. With it, we turn over control of the actual
@@ -96,7 +96,7 @@ it.
 
 Suppose that our simulator is more sophisticated than the original toy example
 from Chapter~\ref{ch:memoryMatters}. Different positions have different kinds
-of stats: pitchers (with ``\texttt{koDominance}") are completely different
+of stats: pitchers (with ``\texttt{koDominance}'') are completely different
 than position players (who have \texttt{numHits} and \texttt{numAtBats}
 instead). It might make sense to use an inheritance hierarchy here with
 subclasses of \texttt{Ballplayer}, as shown in
@@ -150,7 +150,7 @@ class BallplayerFactory {
 }
 \end{Verbatim}
 
-Depending on the position (``\texttt{P}" for pitcher, ``\texttt{OF}" for
+Depending on the position (``\texttt{P}'' for pitcher, ``\texttt{OF}'' for
 outfielder, \textit{etc.}) the factory instantiates the proper subtype of
 \texttt{Ballplayer} and returns it. The client code doesn't need to know
 anything about those subtypes. Notice that the return value of
@@ -168,7 +168,7 @@ Valkyrie and wanders through dungeon levels looking for monsters to slay. We
 might have a \texttt{MonsterFactory} class to generate monsters as they are
 encountered. Maybe on the first (and easiest) level of the game, half of the
 monsters we create are \texttt{Goblin}s and the other half are
-\texttt{TempleGuard}s. And both of these have ``easy" statistics --
+\texttt{TempleGuard}s. And both of these have ``easy'' statistics --
 \textit{i.e.}, low values for \texttt{hitPoints}, \texttt{armorClass}, and
 \texttt{speed}. When the player gets to level two, however, not only will the
 stats of these basic creatures get buffed, but now an occasional

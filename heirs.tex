@@ -1,15 +1,15 @@
 
 \chapter{Heirs of the kingdom (1 of 2)}
 
-If one had to name object-oriented programming's most ``killer feature," a
+If one had to name object-oriented programming's most ``killer feature,'' a
 good case could be made for \textbf{inheritance}. This specific technique for
-code reuse and modular flexibility underlies much of the ``magic" that happens
+code reuse and modular flexibility underlies much of the ``magic'' that happens
 in well-architected OO programs, including most of the design patterns we'll
 consider in later chapters. Developers need to know it, and know it well.
 
 Interestingly, inheritance is used for two distinct (and essentially
 unrelated) reasons to achieve two very different kinds of results. I call
-these ``\textbf{top-down inheritance}" and ``\textbf{bottom-up inheritance},
+these ``\textbf{top-down inheritance}'' and ``\textbf{bottom-up inheritance},
 for reasons I'll explain; the more standard terms are \textbf{interface
 inheritance} and \textbf{implementation inheritance}, respectively. Curiously,
 when I was a young'un taking object-oriented programming in college, we
@@ -19,19 +19,19 @@ acting the way it did. Only then did I realize that although bottom-up
 inheritance is indeed useful, top-down inheritance is really the game-changer.
 We'll cover both in this chapter.
 
-\section{``Bottom-up" (implementation) inheritance}
+\section{``Bottom-up'' (implementation) inheritance}
 
 As you know, the Java API contains a class called \texttt{ArrayList}. The
 class diagram below shows an abbreviated version of it. Already there's one
-possibly unfamiliar element to you here: the literal word ``\texttt{Object}".
+possibly unfamiliar element to you here: the literal word ``\texttt{Object}''.
 It might seem odd to learn that there is a \textit{class} called
 \textit{\texttt{Object}}, but that is indeed the case. And in fact this very
 class will come back later in the chapter and play a major role in Java's
 version of inheritance. For now, just consider that we are working with the
 \textit{non}-generic \texttt{ArrayList} type -- \textit{i.e.} the user will
-not declare ``\texttt{ArrayList<String>}" but plain-ol' ``\texttt{ArrayList}"
+not declare ``\texttt{ArrayList<String>}'' but plain-ol' ``\texttt{ArrayList}''
 -- so that the things that can be stored in it are ``\textit{any} type of
-\texttt{Object}." That's why we're using the most general possible word here
+\texttt{Object}.'' That's why we're using the most general possible word here
 as the argument of \texttt{.add()}, \texttt{.remove()}, \textit{etc.}
 
 \begin{wrapfigure}{r}{5.5cm}
@@ -45,7 +45,7 @@ Now suppose we were writing a program that needed to manage a bunch of
 list-like data, and that \texttt{ArrayList} was just the ticket...except that
 it was missing one or more important features. For example, maybe in addition
 to adding, removing, counting, \textit{etc.}, we also needed the ability to
-\textit{count the number of unique elements} in a list. Our ``dream code" is
+\textit{count the number of unique elements} in a list. Our ``dream code'' is
 in Figure~\ref{fig:dreamCountUnique}.
 
 \begin{figure}[hb]
@@ -76,8 +76,8 @@ meets all our needs except this one teensy one.
 
 Several ways to get around this limitation come to mind. We could use a
 \textbf{has-a} association between \texttt{ArrayList} and a new class of our
-devising, ``\texttt{CountUniqueArrayList}." Each \texttt{CountUniqueArrayList}
-would have an \texttt{ArrayList} ``under the hood" which it would use to
+devising, ``\texttt{CountUniqueArrayList}.'' Each \texttt{CountUniqueArrayList}
+would have an \texttt{ArrayList} ``under the hood'' which it would use to
 actually store the data. Figure~\ref{fig:countUnique1} gives the idea.
 
 \begin{figure}
@@ -90,12 +90,12 @@ actually store the data. Figure~\ref{fig:countUnique1} gives the idea.
 We could code our \texttt{.countUnique()} in a variety of ways, and now the
 last line of Figure~\ref{fig:dreamCountUnique} would work like a charm.
 Trouble is...the other lines wouldn't work anymore. Obviously we have to be
-able to do ``normal" \texttt{ArrayList} things with our class as well as
+able to do ``normal'' \texttt{ArrayList} things with our class as well as
 calling our new special method. So we'd have to duplicate all the other
-\texttt{ArrayList} methods on our new class, and have them ``pass through" the
+\texttt{ArrayList} methods on our new class, and have them ``pass through'' the
 arguments to the underlying \texttt{ArrayList} that it holds. The result is
 the unwieldy, repetitive monstrosity in Figure~\ref{fig:countUnique2}, which
-is obviously not a good solution. Here's what each of our ``pass-through"
+is obviously not a good solution. Here's what each of our ``pass-through''
 methods would look like:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
@@ -137,8 +137,8 @@ Figure~\ref{fig:assocArrows}.)}
 \label{fig:inheritanceArrows}
 \end{figure}
 
-The solution is to use inheritance. \textit{Instead of ``\textbf{has-a}," an
-inheritance association means ``\textbf{is-a}."} (See
+The solution is to use inheritance. \textit{Instead of ``\textbf{has-a},'' an
+inheritance association means ``\textbf{is-a}.''} (See
 Figure~\ref{fig:inheritanceArrows}.) Instead of each
 \texttt{CountUniqueArrayList} \textit{having} an \texttt{ArrayList} under the
 hood, we're declaring that a \texttt{CountUniqueArrayList} in fact \textit{is}
@@ -186,14 +186,14 @@ B is the base class of A\\
 You know something's an important concept when there are a zillion equivalent
 terms for it. And so it is with inheritance.
 
-Sometimes we say ``A is a class, and B is its superclass." Other times we say
-``B is a class, and A is a subclass." These aren't contradictory statements --
+Sometimes we say ``A is a class, and B is its superclass.'' Other times we say
+``B is a class, and A is a subclass.'' These aren't contradictory statements --
 it's like saying I'm both a son (of my mom and dad) and also a father (of my
 three kids). You can totally be a son and a father at the same time. And a
 class can be both a superclass and a subclass.
 
 By the way, if you have sharp eyes, you'll have noticed I said ``or
-\textit{any} superclass" a few paragraphs ago. That's because if A inherits
+\textit{any} superclass'' a few paragraphs ago. That's because if A inherits
 from B, B can in turn inherit from some other class, which can itself inherit,
 \textit{etc.} All the classes and their related sub/superclasses form what's
 known as an \textbf{inheritance hierarchy}.
@@ -205,7 +205,7 @@ simple. When we instantiate a \texttt{CountUniqueArrayList}, we not only
 allocate memory for all the \texttt{CountUniqueArrayList}-specific parts (if
 any), but also for its superclass parts.
 
-Let's take a different example so that we know what the ``parts" actually
+Let's take a different example so that we know what the ``parts'' actually
 are.\footnote{It may or may not surprise you that I honestly don't know what
 instance variables the \texttt{java.util.ArrayList} class has, or what they're
 named. This is a perfect example of the wonders of encapsulation: millions of
@@ -213,7 +213,7 @@ people across the globe use \texttt{ArrayList}s every day, and do not know or
 care how they function internally!} Figure~\ref{fig:studentClass} shows two
 classes in an inheritance relationship: a \texttt{Student} \textbf{is-a}
 \texttt{Person}. While a \texttt{Person} in general has a \texttt{name} and 
-and \texttt{age}, the special type of person called a ``\texttt{Student}" also
+and \texttt{age}, the special type of person called a ``\texttt{Student}'' also
 has an \texttt{eagleOneID} and a \texttt{gpa}.
 
 \begin{figure}
@@ -245,7 +245,7 @@ Now when we instantiate each of these classes:
 the objects of each type look like Figure~\ref{fig:studentObject}. See how the
 \texttt{Student} object has \textit{both} the required \texttt{Student} and
 \texttt{Person} instance variables, since it is both a \texttt{Student} and a
-\texttt{Person}. To Java, the fact that the \texttt{Person} ``stuff" is in a
+\texttt{Person}. To Java, the fact that the \texttt{Person} ``stuff'' is in a
 separate little chamber inside the \texttt{Student} box is just a detail.
 
 \begin{figure}
@@ -255,14 +255,14 @@ separate little chamber inside the \texttt{Student} box is just a detail.
 \label{fig:studentObject}
 \end{figure}
 
-The reason I call this technique ``bottom-up inheritance" is that in order to
+The reason I call this technique ``bottom-up inheritance'' is that in order to
 use the special features of your new class, \textit{you need to know you have
 an instance of the subclass.} In the code above, we couldn't call
 \texttt{.setGPA()} on an ordinary \texttt{Person}: it would have to be a
 \texttt{Student}. We couldn't call \texttt{.countUnique()} on just any Joe
 \texttt{ArrayList} -- only \texttt{CountUniqueArrayList}s have that special
 method. Hence, the code that uses the classes views the hierarchy ``from the
-bottom-up"; \textit{i.e.}, from the perspective of the subclass. In fact, if
+bottom-up''; \textit{i.e.}, from the perspective of the subclass. In fact, if
 all we instantiate are \texttt{Student}s (not \texttt{Person}s), then our
 \texttt{main()} method doesn't even need to know there \textit{is} a
 superclass. To \texttt{main()}, it's all about \texttt{Student}s, and the fact
@@ -270,21 +270,21 @@ that you can do ordinary person-ish things to a \texttt{Student} -- like set
 its \texttt{age}, or ask it to \texttt{.work()} or \texttt{.sleep()} -- seem
 just like other aspects of \texttt{Student}s.
 
-The conventional term for this, ``implementation inheritance," comes from the
+The conventional term for this, ``implementation inheritance,'' comes from the
 fact that the reason we're inheriting is \textit{to steal the implementation.}
 Someone has already gone to the trouble of writing an \texttt{ArrayList} class
 -- or a \texttt{Person} class -- and we don't want to reinvent the wheel. So
 we make use of that implementation (the code in the methods) and just add
 whatever else we want to the mix.
 
-\section{``Top-down" (interface) inheritance}
+\section{``Top-down'' (interface) inheritance}
 
 Now top-down inheritance is where the real action is.
 
 Let's go back to our \texttt{ArrayList} example, and this time I'm going to
-write a different subclass, called ``\texttt{SortedArrayList}."
+write a different subclass, called ``\texttt{SortedArrayList}.''
 Figure~\ref{fig:sortedAL} shows this arrangement. The open-triangle arrow and
-the word ``is-a" are just the same. The one thing that might strike you as
+the word ``is-a'' are just the same. The one thing that might strike you as
 odd, though, is that the methods on the subclass are \textit{also all on the
 superclass}. Hey, we already had an \texttt{.add()}, an \texttt{.insert()},
 and a \texttt{.set()}: what good is our new class that just duplicates this?
@@ -301,7 +301,7 @@ To explain why, first let me articulate my motive for creating the
 \texttt{SortedArrayList} type in the first place. I might have a program that
 needs to store various bits of data in \texttt{ArrayList}s -- a common enough
 task -- but it needs some of those lists to \textit{always remain in sorted
-order}. Exactly what ``in order" means depends on the data type, but we could
+order}. Exactly what ``in order'' means depends on the data type, but we could
 expect for \texttt{Integer}s it would be numerical order, for \texttt{String}s
 alphabetical order, \textit{etc.}
 
@@ -324,7 +324,7 @@ methods act differently.} And thus is the essence of top-down inheritance.
 Before we see it in action, let's think about the implementation. You'll
 notice that in Figure~\ref{fig:sortedAL} only \textit{some} of the methods
 appear in the subclass. These are called \textbf{overridden} methods: we say
-that \texttt{SortedArrayList}'s \texttt{.add()} ``overrides" the base class's
+that \texttt{SortedArrayList}'s \texttt{.add()} ``overrides'' the base class's
 \texttt{.add()}. Now can you figure out why those particular three methods are
 the ones we chose to override?
 
@@ -370,7 +370,7 @@ default implementations (in the superclass) wouldn't work for our new type (in
 this case, those that threatened to jeopardize the order) must be replaced
 with versions appropriate to the subclass.
 
-The word ``override" is a good one, and it conveys almost exactly what it
+The word ``override'' is a good one, and it conveys almost exactly what it
 means, although don't make the mistake of thinking that the ordinary
 \texttt{ArrayList}'s \texttt{.add()} method is completely obliterated by what
 we've done. \textit{Au contraire}, for plain-Jane \texttt{ArrayList}s all over
@@ -378,7 +378,7 @@ the world, that original \texttt{.add()} code will still run. Only if the
 object in question is one of our special subtype -- only if it's a
 \texttt{SortedArrayList} in addition to being a plan \texttt{ArrayList} --
 will our new method be substituted. Put another way, we're not ``overriding
-the \texttt{.add()} method for \textit{everybody}," just for objects of our
+the \texttt{.add()} method for \textit{everybody},'' just for objects of our
 new special type.
 
 \subsection{Test your intuition}
@@ -386,7 +386,7 @@ new special type.
 \begin{samepage}
 Okay, now to drill the concept all the way home. I want to ask you a question.
 Before reading on, consider the code below and ask
-yourself ``what will its output be?" (Commit to an answer before you
+yourself ``what will its output be?'' (Commit to an answer before you
 continue.)
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
@@ -447,7 +447,7 @@ follows: ``\texttt{getMad()} was written to take an ordinary
 \texttt{getMad()} receives it, will be treated just as any normal
 \texttt{ArrayList} would be. All that special overriding method stuff only
 happens when we \textit{know} we're dealing with a \texttt{SortedArrayList} in
-particular."
+particular.''
 
 The exact opposite is true. And it turns out that's how we want it to be.
 Consider this very example: what good is a \texttt{SortedArrayList} if it
@@ -459,20 +459,20 @@ We must guarantee that \textit{every time} \texttt{.add()},
 is triggered, whether or not the user of the object even knew that.
 
 
-\subsection{``Masquerading" and ``smuggling"}
+\subsection{``Masquerading'' and ``smuggling''}
 
-Now why do I call this ``top-down inheritance?" The reason is that unlike with
+Now why do I call this ``top-down inheritance?'' The reason is that unlike with
 bottom-up inheritance, you can use objects of your new subclass
 \textit{without knowing they're of that subclass, or that there even is a
 subclass.} As a user of the classes -- like \texttt{main()}, above -- you're
 looking at the inheritance hierarchy from the top down.
 
 \begin{samepage}
-A couple of other descriptive words I like to use for this are ``masquerading"
-and ``smuggling." In the above example, the \texttt{SortedArrayList}
+A couple of other descriptive words I like to use for this are ``masquerading''
+and ``smuggling.'' In the above example, the \texttt{SortedArrayList}
 \texttt{sal} is masquerading as an \texttt{ArrayList} -- pretending to be one
 for the sake of the \texttt{getMad()} function. (And of course it's not
-actually ``pretending" because a \texttt{SortedArrayList} truly
+actually ``pretending'' because a \texttt{SortedArrayList} truly
 \mbox{\textbf{is-a}} \texttt{ArrayList}.) From \texttt{main()}'s point of
 view, we smuggled a \texttt{SortedArrayList} into the \texttt{getMad()}
 function, in cognito. Little did \texttt{getMad()} know that it wasn't even
@@ -488,7 +488,7 @@ the \textit{what} from the \textit{how}.
 A chunk of code that only knows about the superclass (like \texttt{ArrayList})
 can dictate \textit{what} to do with it. ``First I'll \texttt{.add()} these
 three elements, then I'll \texttt{.remove()} one, then get the
-\texttt{.size()}, \textit{etc.}"
+\texttt{.size()}, \textit{etc.}''
 
 In response to these method calls, the object itself -- perhaps of a
 specialized subclass -- decides \textit{how} to carry out each one. An
@@ -500,28 +500,28 @@ blissfully ignorant of how the details of \texttt{.add()}, \texttt{.insert()},
 
 If you're a videogamer, think of it in Smash Bros.~terms. Every character in
 the game looks different, has different attack stats, different animations for
-punching and falling, a different ``up smash" and ``side special," and so
+punching and falling, a different ``up smash'' and ``side special,'' and so
 forth. But the main game engine code that coordinates the interaction between
 characters on a stage doesn't have to worry about all those details. It can
 simply say, ``hey, character \#1, your player just input a dash-left. Display
-the appropriate animation please." The object for character \#1, who may
+the appropriate animation please.'' The object for character \#1, who may
 happen to be Zelda, then displays her determinedly zooming to the left with
 her hair flowing behind her.
 
-The game then says, "hey, character \#4, you just got punched. First, tell me
-your weight class so I know how far the knockback should be." If character \#4
-is Peach, her object responds, ``I'm in the medium weight class." The game
+The game then says, ``hey, character \#4, you just got punched. First, tell me
+your weight class so I know how far the knockback should be.'' If character \#4
+is Peach, her object responds, ``I'm in the medium weight class.'' The game
 then says, ``thanks. Now display your `hit stun' animation from your current
-position up to coordinates 562, 431." The Peach object then shows her
+position up to coordinates 562, 431.'' The Peach object then shows her
 character flying through the air with her umbrella in a tizzy.
 
 For even moderately complex programs, this ability to compartmentalize these
 two jobs is crucial -- otherwise you end up with a 500-line function that's a
 mass of spaghetti code. Software engineers call this decoupling
-``\textbf{separation of concerns}," and it is among the most important
+``\textbf{separation of concerns},'' and it is among the most important
 principles in all of software development.
 
-\section{``Cool! Can we do both?"}
+\section{``Cool! Can we do both?''}
 
 A common question at this point is whether top-down and bottom-up inheritance
 can be combined in a single class. The answer is yes! If you create a
@@ -545,21 +545,21 @@ feature.
 What I mean is that programmers (even experienced ones, sadly) sometimes fail
 to recognize situations in which inheritance would be appropriate, and their
 code becomes less elegant and more brittle as a result. Even more worrying,
-I've seen more than one ``inheritance-happy" programmer in my career use it
+I've seen more than one ``inheritance-happy'' programmer in my career use it
 where it's \textit{not} called for. And this turns out to be even worse.
 
 Although there are shades of grey, the basic rule for knowing when inheritance
 is appropriate can actually be boiled down to a single principle:
-\textbf{Remember that ``is-a" means ``is-a."} The time \textit{not} to use
+\textbf{Remember that ``is-a'' means ``is-a.''} The time \textit{not} to use
 inheritance is when you see some code that you want to reuse, but you really
-\textit{don't} have a conceptual ``subtype" in mind.
+\textit{don't} have a conceptual ``subtype'' in mind.
 
 An actual example: suppose your team is building a database system for 5k and
 10k race results. There's a \texttt{Runner} class with inst vars like
 \texttt{name} and \texttt{gender} and \texttt{dateOfBirth}. Then you say,
 ``all right: to record a performance in a particular race, we need information
 like the name, birth date, \textit{etc.} of the runner, plus the bib number,
-finish time, date and location of the race."
+finish time, date and location of the race.''
 
 You may be tempted (as a colleague of mine once was) to create a
 \texttt{Performance} class which \textit{inherits} from \texttt{Runner}. After
@@ -582,11 +582,11 @@ need arises for different (legitimate) subtypes of \texttt{Runner}:
 \texttt{AmateurRunner} and \texttt{CompetitiveRunner}, say. Now
 the \texttt{Performance} class is really in a bind: it only inherits from the
 more general type, and would have to proliferate itself awkwardly
-(``\texttt{AmateurPerformance}" and ``\texttt{CompetitivePerformance}") just
+(``\texttt{AmateurPerformance}'' and ``\texttt{CompetitivePerformance}'') just
 to stay in sync.
 
 The lesson here is that your object-oriented model should strive to faithfully
 reflect conceptual reality; it should not use design features in gimmicky ways
 to achieve short-term programming wins. Always ask yourself ``does this choice
-of classes really make \textit{sense}?" as your guiding question.
+of classes really make \textit{sense}?'' as your guiding question.
 

@@ -1,14 +1,14 @@
 
 \chapter{Life in Singleton, USA}
 
-``Singleton" always sounded to me like the name of some small American town,
+``Singleton'' always sounded to me like the name of some small American town,
 maybe one where nobody ever gets married. But it's actually the name of our
 first (and easiest) \textit{design pattern}, and the subject of this chapter.
 
 \section{Design patterns}
 
 You know how when you sit down to write some code, there are times when you
-think, ``wait, I've written this before"? Programmer's d\'{e}j\`{a} vu is
+think, ``wait, I've written this before''? Programmer's d\'{e}j\`{a} vu is
 commonplace, especially because certain tips and tricks end up working in
 a lot of different settings. For instance, we've all seen this sort of thing:
 
@@ -55,7 +55,7 @@ and this:
 \end{Verbatim}
 \end{samepage}
 
-I could go on and on. You might think of these as ``programming patterns."
+I could go on and on. You might think of these as ``programming patterns.''
 They're bite-sized, go-to solutions that can handle a myriad of common little
 programming scenarios.
 
@@ -65,15 +65,15 @@ They're important enough that they've been identified, described, and named.
 
 The people who first promoted the idea of \textbf{design patterns} were Erich
 Gamma, John Vlissides, Ralph Johnson, and Richard Helm, who were thereafter
-nicknamed ``The Gang of Four." (You'll hear many references in the software
-development industry to a ``Gang of Four design pattern," sometimes
-abbreviated ``GoF design pattern." This means one of the 21 named patterns
+nicknamed ``The Gang of Four.'' (You'll hear many references in the software
+development industry to a ``Gang of Four design pattern,'' sometimes
+abbreviated ``GoF design pattern.'' This means one of the 21 named patterns
 that appeared in their hugely influential 1994 book \textit{Design Patterns:
 Elements of Reusable Object-Oriented Software}. It's a book highly worth
 obtaining and reading.)
 
 One thing that's great about this is that just by mentioning one of these
-agreed-upon pattern names -- like ``Observer," ``Iterator," or ``Strategy" --
+agreed-upon pattern names -- like ``Observer,'' ``Iterator,'' or ``Strategy'' --
 every developer worth their salt will instantly conjure up in their mind the
 mechanics of that particular pattern, and know immediately what kind of
 problem it's intended to solve. It saves a lot of words trying to describe an
@@ -153,9 +153,9 @@ class Configuration {
 \end{Verbatim}
 
 Let's go through each part carefully. First, we have a
-\textit{\texttt{static}} variable called ``\texttt{theInstance}". Recall that
+\textit{\texttt{static}} variable called ``\texttt{theInstance}''. Recall that
 \texttt{static} here means ``goes with the class as a whole, rather than with
-each individual object." The reason for this is \textit{the class itself will
+each individual object.'' The reason for this is \textit{the class itself will
 be holding on to its one-and-only instantiated object.} This is one of the few
 places we'll be using \texttt{static} stuff in this book, because we need to.
 If \texttt{theInstance} were \textit{not} \texttt{static}, then the only way
@@ -165,7 +165,7 @@ the pattern.
 
 Note that \texttt{theInstance} is also marked \texttt{private}. This is
 partially because of our rule ``all inst vars should always be private,
-period," but also because making this variable accessible outside the class
+period,'' but also because making this variable accessible outside the class
 would make the whole pattern collapse. Parts of the code that needed access to
 the \texttt{Configuration} singleton instance would try to grab
 \texttt{theInstance} and use it, but it might not have even been set to
@@ -183,7 +183,7 @@ users of this Singleton are.) This is part of the public interface of the
 class, designed to be called by code external to the class. The other word on
 the declaration line is probably foreign to you: it's called
 \texttt{synchronized}, and its purpose is beyond the scope of this chapter.
-Very briefly, ``\texttt{synchronized}" prevents two different \textbf{threads}
+Very briefly, ``\texttt{synchronized}'' prevents two different \textbf{threads}
 of execution from entering the \texttt{instance()} method at the same time.
 A \textbf{multithreaded program} is one that executes more than one flow of
 control simultaneously, each with its own stack. It turns out that if more
@@ -196,7 +196,7 @@ Now let's dive in to the code for \texttt{instance()}. It's very simple, as
 you'll see: all it does is say ``if this is the first time anyone's ever
 called me, go ahead and instantiate an instance of me, and remember it (in the
 \texttt{theInstance} class variable). Then, return the one-and-only instance
-of me to the caller, to use to their heart's content."
+of me to the caller, to use to their heart's content.''
 
 This is called \textbf{lazy instantiation}: the only thing that will trigger
 the one-and-only \texttt{Configuration} object being instantiated is the first
@@ -214,7 +214,7 @@ which varies widely depending on what kind of class this is. (For the
 contents in instance variables.) The important point to emphasize here is that
 \textit{the constructor must be \texttt{private}}). That's because if it
 weren't private, any old schmo could just write ``\texttt{new
-Configuration()}" and get a \textit{second} instance of the class, which is
+Configuration()}'' and get a \textit{second} instance of the class, which is
 precisely what we want to avoid. Making the constructor \texttt{private} means
 nobody is allowed to instantiate a \texttt{Configuration} object...except for
 the \texttt{Configuration} class itself, which we saw in the
@@ -229,15 +229,15 @@ This pattern allows any other part of the code base to do things like:
   String bgcolor = Configuration.instance().getParamSetting("backgroundColor");
 \end{Verbatim}
 
-Whenever we say ``\texttt{Configuration.instance()}" we get back a
+Whenever we say ``\texttt{Configuration.instance()}'' we get back a
 \texttt{Configuration} object. (Whether we realize it or not, it's the only
 such object that will ever exist.) There's no need to set this to anything, or
-to use the word \texttt{new}; we just say ``\texttt{Configuration.instance()}"
+to use the word \texttt{new}; we just say ``\texttt{Configuration.instance()}''
 every time we need it.
 
 Other than this scaffolding, the rest of your Singleton class can do anything
 it wants. It will almost certainly have other (non-static) instance variables,
-and other methods to carry out its evil deeds. The ``Singleton part" is just
+and other methods to carry out its evil deeds. The ``Singleton part'' is just
 the \texttt{instance()} and \texttt{theInstance} members, together with the
 private constructor.
 

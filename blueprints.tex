@@ -5,19 +5,19 @@
 We spent last chapter discussing the \textbf{dynamic} view of a program: what
 happens to memory, step by step, as it unfolds. In this chapter, we'll switch
 to a \textbf{static} view: long-term, what are the program's classes, methods,
-and relationships between them?\footnote{The words ``dynamic" and ``static"
+and relationships between them?\footnote{The words ``dynamic'' and ``static''
 are ubiquitous in computer science, and mean a zillion different unrelated
-things. For example, we've already seen the Java ``\texttt{static}" keyword,
+things. For example, we've already seen the Java ``\texttt{static}'' keyword,
 and how it indicates class-level rather than an object-level ownership. We've
-also hinted at the stack having ``statically-allocated memory" and the heap
-being ``dynamically-allocated." These terms are \textbf{\textit{unrelated}} to
-our use of the words in this chapter. At present, by ``dynamic" we mean ``the
-contents of memory changing as the program runs"; and by ``static" we mean
+also hinted at the stack having ``statically-allocated memory'' and the heap
+being ``dynamically-allocated.'' These terms are \textbf{\textit{unrelated}} to
+our use of the words in this chapter. At present, by ``dynamic'' we mean ``the
+contents of memory changing as the program runs''; and by ``static'' we mean
 ``the consistent, permanent characteristics of a program, quite apart from how
 it might be behaving at any moment, which include its classes, methods, and
-associations."}
+associations.''}
 
-If there's a type of UML diagram that deserves the name ``blueprint," it's the
+If there's a type of UML diagram that deserves the name ``blueprint,'' it's the
 \textbf{class diagram}. Class diagrams depict a high-level, stable perspective
 of a software system. When you want to figure out how a large OO program
 works, or when you're tasked with implementing a system that someone else has
@@ -83,7 +83,7 @@ to work.
 Figure~\ref{fig:assocArrows} shows some of the UML association arrows and
 their meaning. (There are others we'll get to in future chapters.) The dashed
 line with a crow's foot arrowhead is called a \textbf{dependency}, and is the
-``weakest" of the association types. When I say weak, I mean that the
+``weakest'' of the association types. When I say weak, I mean that the
 relationship between the two classes isn't as important, nor as permanent, as
 with the other association types we'll discuss later.
 
@@ -108,7 +108,7 @@ nor the instance variables.
 
 If you think about it, you'll realize why the above two bullet points are
 actually equivalent. Suppose some class \texttt{A} method has this line of
-code in it: ``\texttt{String s = B.scissorKick(15)}". Then clearly the code in
+code in it: ``\texttt{String s = B.scissorKick(15)}''. Then clearly the code in
 the \texttt{A.java} file is \textit{dependent} on the fact that class
 \texttt{B} has a \texttt{.scissorKick()} method, and that it takes an integer,
 and returns a \texttt{String}. If any of that ever changed in the
@@ -127,12 +127,12 @@ Figure~\ref{fig:assocArrows} go by the even stranger-sounding term
 enhances part of a diagram (an association arrow, as here, or sometimes a
 class, method, or other element) by making its meaning more precise.
 Stereotypes are usually displayed enclosed by double-wakkas
-(``$\ll$...$\gg$").
+(``$\ll$...$\gg$'').
 
-In the case of dependency associations, the stereotype ``$\ll$uses$\gg$" means
+In the case of dependency associations, the stereotype ``$\ll$uses$\gg$'' means
 pretty much what a dependency always means: that the designer intends class
-\texttt{A} to ``use" (\textit{i.e.}, get its hands on, and call method(s) on)
-object(s) of class \texttt{B}. The ``$\ll$instantiates$\gg$" stereotype goes a
+\texttt{A} to ``use'' (\textit{i.e.}, get its hands on, and call method(s) on)
+object(s) of class \texttt{B}. The ``$\ll$instantiates$\gg$'' stereotype goes a
 bit further, and implies that some method of \texttt{A} will
 \textit{instantiate} \texttt{B} objects in addition to merely calling methods
 on them.
@@ -140,22 +140,22 @@ on them.
 The examples in Figure~\ref{fig:dependencyExamples} are from a Dungeons \&
 Dragons type combat simulator. A \texttt{Battle} object represents a fight
 between adventurers and monsters. While simulating this fight, a
-\texttt{Battle} will make use of one or more \texttt{Die} (singular of ``dice")
+\texttt{Battle} will make use of one or more \texttt{Die} (singular of ``dice'')
 objects to roll random numbers that determine the outcome. This is a
-``$\ll$uses$\gg$" association, since \texttt{Battle}'s code now depends on
+``$\ll$uses$\gg$'' association, since \texttt{Battle}'s code now depends on
 \texttt{Die}'s interface not changing.
 
 Elsewhere in the program, wizards sometimes cast ranged spells, like fireballs
 or lightning bolts, to damage distant enemies. In the simulator, a
 \texttt{Wizard} object might therefore instantiate a \texttt{RangedSpell}
 object to carry out this attack. Since somewhere in the \texttt{Wizard} class's
-code there will be a ``\texttt{new RangedSpell()}" line, we say that
+code there will be a ``\texttt{new RangedSpell()}'' line, we say that
 \texttt{Wizard} $\ll$instantiates$\gg$ \texttt{RangedSpell}.
 
 \subsubsection{Dependencies in code}
 
 Now what would we expect to see in the code that would reflect this kind of
-association? In the ``$\ll$uses$\gg$" case, we expect to see one or more
+association? In the ``$\ll$uses$\gg$'' case, we expect to see one or more
 methods of the \texttt{A} class making method calls on \texttt{B} objects.
 Perhaps something like this:
 
@@ -176,7 +176,7 @@ The design diagram doesn't specify exactly what \texttt{A} method will be
 called where, just that method calls are expected. This communicates something
 important to the programmer.
 
-For ``$\ll$instantiates$\gg$", we'd expect to see the word \texttt{new}
+For ``$\ll$instantiates$\gg$'', we'd expect to see the word \texttt{new}
 somewhere in \texttt{A}:
 
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
@@ -194,10 +194,10 @@ class Wizard {
 }
 \end{Verbatim}
 
-\subsection{``Has-a" associations}
+\subsection{``Has-a'' associations}
 
 The next strongest type of association has a bizarre name: it's called
-``\textbf{has-a}." We denote it with a solid arrow between classes, with a
+``\textbf{has-a}.'' We denote it with a solid arrow between classes, with a
 crow's foot on one side or both.
 
 When class \texttt{A} has-a class \texttt{B}, that is nearly always a signal
@@ -209,7 +209,7 @@ methods on a \texttt{B} (as in the dependency association), but an \texttt{A}
 object actually holds on to one (or more) \texttt{B} objects for the
 long-haul.
 
-Now in some cases, the ``has-a" verbiage makes perfect sense. If our Domino's
+Now in some cases, the ``has-a'' verbiage makes perfect sense. If our Domino's
 Pizza delivery manager application had a \texttt{Pizza} class and a
 \texttt{Topping} class, it would be no-brainer to say that every
 \texttt{Pizza} has-a \texttt{Topping}. It conjures up in our minds a picture
@@ -217,14 +217,14 @@ of containment, or ownership. Perfect. However, we also use this type of
 association in cases where containment doesn't make sense at all.
 
 For example, in the same application it would be quite sensible to say that
-``every \texttt{Pizza} has-a \texttt{DeliveryCar}." But obviously the delivery
-car isn't ``inside" the pizza in the same physical way that the toppings are
+``every \texttt{Pizza} has-a \texttt{DeliveryCar}.'' But obviously the delivery
+car isn't ``inside'' the pizza in the same physical way that the toppings are
 inside it. So what does it mean then?
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{wrongRightHasA.pdf}   % 
-\caption{The \textbf{wrong}, and \textbf{right}, way of visualizing a ``has-a"
+\caption{The \textbf{wrong}, and \textbf{right}, way of visualizing a ``has-a''
 association in Java.}
 \label{fig:wrongRightHasA}
 \end{figure}
@@ -232,26 +232,26 @@ association in Java.}
 The key is making sure you have the right mental model.
 Figure~\ref{fig:wrongRightHasA} shows both the wrong, and the right, way to
 envision a has-a relationship (at least, in Java). In memory, there is
-\textit{no} ``containment" as in the left-hand (wrong) image. The
+\textit{no} ``containment'' as in the left-hand (wrong) image. The
 \texttt{Topping} object isn't enclosed inside the \texttt{Pizza}, or even
 exclusively owned by it. It's simply pointed to by one of the \texttt{Pizza}
 object's inst vars. The right-hand side of the figure is the correct one --
 and I daresay it's not problematic at all to think of a \texttt{Pizza}
-``having" a \texttt{DeliveryCar} in this way. All it really means is that a
-\texttt{Pizza} object ``knows about" a \texttt{DeliveryCar}, which is the
+``having'' a \texttt{DeliveryCar} in this way. All it really means is that a
+\texttt{Pizza} object ``knows about'' a \texttt{DeliveryCar}, which is the
 particular car that's delivering it.
 
-Another reason that the correct mental model of ``has-a" is important is that
+Another reason that the correct mental model of ``has-a'' is important is that
 it is possible, and even common, for the association to go \textit{both ways}.
 We use the term \textbf{navigability} for the question ``which direction does
 the arrow go -- from \texttt{A} to \texttt{B}, from \texttt{B} to \texttt{A},
-or both?" When it goes both ways, we call it a \textbf{bidirectional}
+or both?'' When it goes both ways, we call it a \textbf{bidirectional}
 association.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{bidirectional.pdf}   % 750x235
-\caption{A bidirectional ``has-a," depicted on a class diagram (left) and a
+\caption{A bidirectional ``has-a,'' depicted on a class diagram (left) and a
 memory diagram.}
 \label{fig:bidirectional}
 \end{figure}
@@ -272,7 +272,7 @@ biggie.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{wrongHasA.pdf}   % 640x180
-\caption{One wrong way to model an instance variable. The ``has-a" arrow
+\caption{One wrong way to model an instance variable. The ``has-a'' arrow
 already indicates that every \texttt{Pizza} has-a \texttt{Topping}: the
 extraneous \texttt{topping} entry in the \texttt{Pizza} class's second box is
 redundant and incorrect.}
@@ -285,9 +285,9 @@ duplicate copy of the inst var in its second compartment. That would be
 redundant, and is considered an error (see Figure~\ref{fig:wrongHasA}).
 
 \pagebreak
-\subsubsection{``Has-a" associations in code}
+\subsubsection{``Has-a'' associations in code}
 
-Obviously instance variables are how ``has-a" associations are manifested in a
+Obviously instance variables are how ``has-a'' associations are manifested in a
 Java program. For \texttt{Pizza} and \texttt{Topping}, we'd see:
 
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
@@ -333,14 +333,14 @@ More on that later.
 
 \subsection{Aggregation associations}
 
-Continuing on towards the ``stronger" end of the association continuum, an
+Continuing on towards the ``stronger'' end of the association continuum, an
 \textbf{aggregation} implies exclusive ownership of the object(s) in question.
 In other words, if \texttt{A} aggregates \texttt{B}, not only does it mean
 that \texttt{A} has an instance variable of type \texttt{B}, but that
 \textit{no other \texttt{A} object also has that \texttt{B}.}
 
 This is frequently misinterpreted, so let me expand on that. The
-``exclusivity" thing is a statement about \textit{objects}, not classes. If
+``exclusivity'' thing is a statement about \textit{objects}, not classes. If
 \texttt{A} aggregates \texttt{B}, that does \textit{not} mean that no other
 class can have an instance variable of type \texttt{B}. Rather, it means that
 if a particular \texttt{B} object is pointed to by an \texttt{A} object, no
@@ -354,7 +354,7 @@ if a particular \texttt{B} object is pointed to by an \texttt{A} object, no
 \end{figure}
 
 Examples appear in Figure~\ref{fig:aggregationAssoc}. Note that the diamond
-appears on the ``aggregator" side; \textit{i.e.}, adjacent to the class that
+appears on the ``aggregator'' side; \textit{i.e.}, adjacent to the class that
 will have the instance variable.
 
 In the first example, for a Banner-like college enrollment management system,
@@ -368,14 +368,14 @@ arrange their \texttt{Photo}s into \texttt{Album}s. As indicated on this
 diagram, a given \texttt{Photo} is \textit{not} intended to simultaneously
 belong to more than one \texttt{Album}. (If we wanted to relax that
 constraint, and permit photos to belong to multiple albums at once, we would
-get rid of our white diamond and use a plain-old ``has-a" arrow instead.)
+get rid of our white diamond and use a plain-old ``has-a'' arrow instead.)
 
 \subsubsection{Aggregations in code}
 
 Aggregation is intended to imply some sort of collection or ownership
 relationship between the two classes. However, in terms of the Java code that
 you initially write, \textit{there is no immediate difference between an
-aggregation and a regular ``has-a."} In both cases, you'll make an inst var of
+aggregation and a regular ``has-a.''} In both cases, you'll make an inst var of
 the appropriate type in the appropriate place. The code difference between
 aggregation and has-a won't come out until later, when the class methods are
 being implemented. That white diamond is more of a long-term signal to the
@@ -422,7 +422,7 @@ Hence this is another example of composition.
 \subsubsection{Compositions in code}
 
 Just as with aggregations, there's no simple Java keyword that magically maps
-to the idea of ``composition." Instead, the presence of the black diamond
+to the idea of ``composition.'' Instead, the presence of the black diamond
 suggests to the programmer the intended function of the classes involved, and
 she will write the code with this in mind.
 
@@ -444,10 +444,10 @@ that even though multiplicity is shown on a class diagram, it's really a
 statement about \textit{objects}.
 
 Let's start with the left-most example in Figure~\ref{fig:multiplicity}. There
-we have two classes from a DMV software system, connected with a ``has-a"
+we have two classes from a DMV software system, connected with a ``has-a''
 association between \texttt{Driver} and \texttt{License}, navigable both ways.
-Note the numeral ``\textbf{1}" annotation both sides of the arrow. This
-indicates that \textit{every \texttt{Driver} ``goes with" just one
+Note the numeral ``\textbf{1}'' annotation both sides of the arrow. This
+indicates that \textit{every \texttt{Driver} ``goes with'' just one
 \texttt{License} object}, and \textit{every \texttt{License} also goes with
 just one \texttt{Driver}.} This is called a \textbf{one-to-one association},
 sensibly enough.
@@ -459,8 +459,8 @@ sensibly enough.
 \label{fig:multiplicity}
 \end{figure}
 
-In the center example, on the other hand, we have a ``$\star$" on the side of
-the arrow that connects to \texttt{Weapon}. In UML, the symbol ``$\star$"
+In the center example, on the other hand, we have a ``$\star$'' on the side of
+the arrow that connects to \texttt{Weapon}. In UML, the symbol ``$\star$''
 means \textbf{zero or more}. So here's how we interpret this
 \textbf{one-to-many association}: every \texttt{Adventurer} has zero or more
 weapons, while every \texttt{Weapon} is possessed by just one
@@ -481,18 +481,18 @@ whereas \texttt{Course} objects don't know which \texttt{Transcript}s they
 appear on (if any).
 
 You'll occasionally see more elaborate multiplicity notations on class
-diagrams. The notation ``\textbf{0..$\star$}" means ``zero or more"...which is
-of course exactly what plain old ``$\star$" means. The only reason for a
-designer to write ``\textbf{0..$\star$}" is for emphasis: she is stressing to
+diagrams. The notation ``\textbf{0..$\star$}'' means ``zero or more''...which is
+of course exactly what plain old ``$\star$'' means. The only reason for a
+designer to write ``\textbf{0..$\star$}'' is for emphasis: she is stressing to
 the coding team that an object of the first type may well have \textit{zero}
 objects of the second type at any given time; this is a real possibility. In
-contrast, if she writes ``\textbf{1..$\star$}" that means ``one or more,"
+contrast, if she writes ``\textbf{1..$\star$}'' that means ``one or more,''
 which signals the coder ``by the way, every object of the first type should
 \textit{always} be assigned to at least one object of the second type; you
-should keep that in mind as you code." Even more rarely, you'll see
-multiplicities like ``\textbf{5}" (``each object of type A is associated with
-exactly five objects of type B"), or ``\textbf{3..8}" (``each object of type A
-is associated with anywhere from three to eight objects of type B"),
+should keep that in mind as you code.'' Even more rarely, you'll see
+multiplicities like ``\textbf{5}'' (``each object of type A is associated with
+exactly five objects of type B''), or ``\textbf{3..8}'' (``each object of type A
+is associated with anywhere from three to eight objects of type B''),
 \textit{etc.} These are rare, especially since as we'll see in the next
 section, there really isn't any way to code those constraints explicitly in a
 language like Java.
@@ -554,12 +554,12 @@ abstract, but some examples will make it clearer.
 The upper-left example in Figure~\ref{fig:roles} shows a piece of a Marvel
 comic book database application. We have \texttt{Hero} and \texttt{Villain}
 classes, and a one-to-one association between them...but what does the
-association \textit{mean}? If \texttt{Hero X} ``goes with" \texttt{Villain Y},
+association \textit{mean}? If \texttt{Hero X} ``goes with'' \texttt{Villain Y},
 does that mean that \texttt{X} has recently beaten up \texttt{Y}? That
 \texttt{X} admires \texttt{Y}? That \texttt{X} secretly \textit{is}
 \texttt{Y}, unbeknownst to the public?
 
-The word ``archnemesis" next to the \texttt{Villain}-side of the arrow spells
+The word ``archnemesis'' next to the \texttt{Villain}-side of the arrow spells
 it out. It's called a \textbf{role name}. It tells us that in this
 relationship, the role that the \texttt{Villain} plays with respect to the
 \texttt{Hero} is that the former is the archenemy of the latter.
@@ -571,11 +571,11 @@ fact, if you think about a social network like Twitter, the most meaningful
 relationships \textit{are} between objects of the same class. And that's the
 key to de-weirding it in your mind: remember that an association is a
 statement about \textit{objects}, not classes. We're not saying
-``\texttt{TwitterUser} has a relationship with itself" but rather ``each
-\texttt{TwitterUser} is related to zero or more other \texttt{TwitterUser}s."
+``\texttt{TwitterUser} has a relationship with itself'' but rather ``each
+\texttt{TwitterUser} is related to zero or more other \texttt{TwitterUser}s.''
 
 And what do those relations mean, you ask? The role name tells us: one of the
-users ``follows" the other in the Twitter sense. In this diagram, we have role
+users ``follows'' the other in the Twitter sense. In this diagram, we have role
 names on both sides of the arrow, although that's probably not strictly
 necessary. What is interesting here is the navigability of the association:
 according to the design, a \texttt{TwitterUser} object is aware of what other
@@ -634,7 +634,7 @@ to least restrictive.
 private & \texttt{private} & \textbf{--} & the class itself \\
 package & (none) & \textbf{\freakingtilde} & any class from the same package\\
 protected & \texttt{protected} & \textbf{\#} & \makecell{from the same
-package, or a subclass\footnote{A ``subclass" has to
+package, or a subclass\footnote{A ``subclass'' has to
 do with the topic of \textbf{inheritance} in OO, a subject of a future
 chapter. For now, I just want to make the table complete.}} \\
 public & \texttt{public} & \textbf{$\plus$} & any method anywhere \\
@@ -692,7 +692,7 @@ Here's the kind of code we want to make possible with this method:
 Let's inspect the \textit{inside} of the \texttt{.isBetterThan()} method
 (\textit{i.e.}, its implementation). Suppose it reads like
 this\footnote{Apologies to baseball fans for the gross simplification of
-reducing an entire player's ``goodness" down to his or her batting average. Of
+reducing an entire player's ``goodness'' down to his or her batting average. Of
 course in real life there are all kinds of other stats that come into play
 here -- slugging percentage, base running stats, defensive ability,
 \textit{etc.} -- as well as impossible-to-quantify aspects like teamwork,
@@ -734,20 +734,20 @@ their reasoning: ``We're calling \texttt{.isBetterThan()} on a particular
 in the class. Therefore, \texttt{arod}'s values for these should be protected
 from, and unavailable to, the \texttt{jeter} object. It stands to reason that
 this will not be allowed. Otherwise, we'd be allowing one object to access
-another object's private data."
+another object's private data.''
 
 This sounds so eminently reasonable, and yet it is dead wrong. Here's why:
 
 \begin{itemize}
 \itemsep.1em
-\item A ``private" inst var does \underline{not} mean that one object's
+\item A ``private'' inst var does \underline{not} mean that one object's
 \textit{value} is hidden from another \textit{object}.
-\item A ``private" inst var \underline{does} mean that the very
+\item A ``private'' inst var \underline{does} mean that the very
 \textit{existence} of one class's inst var is hidden from other
 \textit{classes}.
 \end{itemize}
 
-In other words, it's not a ``data privacy" thing like keeping your information
+In other words, it's not a ``data privacy'' thing like keeping your information
 inaccessible to creepy people online. Instead, it's a \textit{code
 encapsulation thing} that prevents one class from making (and thereafter
 depending upon) assumptions about another class's design decisions. In terms
@@ -831,7 +831,7 @@ Here are the rules (and strong suggestions) to keep in mind:
 design decision you'll ever make. As we'll see in the encapsulation chapter,
 giving an inst var any other level of visibility unacceptably sacrifices
 encapsulation.
-\item Always make methods ``as private as possible." This promotes
+\item Always make methods ``as private as possible.'' This promotes
 encapsulation and reduces dependencies. When in doubt, err on the side of the
 \textit{higher} entry in Figure~\ref{fig:visibilityLevels}, not the lower. If
 it turns out you must make it more accessible later on, you can always move
@@ -861,7 +861,7 @@ package-level visibility is a neat feature, but is underutilized.
 As shown in Figure~\ref{fig:visibilityLevelsClasses}, the notion of visibility
 also extends to entire classes in Java. But it's simpler: either a class is
 public, or it's not. If it's public, any class anywhere can refer to it, and
-if it's ``non-public" (yep, that's actually the term) it effectively has
+if it's ``non-public'' (yep, that's actually the term) it effectively has
 package-level visibility (\textit{i.e.}, only other classes in its package can
 use it.)
 
@@ -907,8 +907,8 @@ specify a city and a mascot.)}
 \texttt{Ballplayer} class itself can change its age.}
 
 \item \textcolor{Red}{Every \texttt{Team} object will have a private instance
-variable\footnote{Notice that the ``\textbf{--}" immediately before the word
-``roster" is a visibility modifier, indicating that the inst var that results
+variable\footnote{Notice that the ``\textbf{--}'' immediately before the word
+``roster'' is a visibility modifier, indicating that the inst var that results
 from this association will be private.} called \texttt{roster} which holds a collection (perhaps an
 \texttt{ArrayList}) of \texttt{Ballplayer} objects. Each of those
 \texttt{Ballplayer}s belongs to only a single \texttt{Team} object, but is not
@@ -921,7 +921,7 @@ any other class.}
 
 \item \textcolor{Purple}{Somewhere in the static \texttt{main()} method of the
 \texttt{Simulator} class we would expect to find code like this: ``\texttt{new
-Ballplayer(someName, someAge)}".}
+Ballplayer(someName, someAge)}''.}
 
 \item \textcolor{Brown}{A \texttt{Simulator} holds on to some number of
 \texttt{Team} objects, probably in an instance variable, and each of those

@@ -7,7 +7,7 @@
 Before we dive back in and complete our two examples from last chapter, let me
 make an observation about the classes in an OO program. They tend to come from
 two different sources. We call these two categories ``the \textbf{problem
-domain}" and ``the \textbf{solution domain}."
+domain}'' and ``the \textbf{solution domain}.''
 
 The problem domain provides classes that relate to the \textit{problem} the
 program is designed to solve. A key give-away of a problem domain class is
@@ -17,7 +17,7 @@ central in what the system does/is.
 For instance, in an eBay type application, classes like \texttt{Bid},
 \texttt{Auction}, \texttt{Item}, \texttt{Seller}, and \texttt{Buyer} are all
 from the problem domain. eBay users think about, and talk about, these very
-concepts when they think about the system, even if ``code" never crosses their
+concepts when they think about the system, even if ``code'' never crosses their
 mind.
 
 The other source of classes is the solution domain, which consists of
@@ -27,14 +27,14 @@ application had a \texttt{SMTPServer} class. This would represent a connection
 to a piece of hardware that acted as a SMTP (Simple Mail Transfer Protocol)
 server to deliver electronic mail. Is this class's functionality necessary to
 send email, as the email application needs to do? Yes. But does an everyday
-email user think about ``SMTP Servers" being involved? Likely not. The same
-could be said of classes like ``\texttt{DatabaseConnection},"
-``\texttt{MessageListener}," and ``\texttt{LoginPane}."  These classes all
+email user think about ``SMTP Servers'' being involved? Likely not. The same
+could be said of classes like ``\texttt{DatabaseConnection},''
+``\texttt{MessageListener},'' and ``\texttt{LoginPane}.''  These classes all
 perform critical supporting functions and therefore are vital to the operation
 of the system. At the same time, though, we recognize that they are tangential
 to the main purpose of the system as the user sees it: users of Wikipedia
-don't think in terms of ``database connections," nor email users of ``message
-listeners," nor Spotify users of the ``login panes" in their UI. So we
+don't think in terms of ``database connections,'' nor email users of ``message
+listeners,'' nor Spotify users of the ``login panes'' in their UI. So we
 relegate those classes to a different realm of sorts; one that contains
 classes to perform functions, not to represent the domain's reality.
 

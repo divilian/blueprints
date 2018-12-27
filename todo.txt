@@ -2,7 +2,6 @@
 Fiddly
 ------
 Rename all chapters "vanilla."
-Change closing quotes to curlies.
 High-res graphics.
 
 Substantive

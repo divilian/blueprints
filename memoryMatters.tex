@@ -18,7 +18,7 @@ moved.
 The other way is to think about what happens to the computer's \textbf{memory}
 as the program runs, and how its variables and structure change as the program
 unfolds. Whether they realize it or not, this is how all proficient
-programmers think. It turns out that \textbf{the ``purpose" of almost any line
+programmers think. It turns out that \textbf{the ``purpose'' of almost any line
 of code is to change the contents of memory in a particular way.} The name of
 the game is recognizing what impact on memory each line of code has -- and
 conversely, what line of code is required to make a particular change to
@@ -30,13 +30,13 @@ The focal point of this chapter will be the \textbf{memory diagram}, which
 incorporates the UML object representations we discussed in
 section~\ref{sec:UMLclasses}. A memory diagram depicts the contents of the
 computer's memory at a \textit{snapshot in time.} At any given moment, as a
-program is running, you could say ``Freeze!" and look at the memory diagram.
+program is running, you could say ``Freeze!'' and look at the memory diagram.
 It would give you the exact state of the system at that moment.
 
 \subsection{The stack and the heap}
 
 A program's memory, it turns out, is divided into two realms with funny names:
-``\textbf{the stack}" and ``\textbf{the heap}." It is vital to understand the
+``\textbf{the stack}'' and ``\textbf{the heap}.'' It is vital to understand the
 difference between the two, and which one is used for what. The stack contains
 \textbf{statically-allocated} memory and the heap contains
 \textbf{dynamically-allocated} memory. We'll unpack what all this means, but
@@ -86,10 +86,10 @@ Figure~\ref{fig:stackHeap1}. Let's go through it carefully.
 
 The first line of \texttt{illustration()} creates a simple integer variable
 and sets it equal to 2018. Since an \texttt{int} is a \textbf{primitive
-type}\footnote{If you've never heard this lingo, a ``primitive type" is one of
+type}\footnote{If you've never heard this lingo, a ``primitive type'' is one of
 the very basic lower-case Java variable types, like \texttt{int},
 \texttt{double}, or \texttt{boolean}. Importantly, a primitive type is
-\textit{not} an object.}, it is stored on the stack. ``On" the stack should
+\textit{not} an object.}, it is stored on the stack. ``On'' the stack should
 make you think of layering items vertically on a surface. Before this line of
 code executed, nothing existed in the program's memory at all, so the stack
 was nothing but a bare floor (think of it as a horizontal line). Our first
@@ -99,12 +99,12 @@ There's a ton packed into that second line of code, so hold on to your seats.
 The first thing to realize is that \textit{it encompasses both stack and
 heap.} We have a named \textbf{reference variable} called \texttt{minivan},
 which, as with all named things, goes on the stack (right on top of
-\texttt{year}). A ``reference variable" means a variable that has the ability
-to reference (or ``refer to," or ``point to") an object. However, the object
+\texttt{year}). A ``reference variable'' means a variable that has the ability
+to reference (or ``refer to,'' or ``point to'') an object. However, the object
 itself is created in the heap, because in Java that's where all objects live.
-The word \texttt{new} is a ``heap word": using it is the only way to make an
+The word \texttt{new} is a ``heap word'': using it is the only way to make an
 object at all, and therefore, the only way to make something on the heap.
-Finally, to carry out the equals sign (``\texttt{=}") in that line of code, we
+Finally, to carry out the equals sign (``\texttt{=}'') in that line of code, we
 draw an arrow from \texttt{minivan} to the object to indicate that's what it's
 currently referring to.
 
@@ -122,10 +122,10 @@ realms, or fail to keep their contents utterly in sync. Trust me on this.
 
 Okay, now a head-scratcher. Look at Figure~\ref{fig:stackHeap1} again. What
 would you answer if I asked you, ``what's the \textit{name} of that blue
-object?"
+object?''
 
 If you're like 99\% of novice programmers (including myself, long ago), you
-would confidently answer, ``\texttt{minivan}. Its name is \texttt{minivan}."
+would confidently answer, ``\texttt{minivan}. Its name is \texttt{minivan}.''
 That seems to make perfect sense. But unfortunately it is \textit{wrong}. The
 truth is that \textit{the object has no name.}
 
@@ -151,7 +151,7 @@ reference variable called \texttt{other} on the stack, and points it to a
 brand new \texttt{Car} object (unrelated to our Toyota Sienna) in the heap.
 Notice that unlike with the stack, I didn't carefully put the new \texttt{Car}
 exactly on top of the first one. Instead, I just threw it in there helter
-skelter. This is how the heap works, and in fact why it's called a ``heap":
+skelter. This is how the heap works, and in fact why it's called a ``heap'':
 it's a disorganized mess of stuff that comes and goes in response to the
 program's unpredictable needs. The stack is as tidy as the Library of
 Congress; the heap is a teenage boy's room. Though weird, it turns out that
@@ -191,7 +191,7 @@ listing~\ref{fig:additionalCode}.}
 
 Okay, now the punchline of this whole example. I'm going to complete the
 bait-and-switch, just to prove I was right before when I said ``the name of
-that first blue box is \textit{not} \texttt{minivan}." Let's do the
+that first blue box is \textit{not} \texttt{minivan}.'' Let's do the
 \textit{second} two lines of code in listing~\ref{fig:additionalCode}:
 
 \begin{Verbatim}[fontsize=\small,samepage=true]
@@ -202,7 +202,7 @@ that first blue box is \textit{not} \texttt{minivan}." Let's do the
 The result of those two operations is to change what the \texttt{other} and
 \texttt{minivan} variables are pointing to. Memory now looks like
 Figure~\ref{fig:stackHeap3}. And so I ask you again: ``what's the
-\textit{name} of that Toyota Sienna object?" I think you'll agree that
+\textit{name} of that Toyota Sienna object?'' I think you'll agree that
 \texttt{minivan} is most certainly \textit{not} its name. Two valid ways to
 refer to it are \texttt{t} and \texttt{other}, both of which point to it. But
 neither one is its name. Objects simply have no name.
@@ -219,7 +219,7 @@ listing~\ref{fig:additionalCode}.}
 \end{figure}
 
 Let me conclude this example by explaining what I meant earlier about
-``limited lifespans." After executing the ``\texttt{other = t;}" line, we are
+``limited lifespans.'' After executing the ``\texttt{other = t;}'' line, we are
 done with the function. It's time to return control to whoever called
 \texttt{illustration()} in the first place. And at this point, all of our
 named variables -- \texttt{t}, \texttt{other}, \texttt{minivan}, and even
@@ -290,7 +290,7 @@ class Simulator {
 Let's see how the memory diagram emerges line-by-line in response to the code
 executing.
 
-First, let's execute the first three lines of \texttt{main()} and ``Freeze!"
+First, let's execute the first three lines of \texttt{main()} and ``Freeze!''
 the picture. The result of these lines is shown in
 Figure~\ref{fig:bpStackHeap1}. There are three new things here worth
 mentioning. First, notice that our \texttt{greeting} variable, although it is
@@ -318,7 +318,7 @@ The next new thing is that bizarre symbol next to \texttt{oldGeezer}.
 declare a variable of type \texttt{Ballplayer} named \texttt{oldGeezer}, but
 we never set it equal to a \texttt{new} instance, nor to anything else for
 that matter. This means that \texttt{oldGeezer}, which as you'll recall is a
-``reference variable" (capable of referring to a \texttt{Ballplayer})
+``reference variable'' (capable of referring to a \texttt{Ballplayer})
 currently refers to \textit{nothing}. In Java, this is called a \textbf{null
 reference} (or \textbf{null pointer}) and is indicated with the keyword
 \texttt{null}. In fact, this line of code has exactly the same effect as the
@@ -341,14 +341,14 @@ Exception in thread "main" java.lang.NullPointerException
 \end{Verbatim}
 
 This is quite reasonable behavior, if you think about it. What can Java do if
-you try to ``call a method on an object" but there \textit{is} no such object?
+you try to ``call a method on an object'' but there \textit{is} no such object?
 It can only throw up its hands, which it does here.
 
 \subsubsection{Stack frames}
 
 The last new thing in Figure~\ref{fig:bpStackHeap1} is easy to miss: it's the
 word \texttt{main()} off on the left-hand side of the diagram. What this means
-is that \textit{all the variables to the right of it ``belong" to the
+is that \textit{all the variables to the right of it ``belong'' to the
 \texttt{main()} function.} This group of variables, which goes with a
 particular call to a function\footnote{Note carefully that a stack frame is
 associated with each \textbf{\textit{call}} to a function, not each function.
@@ -359,7 +359,7 @@ stack frame, which is separate from all the others. This is how recursive
 functions are able to work without clobbering the values of the variables
 contained in previous, still-active calls.}, is called a \textbf{stack frame}.
 The way a program works is this: every time a function is called, a new stack
-frame is ``pushed" on top of the stack (above a horizontal line that we'll
+frame is ``pushed'' on top of the stack (above a horizontal line that we'll
 draw.) While we're in the function, \textit{Java can only see the variables in
 that current stack frame.} The ones in \texttt{main()}'s stack frame, or any
 other stack frame for currently-in-progress functions, are safely nestled away
@@ -371,7 +371,7 @@ could \texttt{foo()} possibly refer to \texttt{bar()}'s variables? Heck,
 whoever wrote the code for \texttt{foo()} didn't even know it would be
 \textit{called} from \texttt{bar()}! Any other function could have called it
 just as well, in which case \texttt{bar()}'s variables wouldn't even exist.
-All we know for sure is that \texttt{foo()} was called from ``somewhere," and
+All we know for sure is that \texttt{foo()} was called from ``somewhere,'' and
 thus must work no matter what the context. If Java allowed us to talk about
 variables in another stack frame, our function would instantly become
 non-reusable; it would only make sense if called from some specific other
@@ -393,7 +393,7 @@ Let's do the first three lines. We create two new variables on the stack
 \textit{the same name} as a variable that was declared down in
 \texttt{main()}. This is perfectly okay, and the two \texttt{year}s in fact
 have nothing whatsoever to do with each other. As long as
-\texttt{buildDaTeam()} has control, ``\texttt{year}" means \textit{the top
+\texttt{buildDaTeam()} has control, ``\texttt{year}'' means \textit{the top
 year}, in \texttt{buildDaTeam()}'s stack frame.
 
 In the third line, we create our first heap object of the entire program. It
@@ -404,9 +404,9 @@ which is a zero-based, array-ish list of references, each of which has the
 potential to point to an object.\footnote{You may be more used to seeing
 \texttt{ArrayList<Ballplayer>} instead of just plain \texttt{ArrayList}, which
 actually is a better choice. When we declare something as type
-``\texttt{ArrayList<Ballplayer>}" we're saying ``Java, please prevent me from
+``\texttt{ArrayList<Ballplayer>}'' we're saying ``Java, please prevent me from
 storing anything in this \texttt{ArrayList} \textit{except}
-\texttt{Ballplayer}s." Not only does this give us good compile-time checking,
+\texttt{Ballplayer}s.'' Not only does this give us good compile-time checking,
 but it allows us to retrieve elements from the list without having to
 explicitly cast them to type \texttt{Ballplayer} before using them.} Currently
 none of them do so, and therefore the diagram shows the \texttt{null} symbol
@@ -468,7 +468,7 @@ which you know by now does \textit{not} instantiate a new object. (After all,
 there's no \texttt{new}.) Instead, the first line \textit{points the new
 variable \texttt{babe} at the same object \texttt{ruth} is currently pointing
 to.} Get very, very comfortable with the idea that except for primitive types,
-``\texttt{=}" in Java does not do anything resembling a ``copy" operation. It
+``\texttt{=}'' in Java does not do anything resembling a ``copy'' operation. It
 simply makes a reference variable refer to something else. So we now have
 three variables of type \texttt{Ballplayer}, but only \textit{two}
 \texttt{Ballplayer} objects.
@@ -488,7 +488,7 @@ make sure you understand where they're all going and why. Our
 \texttt{ArrayList} object, instead of showing \texttt{null} pointers, now has
 each of its slots pointing to a particular \texttt{Ballplayer} object.
 Elements 0 and 2 point to the \textit{same} object, of course, because we
-added ``\texttt{babe}" and later ``\texttt{ruth}" and those two variables are
+added ``\texttt{babe}'' and later ``\texttt{ruth}'' and those two variables are
 pointing to the \textit{same} object. (So we're cheating here, baseball-wise:
 you can't actually have the same player twice in the lineup! This is just an
 example.)
@@ -500,7 +500,7 @@ example.)
 \label{fig:bpStackHeap3}
 \end{figure}
 
-\subsubsection{``I shall return"}
+\subsubsection{``I shall return''}
 
 And now, we're ready to polish off this bad boy.
 
@@ -511,13 +511,13 @@ And now, we're ready to polish off this bad boy.
 \end{Verbatim}
 
 
-That ``\texttt{return}" statement packs a wallop. When the function is
+That ``\texttt{return}'' statement packs a wallop. When the function is
 completed, two huge things happen. First, the function's stack frame
 \textit{is entirely wiped out.} Like, off the face of the planet. Every single
 variable in there is irrevocably deleted and never mentioned again.
 
 When students first hear this, they're sometimes dismayed -- ``what's the
-point of calling a function then, if every single thing it creates is erased?"
+point of calling a function then, if every single thing it creates is erased?''
 Ahhhh...but they're only thinking of the \textit{stack}, not the heap. The
 heap-ish things that a function accomplishes \textit{do} live on, and as I
 said earlier, they are the reason the function existed in the first place.
@@ -552,12 +552,12 @@ case, since our original line of code was:
         ArrayList yankees = buildDaTeam();
 \end{Verbatim}
 
-it makes \texttt{yankees} refer to the object that was ``returned," namely the
+it makes \texttt{yankees} refer to the object that was ``returned,'' namely the
 \texttt{ArrayList} that the shortly-to-die \texttt{team} variable is pointing
 to.
 
 We run one more line of code just to show we can do something with the
-returned object (``\texttt{int rosterSize = yankees.size();}") and the final
+returned object (``\texttt{int rosterSize = yankees.size();}'') and the final
 result is as in Figure~\ref{fig:bpStackHeapFinal}. There's no record of us
 having called a function at all -- \texttt{buildDaTeam()} simply did its job
 dutifully and quietly, and \texttt{main()} gets to reap the result.
@@ -577,9 +577,9 @@ The terminology we use to describe this is somewhat obscure: when we create a
 new stack frame for a newly-called function we call it \textbf{pushing} a new
 frame on the stack. When we return, and get rid of it, we call it
 \textbf{popping} the frame off the stack. Push and pop are lingo you'll see in
-Data Structures class, when a data structure called a ``stack" is introduced.
+Data Structures class, when a data structure called a ``stack'' is introduced.
 That stack data structure is a more general category of memory management
-technique, of which ``the stack" of our present chapter is an example.
+technique, of which ``the stack'' of our present chapter is an example.
 
 Anyway, this whole push-a-frame-every-time-you-call-a-method thing (and
 pop-the-top-frame-every-time-you-return thing) is central to how any computer
@@ -592,15 +592,15 @@ The mechanics of calling a function are just the same as when calling a
 method, except for one thing: \texttt{this}. It turns out that when you call a
 method on an object, you're adding one more thing to the stack: a reference to
 the object the method was called on. And that, of course, is precisely what
-``\texttt{this}" means.
+``\texttt{this}'' means.
 
 Let's pan over to a different part of our fictitious baseball simulator: the
 \texttt{Ballplayer} class itself. Part of the code for it is in
 Figure~\ref{fig:BallplayerCode}.\footnote{Apologies to non-baseball fans. All
 you really need to understand this example is that in baseball, every batter
-accumulates a number of ``at bats" (chances to come to the plate and hit
-against a pitcher) and a number of ``hits" (times he/she actually hit the ball
-and made it at least to first base). A player's ``batting average" is the hits
+accumulates a number of ``at bats'' (chances to come to the plate and hit
+against a pitcher) and a number of ``hits'' (times he/she actually hit the ball
+and made it at least to first base). A player's ``batting average'' is the hits
 over the at bats; it ostensibly tells you how likely (on a scale of 0 to 1)
 that player is to get a hit if he/she bats.}
 
@@ -641,11 +641,11 @@ class Ballplayer {
 
 We're going to have a different class for pitchers, since they have different
 stats (see Figure~\ref{fig:PitcherCode}).\footnote{Here, we're going to model
-each pitcher as having a ``\texttt{koDominance}" (``KO" is baseball lingo for
-``strikeout," btw). This is a number between 0 and 1 indicating the
+each pitcher as having a ``\texttt{koDominance}'' (``KO'' is baseball lingo for
+``strikeout,'' btw). This is a number between 0 and 1 indicating the
 probability of overwhelming the batter with a strikeout without that batter
 being able to do anything about it.} The only method we'll show on the
-\texttt{Pitcher} class is \texttt{.face()}, which is where a pitcher ``faces"
+\texttt{Pitcher} class is \texttt{.face()}, which is where a pitcher ``faces''
 (pitches to) a batter in our simulation. The result will either be strikeout
 or a hit in our extremely simplified view of the baseball world.
 
@@ -724,7 +724,7 @@ convince yourself it's correct in all details.
 \centering
 \includegraphics[width=1\textwidth]{pitcherStackHeap1.pdf}  % 750x350
 \caption{The baseball simulator's memory immediately before executing the
-\textit{last} line of \texttt{main()} (``\texttt{bestOfAllTime.face(theSayHeyKid)}").}
+\textit{last} line of \texttt{main()} (``\texttt{bestOfAllTime.face(theSayHeyKid)}'').}
 \label{fig:pitcherStackHeap1}
 \end{figure}
 
@@ -749,12 +749,12 @@ attention to two crucial aspects of this diagram:
 \begin{enumerate}
 \itemsep.1em
 \item First, notice we have a visitor. On the stack frame, in addition to the
-other expected variables, is none other than ``\texttt{this}". Realize that
+other expected variables, is none other than ``\texttt{this}''. Realize that
 \texttt{this} is really just a reference variable like any other. What does it
 refer to? \textit{The object the method was called on}, of course. In this
 case, it's Sandy Koufax. How do we know? Because when we called it, we didn't
-just say ``\texttt{face(theSayHeyKid)}" but
-``\texttt{\textit{bestOfAllTime.}face(theSayHeyKid)}". So the object that
+just say ``\texttt{face(theSayHeyKid)}'' but
+``\texttt{\textit{bestOfAllTime.}face(theSayHeyKid)}''. So the object that
 \texttt{bestOfAllTime} refers to will be pointed to by \texttt{this} while
 we're inside the method. Ponder this deeply.
 
@@ -766,7 +766,7 @@ object. That's critical, because otherwise our \texttt{.face()} method would
 have no way of updating Willie Mays' stats as a result of this
 confrontation.\footnote{If you learned these terms in 220, this point can be
 equivalently stated as follows: ``Java uses \textbf{pass-by-reference} for
-objects, not \textbf{pass-by-value}." (Java \textit{does} use pass-by-value
+objects, not \textbf{pass-by-value}.'' (Java \textit{does} use pass-by-value
 for \textit{primitive types}, as we've seen: \texttt{int}s and such have their
 own presence on the stack, and so are \textit{copied} from stack frame to
 stack frame.)}
@@ -774,7 +774,7 @@ stack frame.)}
 \end{enumerate}
 
 Drum roll, please, before we hear the announcer: \textit{``...and it's a
-scorching four-seam fastball from Koufax: swing and a miss, strike three!"}
+scorching four-seam fastball from Koufax: swing and a miss, strike three!''}
 The way the random numbers turned out in this example, Koufax was so
 overpowering that he struck out Mays without the latter having a fighting
 chance. (See how \texttt{koRandNum} was less than Koufax's
@@ -783,9 +783,9 @@ coming into play -- \textit{i.e.}, without Mays' batting prowess even having a
 chance to shine).
 
 Don't worry, Willie: maybe you'll get one of your 660 lifetime home runs next
-time you're up to bat. Console yourself with this: a different ``Willie" Hall
+time you're up to bat. Console yourself with this: a different ``Willie'' Hall
 of Famer (Willie Stargell) once quipped, ``trying to hit against Sandy Koufax
-is like trying to drink coffee with a fork."
+is like trying to drink coffee with a fork.''
 
 
 \begin{figure}[ht]

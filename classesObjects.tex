@@ -1,5 +1,5 @@
 
-\chapter{The ``cells" of an OO program}
+\chapter{The ``cells'' of an OO program}
 \label{ch:cells}
 
 % TODO: We need to introduce the term "client code" in this chapter.
@@ -7,17 +7,17 @@
 % "how to interpret a stack trace" somewhere, probably here (or in new
 % Exceptions chapter.)
 
-Java is called an ``object-oriented" programming language. If I were King of
-the World, I would have called it a ``\textit{class}-oriented" language
+Java is called an ``object-oriented'' programming language. If I were King of
+the World, I would have called it a ``\textit{class}-oriented'' language
 instead. That's because in Java, you don't write code for objects, but for
 \textit{classes}, and that code then defines the behavior of the classes that
 are based on them.\footnote{There are other languages, for instance JavaScript
-(no relation to Java), which do deserve the term ``\textit{object}-oriented,"
+(no relation to Java), which do deserve the term ``\textit{object}-oriented,''
 since you can create code for individual objects rather than classes, and not
 every object has to have a class at all.} You'll sometimes hear people
 mistakenly say stuff like, ``I wrote some code for the DatabaseConnection
-object today." It makes me wince. They weren't writing ``code for the
-object," but the code for a class.
+object today.'' It makes me wince. They weren't writing ``code for the
+object,'' but the code for a class.
 
 If an OO program is an organic entity, classes and objects comprise its cells.
 
@@ -25,14 +25,14 @@ If an OO program is an organic entity, classes and objects comprise its cells.
 
 So here's a crucial pair of definitions. A \textbf{class} is a
 \textit{category} of things. An \textbf{object} is a concrete \textit{example}
-of a class. If ``University" is a class, then ``UMW" is an object; if
-``Course" is a class, then ``CPSC 240" is an object. The difference is real,
+of a class. If ``University'' is a class, then ``UMW'' is an object; if
+``Course'' is a class, then ``CPSC 240'' is an object. The difference is real,
 and it is vitally important to keep at the forefront of your mind as you begin
 your OO quest. Getting them mixed up is like Peter Venkman crossing the
 streams.
 
 You'll sometimes hear alternate definitions of these terms, like ``a class is
-a template, and objects are copies of that template." This is better than
+a template, and objects are copies of that template.'' This is better than
 out-and-out confusion, but it still misses something important. It's an
 operational definition, instead of a conceptual definition. It thinks of a
 class and an object in terms of the mechanical way the virtual machine carries
@@ -50,8 +50,8 @@ By the way, an important near-synonym for class is \textbf{type}. (It's only a
 
 In addition to those nouns, a big verb in our vocabulary will be the term
 \textbf{instantiate}. It means ``to actually create an object of a particular
-class." Some people use words like \textbf{construct} or \textbf{create} for
-this, or even ``\texttt{new}" (or ``\texttt{new} up") as a verb, but for the
+class.'' Some people use words like \textbf{construct} or \textbf{create} for
+this, or even ``\texttt{new}'' (or ``\texttt{new} up'') as a verb, but for the
 most part we'll stick with instantiate.
 
 
@@ -60,10 +60,10 @@ most part we'll stick with instantiate.
 
 Classes and objects are among the basic building blocks of any OO program, and
 they will play a prominent role on various \textbf{UML diagrams}. UML
-(``Unified Modeling Language") is a \textit{design} language, not a
+(``Unified Modeling Language'') is a \textit{design} language, not a
 programming language. It is expressed in visual diagrams, not streams of text.
 Even though it's not text-based, though, and even though there's no
-``compiler" forcing us to adhere to the syntax, it still has rules that must
+``compiler'' forcing us to adhere to the syntax, it still has rules that must
 be followed, and precise meanings that can be inferred.
 
 Figure~\ref{fig:classObject} shows what a class, and an object, look like in
@@ -87,12 +87,12 @@ classes are capitalized.} Don't ever violate this rule, for convention's and
 confusion's sake!
 
 The second compartment has the class's \textbf{instance variables}. You'll
-hear people use other terms for these like like ``member variables" and even
-``class variables," but I strongly prefer instance variables (or ``inst vars"
+hear people use other terms for these like like ``member variables'' and even
+``class variables,'' but I strongly prefer instance variables (or ``inst vars''
 for short) and here's why: \textit{every instance has its own copy of an
 instance variable.} This truth is absolutely fundamental to OOP, and it's
 worth re-reading that sentence again and again until it's part of your core
-being. Declaring a plain-ol' variable like ``\texttt{int x;}" creates a single
+being. Declaring a plain-ol' variable like ``\texttt{int x;}'' creates a single
 storage location in which a value can be stored. But declaring an
 \textit{instance} variable is a far-reaching choice that destines every Car
 (or whatever) that will come about in the future to have its own copy of that
@@ -104,7 +104,7 @@ a colon instead of a space, and we omit the semicolon. Otherwise, it's pretty
 straightforward to interpret that second compartment.
 
 By the way, one important piece of syntax in that second compartment is an
-\underline{underline}, which says that the underlined ``instance variable"
+\underline{underline}, which says that the underlined ``instance variable''
 isn't an instance variable after all: it's a \textbf{class variable}. This
 means that \textit{there's only one shared variable for the entire class,
 rather than a different variable for each object.} In
@@ -114,7 +114,7 @@ case. Even though every \texttt{Car} has its own \texttt{make},
 \texttt{numCars} (which presumably represents the total number of \texttt{Car}
 objects instantiated so far.) This makes sense, since after all such a
 variable is not specific to a certain \texttt{Car}. We'll see that in Java,
-class variables are created by using the ``\texttt{static}" keyword where the
+class variables are created by using the ``\texttt{static}'' keyword where the
 variable is declared.
 
 \subsection{Classes in UML: the third compartment}
@@ -153,12 +153,12 @@ previously instantiated.
 Beginners sometimes view this as a syntactic nuisance. It is not. It is
 fundamental to what your code \textit{means}. Conceptually, it makes sense to
 have a particular car, and to fill it up. It does \textit{not} make sense to
-say ``hey universe, fill up cars" (which is what ``\texttt{fillUp()}" seems to
-say) not to say ``hey Cars-in-general, fill yourself up" (which is what
-``\texttt{Car.fillUp()}" seems to say).
+say ``hey universe, fill up cars'' (which is what ``\texttt{fillUp()}'' seems to
+say) not to say ``hey Cars-in-general, fill yourself up'' (which is what
+``\texttt{Car.fillUp()}'' seems to say).
 
 By the way, notice in the example I just gave, \texttt{johnsMercedes} is
-\textit{not} capitalized. (The capital ``\texttt{M}" in the middle doesn't
+\textit{not} capitalized. (The capital ``\texttt{M}'' in the middle doesn't
 count; that's just an artifact of CamelCase, which is a way of making multiple
 words easier to read.) This is always the case: in Java, object names always
 begin with a lower-case letter.
@@ -172,19 +172,19 @@ technically programming-language-independent, language-specific things like
 \texttt{int} and \texttt{String} can't help but creep in in practice. Our
 thoughts betray us.
 
-\subsubsection{Various ``special" methods}
+\subsubsection{Various ``special'' methods}
 \label{page:instantiateConstructor}
 
 A few of those methods are worthy of special note. The first one listed,
-called simply ``\texttt{Car}", is a very special kind of method called a
+called simply ``\texttt{Car}'', is a very special kind of method called a
 \textbf{constructor} which we'll be talking about a lot. Here's an iron-clad
 rule which is fundamental to much that follows: \textit{whenever an object is
 instantiated, one of its class's constructors is called.} This happens
 automatically; it's not something we have to do ourselves. (Java's syntax for
 this, as we'll see, makes it kind of look like we're calling the constructor
 ourselves, which is a mixed blessing.) In Java, there are two things that
-``make" a method a constructor: (1) it must have exactly the same name as the
-class, and (2) it must have \textit{no} return type. (Note that ``no" return
+``make'' a method a constructor: (1) it must have exactly the same name as the
+class, and (2) it must have \textit{no} return type. (Note that ``no'' return
 type is not the same as a \texttt{void} return type! I mean \textit{no return
 type at all.}\footnote{If you mistakenly include a \texttt{void} before your
 constructor when you write the code, you have officially made it \textit{not}
@@ -199,23 +199,23 @@ constructors subject to the same conditions. This is a very common practice,
 although in this first example we have only one \texttt{Car} constructor.
 
 Also, just as in the second compartment, an \underline{underline} indicates
-that the method ``goes with the whole class, not with each object." And just
+that the method ``goes with the whole class, not with each object.'' And just
 as before, this implies the use of the \texttt{static} keyword. A
 \texttt{static} method is essentially a function: \textit{i.e.}, you
 \textit{don't} call it on an object. Instead, you just call it \textit{on the
 class itself.} In the example above, \texttt{numCars()} method is
-\texttt{static}, which means that you could write ``\texttt{Cars.numCars()}"
+\texttt{static}, which means that you could write ``\texttt{Cars.numCars()}''
 to retrieve the number of \texttt{Car} objects that have been instantiated to
 that point. Static methods are quite rare, but they do arise occasionally, and
 are always indicated with an underline.
 
 The other methods I'll draw your attention to are the ones that begin with
-``\texttt{get}". People call these methods ``\textbf{getters}," and all they
+``\texttt{get}''. People call these methods ``\textbf{getters},'' and all they
 normally do is return the value of the instance variable in question. Often
-one also has ``\texttt{set}" methods to set the values of inst vars, although
+one also has ``\texttt{set}'' methods to set the values of inst vars, although
 our example doesn't have any of those. People also call getters and setters
 \textbf{accessors}, and sometimes specifically call setters
-``\textbf{mutators}," a term which always made me chuckle.
+``\textbf{mutators},'' a term which always made me chuckle.
 
 \subsection{Objects in UML}
 
@@ -229,14 +229,14 @@ you can see that there is a \texttt{Car} object in memory representing an old
 Chevy Malibu with a zillion miles on it and other suboptimal features.
 
 Perhaps the strangest thing about a UML object is the top compartment. Notice
-that it says ``\texttt{:~Car}" (``colon-Car"), which is not a typo. Here's the
+that it says ``\texttt{:~Car}'' (``colon-Car''), which is not a typo. Here's the
 sitch. The top compartment of a class has the class's name, since that's all
 there is to say about it. The top compartment of an object, meanwhile, has the
 \textit{object's} name, followed by a colon and then its class. Just like we
-said ``\texttt{make :~String}" earlier, so here we can say
-``\texttt{johnsMercedes :~Car}". Why, then, is Figure~\ref{fig:classObject}
+said ``\texttt{make :~String}'' earlier, so here we can say
+``\texttt{johnsMercedes :~Car}''. Why, then, is Figure~\ref{fig:classObject}
 missing the name before the colon? Because we've chosen \textit{not to name
-this object in the diagram.} It's just ``a Car" with certain properties, not a
+this object in the diagram.} It's just ``a Car'' with certain properties, not a
 named Car. This may seem odd, but in fact 99\% of the time we will do exactly
 this. And that's because bizarrely, \textit{objects don't have names in Java},
 even though it may seem at first that they do.
@@ -246,7 +246,7 @@ objects, and normally we don't choose to specify the object's name -- only its
 type and its instance variable values.
 
 
-\subsection{The value of ``design"}
+\subsection{The value of ``design''}
 
 Before we move on to implementation, take a step back for a moment and
 consider the \textit{information} contained in that
@@ -287,10 +287,10 @@ class Car {
 }
 \end{Verbatim}
 
-You may be used to putting the word ``\texttt{public}" before the word
+You may be used to putting the word ``\texttt{public}'' before the word
 \texttt{class} here. For now, we won't do this, and I'll encourage you to
 ditch the habit of making classes \texttt{public} by knee-jerk reaction. As
-we'll learn, you want to lean towards making things ``as private as possible"
+we'll learn, you want to lean towards making things ``as private as possible''
 until you have reason to do otherwise.
 
 \subsection{Instance variables in Java}
@@ -309,7 +309,7 @@ class Car {
 }
 \end{Verbatim}
 
-You may be used to seeing the word ``\texttt{private}" before each instance
+You may be used to seeing the word ``\texttt{private}'' before each instance
 variable, and I do applaud that practice. More on that later. For now, we'll
 leave it off just because it's not necessary to compile. Realize that it's not
 the word \texttt{private} that makes something an instance variable; rather,
@@ -334,7 +334,7 @@ class Car {
 and now for the first time we have to actually \textit{think}.
 
 A constructor, as I said, is automatically called whenever an object comes
-into existence. This is our ``hook" to set up the object for success when
+into existence. This is our ``hook'' to set up the object for success when
 methods are called on it later. Think of it this way: your constructor is
 called whenever a new object is about to come off the assembly line and enter
 the real world. Your job in the constructor is to do everything necessary to
@@ -345,7 +345,7 @@ values. Sometimes it will include other things, like registering its existence
 in some global repository of objects, or initializing a connection to a
 network, or writing itself to a database. The key question to ask yourself is,
 ``what do I need to do to ensure this object is `legit' and doesn't break
-anything when it's being used?"
+anything when it's being used?''
 
 In our case, the instance variables are all that matters. First, let's set the
 object's \texttt{make} and \texttt{model} to what was given to the
@@ -363,28 +363,28 @@ class Car {
 \end{Verbatim}
 \normalsize
 
-If this is the first time you've seen the odd word ``\texttt{this}" in a
+If this is the first time you've seen the odd word ``\texttt{this}'' in a
 program, have a good chuckle. What a weird word choice! But Gosling \& Co.
 chose this word to denote a central OO programming concept. The word
-``\texttt{this}" means one of two different things, and they both need to be
+``\texttt{this}'' means one of two different things, and they both need to be
 memorized:
 
 \begin{enumerate}
 \large
 \itemsep.1em
-\item Inside a \textit{constructor}, ``\texttt{this}" means ``the object that is
-currently being instantiated."
-\item Inside a \textit{method}, ``\texttt{this}" means ``the object the
-method was called on."
-\item (Anywhere else, ``\texttt{this}" is illegal.)
+\item Inside a \textit{constructor}, ``\texttt{this}'' means ``the object that is
+currently being instantiated.''
+\item Inside a \textit{method}, ``\texttt{this}'' means ``the object the
+method was called on.''
+\item (Anywhere else, ``\texttt{this}'' is illegal.)
 \normalsize
 \end{enumerate}
 
 It's weird and meta and self-referential, but it's also necessary. There are
-times when we need to have a name for ``the very object I'm 'in' right now,"
-and ``\texttt{this}" is our (awkward) name to refer to that.
+times when we need to have a name for ``the very object I'm 'in' right now,''
+and ``\texttt{this}'' is our (awkward) name to refer to that.
 
-So in our constructor, when we say ``\texttt{this.make}" we mean ``the
+So in our constructor, when we say ``\texttt{this.make}'' we mean ``the
 \texttt{make} instance variable of this very object that is in the process of
 being birthed. We set that to the \texttt{make} argument that was passed to
 the constructor. Ditto with \texttt{model}. Oftentimes, using \texttt{this} is
@@ -455,26 +455,26 @@ When you write methods in an OO program, you have to think reactively, not
 proactively. What I mean is this. When you write a procedural, old school
 program, you're the one driving the ship. In your \texttt{main()} you say,
 ``first do this, then do that; create these three variables, perform a
-computation, and then print the result." You're the one in charge of the
+computation, and then print the result.'' You're the one in charge of the
 story, and you spell out how it's going to go in order.
 
 We all learned how to program this way. But in OO, you kind of have to think
 backwards from that. Writing a method isn't like calling it; instead of giving
 orders, you're providing a service to whoever called you. So when you write a
 method, you have to think, ``okay, some other part of the code is now calling
-me, for reasons of its own. What do I do in response to that?"
+me, for reasons of its own. What do I do in response to that?''
 
 Often that involves updating the object's \textbf{state} to reflect what
 should happen to it as a result of the method being called.
 
 This is best seen by example. Let's implement\footnote{If you don't know this
 term, the verb \textbf{to implement} means ``to take a design and actually
-build it out." It is a synonym for the verb \textbf{to code}.} the
+build it out.'' It is a synonym for the verb \textbf{to code}.} the
 \texttt{.fillUp()} method first. Don't think about Java; think about cars. If
 I fill up a car, what happens?
 
 Does the make or model or mileage change? Of course not: the amount of gas in
-the tank does. And ``fill 'er up" means to raise it to its maximum. The
+the tank does. And ``fill 'er up'' means to raise it to its maximum. The
 correct implementation of \texttt{.fillUp()}, then, is simply:
 
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
@@ -501,7 +501,7 @@ to make it explicit that we're talking about two instance variables here, and
 assigning the value of one to the other. It's a matter of style.
 
 In the same vein, we ask ourselves, ``suppose someone asks me what percentage
-full my tank is. What answer do I give them?" The proper response again
+full my tank is. What answer do I give them?'' The proper response again
 involves the same two inst vars and a little math:
 
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
@@ -620,7 +620,7 @@ Now, in addition to printing the error, we also \texttt{return} from the
 method prematurely, before carrying out the nonsensical operation.
 
 The problem with this approach is that \textit{the calling code is not alerted
-that anything went wrong.} We'll see some ``calling code" in action in the
+that anything went wrong.} We'll see some ``calling code'' in action in the
 next section, but for now just realize that whoever called
 \textit{drive(1000)} is none the wiser. It merrily chugs along thinking that
 the thousand-mile drive was plain sailing, oblivious to the fact that no such
@@ -632,7 +632,7 @@ Exceptions are Java's way of allowing a method \textit{not} to return, but
 instead to raise a big red flag that carrying out the method just flat didn't
 work. It's the only responsible thing to do.
 
-Our first step is to ``throw an exception" instead of returning. Here's the
+Our first step is to ``throw an exception'' instead of returning. Here's the
 code to do so:
 
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
@@ -678,7 +678,7 @@ Fixing it is simple; we just change the first line of the function to:
 
 We're saying, ``you can call me on a \texttt{Car}, pass me an integer
 argument, and get no return value. BUT there's a possibility that it won't
-work, and you should be aware of that." It's only honest, and as we'll see, it
+work, and you should be aware of that.'' It's only honest, and as we'll see, it
 allows the code that uses \texttt{Car}s to properly deal with the problem.
 
 
@@ -710,7 +710,7 @@ or this:
 You'll get compiler errors, but those errors reflect a deeper and more
 fundamental misunderstanding. In OOP, you have to call a method \textit{on an
 object}. Conceptually, nothing else makes sense. In real life you don't
-``drive in general," and you don't ask ``automobiles in general" to drive you
+``drive in general,'' and you don't ask ``automobiles in general'' to drive you
 places. Instead, you have to drive \textit{a particular car} somewhere. Here's
 how:
 
@@ -721,7 +721,7 @@ how:
     }
 \end{Verbatim}
 
-The keyword ``\texttt{new}" is utterly crucial here. In Java, \textit{the only
+The keyword ``\texttt{new}'' is utterly crucial here. In Java, \textit{the only
 way to instantiate an object is to use \texttt{new}}. It causes a fresh object
 of the appropriate type to spring into existence, complete with memory to hold
 its instance variables. And the appropriate constructor is called, of course,
@@ -772,8 +772,8 @@ cars to drive.
 
 The Java way to handle this is with a \textbf{try/catch block}. Essentially,
 this just builds a little scaffolding around our call to suspicious methods
-like \texttt{.drive()} so that if and exception is indeed ``thrown" when we
-call it, we can ``catch" is and do something sensible. Here's how:
+like \texttt{.drive()} so that if and exception is indeed ``thrown'' when we
+call it, we can ``catch'' is and do something sensible. Here's how:
 
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
     public static void main(String args[]) {
@@ -795,7 +795,7 @@ wind, we put that code in a \textbf{try block}. The code in a \texttt{try}
 block is executed normally, step-by-step, just like anywhere else in a Java
 program. But the \texttt{try} block has one or more (here just one)
 contingency plans connected to the bottom of it, which can handle any special
-(or ``exceptional") conditions. In this case, that call to drive the minivan
+(or ``exceptional'') conditions. In this case, that call to drive the minivan
 500 miles through traffic will either work in its entirety and have the
 desired effect, or it will abort in the middle of it and control will be
 immediately transferred to the relevant catch block below it. The flow
@@ -812,7 +812,7 @@ exception would indicate that we need to find a new, temporary destination
 other than the one we're currently seeking: one that has gas so we can fill
 up.
 
-Once all the method calls that are defined as ``\texttt{throws Exception}"
+Once all the method calls that are defined as ``\texttt{throws Exception}''
 have been enclosed in try/catch blocks that at least nominally handle the
 errors, the code compiles again and it can hopefully run error-free.
 
@@ -828,7 +828,7 @@ standard type is straightforward:
     System.out.println("The number of enchiladas is: " + numEnchiladas + ".");
 \end{Verbatim}
 
-and will produce a message like ``\texttt{The number of enchiladas is 3.}"
+and will produce a message like ``\texttt{The number of enchiladas is 3.}''
 What happens, though, if we print out an \textit{object}, like a \texttt{Car}?
 How can such a complex entity be reduced to a string of text?
 
@@ -846,11 +846,11 @@ The output we get is:
 My car is: Car@4aa298b7.
 \end{verbatim}
 
-Whoa. The word ``\texttt{Car}" is perhaps not surprising, but what's the rest
+Whoa. The word ``\texttt{Car}'' is perhaps not surprising, but what's the rest
 of that gunk?
 
 It turns out that Java's default way of rendering an object as a
-\texttt{String} is to concatenate the name of the class, an ``at" sign,
+\texttt{String} is to concatenate the name of the class, an ``at'' sign,
 followed by \textit{the memory address} in which it is stored. We'll talk much
 more about memory in the next chapter. For now, just think of the memory
 address as a unique number\footnote{Yes, it is indeed a number, despite the
@@ -867,7 +867,7 @@ the \texttt{Car} class called \texttt{.toString()}. It must:
 
 \begin{compactenum}
 \itemsep.1em
-\item be called exactly ``\texttt{.toString()}".
+\item be called exactly ``\texttt{.toString()}''.
 \item take no argument.
 \item return a \texttt{String}.
 \item have the word \texttt{public} immediately before the return type. (We'll
@@ -897,7 +897,7 @@ required, and Java faithfully called our method instead of the one that
 generated the memory address. Pretty cool.
 
 This is actually our first foray into a really deep and powerful technique
-called ``inheritance," about which much more will come in later chapters. For
+called ``inheritance,'' about which much more will come in later chapters. For
 now, just grasp the idea that Java lets us override its general behavior for
 specific kinds of objects, which gives us tremendous power and flexibility.
 

@@ -3,17 +3,17 @@
 
 \chapter{Documenting an API}
 
-``\textbf{API}" -- which historically stands for ``Application Programming
-Interface" -- is one of the dumber acronyms you'll encounter. And worse, it's
+``\textbf{API}'' -- which historically stands for ``Application Programming
+Interface'' -- is one of the dumber acronyms you'll encounter. And worse, it's
 commonly used to mean two different things: (1) a set of classes (and their
 methods) which a programmer could make use of in their own code, and (2) the
 documentation describing those classes/methods.\footnote{By the way, the term
-``API" isn't used only for object-oriented software. One could write some
+``API'' isn't used only for object-oriented software. One could write some
 old-school procedural code (with functions and data structures, rather than
 encapsulated classes and methods), describe it, and call that an API as well.}
 
-In common lingo, people speak of ``programming to an API," which means
-``writing some code which conforms to those documented classes/methods." Every
+In common lingo, people speak of ``programming to an API,'' which means
+``writing some code which conforms to those documented classes/methods.'' Every
 time you've used an \texttt{ArrayList} or a \texttt{Scanner}, in fact, you
 have been doing this. Instantiating such objects, calling methods on them, and
 (importantly) reading the documentation at
@@ -91,15 +91,15 @@ Consider the following very realistic possibilities:
 \begin{itemize}
 \itemsep.1em
 
-\item Filbert wrote ``left" when he meant ``right" in step 3 of the directions
+\item Filbert wrote ``left'' when he meant ``right'' in step 3 of the directions
 because he's human.
 
 \item Filbert just plain forgot step 5 of the directions because he's human.
 
-\item When he wrote, ``turn left at the next opportunity," he meant ``at the
-next \textit{intersection}," and assumed that would be obvious to you.
+\item When he wrote, ``turn left at the next opportunity,'' he meant ``at the
+next \textit{intersection},'' and assumed that would be obvious to you.
 However, you (quite naturally) thought he meant ``the very next possible
-left," which was down a side road.
+left,'' which was down a side road.
 
 \item A road is closed, or there's a traffic jam, and you need to improvise
 in order to make it to the party on time.
@@ -163,9 +163,9 @@ JavaDoc's innovation was to say: ``go ahead and store the documentation in the
 \texttt{.java} files themselves, to promote consistency. But we'll create a
 separate tool that can examine the \texttt{.java} files and extract the
 documentation portions. The tool will then assemble those into a mini-website
-that other programmers can conveniently browse."
+that other programmers can conveniently browse.''
 
-To accomplish this, we use a special syntax to denote ``JavaDoc comments."
+To accomplish this, we use a special syntax to denote ``JavaDoc comments.''
 Recall that one style of comment in Java is the multi-liner:
 
 \vspace{-.2in}
@@ -196,7 +196,7 @@ class, and hints as to its usage.
 \item Immediately before a method definition, to describe what the method
 does, how to call it, and what will happen in exceptional conditions.
 
-\item In a special file called ``\texttt{package.html}", which will be placed
+\item In a special file called ``\texttt{package.html}'', which will be placed
 in the source directory for a package, if you're using Java packages.
 
 \end{itemize}
@@ -210,12 +210,12 @@ assemble them into HTML files in the appropriate way.
 There are also a couple of cosmetic options you can take advantage of in
 JavaDoc comments. First of all, any valid HTML tag can be used directly in the
 comment, and will be formatted appropriately in the final mini-website. If
-you're familiar with HTML tags like ``\texttt{$<$b$>$}" (for boldface),
-``\texttt{$<$tt$>$}" (for a monospace, typewriter font) or
-``\texttt{$<$ul$>$}" and ``\texttt{$<$li$>$}" (for bulleted lists), you can
+you're familiar with HTML tags like ``\texttt{$<$b$>$}'' (for boldface),
+``\texttt{$<$tt$>$}'' (for a monospace, typewriter font) or
+``\texttt{$<$ul$>$}'' and ``\texttt{$<$li$>$}'' (for bulleted lists), you can
 use them to style your text.
 
-Second, there are special tags called ``JavaDoc tags" that can be used to set
+Second, there are special tags called ``JavaDoc tags'' that can be used to set
 apart certain meta-information and put them in a special place in the final
 HTML product. The most important ones are shown in Figure~\ref{fig:taglist},
 though there are others. Each development team acquires their own culture,
@@ -243,8 +243,8 @@ author are common choices.}\\
 \texttt{@param} \ \texttt{name} \ description & method & 
 \makecell[l]{
 What one of the arguments to the method means.\\
-``\texttt{name}" is either the name or the type of argument.\\
-``description" should begin with a lower-case letter\\
+``\texttt{name}'' is either the name or the type of argument.\\
+``description'' should begin with a lower-case letter\\
 and end with a period.}\\
 
 \hline
@@ -252,7 +252,7 @@ and end with a period.}\\
 \texttt{@return} \ description & method & 
 \makecell[l]{
 How the return value of the method should be\\
-interpreted. ``description" should begin with a\\
+interpreted. ``description'' should begin with a\\
 lower-case letter and end with a period.}\\
 
 \hline
@@ -261,7 +261,7 @@ lower-case letter and end with a period.}\\
 \makecell[l]{
 What type of exception might be thrown from the\\
 method and how it should be interpreted.\\
-``description" should begin with the word ``if" and\\
+``description'' should begin with the word ``if'' and\\
 end with a period.}\\
 
 \hline
@@ -351,37 +351,37 @@ on a Google Cloud instance, this is how I run it:
 $ sudo javadoc -d /var/www/html -author *.java
 \end{Verbatim}
 
-The word ``\texttt{sudo}" at the start of this sentence means ``please allow
-me to execute the following command as the \textbf{root} user of the system";
+The word ``\texttt{sudo}'' at the start of this sentence means ``please allow
+me to execute the following command as the \textbf{root} user of the system'';
 \textit{i.e.}, the super user who has all privileges. The reason this is
 necessary is that the directory \texttt{/var/www/html}, which this command
 says to write content in, is by default not writeable by ordinary mortals. You
 have to temporarily become Superman in order to write to it, which will
 require typing your password to confirm you're really Clark Kent.
 
-The ``\texttt{-d /var/www/html}" bit is a command option with a parameter. The
-\texttt{-d} stands for ``directory" and it says that the HTML that
+The ``\texttt{-d /var/www/html}'' bit is a command option with a parameter. The
+\texttt{-d} stands for ``directory'' and it says that the HTML that
 \texttt{javadoc} generates should be written to this directory. It's a
 system-specific thing; on Debian Linux (which I install on Google Cloud) this
 is the directory that Apache Web Server will look in to serve up content to
 browsers that connect to it. (More on that in a moment.) In other contexts,
 like if you have a user directory on a shared machine that you don't have
 control over, you can often substitute something like ``\texttt{-d
-/home/yourusername/public\_html}" which will write the content to your
+/home/yourusername/public\_html}'' which will write the content to your
 account's own directory for hosting HTML content to the world.
 
-The ``\texttt{-author}" part of the command says ``yes, please \textit{do}
+The ``\texttt{-author}'' part of the command says ``yes, please \textit{do}
 extract \texttt{@author} information and include it in the HTML. (The default
 is to not do that, which I've never understood.) Semi-related: by default
 \texttt{javadoc} only includes the \textbf{public} classes and methods in the
 HTML it generates, since JavaDoc is normally used to document public APIs.
 Sometimes there are reasons to produce JavaDoc content for \textit{everything}
 in the class files -- private, public, or anything else -- and to do this you
-merely need to include a ``\texttt{-private}" option here as well.
+merely need to include a ``\texttt{-private}'' option here as well.
 
-Finally, the ``\texttt{*.java}" means to generate HTML for all the Java source
+Finally, the ``\texttt{*.java}'' means to generate HTML for all the Java source
 files in the current directory. If you're using packages, you can instead
-replace ``\texttt{*.java}" with a sequence of fully-specified package names
+replace ``\texttt{*.java}'' with a sequence of fully-specified package names
 that can be located via the \texttt{CLASSPATH} variable. Note that you
 do have to tell \texttt{javadoc} to generate the \textit{entire} mini-website
 at once; if you make just a change or two to one \texttt{.java} file, you
@@ -399,7 +399,7 @@ $ sudo systemctl status apache2
 \end{Verbatim}
 
 at the command line. If it gives a message like ``whoa, apache2 not
-installed," then you'll need to install it via:
+installed,'' then you'll need to install it via:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
 $ sudo apt install apache2
@@ -426,13 +426,13 @@ writing, here's how to fix that problem:
 \begin{compactenum}
 
 \item Go to \url{https://console.cloud.google.com/networking/firewalls/list}.
-\item Click ``Create firewall rule."
-\item Give it a name like ``\texttt{allowhttp}".
-\item Choose ``All instances in the network" from the ``Targets" drop-down.
-\item Make sure direction is ``Ingress" and action is ``Allow".
-\item For ``Source IP ranges" put ``\texttt{0.0.0.0/0}".
-\item Click TCP under ``Specified protocols and ports", and put in \texttt{80}.
-\item Click ``Create" to create the rule.
+\item Click ``Create firewall rule.''
+\item Give it a name like ``\texttt{allowhttp}''.
+\item Choose ``All instances in the network'' from the ``Targets'' drop-down.
+\item Make sure direction is ``Ingress'' and action is ``Allow''.
+\item For ``Source IP ranges'' put ``\texttt{0.0.0.0/0}''.
+\item Click TCP under ``Specified protocols and ports'', and put in \texttt{80}.
+\item Click ``Create'' to create the rule.
 \end{compactenum}
 
 
@@ -468,7 +468,7 @@ only rule that should guide your API documentation process:
 
 \textbf{\textsf{``Put yourself in the shoes of a Java developer who has never
 seen your code before. Write whatever that person would need to know in order
-to use your code properly."}}
+to use your code properly.''}}
 
 \end{quote}
 \end{samepage}
@@ -476,10 +476,10 @@ to use your code properly."}}
 You might be surprised how much students (and professionals) struggle
 implementing this advice. It turns out that the human brain has a very
 difficult time envisioning what it's like to \textit{not already know}
-something. ``Putting yourself in someone else's shoes" just doesn't come
+something. ``Putting yourself in someone else's shoes'' just doesn't come
 naturally, it seems. Nevertheless, you \textit{must} do it, otherwise your
 documentation will be pretty useless.\footnote{As an aside, this same mantra
--- ``put yourself in the shoes of someone who doesn't already know" -- is the
+-- ``put yourself in the shoes of someone who doesn't already know'' -- is the
 essence of another common activity: \textit{teaching}. With few exceptions,
 I've discovered that a good teacher is one who can mentally put themselves in
 the shoes of their students, and remember what it was like to not already know
@@ -512,14 +512,14 @@ public class Team {
 
 This JavaDoc succinctly sums up what the \texttt{Team} class is for, but I
 claim it leaves out at least two important pieces of \textit{non-obvious}
-information. ``Non-obvious" is the key word here: the stuff that would be
+information. ``Non-obvious'' is the key word here: the stuff that would be
 obvious to a reader isn't particularly important to document. It's the things
 that \textit{aren't} immediately clear that deserve attention.
 
 One thing this JavaDoc is missing is the motivating \textit{reason} for using
 the class. A fellow developer might read this and say, ``okay, a \texttt{Team}
 is a group of \texttt{Ballplayer}s, but if that's all it is, I'll just use
-\texttt{ArrayList} instead, since I'm more familiar with it." It's a fair
+\texttt{ArrayList} instead, since I'm more familiar with it.'' It's a fair
 point: our JavaDoc hasn't made the sale as to why it's worth using.
 
 Okay, so why \textit{is} it worth using? At least two reasons are (1) it can
@@ -547,7 +547,7 @@ Better. And now for the second thing I found missing. One crucial aspect of
 documentation to include -- and one that is easily overlooked -- is the
 \textit{assumptions} the developer was making when she wrote the class, but
 which a user of the class might not make. In this case, a glaring question is:
-``can a \texttt{Ballplayer} be a member of more than one \texttt{Team}?" Frank
+``can a \texttt{Ballplayer} be a member of more than one \texttt{Team}?'' Frank
 Robinson, for instance, was a Hall of Fame outfielder for both the Cincinnati
 Reds and the Baltimore Orioles. What would happen if I attempted to add him to
 two different \texttt{Team} objects? Is it perfectly okay? Is it forbidden,
@@ -600,7 +600,7 @@ even though almost all of it occurred with different teams earlier in his
 career.
 
 The point is that this clarifies an important case that perhaps wasn't obvious
-at first. In general, it's really easy to think of only the ``sunny day"
+at first. In general, it's really easy to think of only the ``sunny day''
 scenarios, and to write the documentation describing what is normally pretty
 obvious anyway. It's harder to step out of the box and recognize what cases
 \textit{aren't} so obvious -- in this example, the multiple-team-players
@@ -633,7 +633,7 @@ public class Ballplayer {
 \end{Verbatim}
 
 This is an example of wasting time typing. The programmer might as well have
-typed nothing at all, since ``returning" was implied in ``\texttt{get}..." and
+typed nothing at all, since ``returning'' was implied in ``\texttt{get}...'' and
 \texttt{OPS} remains undefined. Let's try again.
 
 Second attempt:
@@ -653,41 +653,41 @@ public class Ballplayer {
 \end{Verbatim}
 
 This is much more useful, at least, since it defines for a reader who may not
-be familiar with the more advanced Sabermetric stats what ``OPS" even is.
+be familiar with the more advanced Sabermetric stats what ``OPS'' even is.
 Still a few things missing, though. For one, the on-base percentage and
 slugging percentage are both defined on a 0.0-to-1.0 scale rather than a
-0-to-100 scale, and so ``percentage" is a very misleading (incorrect,
+0-to-100 scale, and so ``percentage'' is a very misleading (incorrect,
 actually) word. We don't want to move away from standard baseball
 conventions, so we'll keep the terms but then make the scale clear in a note
 in the JavaDoc.
 
 Speaking of standard baseball conventions...all the stats like batting
 average, slugging percentage, OPS, \textit{etc.} are traditionally reported to
-exactly \textit{three} decimal places. We say ``Simpson is hitting .325," not
-"Simpson is hitting .3257886442." Another question that arises, then, is: do
+exactly \textit{three} decimal places. We say ``Simpson is hitting .325,'' not
+``Simpson is hitting .3257886442.'' Another question that arises, then, is: do
 methods like \texttt{.getBattingAvg()} and \texttt{.getOPS()} return a figure
 rounded to the three decimal places of convention, or do they return
 hits-divided-by-at-bats (or whatever) with all possible precision? One can see
 advantages to doing it either way; the point here is that the JavaDoc must
 specify which it is.
 
-Whether to document here what ``on-base percentage" and ``slugging percentage"
+Whether to document here what ``on-base percentage'' and ``slugging percentage''
 themselves are is a judgment call. If there are other methods on the
 \texttt{Ballplayer} class specifically for those two stats, then it's probably
 better to link to them in the \texttt{.getOPS()} JavaDoc rather than duplicate
 the text.
 
-Finally, you always have to ask yourself ``what corner cases are there?" What
+Finally, you always have to ask yourself ``what corner cases are there?'' What
 scenarios might unfold that are unusual and need special treatment? Here, the
 important one turns out to be a ballplayer \textit{with no at-bats.} In this
 case, both his on-base percentage and his slugging percentage will have a
 denominator of \textit{zero}, which is an illegal mathematical operation.
-(``Zero hits divided by zero at bats" is not zero, but undefined.)
+(``Zero hits divided by zero at bats'' is not zero, but undefined.)
 Traditionally, players with no batting chances are reported as having a .000
 batting average, slugging percentage, on-base percentage, \textit{etc.}, so it
 makes sense for our method to do that here. When it does, though, it's
 strictly speaking going beyond the definition of ``successes divided by
-attempts" that all these averages are based on.
+attempts'' that all these averages are based on.
 
 Answering all these questions adequately, then, leads to this JavaDoc:
 
@@ -723,16 +723,16 @@ public class Ballplayer {
 You may be thinking that the \texttt{@return} line at the end doesn't really
 add anything useful. You would be correct. I included it only for
 completeness; in general, it's fine to leave out redundant information. Some
-developers like to use the ``\texttt{@}" tags religiously, while others like
+developers like to use the ``\texttt{@}'' tags religiously, while others like
 to put key information in the running text of the JavaDoc. This is a stylistic
 choice, and either way is okay. The crucial thing is that \textit{the
 information has to be present somewhere.}
 
 You also may be thinking that it's tough to come up with all this stuff. You
 would also be correct about that. Once you see me explain that ``zero plate
-appearances" is a non-obvious special case, or that it's an open question
+appearances'' is a non-obvious special case, or that it's an open question
 whether the method would round to three decimal places, you can probably say
-``oh yeah, we'd better mention that detail." Of course, the challenge is to
+``oh yeah, we'd better mention that detail.'' Of course, the challenge is to
 recognize what those details are \textit{before} they're pointed out to you.
 
 Honestly, I can think of no way to make this easier other than (1) practice,
@@ -768,7 +768,7 @@ Major General William Franklin in the wee hours of the morning:
 ``Keep your whole command in position for a rapid movement down the \\
 Old Richmond Road and send a division at least to seize, if possible, \\
 the height near Capt. Hamilton's, taking care to keep it well supported \\
-and its line of retreat open." 
+and its line of retreat open.'' 
 \end{varwidth}
 }
 \end{center}
