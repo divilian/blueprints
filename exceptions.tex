@@ -1,0 +1,253 @@
+\chapter{Exceptions}
+
+\section{Recognizing error conditions}
+
+The shrewd reader (and driver!) will realize that our \texttt{.drive()} method
+from last chapter was a bit optimistic: when told to drive \texttt{numMiles},
+it blindly did so, even if there was not enough gas to get that far. We ought
+to guard against this kind of wishful thinking by \textit{not permitting} a
+drive that's outside our range. If told to drive 1000 miles when we only have
+enough gas to go 200, we'll just say no. That's way better than ending up with
+a negative gas tank and wreaking unknown havoc later in the program!
+
+The first step in implementing this kind of defensive coding is to figure out
+\textit{when} to refuse to carry out orders. That's not too hard in this case:
+our local \texttt{galsBurned} variable is exactly what we need: if it turns
+out to be higher than the gas remaining in the tank, we are officially in
+Nonsense Land. A simple \texttt{if} statement can take care of that.
+
+\section{Suboptimal ways of handling error conditions}
+
+The second step is figuring out \textit{what to do} when this occurs. Most
+people's first thought is to blare out a siren:
+
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
+// Inadequate approach #1
+class Car {
+    ...
+    void drive(int numMiles) {
+        double galsBurned = numMiles / this.gasMileage;
+        if (galsBurned > this.galsRemaining) {
+            System.out.println("Not enough gas!!");
+        }
+        this.galsRemaining = this.galsRemaining - galsBurned;
+        this.odo += numMiles;
+    }
+}
+\end{Verbatim}
+
+This is done in the hopes that someone will hear us and be alarmed. The
+problem is, this error will go to the console, where it may or may not ever be
+seen; and even if someone notices it, we've still already done the dirty deed.
+We have a \texttt{Car} object with an \textbf{illegal state}: a negative gas
+level.
+
+Slightly better, but still not good enough, is to print the error and also
+refuse to carry out orders:
+
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
+// Inadequate approach #2
+class Car {
+    ...
+    void drive(int numMiles) {
+        double galsBurned = numMiles / this.gasMileage;
+        if (galsBurned > this.galsRemaining) {
+            System.out.println("Not enough gas!!");
+            return;                                     //  <---  NOTICE THIS!
+        }
+        this.galsRemaining = this.galsRemaining - galsBurned;
+        this.odo += numMiles;
+    }
+}
+\end{Verbatim}
+
+Now, in addition to printing the error, we also \texttt{return} from the
+method prematurely, before carrying out the nonsensical operation.
+
+The problem with this approach is that \textit{the client code is not alerted
+that anything went wrong.} We'll see some actual client code in action in the
+next section, but for now just realize that whoever called
+\texttt{.drive(1000)} is none the wiser. It merrily chugs along thinking that
+the thousand-mile drive was plain sailing, oblivious to the fact that no such
+drive actually occurred.
+
+\section{The right way: \texttt{throw}ing and \texttt{catch}ing}
+
+The right way to handle this is with Java's \texttt{Exception} mechanism. We
+don't return prematurely, as above; instead, \textit{we don't return at all.}
+Exceptions are Java's way of allowing a method \textit{not} to return, but
+rather to raise a big red flag to indicate that carrying out the method just
+flat didn't work. It's the only responsible thing to do.
+
+Our first step is to ``throw an exception'' instead of returning. Here's the
+code to do so:
+
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
+// Correct approach (not finished yet)
+class Car {
+    ...
+    void drive(int numMiles) {
+        double galsBurned = numMiles / this.gasMileage;
+        if (galsBurned > this.galsRemaining) {
+            throw new Exception("Not enough gas!!");    //  <---  NOTICE THIS!
+        }
+        this.galsRemaining = this.galsRemaining - galsBurned;
+        this.odo += numMiles;
+    }
+}
+\end{Verbatim}
+
+Operationally, throwing an exception has the same immediate effect as
+returning: the method instantly terminates and returns control back to the
+client code. The difference, as we'll see in the next section, is that the
+client code is aware that something unusual happened, does not get a return
+value, and can take evasive action.
+
+If you try to compile the above code, though, you get an error, which says:
+
+\begin{Verbatim}[samepage=true,fontsize=\footnotesize]
+  error: unreported exception Exception; must be caught or declared to be thrown
+\end{Verbatim}
+
+It's actually nice of Java to give this error, and here's why. Inside our
+method, we've created a possibility that we won't return at \textit{all}, and
+will instead barf with this error. Java requires that if we do that, we 'fess
+up and declare that this is a possibility. That prevents unwitting programmers
+from blithely calling our method and not accounting for the fact that it might
+not even work.
+
+Fixing it is simple; we just change the first line of the function to:
+
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
+    void drive(int numMiles) throws Exception {
+        ...
+\end{Verbatim}
+
+That first line now says: ``you can call me on a \texttt{Car}, pass me an
+integer argument, and get no return value. \textit{But} there's a possibility
+that it won't work, and you should be aware of that.'' It's only honest, and
+as we'll see, it allows the code that uses \texttt{Car}s to properly deal with
+the problem.
+
+
+\section{Calling a method that \texttt{throws} an \texttt{Exception}}
+
+
+The only remaining fly in our ointment (don't worry; he's easily swatted) is
+that when client code \textit{calls} \texttt{.drive()}, it might not
+necessarily run to completion. In fact, if we compile the above main program,
+we'll get the same kind of compile error that we did when we were midway
+through implementing the Exception-throwing stuff. It'll say we're being
+unconscionably remiss by refusing to deal with the error that might occur
+every time we tell one of our cars to drive.
+
+The Java way to handle this is with a \textbf{try/catch block}. Essentially,
+this just builds a little scaffolding around our call to suspicious methods
+like \texttt{.drive()} so that if and exception is indeed ``thrown'' when we
+call it, we can ``catch'' is and do something sensible. Here's how:
+
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
+    public static void main(String args[]) {
+        ...
+        // Caravan to Disneyworld -- whoo-hoo!  (Grammy's meeting us there.)
+        minivan.fillUp();
+        try {
+            minivan.drive(500);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.exit(1);
+        }
+        ...
+    }
+\end{Verbatim}
+
+Instead of simply calling \texttt{minivan.drive()} and throwing caution to the
+wind, we put that code in a \textbf{try block}. The code in a \texttt{try}
+block is executed normally, step-by-step, just like anywhere else in a Java
+program. But the \texttt{try} block has one or more (here just one)
+contingency plans connected to the bottom of it, which can handle any special
+(or ``exceptional'') conditions. In this case, that call to drive the minivan
+500 miles through traffic will either work in its entirety and have the
+desired effect, or it will abort in the middle of it and control will be
+immediately transferred to the relevant catch block below it. The flow
+continues in that \textbf{catch block}, in this case printing the message of
+the \texttt{Exception} and then terminating the program.
+
+What to do in each exceptional situation depends on the situation itself.
+Sometimes, there are meaningful things one can do in response to an error:
+like if a network connection fails, the code can retry connecting; or if a
+checking account withdrawal fails, the system can cut over to the savings
+account and cover the amount from those funds instead. In our case, if our
+program tracked things like routes and desired destinations, a caught
+exception would indicate that we need to find a new, temporary destination
+other than the one we're currently seeking: one that has gas so we can fill
+up.
+
+Once all the method calls that are defined as ``\texttt{throws Exception}''
+have been enclosed in try/catch blocks that at least nominally handle the
+errors, the code compiles again and it can hopefully run error-free.
+
+% TODO: Put this chapter after "Memory matters" and include "how to interpret
+% a stack trace".
+
+\begin{figure}
+\begin{Verbatim}[fontsize=\scriptsize,frame=single]
+class Car {
+    String make, model;
+    int yearsOld, odo;
+    double galsRemaining, sizeOfTank, gasMileage;
+
+    Car(String make, String model) {
+        this.make = make;
+        this.model = model;
+        yearsOld = 0;
+        odo = 0;
+        galsRemaining = 0;
+        if (make.equals("Chevy") || make.equals("GM")) {
+            sizeOfTank = 21;
+        } else {
+            sizeOfTank = 13;
+        }
+        if (make.equals("Chevy") && model.equals("Malibu")) {
+            gasMileage = 3;
+        } else {
+            gasMileage = 24;
+        }
+    }
+
+    public String toString() {
+        return "a " + yearsOld + "-year-old " + make + " " + model;
+    }
+
+    String getMake() { return make; }
+
+    String getModel() { return model; }
+
+    int getYearsOld() { return yearsOld; }
+
+    void setYearsOld(int x) { yearsOld = x; }
+
+    void fillUp() {
+        this.galsRemaining = this.sizeOfTank;
+    }
+
+    double getTankPerc() {
+        double perc = galsRemaining / sizeOfTank * 100;
+        return perc;
+    }
+
+    void drive(int numMiles) throws Exception {
+        double galsBurned = numMiles / gasMileage;
+        if (galsBurned > galsRemaining) {
+            throw new Exception("Not enough gas!");
+        }
+        galsRemaining = galsRemaining - galsBurned;
+        odo += numMiles;
+    }
+}
+\end{Verbatim}
+\caption{A complete Java implementation of the Car class, with exception
+handling added.}
+\label{fig:carClassCode}
+\end{figure}
+

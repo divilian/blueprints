@@ -11,7 +11,7 @@ Software crisis / encapsulation chapter.
 Persistence/hydration chapter.
 In second inheritance chapter, do Pokemon example and define instanceof and
     polymorphism.
-Move "Exceptions" to separate chapter, and explain stack traces.
+Reposition Exceptions chapter and add stack traces.
 Second design chapter.
 
 Down the road
