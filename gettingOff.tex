@@ -317,9 +317,9 @@ clicking the mouse.
 In all that follows, I will precede anything you are to type on the Linux
 command line with a dollar sign prompt:
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small]
 $
-\end{verbatim}
+\end{Verbatim}
 
 To execute a command, you do \textit{not} type the prompt itself: it's just
 there to indicate ``now is an appropriate time and place to enter a Linux
@@ -344,10 +344,10 @@ Your first command stands for ``\textbf{p}rint \textbf{w}orking
 \textbf{d}irectory,'' and simply tells you what the current directory is at any
 point in time. For example:
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small]
 $ pwd
 /united/states
-\end{verbatim}
+\end{Verbatim}
 
 tells you that you're currently ``in'' the \texttt{states} directory, which is
 contained within the \texttt{united} directory, which is contained within the
@@ -366,44 +366,44 @@ move to another place. You give it an \textbf{argument} (kind of like passing
 a parameter to a function call in a programming language, although we don't
 use parentheses or commas here) which is where you want to go:
 
-\begin{verbatim}
-$ cd /america/nation
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ cd  /america/nation
+\end{Verbatim}
 
 Here, I've specified an absolute path. If I now execute \texttt{pwd}, I see
 that it worked:
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small]
 $ pwd
 /america/nation
-\end{verbatim}
+\end{Verbatim}
 
 More common is to specify a relative path. If we go back to our original
 location:
 
-\begin{verbatim}
-$ cd /united/states
+\begin{Verbatim}[fontsize=\small]
+$ cd  /united/states
 $ pwd
 /united/states
-\end{verbatim}
+\end{Verbatim}
 
 we can then say ``go \textit{from here} into the \texttt{america} directory'':
 
-\begin{verbatim}
-$ cd america
+\begin{Verbatim}[fontsize=\small]
+$ cd  america
 $ pwd
 /united/states/america
-\end{verbatim}
+\end{Verbatim}
 
 I can't overestimate how important it is to notice that in the previous
 \texttt{cd} command, I did \textit{not} include a slash before
 \texttt{america}. If I had, it would have been an absolute path, and I would
 have gone to a completely different part of the filesystem:
 
-\begin{verbatim}
-$ cd /america
+\begin{Verbatim}[fontsize=\small]
+$ cd  /america
 $ pwd
 /america
-\end{verbatim}
+\end{Verbatim}
 
 \subsubsection{``Special'' directory shortcuts}
 
@@ -419,13 +419,13 @@ A plain-ol' dot (period) is used to mean ``the current directory.'' There's no
 obvious uses for this yet, but believe me, it comes up \textit{all} the time,
 so just memorize it. A useless example for now:
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small]
 $ pwd
 /united/states
-$ cd ./america
+$ cd  ./america
 $ pwd
 /united/states/america
-\end{verbatim}
+\end{Verbatim}
 
 So ``\texttt{./america}'' is another way of saying ``\texttt{america}''. (Told
 you this example was useless.)
@@ -436,22 +436,22 @@ More immediately useful is the double-dot, which means ``the parent of the
 current directory.'' If we're in \texttt{/united/states} and want to go to
 \texttt{/united}, one way to do it is:
 
-\begin{verbatim}
-$ cd ..
+\begin{Verbatim}[fontsize=\small]
+$ cd  ..
 $ pwd
 /united
-\end{verbatim}
+\end{Verbatim}
 
 We can also join this with additional relative path stuff to move around the
 hierarchy in various ways:
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small]
 $ pwd
 /states/united
-$ cd ../usa
+$ cd  ../usa
 $ pwd
 /states/usa
-\end{verbatim}
+\end{Verbatim}
 
 Here we went to a ``sibling'' directory by ``going up one, and then down to a
 different child.''
@@ -466,13 +466,13 @@ Your home directory (which you can verify by just typing \texttt{pwd} when
 you first log in) will probably be something like \texttt{/home/joeschmo}.
 Suppose it is. Then, if you type:
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small]
 $ pwd
 /somewhere/else/in/the/filesystem
-$ cd ~/shortStories/scifi
+$ cd  ~/shortStories/scifi
 $ pwd
 /home/joeschmo/shortStories/scifi
-\end{verbatim}
+\end{Verbatim}
 
 you can go to any of your subdirectories.
 
@@ -485,23 +485,23 @@ While \texttt{pwd} tells you what the current directory is, \texttt{ls}
 command (``\textbf{l}i\textbf{s}t'') gives you its contents. If I type it while
 in the \texttt{/america} directory, for instance, it tells me:
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small]
 $ ls
 nation   A.txt
-\end{verbatim}
+\end{Verbatim}
 
-there are the two entries from ~Fig.
+there are the two entries from Figure~\ref{fig:tree}.
 
 A few gotchas to be aware of here. First, there's no way from that listing to
 tell that \texttt{nation} is a directory whereas \texttt{A.txt} is a file. If
 you want to see that, you need to add the ``\texttt{-l}'' (a minus sign
 followed by the lower-case letter ``ell'') option:
 
-\begin{verbatim}
-$ ls -l
+\begin{Verbatim}[fontsize=\small]
+$ ls  -l
 -rw-r--r-- 1 kyloren   sithlords   17 Sep  5 16:21 A.txt
 drwxr-xr-x 2 kyloren   sithlords 4096 Sep  5 16:21 nation
-\end{verbatim}
+\end{Verbatim}
 
 Lots of clutter here. The key points:
 
@@ -542,9 +542,9 @@ every minute you're working on the Linux command line.
 To create a directory in the first place, use the \texttt{mkdir} command and
 give it the name:
 
-\begin{verbatim}
-$ mkdir evilplans
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ mkdir  evilplans
+\end{Verbatim}
 
 This new \texttt{evilplans} directory will be created inside the current
 directory.
@@ -553,33 +553,33 @@ Note carefully that \textit{making a directory does not automatically put you
 in it!} Lots of beginners mistakenly think this will happen, but you can see
 that it does not:
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small]
 $ pwd
 /home/kyloren
-$ mkdir evilplans
+$ mkdir  evilplans
 $ pwd
 /home/kyloren
-\end{verbatim}
+\end{Verbatim}
 
 You have to \texttt{cd} as a separate step if you want to now be in
 \texttt{evilplans}:
 
-\begin{verbatim}
-$ cd evilplans
+\begin{Verbatim}[fontsize=\small]
+$ cd  evilplans
 $ pwd
 /home/kyloren/evilplans
-\end{verbatim}
+\end{Verbatim}
 
 A useful option to \texttt{mkdir} is the ``\texttt{-p}'' option which means
 ``make all \textbf{p}arent directories as necessary.'' This lets us create a
 deeply-nested structure all in one fell swoop:
 
-\begin{verbatim}
-$ mkdir -p find/luke/skywalker/now
-$ cd find/luke/skywalker/now
+\begin{Verbatim}[fontsize=\small]
+$ mkdir  -p  find/luke/skywalker/now
+$ cd  find/luke/skywalker/now
 $ pwd
 /home/kyloren/find/luke/skywalker/now
-\end{verbatim}
+\end{Verbatim}
 
 \bigline
 
@@ -588,27 +588,27 @@ $ pwd
 To make a copy of a file, use \texttt{cp} and give it \textit{two} arguments,
 a source and a destination. If I type:
 
-\begin{verbatim}
-$ cp A.txt Q.txt
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ cp  A.txt  Q.txt
+\end{Verbatim}
 
 I will now have two exact copies of the file which can be independently
 modified:
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small]
 $ ls
 nation   A.txt   Q.txt
-\end{verbatim}
+\end{Verbatim}
 
 I can also use this to make a (same-named) copy of a file to a different
 location, by providing a directory as the second argument:
 
-\begin{verbatim}
-$ cp A.txt /states/usa
-$ cd /states/usa
+\begin{Verbatim}[fontsize=\small]
+$ cp  A.txt  /states/usa
+$ cd  /states/usa
 $ ls
 A.txt
-\end{verbatim}
+\end{Verbatim}
 
 \bigline
 
@@ -629,15 +629,15 @@ its ins-and-outs could (and do) occupy entire textbooks in their own right.
 you will use this semester to write your programs. The normal way of creating
 a file, in fact, will be this:
 
-\begin{verbatim}
-$ vim notesOnTheResistance.txt
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ vim  notesOnTheResistance.txt
+\end{Verbatim}
 
 or this:
 
-\begin{verbatim}
-$ vim DestroyGalacticRepublic.java
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ vim  DestroyGalacticRepublic.java
+\end{Verbatim}
 
 after which you will do loooooooooooots of other stuff way beyond the scope of
 this book. That stuff will be cryptic and agonizing at first, but will
@@ -648,9 +648,9 @@ learning to use the Force for the first time.
 For now, I'll make this (strong) suggestion: when you're first learning vim,
 type this command (all one word) at the command line,
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small]
 $ vimtutor
-\end{verbatim}
+\end{Verbatim}
 
 grab a Coke, and spend 30-40 minutes patiently reading and following the
 instructions. This tutorial is quite good, and will teach you the very basics
@@ -685,9 +685,9 @@ to add at that point. Ordinarily you'll want to \texttt{git add} all of your
 \item When you've made a
 significant change to one or more of your files that you want git to be aware
 of, you'll enter this command:
-\begin{verbatim}
-$ git commit -a -m "A message describing the change."
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ git  commit  -a  -m  "A message describing the change."
+\end{Verbatim}
 Each such change is called a \textbf{commit}. Think of it as taking a
 snapshot of your code that you can return to later.
 \item ``\texttt{\$ git status}'' and ``\texttt{\$ git log}'' are two useful
@@ -723,17 +723,17 @@ the successor to ``Java 1.4'' was ``Java 5.'') This book assumes you're on Java
 To compile, you give \texttt{javac} all the Java files that are part of your
 program:
 
-\begin{verbatim}
-$ javac DestroyGalacticRepublic.java Bombs.java SinisterPlans.java
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ javac  DestroyGalacticRepublic.java  Bombs.java  SinisterPlans.java
+\end{Verbatim}
 
 which will produce either a \texttt{.class} file for each \texttt{.java} file,
 or compiler errors for you to read. Finally, to run it, you give \texttt{java}
 the name of \textit{the class that contains your \texttt{main()} method}:
 
-\begin{verbatim}
-$ java DestroyGalacticRepublic
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ java  DestroyGalacticRepublic
+\end{Verbatim}
 
 (Notice we don't include ``\texttt{.java}'' or ``\texttt{.class}'' here, and
 notice we don't mention every Java class, only the one that has the
@@ -757,51 +757,51 @@ Java program running on the Linux command line.
 \itemsep.1em
 \item Log on to your Linux system, however you do that.
 \item Create a directory to hold your project:
-\begin{verbatim}
-$ mkdir myFirstProgram
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ mkdir  myFirstProgram
+\end{Verbatim}
 
 \item And make sure to actually go there:
-\begin{verbatim}
-$ cd myFirstProgram
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ cd  myFirstProgram
+\end{Verbatim}
 
 \item Create a git repo to manage this project:
-\begin{verbatim}
-$ git init .
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ git  init  .
+\end{Verbatim}
 
 (and of course don't forget that pesky dot at the end.)
 
 \item Now create a Java file:
-\begin{verbatim}
-$ vim HelloWorld.java
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ vim  HelloWorld.java
+\end{Verbatim}
 
 \textbf{(You are now in \texttt{vim}. Everything you learned during your
 \texttt{vimtutor} session, and everything you can get from a zillion different
 ``vim cheat sheets'' on the Internet, is relevant now. Good luck.)}
 
 \item Give it these contents:
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small,frame=single]
 class HelloWorld {
     public static void main(String args[]) {
         System.out.println("Yo 'sup dawg!");
     }
 }
-\end{verbatim}
+\end{Verbatim}
 
 \item Save your file and exit \texttt{vim}.
 
 \item Now compile it:
-\begin{verbatim}
-$ javac HelloWorld.java
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ javac  HelloWorld.java
+\end{Verbatim}
 
 \item And, since it gave you no errors, run it:
-\begin{verbatim}
-$ java HelloWorld
-\end{verbatim}
+\begin{Verbatim}[fontsize=\small]
+$ java  HelloWorld
+\end{Verbatim}
 
 \end{enumerate}
 
