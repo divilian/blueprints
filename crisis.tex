@@ -121,14 +121,109 @@ expectations.
 
 \section{Software and complexity}
 
-% The software crisis
+Let's consider a different way to measure a program's complexity than simply
+counting the lines of code. Instead, let's quantify its number of
+\textit{dependencies}.
 
-% "soft"ware
-% time vs. complexity curve
+A \textbf{dependency} between two chunks of software (be they individual lines
+of code, constructs like loops or if/else chains, functions, or something even
+bigger) means that \textit{if one of them changes, the other may possibly be
+affected.}
 
-% Programming language diagram
+For instance, suppose I define a function \texttt{compute\_sales\_tax()} to
+take one argument: the price of an item. It will return the sales tax on that
+item as a simple percentage. We'll call that ``code chunk A.'' Now suppose
+that I call the function in ``code chunk B'' as follows:
 
-\section{Dependencies}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+// In code chunk B...
+double item_price = 24.99;
+double total_price = item_price + compute_sales_tax(item_price);
+\end{Verbatim}
+
+We say that code chunk B has a dependency on A. If we were to change A to
+require a second parameter (perhaps the state the customer lives in, since
+different states have different laws about whether and how to collect sales
+tax), that's great and all, \textit{but B immediately breaks}.
+
+This example is a syntactic dependency: the compiler will fail when trying to
+compile code chunk B because its parameter list is wrong (\textit{i.e.},
+doesn't match A's). In general, though, dependencies are much broader than
+just syntactic dependencies. They are also \textit{logical} dependencies, in
+which one chunk of code depends on another's functionality working a certain
+way.
+
+For example, suppose that we change \texttt{compute\_sales\_tax()} in a
+different way: instead of returning the sales tax, we make it return the cost
+of the item \textit{plus} the sales tax. If our tax rate is 5\%, then the
+original version of \texttt{compute\_sales\_tax(24.99)} would return 1.25 (the
+sales tax on the item), but our new version would return 26.24 (the item's
+price with its sales tax added in).
+
+This may seem like a good change, since it prevents code like that in chunk B
+from having to add the item's price back in. However, if we don't change B in
+tandem with A, \textit{B breaks again}. It's not a compilation error this
+time, but a logic error: B's \texttt{total\_price} variable is now going to
+contain 51.23 because we didn't keep the two chunks of code in sync.
+
+\subsection{Dependencies == complexity}
+
+Now why do I bring all this up? Because it turns out that the \textit{length}
+of a program was not the cause of the software crisis. Instead, it was
+\textit{the number of dependencies.} That turns out to be a different, and
+more salient, measure of a program's complexity.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.45\textwidth]{highDependencies.png}
+\includegraphics[width=0.45\textwidth]{lowDependencies.png}
+\caption{Two programs, each with the same 35 code chunks. On the left, there
+are 230 dependencies. On the right, there are only 83.}
+\label{fig:dependencies}
+\end{figure}
+
+Consider the two graphs\footnote{A \textbf{graph} in Computer Science terms is
+a data structure that consists of \textbf{vertices} (or \textbf{nodes}) and
+\textbf{edges} (or \textbf{links}) connecting them. They're often drawn with
+circles and lines, as Figure~\ref{fig:dependencies} does.} in
+Figure~\ref{fig:dependencies}. Imagine that each green circle represents one
+chunk of code. Each line between circles represents a dependency: the two
+chunks of code it connects rely on each other \textit{not} to change, because
+if one of them changes, the other one might break.
+
+The kind of program illustrated by the left-hand graph sometimes goes by the
+name \textbf{spaghetti code}. You can see why just by looking at it.
+Essentially, every line of code potentially depends on everything else.
+
+By contrast, the right-hand graph depicts a \textbf{modular} program. It has
+the same amount of functionality -- 35 green circles in each case -- but far
+fewer dependencies between them (only about a third as many). Looking further,
+you can see how most of the circles are ``hiding'' behind a gatekeeper circle
+that connects to the main group. These circles are shielded from the morass of
+dependencies by living in an isolated world, and only communicating with the
+rest of the program through their gatekeeper.
+
+Now look back at the left-hand graph. Choose one of the circles at random, and
+imagine that it represents a chunk of code you need to change (maybe there's a
+bug in it you have to fix, or you need to extend it in some way). Think about
+the repercussions of that task. Fixing the green circle is a job in itself,
+but once you've done so, how can you be sure you didn't break something else?
+There might be twenty other chunks of code that depend on the first one
+staying the way it was in order to work correctly. Just identifying all of
+them is an enormous task, to say nothing of verifying that they all still
+work, and fixing the ones that don't. And oh, by the way: if you \textit{do}
+end up having to fix another green circle because your first change caused a
+ripple effect...that second change is going to cause the exact same problem.
+
+The situation is obviously much easier with the right-hand program. Again,
+choose a circle at random, and then ask yourself how onerous it is to change
+it. If you choose one of the many circles that are ``hiding'' behind their
+gatekeeper, the possible damage is minuscule: only three or four other circles
+might be affected. If you have to change a gatekeeper, the news is worse, but
+still far better than it was with the left-hand program. Just count how many
+dependencies there are for even the most densely connected circle of the
+modular program -- it ain't many.
+
 
 \section{Encapsulation}
 
