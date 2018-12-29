@@ -6,12 +6,12 @@ High-res graphics.
 
 Substantive
 -----------
-Embedded "TODOs".
 Software crisis / encapsulation chapter.
+Reposition Exceptions chapter and add stack traces.
+Embedded "TODOs".
 Persistence/hydration chapter.
 In second inheritance chapter, do Pokemon example and define instanceof and
     polymorphism.
-Reposition Exceptions chapter and add stack traces.
 Second design chapter.
 
 Down the road
