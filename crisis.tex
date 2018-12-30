@@ -170,15 +170,15 @@ contain 51.23 because we didn't keep the two chunks of code in sync.
 
 Now why do I bring all this up? Because it turns out that the \textit{length}
 of a program was not the cause of the software crisis. Instead, it was
-\textit{the number of dependencies.} That turns out to be a different, and
-more salient, measure of a program's complexity.
+\textit{the number of dependencies} programs had. That turns out to be a
+different, and more salient, measure of a program's complexity.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.45\textwidth]{highDependencies.png}
 \includegraphics[width=0.45\textwidth]{lowDependencies.png}
-\caption{Two programs, each with the same 35 code chunks. On the left, there
-are 230 dependencies. On the right, there are only 83.}
+\caption{Two programs, each with 35 code chunks. On the left, there are 230
+dependencies. On the right, there are only 83.}
 \label{fig:dependencies}
 \end{figure}
 
@@ -224,6 +224,34 @@ still far better than it was with the left-hand program. Just count how many
 dependencies there are for even the most densely connected circle of the
 modular program -- it ain't many.
 
+\begin{figure}[ht]
+\centering
+\medskip
+\includegraphics[width=0.31\textwidth]{dependencies3.png}
+\includegraphics[width=0.31\textwidth]{dependencies4.png}
+\includegraphics[width=0.31\textwidth]{dependencies5.png}
+
+\includegraphics[width=0.31\textwidth]{dependencies6.png}
+\includegraphics[width=0.31\textwidth]{dependencies7.png}
+\includegraphics[width=0.31\textwidth]{dependencies8.png}
+\caption{The maximum possible number of dependencies for programs of different
+sizes.}
+\label{fig:dependencyGrowth}
+\medskip
+\end{figure}
+
+Figure~\ref{fig:dependencyGrowth} quantifies this further, and in fact finally
+gives us the insight we need into the cause of the curve in
+Figure~\ref{fig:complexityCurve} (on p.~\pageref{fig:complexityCurve}). As you
+may remember from Discrete Math class, the number of possible edges in a graph
+goes up as the \textit{square} of the number of vertices. (Specifically, a
+graph with $n$ vertices can have up to $\frac{n\dot(n-1)}{2}$ edges.) So
+doubling the number of code chunks approximately \textit{quadruples} the
+number of possible dependencies in the program. That explains why
+Figure~\ref{fig:complexityCurve} was \textbf{superlinear} (\textit{i.e.},
+increased faster than a straight line would have), and why everyone in the
+'70's was underestimating how much time it would take to write and maintain
+large programs.
 
 \section{Encapsulation}
 
