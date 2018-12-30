@@ -136,9 +136,9 @@ item as a simple percentage. We'll call that ``code chunk A.'' Now suppose
 that I call the function in ``code chunk B'' as follows:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-// In code chunk B...
-double item_price = 24.99;
-double total_price = item_price + compute_sales_tax(item_price);
+   // In code chunk B...
+   double item_price = 24.99;
+   double total_price = item_price + compute_sales_tax(item_price);
 \end{Verbatim}
 
 We say that code chunk B has a dependency on A. If we were to change A to
