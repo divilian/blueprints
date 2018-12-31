@@ -6,7 +6,6 @@ High-res graphics.
 
 Substantive
 -----------
-Software crisis / encapsulation chapter.
 Reposition Exceptions chapter and add stack traces.
 Embedded "TODOs".
 Persistence/hydration chapter.
