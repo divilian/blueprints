@@ -21,9 +21,76 @@ size, and color, would be next to useless if they weren't able to store
 themselves permanently somehow, to be reloaded in a later execution of the
 app. It would be like a word processor without a ``save'' function.
 
-What we want is a way to \textbf{persist} an object, and \textbf{hydrate} it
-later. Persistence is taking an ephemeral, in-memory object and writing it out
-to some form of permanent storage -- a file in the filesystem, a database, a
-network drive, or anything else that will stay put even when the program ends.
-Hydration is the reverse process: resurrecting that stored version of the
-entity's state into a living, breathing object once again.
+What we want is a way to \textbf{persist} (or save) an object, and
+\textbf{hydrate} (or restore) it later. Persistence is taking an ephemeral,
+in-memory object and writing it out to some form of permanent storage -- a
+file in the filesystem, a database, a network drive, or anything else that
+will stay put even when the program ends. Hydration is the reverse process:
+resurrecting that stored version of the entity's state into a living,
+breathing object once again.
+
+\section{Java object serialization}
+
+There are several ways to implement such operations. One, which I don't
+recommend, is built into Java and is called ``serialization.'' The
+\texttt{java.io} package has classes \texttt{ObjectOutputStream} and
+\texttt{ObjectInputStream} for this purpose. The idea is that just as you can
+write primitive types like integers and strings to a stream with familiar file
+I/O operations, you can also read and write bona fide objects
+themselves.\footnote{All objects that are saved and restored in this way must
+be from classes that are declared to ``implement'' the
+\texttt{java.io.Serializable} ``interface.'' We'll talk about implementing
+interfaces in Section~\ref{sec:interfaces}.} Just open an
+\texttt{ObjectOutputStream} to a file and call \texttt{.writeObject()}, and
+the object you pass, in its entirety, will be saved in the file.
+\texttt{ObjectInputStream.readObject()} performs the reverse process.
+
+This all sounds like a great idea, but there's some serious practical
+difficulties to consider. For one, \texttt{ObjectOutputStream} stores objects
+in a \textbf{binary format} rather than a \textbf{text format}. This means
+that the files it produces can't be easily analyzed -- they're compact, but
+opaque, sequences of 1's and 0's. If you try to open such a file in a text
+editor like \texttt{vim} to inspect what objects and values it contains,
+you'll get gobbledy-gook. The upshot is that it's nearly impossible to debug
+your program or even get visibility into what was saved.
+
+Just as problematic is the fact that serialization is not
+\textbf{forwards-compatible}. When you write an object to a stream in this
+way, the data that is persisted is hard-wired to the particular version of the
+class the object is a member of. This isn't a problem if your code is
+completely, permanently stable. But during a development cycle, you're
+constantly changing the nature of many classes, including their instance
+variables, names, and types. As soon as you change a class in any significant
+way, \textit{bam!!} all previously stored copies of objects are now
+unreadable. When you try to hydrate them with \texttt{ObjectInputStream},
+it'll break saying, ``whoa, the class of this stored object was an old version
+of the class -- it doesn't match the current \texttt{.java} file.'' And that
+data is, for all intents and purposes, lost.
+
+I've learned the hard way that when you persist objects, you want to store
+them in a format which is transparent and forwards-compatible. You need to be
+able to inspect exactly what was stored, and have that data be readable even
+if you change the class's definition later on.
+
+\section{Using a relational (or non-relational) database}
+
+An excellent solution for persistence and hydration is to use a Database
+Management System (DBMS) like MySQL, PostgreSQL, or MongoDB. These products
+specialize in this very task. Some, like those with ``SQL'' in the name,
+create \textbf{relational databases} which hold rectangular tables of data
+records, sort of like gigantic spreadsheets. Others are called
+\textbf{non-relational} or \textbf{NoSQL databases} and can store data in a
+more flexible, non-rectangular format. Programs in Java (or any other
+language) can create \textbf{connections} to either kind of database, and
+read/write to them with standard commands.
+
+The reason I won't go further into this option is because it's really a
+separate topic from OOA\&D, and merits a whole course in its own right (at
+UMW, it's CPSC 350). Once you learn that material, it's really the best way to
+do the whole persistence/hydration thing.
+
+\section{Using plain text files}
+
+In this book, I'll explain how to do persistence and hydration caveman-style:
+using plain text files.
+
