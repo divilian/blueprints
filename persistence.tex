@@ -1,0 +1,29 @@
+
+\chapter{Persistence and hydration}
+
+Often, we want some of our objects to maintain their existence between
+executions of the program. They're intended to be durable and lasting, and so
+we need a way to record their details in some kind of permanent record so they
+can be resurrected later.
+
+Examples abound. Consider a social media app, where new users can register,
+login, post messages, friend each other, \textit{etc.} We'd likely store
+information about all this in various \texttt{User}, \texttt{Post},
+\texttt{Profile}, and \texttt{FriendRequest} objects. But it sure would be a
+bummer if all that data disappeared any time the server needed to be
+restarted!
+
+Or consider a drawing application, which we can use to create figures like
+lines, rectangles, circles, and so forth, to create the kinds of diagrams
+contained in this book. Our \texttt{Drawing}, \texttt{Line}, and
+\texttt{Rectangle} objects, whose instances held information about position,
+size, and color, would be next to useless if they weren't able to store
+themselves permanently somehow, to be reloaded in a later execution of the
+app. It would be like a word processor without a ``save'' function.
+
+What we want is a way to \textbf{persist} an object, and \textbf{hydrate} it
+later. Persistence is taking an ephemeral, in-memory object and writing it out
+to some form of permanent storage -- a file in the filesystem, a database, a
+network drive, or anything else that will stay put even when the program ends.
+Hydration is the reverse process: resurrecting that stored version of the
+entity's state into a living, breathing object once again.
