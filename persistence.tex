@@ -91,10 +91,10 @@ do the whole persistence/hydration thing.
 
 \section{Using plain text files}
 
-In this book, I'll just explain how to do persistence and hydration
-caveman-style: using plain text files. This will allow you to leverage your
-basic file I/O knowledge from previous programming courses to achieve our
-purpose of making objects persistent.
+In this book, I'll just explain how to do caveman-style persistence and
+hydration: using plain text files. This will allow you to leverage your basic
+file I/O knowledge from previous programming courses to achieve our purpose of
+making objects persistent.
 
 The first thing we need to decide is how to organize our storage. Should each
 object have its own file? Should all objects of the same class be stored in
@@ -119,11 +119,11 @@ later on, it reads all those files to reconstruct its previous state.
 \subsection{Example: a resort reservation system}
 
 Here, let's assume that we want the first scenario: a single file that
-contains all relevant information to the application. We'll create a simple
-hotel reservation system, which stores and retrieves information about various
-resort destinations. It consists of three classes: \texttt{Resort}, objects of
-which represent individual hotels; \texttt{Customer}, for contact info and
-reservation dates; and \texttt{ReservationSystem}, the main program.
+contains all relevant information to the application. We'll create part of a
+simple hotel reservation system, which stores and retrieves information about
+various resort destinations. It consists of just two classes: \texttt{Resort},
+objects of which represent individual hotels; and \texttt{ReservationSystem},
+the main program.
 
 For simplicity, I'm only going to show the parts of the program that are
 related to persistence and hydration. (Clearly there are lots of other things
@@ -195,7 +195,8 @@ class Resort {
     Resort(Scanner s) {
         name = s.nextLine();
         phone = s.nextLine();
-        rating = Integer.valueOf(s.nextLine());
+        rating = s.nextInt();
+        s.nextLine();    // read and discard the " stars" part.
         cost = s.nextLine().length();
         desc = "";
         String next = s.nextLine();
@@ -222,3 +223,81 @@ class Resort {
 \label{fig:resort1}
 \end{figure}
 
+\subsubsection{\texttt{Resort}: hydration}
+
+The constructor is used for hydration. Perhaps the trickiest thing about it is
+that we \textit{pass it a \texttt{Scanner} object}. Even if you've worked with
+\texttt{Scanner} before, this may be a new idea to you: passing one around
+between objects so that different objects can read different parts of a file.
+But that's precisely what we're doing here. Remember that with file I/O, you
+have a \textbf{cursor} open to a file, which is always ``at'' a particular
+location within the file. Reading from the \texttt{Scanner} (perhaps using one
+of the \texttt{.next*()} methods like \texttt{.nextInt()} or
+\texttt{.nextLine()}) \textbf{advances} the cursor through the file to the
+next bit.
+
+So when a client calls ``\texttt{new Resort(someScanner)}'', they're saying
+``this \texttt{Scanner}'s cursor is currently positioned right at the
+beginning of some resort information. So please hydrate one \texttt{Resort}
+object for me by reading just that much of the file.''
+
+The constructor proceeds to do just that. It reads the name, phone number,
+rating, cost, and description, in that order, ending when it reaches (and
+reads past) the period (``\texttt{.}'') delimiter. I'll let you glance through
+the code and see if you agree with my implementation here. There are a few
+interesting nuances, like:
+
+\begin{compactitem}
+
+\item When reading the rating (``\texttt{4 stars}'') we call
+\texttt{.nextInt()} to read the number part, and then \texttt{.nextLine()} to
+read past and discard the rest of the line.
+
+\item When reading the cost (``\texttt{\$\$\$\$}'') we take the length of the
+string (the number of dollar signs) and store that number.
+
+\item When reading the possibly-multi-line description, we continually keep a
+lookout for the delimiter. As long as the lines we read are \textit{not} the
+period on a line by itself, we append them to the end of our \texttt{desc}
+inst var, along with the newline character (``\texttt{\textbackslash n}'') that
+\texttt{.nextLine()} discards.
+
+\end{compactitem}
+
+All just fiddly stuff.
+
+\subsubsection{\texttt{Resort}: persistence}
+
+The inverse process of our constructor is our \texttt{.persist()} method,
+which works similarly: given a \texttt{PrintWriter} -- to which other
+information has quite possibly already been written -- write out the text
+representation of this \texttt{Resort} object.
+
+Just a few things of note here:
+
+\begin{compactitem}
+
+\item If you haven't seen the wacky syntax at the end of the
+``\texttt{rating}'' line, it's worth knowing. It's called a ``conditional
+expression'' or a ``question-mark-colon operator'' and is a compact way of
+sticking a short \texttt{if}/\texttt{else} onto one line. It means ``if the
+boolean expression before the question mark is true, replace this whole
+expression with the thing before the colon; otherwise, replace it with the
+thing after the colon.'' Less than legible to beginners, but a nice shortcut
+for experts.
+
+\item A simple \texttt{for} loop converts the integer \texttt{cost} into a
+string of dollar signs. We also have an explicit \texttt{.println()} after
+that loop so that we include the line feed after those dollar signs.
+
+\item We explicitly write the delimiter (``\texttt{.}'') at the end of the
+description, so that when read back by the hydration process, the constructor
+knows where the description stops.
+
+\end{compactitem}
+
+Clearly the persistence and hydration code for a class need to be kept in
+lock-step with each other. Adding a new field to the former, for instance,
+necessitates us reading that field in the latter.
+
+\subsubsection{Detecting the end of a sequence}
