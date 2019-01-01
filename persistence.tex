@@ -91,6 +91,134 @@ do the whole persistence/hydration thing.
 
 \section{Using plain text files}
 
-In this book, I'll explain how to do persistence and hydration caveman-style:
-using plain text files.
+In this book, I'll just explain how to do persistence and hydration
+caveman-style: using plain text files. This will allow you to leverage your
+basic file I/O knowledge from previous programming courses to achieve our
+purpose of making objects persistent.
+
+The first thing we need to decide is how to organize our storage. Should each
+object have its own file? Should all objects of the same class be stored in
+one file? Or should \textit{everything} we want to persist be stored in one
+file?
+
+There are arguments for all of these, and it really comes down to the needs of
+the application. If we have a file-based save/restore paradigm, like our
+drawing editor example from earlier, it probably makes sense to store
+everything in a single file. When the user chooses ``save,'' we write their
+entire drawing to the filename of their choice, and when they choose ``open,''
+we read it back.
+
+In a social network scenario, on the other hand, we probably want more
+granularity. As soon as a user posts a new message or changes their status, we
+want to create or re-write \textit{one} file (not our entire memory footprint)
+with the updated information. This way we can write in little snippets as we
+go, creating a bunch of files in a directory that collectively represent the
+entire state of the application. When the system is taken down and rebooted
+later on, it reads all those files to reconstruct its previous state.
+
+\subsection{Example: a resort reservation system}
+
+Here, let's assume that we want the first scenario: a single file that
+contains all relevant information to the application. We'll create a simple
+hotel reservation system, which stores and retrieves information about various
+resort destinations. It consists of three classes: \texttt{Resort}, objects of
+which represent individual hotels; \texttt{Customer}, for contact info and
+reservation dates; and \texttt{ReservationSystem}, the main program.
+
+For simplicity, I'm only going to show the parts of the program that are
+related to persistence and hydration. (Clearly there are lots of other things
+the code would need to do, like display lists of matching hotels in response
+to searches, and actually make reservations.)
+
+The key idea is this. Each class whose objects we want to save needs two
+things:
+
+\begin{compactitem}
+
+\item For persistence, a \texttt{.persist()} method that writes the object out
+to the \texttt{PrintWriter}\footnote{\texttt{PrintWriter} is a class in
+\texttt{java.io} that has \texttt{.println()} methods for various data types.
+I like it for that reason. Otherwise, it's essentially the same as any other
+kind of \texttt{Writer}, like a \texttt{FileWriter}.} passed.
+
+\item For hydration, a constructor that takes a \texttt{Scanner}\footnote{A
+\texttt{Scanner} is a class in \texttt{java.util} that can parse primitive
+types from a stream of text.} and creates a new object based on the
+information queued up on that \texttt{Scanner}.
+
+\end{compactitem}
+
+Let's do the \texttt{Resort} class first. The key question is: what do we want
+the persisted form of a \texttt{Resort} object to look like? Any way of
+writing all the necessary information in a way that we can unambiguously get
+it back will do. I vote for this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=lines]
+Westword Spa and Surf
+312-555-1234
+5 stars
+$$$
+This luxurious beach property
+is a pleasure for all who visit.
+Dogs and cats welcome too!
+.
+\end{Verbatim}
+
+The textual representation of a \texttt{Resort} consists of the following
+parts:
+
+\begin{compactenum}
+\item A single line of text giving the resort's name.
+\item A single line of text giving the resort's telephone number.
+\item A single line of text with a digit from 1 to 5, followed by a space and
+the String ``\texttt{stars}'' (or ``\texttt{star}'').
+\item A single line of text with dollar signs, the number of which indicates
+the expense of the resort (on a scale of \$ to \$\$\$\$).
+\item One or more lines of text giving a description of the resort.
+\item A line containing only a period. \label{item:delimiter}
+\end{compactenum}
+
+As you'll remember from your previous programming courses, that last item
+(\#\ref{item:delimiter}) is called a \textbf{delimiter} since it ``delimits''
+(marks the end of) the resort entry.
+
+Now, for the Java class. Figure~\ref{fig:resort1} \textit{almost} has what we
+want. Look at it carefully.
+
+\begin{figure}[ht]
+\centering
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class Resort {
+    private String name, desc, phone;
+    private int rating, cost;
+
+    Resort(Scanner s) {
+        name = s.nextLine();
+        phone = s.nextLine();
+        rating = Integer.valueOf(s.nextLine());
+        cost = s.nextLine().length();
+        desc = "";
+        String next = s.nextLine();
+        while (!next.equals(".")) {
+            desc = desc + next + "\n";
+            next = s.nextLine();
+        }
+    }
+    
+    void persist(PrintWriter pw) {
+        pw.println(name);
+        pw.println(phone);
+        pw.println(rating + " " + (rating == 1 ? "star" : "stars"));
+        for (int i=0; i<cost; i++) {
+            pw.print("$");
+        }
+        pw.println();  // newline for the $$$
+        pw.println(desc);
+        pw.println(".");
+    }
+}
+\end{Verbatim}
+\caption{Our first cut at the \texttt{Resort} class.}
+\label{fig:resort1}
+\end{figure}
 
