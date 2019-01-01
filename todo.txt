@@ -8,10 +8,10 @@ Substantive
 -----------
 Reposition Exceptions chapter and add stack traces.
 Embedded "TODOs".
-Persistence/hydration chapter.
 In second inheritance chapter, do Pokemon example and define instanceof and
     polymorphism.
 Second design chapter.
+Command-line arguments (odds 'n' ends chapter).
 
 Down the road
 -------------
