@@ -11,12 +11,13 @@ Interestingly, inheritance is used for two distinct (and essentially
 unrelated) reasons to achieve two very different kinds of results. I call
 these ``\textbf{top-down inheritance}'' and ``\textbf{bottom-up inheritance},
 for reasons I'll explain; the more standard terms are \textbf{interface
-inheritance} and \textbf{implementation inheritance}, respectively. Curiously,
-when I was a young'un taking object-oriented programming in college, we
-learned \textit{only} about the latter of these, and I was mystified early in
-my career when I saw the former in action and had no idea why the code was
-acting the way it did. Only then did I realize that although bottom-up
-inheritance is indeed useful, top-down inheritance is really the game-changer.
+inheritance} and \textbf{implementation inheritance}, respectively.
+
+Curiously, when I was a young'un taking object-oriented programming in
+college, we learned \textit{only} about the latter of these, and I was
+mystified early in my career when I saw the former in action and had no idea
+what the code was doing. Only then did I realize that although bottom-up
+inheritance is indeed useful, top-down inheritance is the real game changer.
 We'll cover both in this chapter.
 
 \section{``Bottom-up'' (implementation) inheritance}
@@ -44,9 +45,9 @@ as the argument of \texttt{.add()}, \texttt{.remove()}, \textit{etc.}
 Now suppose we were writing a program that needed to manage a bunch of
 list-like data, and that \texttt{ArrayList} was just the ticket...except that
 it was missing one or more important features. For example, maybe in addition
-to adding, removing, counting, \textit{etc.}, we also needed the ability to
-\textit{count the number of unique elements} in a list. Our ``dream code'' is
-in Figure~\ref{fig:dreamCountUnique}.
+to inserting, removing, counting, \textit{etc.}, we also needed the ability to
+\textit{count the number of unique elements} in a list. The client code we'd
+like to be able to write is in Figure~\ref{fig:dreamCountUnique}.
 
 \begin{figure}[hb]
 \centering
@@ -65,14 +66,14 @@ public static void main(String args[]) {
    System.out.println(n.countUnique());  // *should print 4 (but no such method)
 }
 \end{Verbatim}
-\caption{Some code we'd \textit{like} to be able to write in our hypothetical
-program.}
+\caption{Some client code we'd \textit{like} to be able to write in our
+hypothetical program.}
 \label{fig:dreamCountUnique}
 \end{figure}
 
-In our non-dream world, this code works except for the last line, which of
-course contains a method we just made up. It's sad that \texttt{ArrayList}
-meets all our needs except this one teensy one.
+This client code already works except for the last line, which of course
+contains a method we just made up. It's sad that \texttt{ArrayList} meets all
+our needs except this one teensy one.
 
 Several ways to get around this limitation come to mind. We could use a
 \textbf{has-a} association between \texttt{ArrayList} and a new class of our
@@ -121,15 +122,15 @@ public class CountUniqueArrayList {
 
 At the very least, this is clumsy, duplicative, and error-prone. But it could
 be even worse, if the \texttt{ArrayList} class evolves. Suppose the Java API
-expands to include a \texttt{.shuffle()} method on \texttt{ArrayList}, to
-randomly jumble the contents of the list? Every \texttt{ArrayList} in every
+expands to include a \texttt{.shuffle()} method on \texttt{ArrayList}, which
+randomly jumbles the contents of the list? Every \texttt{ArrayList} in every
 line of Java code in the world could instantly take advantage of that. But our
 stunted \texttt{CountUniqueArrayList} could not: it would have to be changed
 to add a \texttt{.shuffle()} pass-through method before it could do what any
-other \texttt{ArrayList} could.
+other \texttt{ArrayList} could automatically do.
 
 \label{page:inheritanceArrows}
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[width=0.7\textwidth]{inheritanceArrows.pdf}
 \caption{Diagrammatic elements for inheritance. (Compare with
@@ -141,15 +142,16 @@ The solution is to use inheritance. \textit{Instead of ``\textbf{has-a},'' an
 inheritance association means ``\textbf{is-a}.''} (See
 Figure~\ref{fig:inheritanceArrows}.) Instead of each
 \texttt{CountUniqueArrayList} \textit{having} an \texttt{ArrayList} under the
-hood, we're declaring that a \texttt{CountUniqueArrayList} in fact \textit{is}
-an \texttt{ArrayList}. This gives it all the rights and privileges of any
-\texttt{ArrayList} including all of its methods and instance variables. All
-the code in Figure~\ref{fig:dreamCountUnique} \textit{instantly just flat
-works}. The UML equivalent is shown in Figure~\ref{fig:countUnique3}. Note
-carefully that we use an open-triangle arrowhead to designate inheritance, and
-that there are no other navigability, multiplicity, or role indicators.
+hood, we're declaring that a \texttt{CountUniqueArrayList} in fact
+\textbf{\textit{is}} an \texttt{ArrayList}. This gives it all the rights and
+privileges of any \texttt{ArrayList} including all of its methods and instance
+variables. All the code in Figure~\ref{fig:dreamCountUnique} \textit{instantly
+just flat works}. The UML equivalent is shown in
+Figure~\ref{fig:countUnique3}. Note carefully that we use an open-triangle
+arrowhead to designate inheritance, and that there are no other navigability,
+multiplicity, or role indicators.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[width=1\textwidth]{countUnique3.pdf}
 \caption{Bottom-up inheritance in action. (Note the open-triangle arrowhead.)}
@@ -161,8 +163,8 @@ we're entitled to see that method in the UML diagram for that object's class?
 Clearly, \texttt{.add()}, \texttt{.get()}, and \texttt{.size()} do not appear
 in \texttt{CountUniqueArrayList}'s box. But the magic of inheritance makes it
 work anyway. The rule is that you can call a method on an object if that
-method is defined on the object's class...or any \textbf{superclass}.
-\texttt{ArrayList} is said to be the superclass of
+method is defined on the object's class...or on any \textbf{superclass}.
+\texttt{ArrayList} is said to be the ``superclass'' of
 \texttt{CountUniqueArrayList}. And that brings us to a slew of equivalent
 terminology.
 
@@ -550,16 +552,21 @@ where it's \textit{not} called for. And this turns out to be even worse.
 
 Although there are shades of grey, the basic rule for knowing when inheritance
 is appropriate can actually be boiled down to a single principle:
-\textbf{Remember that ``is-a'' means ``is-a.''} The time \textit{not} to use
+
+\begin{quote}
+\textbf{Remember that ``is-a'' means ``is-a.''}
+\end{quote}
+
+The time \textit{not} to use
 inheritance is when you see some code that you want to reuse, but you really
 \textit{don't} have a conceptual ``subtype'' in mind.
 
 An actual example: suppose your team is building a database system for 5k and
 10k race results. There's a \texttt{Runner} class with inst vars like
 \texttt{name} and \texttt{gender} and \texttt{dateOfBirth}. Then you say,
-``all right: to record a performance in a particular race, we need information
-like the name, birth date, \textit{etc.} of the runner, plus the bib number,
-finish time, date and location of the race.''
+``all right: to record a performance in a particular race, we need all that
+information about the runner, \textit{plus} the bib number, finish time, date
+and location of the race.''
 
 You may be tempted (as a colleague of mine once was) to create a
 \texttt{Performance} class which \textit{inherits} from \texttt{Runner}. After

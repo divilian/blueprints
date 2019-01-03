@@ -12,6 +12,7 @@ the code on the following page (Figure~\ref{fig:zooCode}) and predict its
 output.
 
 \begin{figure}[ht]
+\label{zooExample}
 \centering
 \includegraphics[width=0.9\textwidth]{zooClass.pdf}
 \caption{A class diagram for the Zoo program.}
@@ -108,12 +109,149 @@ the first one it finds. This makes sense: since a \texttt{Duck} \textbf{is-a}
 \texttt{Bird}, it is sensible to make it move like a \texttt{Bird} rather than
 like a generic \texttt{Animal}.
 
+\section{Polymorphism}
+
+This technique goes by a funny name, by the way: \textbf{polymorphism}. It's
+one of those geeky-sounding words useful for slinging at parties when you want
+an annoying person to move away from you.
+
+I define polymorphism (specifically, ``subtype polymorphism,'' which is what
+we're dealing with here) as \textit{transparently treating objects differently
+based on their type.} The word ``transparently'' means ``without the
+programmer having to worry about it.''
+
+Essentially, polymorphism is another way to think about top-down inheritance.
+We have a generic set of operations (like ``move'' and ``make noise''), each
+of which can be personalized in custom ways by specific subclasses, but which
+clients can simply call at the desired times without having to be aware of
+those subclasses. ``The right thing'' simply happens based on the object's
+type, without the programmer having to resort to a giant chain of if/else
+statements or some other monstrosity. This is because the language itself
+automatically dispatches the method call to the correct code.
+
+In terms of the concrete zoo example, polymorphism basically says: ``the way
+you direct any animal to make noise is the same: telling a duck to make noise
+uses the exact same code as telling a cow to make noise. Yet different things
+happen in each case, because of how Java enables the subtype-customization to
+take place."
+
+\subsection{\texttt{instanceof} is evil}
+
+It may help you understand this if I contrast it with a \textit{non}-example
+of polymorphism.
+
+Suppose we have a \texttt{Pokemon} class, instances of which represent various
+fictional fighting critters and their moves and stats. We also have a
+\texttt{Power} class used to represent a particular superpower like ``thunder
+shock'' or ``hyperbeam.'' Each special type of power will be its own subclass
+of \texttt{Power}, in true object-oriented inheritance style. And for this
+simple example, we'll say that each \texttt{Pokemon} has just one ``primary
+power'' that it can use in combat. Whenever a \texttt{Pokemon} object's
+\texttt{.attack()} method is called, it will use its primary power on the foe
+it is passed.
+
+Figure~\ref{fig:wrongPokemon} shows the \texttt{WRONG} way to code this. The
+\texttt{.attack()} method itself, in the \texttt{Pokemon} class, is
+scrutinizing its \texttt{primaryPower} object, figuring out what subclass it
+is and responding appropriately. You can see the (evil) Java
+\texttt{instanceof} operator in use here. It is a way of determining at
+run-time whether or not an object is of a particular class. \textbf{Using
+\texttt{instanceof} is almost always bad programming practice} since it
+violates encapsulation, reduces modularity, and eschews polymorphism.
+Among other things, this design creates a gigantic (and ever-growing, as more
+powers are added to the program) \texttt{if}/\texttt{else} chain to do the
+work that Java already does automatically. And that huge type-checking
+mechanism, besides being unwieldy and error-prone, is plopped right inside the
+\texttt{Pokemon} class, which is not the right place for it. (That code
+concerns various types of \textit{powers}, not \textit{Pok\'{e}mon}.)
+
+\begin{figure}[ht]
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+public class Pokemon {
+
+    private Power primaryPower;
+
+    public void attack(Pokemon foe) {
+        if (primaryPower instanceof Thundershock) {
+            // do the "thundershock" stuff to the foe
+        }
+        else if (primaryPower instanceof RoarOfTime) {
+            // do the "roar of time" stuff to the foe
+        }       
+        else if ...
+    }
+}
+
+public class Power {
+    ...
+}
+
+public class Thundershock extends Power {
+    ...
+}
+
+public class RoarOfTime extends Power {
+    ...
+}
+\end{Verbatim}
+\caption{The {\color{red} \underline{\textbf{WRONG}}} way to implement
+Pok\'{e}mon powers, using the \texttt{instanceof} operator.}
+\label{fig:wrongPokemon}
+\end{figure}
+
+
+Figure~\ref{fig:rightPokemon}, on the other hand, shows a good, healthy,
+proper OO design for the Pok\'{e}mon model. None of that
+\texttt{if}/\texttt{else} junk is even necessary, and the \texttt{Pokemon}'s
+\texttt{.attack()} method becomes a one-liner, as it should be. Java will
+automatically call the proper ``thunder shock ''code, ``roar of time ''code,
+``hyperbeam'' code, or whatever, without us having to try to do its work for
+it. And adding a new \texttt{Power} is just a matter of creating a new,
+encapsulated subclass, with its own \texttt{.useAgainst()} code. Neither the
+\texttt{Power} superclass nor the \texttt{Pokemon} class need be disturbed by
+this addition. It all works seamlessly.
+
+\definecolor{darkgreen}{rgb}{0,.65,0}
+\begin{figure}[ht]
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+public class Pokemon {
+
+    private Power primaryPower;
+
+    public void attack(Pokemon foe) {
+        this.primaryPower.useAgainst(foe);
+    }
+}
+
+public class Power {
+    public void useAgainst(Pokemon foe) {
+        // use the basic, default power on the foe
+    }
+}
+
+public class Thundershock extends Power {
+    public void useAgainst(Pokemon foe) {
+        // do the "thundershock" stuff to the foe
+    }
+}
+
+public class RoarOfTime extends Power {
+    public void useAgainst(Pokemon foe) {
+        // do the "roar of time" stuff to the foe
+    }
+}
+\end{Verbatim}
+\caption{The {\color{darkgreen} \underline{\textbf{right}}} way to implement
+Pok\'{e}mon powers, using subtype polymorphism.}
+\label{fig:rightPokemon}
+\end{figure}
 \section{Getting abstract}
 
 \subsection{Abstract methods}
 
-In all these cases, it was up to the subclass to decide whether to override a
-method or not. If the subclass was happy with the base class's behavior (like
+Okay, back to the Zoo example from p.~\pageref{zooExample}. For each type of
+animal, it was up to the subclass to decide whether to override a method or
+not. If the subclass was happy with the base class's behavior (like
 \texttt{Cow} was with \texttt{.move()}, or \texttt{Bear} was with everything)
 it could just ignore that method and default to ordinary animal behavior.
 
@@ -207,7 +345,7 @@ abstract class Animal {
 If we ever try to execute the code ``\texttt{new Animal()}'', Java will stop us
 with a compilation error.
 
-\begin{Verbatim}[fontsize=\scriptsize,samepage=true]
+\begin{Verbatim}[fontsize=\small,samepage=true]
 Animal.java:5: error: Animal is abstract; cannot be instantiated
         new Animal();
         ^
@@ -218,10 +356,10 @@ Animal.java:5: error: Animal is abstract; cannot be instantiated
 non-\texttt{abstract}, and therefore \textit{it must have a body for every one
 of its methods}, defined in either itself or in one of its superclasses. For
 example, as soon as we add the \texttt{abstract}
-\texttt{.getNumChromosomes()}, our \texttt{Cow.java} won't compile either:
+\texttt{.getNumChromosomes()}, our \texttt{Cow.java} suddenly won't compile
+either:
 
-\scriptsize
-\begin{Verbatim}[fontsize=\scriptsize,samepage=true]
+\begin{Verbatim}[fontsize=\small,samepage=true]
 Cow.java:4: error: Cow is not abstract and does not override abstract
 method getNumChromosomes() in Animal
     class Cow extends Animal {}
@@ -568,16 +706,16 @@ relationship, and there's meaningful code you get to reuse by so doing.
 
 \subsection{Example: \texttt{java.lang.Comparable}}
 
-Here's an example of the kind of thing that interfaces make easy. Let's say I
-have a class called \texttt{Resort} that represents high-falutin' vacation
-destinations. It has inst vars like \texttt{name}, \texttt{city},
-\texttt{rating} (from $\star$ to $\star\star\star\star\star$), and
-\texttt{price} (from \$ to \$\$\$\$).
+Here's an example of the kind of thing that interfaces make easy. Recall our
+\texttt{ReservationSystem} example from section~\ref{sec:resortExample} (on
+p.~\pageref{sec:resortExample}). We had a class called \texttt{Resort} that
+represented high-falutin' vacation destinations. It had inst vars like
+\texttt{name}, \texttt{desc}, \texttt{phone}, \texttt{rating} (from 1 to 5
+stars) and \texttt{cost} (from \$ to \$\$\$\$).
 
-We also have a \texttt{ReservationSystem} application that allows travel
-agents to browse available rooms, book hotels for customers, \textit{etc.}
-We'll use a \textbf{has-a} relationship for that (see
-Figure~\ref{fig:resortClass}).
+We also sketched a \texttt{ReservationSystem} class that would travel agents
+to browse available rooms, book hotels for customers, \textit{etc.} We'll use
+a \textbf{has-a} relationship for that (see Figure~\ref{fig:resortClass}).
 
 \begin{figure}[ht]
 \centering
@@ -625,10 +763,8 @@ could just write:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 class Resort implements Comparable<Resort> {
-    private String name;
-    private int rating;
-    private int price;
-    private String city;
+    private String name, desc, phone;
+    private int rating, cost;
     ...
     public int compareTo(Resort r) {
         return this.name.compareTo(r.name);
@@ -647,10 +783,8 @@ Then I could write:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 class Resort implements Comparable<Resort> {
-    private String name;
-    private int rating;
-    private int price;
-    private String city;
+    private String name, desc, phone;
+    private int rating, cost;
     ...
     public int compareTo(Resort r) {
         return r.rating - this.rating;
@@ -661,10 +795,10 @@ class Resort implements Comparable<Resort> {
 Now, if I'm a 4-star hotel and \texttt{r} is a 2-star hotel, \texttt{r.rating
 - this.rating} will be a negative number, putting me first.
 
-You could detect equal ratings and break the tie by the price, or sort by
-reverse length of \texttt{city} name, or anything else you dream up. The magic
-here is that we decoupled the sorting algorithm from the details of how
-objects are compared. The \texttt{Collections.sort()} method is perfectly
+You could detect equal ratings and break the tie by the cost, or sort by phone
+number, reverse length of \texttt{desc}ription, or anything else you dream up.
+The magic here is that we decoupled the sorting algorithm from the details of
+how objects are compared. The \texttt{Collections.sort()} method is perfectly
 happy as long as we keep our promise to implement \texttt{Comparable} and
 provide a way to compare two \texttt{Resort} objects.
 
