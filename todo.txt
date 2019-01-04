@@ -8,13 +8,13 @@ Substantive
 -----------
 Reposition Exceptions chapter and add stack traces.
 Embedded "TODOs".
-Second design chapter.
 Command-line arguments (odds 'n' ends chapter).
 
 Down the road
 -------------
 Preface.
 Exercises.
+Second design chapter.
 Design pattern chapters:
     - Decorator
     - Strategy
