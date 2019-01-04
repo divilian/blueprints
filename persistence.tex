@@ -323,10 +323,10 @@ the list. What then?
 In that case, the \texttt{Resort} constructor can't be allowed to finish,
 because \textit{it doesn't make sense for an object to be constructed at all}.
 So what should the constructor do in that case? Throw an \texttt{Exception},
-of course. This indicates to the client that the instantiation \textit{failed}
--- there is no \texttt{Resort} object to be constructed, and the client should
-do what's appropriate in that event (in this case, simply stop reading from
-the file).
+of course, as we learned in Chapter~\ref{ch:exceptions}. This indicates to the
+client that the instantiation \textit{failed} -- there is no \texttt{Resort}
+object to be constructed, and the client should do what's appropriate in that
+event (in this case, simply stop reading from the file).
 
 The exception we throw can either be a ``plain old \texttt{Exception},'' or a
 special type of exception that we create for this purpose. The latter approach

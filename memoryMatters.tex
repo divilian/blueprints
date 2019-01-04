@@ -108,17 +108,17 @@ Finally, to carry out the equals sign (``\texttt{=}'') in that line of code, we
 draw an arrow from \texttt{minivan} to the object to indicate that's what it's
 currently referring to.
 
-\subsubsection{(...a brief commercial...)}
-
-Now before we go any further, I want to \textit{\textbf{implore}} you that
-\textit{this stuff does actually matter.} It's tempting at this point to think
-that all this gibberish about stack and heap and whether something's on the
-left or right side of a diagram is irrelevant.  Nothing could be further from
-the truth. As soon as our example gets even moderately complicated, you will
-absolutely get the wrong answer if you conflate or confuse the two memory
-realms, or fail to keep their contents utterly in sync. Trust me on this.
-
-\subsubsection{(...okay, back to work...)}
+%\subsubsection{(...a brief commercial...)}
+%
+%Now before we go any further, I want to \textit{\textbf{implore}} you that
+%\textit{this stuff does actually matter.} It's tempting at this point to think
+%that all this gibberish about stack and heap and whether something's on the
+%left or right side of a diagram is irrelevant.  Nothing could be further from
+%the truth. As soon as our example gets even moderately complicated, you will
+%absolutely get the wrong answer if you conflate or confuse the two memory
+%realms, or fail to keep their contents utterly in sync. Trust me on this.
+%
+%\subsubsection{(...okay, back to work...)}
 
 Okay, now a head-scratcher. Look at Figure~\ref{fig:stackHeap1} again. What
 would you answer if I asked you, ``what's the \textit{name} of that blue
@@ -154,7 +154,7 @@ exactly on top of the first one. Instead, I just threw it in there helter
 skelter. This is how the heap works, and in fact why it's called a ``heap'':
 it's a disorganized mess of stuff that comes and goes in response to the
 program's unpredictable needs. The stack is as tidy as the Library of
-Congress; the heap is a teenage boy's room. Though weird, it turns out that
+Congress; the heap is a teenage boy's room. Seems weird, but it turns out
 things have to be that way.
 
 The second line creates a new stack variable called \texttt{t} but
@@ -164,7 +164,7 @@ in deeply. Many programmers, upon seeing a line begin with ``\texttt{Car t =
 actually only creating another variable that has the \textit{potential} to
 refer to a \texttt{Car}. And in fact, after the equals sign, we do point it to
 a \texttt{Car}...but one of the ones we've already instantiated (namely, the
-Sienna.)
+Sienna).
 
 The result of executing these two lines is shown in
 Figure~\ref{fig:stackHeap2}. Stare very carefully at that figure and mull over
@@ -194,7 +194,8 @@ bait-and-switch, just to prove I was right before when I said ``the name of
 that first blue box is \textit{not} \texttt{minivan}.'' Let's do the
 \textit{second} two lines of code in listing~\ref{fig:additionalCode}:
 
-\begin{Verbatim}[fontsize=\small,samepage=true]
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+    ...
     minivan = other;
     other = t;
 \end{Verbatim}
@@ -311,7 +312,7 @@ them as primitive types on the stack. That's what we'll always do with
 \label{fig:bpStackHeap1}
 \end{figure}
 
-\subsubsection{Null references, and \texttt{NullPointerException}s}
+\subsubsection{Null references and NPEs}
 
 The next new thing is that bizarre symbol next to \texttt{oldGeezer}.
 \textit{Whazzat?} If you look at the code listing, you'll see that we
@@ -331,18 +332,26 @@ Ballplayer oldGeezer = null;
 Some people prefer to be explicit like this. I don't care either way; just
 realize that at this point, if you attempted to call \textit{any} method on
 \texttt{oldGeezer}, you will be hit with the most ubiquitous of all Java
-run-time errors:
+run-time errors, the \textbf{null-pointer exception} (or ``\textbf{NPE}''):
 
 \begin{Verbatim}[fontsize=\small,samepage=true]
     Ballplayer oldGeezer = null;
     oldGeezer.strikeout();
     . . .
 Exception in thread "main" java.lang.NullPointerException
+    at Simulator.main(Simulator.java:5)
 \end{Verbatim}
 
 This is quite reasonable behavior, if you think about it. What can Java do if
 you try to ``call a method on an object'' but there \textit{is} no such object?
 It can only throw up its hands, which it does here.
+
+Remember: an NPE means \textit{you tried to call a method on an object, but
+the variable name you called it on wasn't actually an object; it was}
+\texttt{null}. The way to diagnose an NPE is to look at the line number it
+gives you, and find the dot (``\texttt{.}'') (or dots) on that line. The
+variable or expression to the \textit{left} of one of those dots is an
+uninitialized, null reference. Guaranteed.
 
 \subsubsection{Stack frames}
 
