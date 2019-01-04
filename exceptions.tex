@@ -1,14 +1,29 @@
 \chapter{Exceptions}
+\label{ch:exceptions}
 
-\section{Recognizing error conditions}
+%\section{Recognizing error conditions}
 
-The shrewd reader (and driver!) will realize that our \texttt{.drive()} method
-from last chapter was a bit optimistic: when told to drive \texttt{numMiles},
-it blindly did so, even if there was not enough gas to get that far. We ought
-to guard against this kind of wishful thinking by \textit{not permitting} a
-drive that's outside our range. If told to drive 1000 miles when we only have
-enough gas to go 200, we'll just say no. That's way better than ending up with
-a negative gas tank and wreaking unknown havoc later in the program!
+Let's go back and revisit our \texttt{.drive()} method from the \texttt{Car}
+example on p.~\pageref{fig:carClassCodePreExceptions}. It looked like this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+class Car {
+    ...
+    void drive(int numMiles) {
+        double galsBurned = numMiles / gasMileage;
+        galsRemaining = galsRemaining - galsBurned;
+        odo += numMiles;
+    }
+}
+\end{Verbatim}
+
+The shrewd reader (and driver!)~will realize that this method is a bit
+optimistic: when told to drive \texttt{numMiles}, it blindly does so, even if
+there's not enough gas to get that far. We ought to guard against this kind of
+wishful thinking by \textit{not permitting} a drive that's outside our range.
+If told to drive 1000 miles when we only have enough gas to go 200, we'll just
+say ``no.'' That's way better than ending up with a negative gas tank and
+wreaking unknown havoc later in the program!
 
 The first step in implementing this kind of defensive coding is to figure out
 \textit{when} to refuse to carry out orders. That's not too hard in this case:
@@ -19,9 +34,9 @@ Nonsense Land. A simple \texttt{if} statement can take care of that.
 \section{Suboptimal ways of handling error conditions}
 
 The second step is figuring out \textit{what to do} when this occurs. Most
-people's first thought is to blare out a siren:
+people's first instinct is to blare out a siren:
 
-\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
 // Inadequate approach #1
 class Car {
     ...
@@ -45,7 +60,7 @@ level.
 Slightly better, but still not good enough, is to print the error and also
 refuse to carry out orders:
 
-\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
 // Inadequate approach #2
 class Car {
     ...
@@ -67,9 +82,9 @@ method prematurely, before carrying out the nonsensical operation.
 The problem with this approach is that \textit{the client code is not alerted
 that anything went wrong.} We'll see some actual client code in action in the
 next section, but for now just realize that whoever called
-\texttt{.drive(1000)} is none the wiser. It merrily chugs along thinking that
-the thousand-mile drive was plain sailing, oblivious to the fact that no such
-drive actually occurred.
+\texttt{.drive(1000)} is none the wiser. The client merrily chugs along
+thinking that the thousand-mile drive was plain sailing, oblivious to the fact
+that no such drive actually occurred.
 
 \section{The right way: \texttt{throw}ing and \texttt{catch}ing}
 
@@ -79,17 +94,16 @@ Exceptions are Java's way of allowing a method \textit{not} to return, but
 rather to raise a big red flag to indicate that carrying out the method just
 flat didn't work. It's the only responsible thing to do.
 
-Our first step is to ``throw an exception'' instead of returning. Here's the
-code to do so:
+Our first step is to ``throw an exception'' instead of returning. Here's how:
 
-\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\small,frame=single]
 // Correct approach (not finished yet)
 class Car {
     ...
     void drive(int numMiles) {
         double galsBurned = numMiles / this.gasMileage;
         if (galsBurned > this.galsRemaining) {
-            throw new Exception("Not enough gas!!");    //  <---  NOTICE THIS!
+            throw new Exception("Not enough gas!!");    //  <---  NOTICE!
         }
         this.galsRemaining = this.galsRemaining - galsBurned;
         this.odo += numMiles;
@@ -144,7 +158,8 @@ every time we tell one of our cars to drive.
 The Java way to handle this is with a \textbf{try/catch block}. Essentially,
 this just builds a little scaffolding around our call to suspicious methods
 like \texttt{.drive()} so that if and exception is indeed ``thrown'' when we
-call it, we can ``catch'' is and do something sensible. Here's how:
+call it, we can ``catch'' is and do something sensible. Here's what the code
+looks like:
 
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
     public static void main(String args[]) {
@@ -187,8 +202,10 @@ Once all the method calls that are defined as ``\texttt{throws Exception}''
 have been enclosed in try/catch blocks that at least nominally handle the
 errors, the code compiles again and it can hopefully run error-free.
 
-% TODO: Put this chapter after "Memory matters" and include "how to interpret
-% a stack trace".
+% TODO: Include "how to interpret a stack trace".
+
+
+% TODO: do we actually still need this whole code listing?
 
 \begin{figure}
 \begin{Verbatim}[fontsize=\scriptsize,frame=single]
