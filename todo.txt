@@ -6,7 +6,6 @@ High-res graphics.
 
 Substantive
 -----------
-Reposition Exceptions chapter and add stack traces.
 Embedded "TODOs".
 Command-line arguments (odds 'n' ends chapter).
 

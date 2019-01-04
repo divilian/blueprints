@@ -132,7 +132,7 @@ not even work.
 
 Fixing it is simple; we just change the first line of the function to:
 
-\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
     void drive(int numMiles) throws Exception {
         ...
 \end{Verbatim}
@@ -161,7 +161,7 @@ like \texttt{.drive()} so that if and exception is indeed ``thrown'' when we
 call it, we can ``catch'' is and do something sensible. Here's what the code
 looks like:
 
-\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
     public static void main(String args[]) {
         ...
         // Caravan to Disneyworld -- whoo-hoo!  (Grammy's meeting us there.)
@@ -204,67 +204,115 @@ errors, the code compiles again and it can hopefully run error-free.
 
 % TODO: Include "how to interpret a stack trace".
 
+\section{Stack traces}
 
-% TODO: do we actually still need this whole code listing?
+One more thing before we leave this chapter on exceptions. It often proves
+useful to look at an \texttt{Exception}'s \textbf{stack trace}, which is
+accomplished by simply calling \texttt{.printStackTrace()} on the
+\texttt{Exception}, often in the \texttt{catch} block. For instance, suppose
+we change the previous try/catch block to this:
 
-\begin{figure}
-\begin{Verbatim}[fontsize=\scriptsize,frame=single]
-class Car {
-    String make, model;
-    int yearsOld, odo;
-    double galsRemaining, sizeOfTank, gasMileage;
-
-    Car(String make, String model) {
-        this.make = make;
-        this.model = model;
-        yearsOld = 0;
-        odo = 0;
-        galsRemaining = 0;
-        if (make.equals("Chevy") || make.equals("GM")) {
-            sizeOfTank = 21;
-        } else {
-            sizeOfTank = 13;
+\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+        try {
+            minivan.drive(500);
+        } catch (Exception e) {
+            e.printStackTrace();                <--- NOTICE THIS LINE
+            System.exit(1);
         }
-        if (make.equals("Chevy") && model.equals("Malibu")) {
-            gasMileage = 3;
-        } else {
-            gasMileage = 24;
-        }
-    }
-
-    public String toString() {
-        return "a " + yearsOld + "-year-old " + make + " " + model;
-    }
-
-    String getMake() { return make; }
-
-    String getModel() { return model; }
-
-    int getYearsOld() { return yearsOld; }
-
-    void setYearsOld(int x) { yearsOld = x; }
-
-    void fillUp() {
-        this.galsRemaining = this.sizeOfTank;
-    }
-
-    double getTankPerc() {
-        double perc = galsRemaining / sizeOfTank * 100;
-        return perc;
-    }
-
-    void drive(int numMiles) throws Exception {
-        double galsBurned = numMiles / gasMileage;
-        if (galsBurned > galsRemaining) {
-            throw new Exception("Not enough gas!");
-        }
-        galsRemaining = galsRemaining - galsBurned;
-        odo += numMiles;
-    }
-}
 \end{Verbatim}
-\caption{A complete Java implementation of the Car class, with exception
-handling added.}
-\label{fig:carClassCode}
-\end{figure}
 
+Now, what happens if there isn't enough gas in the old minivan to drive 500
+miles? Here's what:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+java.lang.Exception: Not enough gas!!
+    at Car.drive(Car.java:37)
+    at Car.main(Car.java:57)
+\end{Verbatim}
+
+At first, this output is an eyeful, and causes some students to look away in
+horror. But I'm going to encourage you to be brave and look again, and realize
+how much useful information is here. This output is called the exception's
+\textbf{stack trace}, by which we mean a readout of \textit{what the stack
+looked like at the moment the exception was thrown.}
+
+Just as we saw in Chapter~\ref{ch:memoryMatters}, Java maintains a stack of
+frames, one for each method that's in progress. Whenever a method returns, the
+top stack frame gets popped off the top; whenever a method is called, a new
+stack frame gets pushed on the top. At any point in time, the state of the
+running program is nicely captured by its stack. 
+
+One of the most helpful debugging tools you could imagine would be a precise
+readout of the exact line of every function the program is currently ``in'' at
+the instant the error occurred. And this is exactly what the stack trace is.
+The above output tells us:
+
+\begin{compactenum}
+\item The exception was thrown on line 37 of \texttt{Car.java}. This was in
+the \texttt{.drive()} method, which was called from...
+\item ...line 57 of \texttt{Car.java}. This was in the \texttt{main()} method.
+\end{compactenum}
+
+In this case, there were only two active methods when the exception was
+encountered. Other cases are of course more complicated. Suppose your stack
+trace looked like this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+java.lang.BattleException: Power not charged.
+    at Hyperbeam.useAgainst(Hyperbeam.java:24)
+    at Snorlax.attack(Snorlax.java:43)
+    at Pokemon.takeTurn(Pokemon.java:181)
+    at Simulator.battle(Simulator.java:215)
+    at Simulator.main(Simulator.java:33)
+\end{Verbatim}
+
+Without even knowing anything about how this program works, you can tell a
+\textit{ton} about the circumstances in which it crashed. Specifically:
+
+\begin{compactenum}
+
+\item An exception was thrown on line 24 of \texttt{Hyperbeam.java}. This was
+in the \texttt{.useAgainst()} method, which was called from...
+
+\item ...line 43 of \texttt{Snorlax.java}. This was in the \texttt{.attack()}
+method, which was called from...
+
+\item ...line 181 of \texttt{Pokemon.java}. This was in the
+\texttt{.takeTurn()} method, which was called from...
+
+\item ...line 215 of \texttt{Simulator.java}. This was in the
+\texttt{.battle()} method, which was called from...
+
+\item ...line 33 of \texttt{Simulator.java}. This was in the \texttt{main()}
+method.
+
+\end{compactenum}
+
+This is usually your first line of defense when debugging: read the stack
+trace of the \texttt{Exception}, reconstruct exactly what was going on when
+the error occurred, and then set about figuring out why it was caused.
+
+By the way, you can also print a stack trace from any place in your code, even
+if no error condition has arisen or exception is thrown. If you just type:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+            ...
+            new Exception().printStackTrace();
+            ...
+\end{Verbatim}
+
+anywhere you please, then whenever that line of code is encountered, a stack
+trace like those above will be spewed to your screen. It's often quite helpful
+when you're scratching your head saying, ``okay, I know something's going
+wrong in this method...but how did I get here, anyway?'' The stack trace tells
+you exactly how.
+
+\bigskip
+Oh, I should also mention that these stack trace outputs are a Java thing.
+C++'s equivalent output for many of these kinds of error cases is simply this:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+Segmentation fault (core dumped)
+\end{Verbatim}
+
+I think you'll agree, that's not nearly as helpful. :D
