@@ -469,7 +469,6 @@ bottom-up inheritance, you can use objects of your new subclass
 subclass.} As a user of the classes -- like \texttt{main()}, above -- you're
 looking at the inheritance hierarchy from the top down.
 
-\begin{samepage}
 A couple of other descriptive words I like to use for this are ``masquerading''
 and ``smuggling.'' In the above example, the \texttt{SortedArrayList}
 \texttt{sal} is masquerading as an \texttt{ArrayList} -- pretending to be one
@@ -481,11 +480,11 @@ function, in cognito. Little did \texttt{getMad()} know that it wasn't even
 dealing with an ordinary object of the base class. It was fooled by the
 disguise.
 
+\pagebreak
 \subsection{Why this matters}
 
 The reason this idea is so powerful is that it allows programmers to decouple
 the \textit{what} from the \textit{how}.
-\end{samepage}
 
 A chunk of code that only knows about the superclass (like \texttt{ArrayList})
 can dictate \textit{what} to do with it. ``First I'll \texttt{.add()} these
@@ -522,6 +521,8 @@ two jobs is crucial -- otherwise you end up with a 500-line function that's a
 mass of spaghetti code. Software engineers call this decoupling
 ``\textbf{separation of concerns},'' and it is among the most important
 principles in all of software development.
+\vspace{1in}
+\pagebreak
 
 \section{``Cool! Can we do both?''}
 

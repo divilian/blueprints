@@ -673,9 +673,10 @@ Sometimes a programmer cares about one of these conditions, and sometimes the
 other. Java has two syntaxes to distinguish between the two tests.
 
 \textbf{To test for sameness, use ``\texttt{==}''. To test for identicality, use
-``\texttt{.equals()}''.} Example:
+``\texttt{.equals()}''.}
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{figure}
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
     if (p1 == p3) {
         System.out.println("This WILL print.");
     }
@@ -689,12 +690,16 @@ other. Java has two syntaxes to distinguish between the two tests.
         System.out.println("This WILL probably print (but see below).");
     }
 \end{Verbatim}
+\caption{Testing for sameness vs.~identicality.}
+\label{fig:sameness}
+\end{figure}
 
-In the first two lines of that code, we are testing for sameness. So even
-though the objects referred to by \texttt{p3} and \texttt{p4} are spittin'
-images of each other, identical in every conceivable way, they are
-nevertheless \textit{not} ``\texttt{==}'' to each other. But they might well be
-\texttt{.equals()} to each other...if we take the special step described next.
+Figure~\ref{fig:sameness} gives an example. In the first two lines of that
+code, we are testing for sameness. So even though the objects referred to by
+\texttt{p3} and \texttt{p4} are spittin' images of each other, identical in
+every conceivable way, they are nevertheless \textit{not} ``\texttt{==}'' to
+each other. But they might well be \texttt{.equals()} to each other...if we
+take the special step described next.
 
 \subsection{Overriding \texttt{.equals()}}
 
@@ -760,7 +765,7 @@ Notice how in the very definition of \texttt{Ballplayer.equals()} we called
 the \texttt{.equals()} method for \texttt{String}s. You may have expected it
 to say:
 
-\begin{Verbatim}[fontsize=\small,samepage=true]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true]
     public boolean equals(Ballplayer b) {
         // WRONG
         if (this.name == b.name &&

@@ -63,7 +63,7 @@ needed, rather than evaporating at the end of their current function.} \\
 This is best understood by example, and in fact can be illustrated with just a
 small function:
 
-\begin{figure}[ht]
+\begin{figure}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 void illustration() {
     int year = 2018;
@@ -77,7 +77,7 @@ void illustration() {
 This teensy function, when it runs, produces memory contents as depicted in
 Figure~\ref{fig:stackHeap1}. Let's go through it carefully.
 
-\begin{figure}[ht]   % 590x220
+\begin{figure}   % 590x220
 \centering
 \includegraphics[width=1\textwidth]{stackHeap1.pdf}
 \caption{The stack and the heap.}
@@ -132,7 +132,7 @@ truth is that \textit{the object has no name.}
 Again, you may think I'm being pedantic. Let me demonstrate why I'm not.
 Suppose we expanded our previous code with four more lines:
 
-\begin{figure}[ht]
+\begin{figure}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 void illustration() {
     ...
@@ -180,7 +180,7 @@ change the state of \texttt{t}'s \texttt{Car} by, say, increasing its odometer
 instance variable, \texttt{minivan} would instantly experience the same
 change. And that's because they \textit{are} the same. 
 
-\begin{figure}[ht]
+\begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{stackHeap2.pdf}   % 620x230
 \caption{After executing the first two lines of code
@@ -211,7 +211,7 @@ neither one is its name. Objects simply have no name.
 Names are ephemeral, momentary: they're only used temporarily so we can get at
 the stuff in the heap, which is ultimately what matters.
 
-\begin{figure}[ht]
+\begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{stackHeap3.pdf}   % 620x230
 \caption{Finally, after executing the rest of code
@@ -249,7 +249,7 @@ There will probably be a few eye-openers for you.
 First, take a look at our code listing (Figure~\ref{fig:functionCode}). We'll
 switch from an automotive domain to part of a baseball simulator.
 
-\begin{figure}[ht]
+\begin{figure}
 \centering
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Simulator {
@@ -304,7 +304,7 @@ create what are actually instances, so it ends up making more sense to treat
 them as primitive types on the stack. That's what we'll always do with
 \texttt{String}s.
 
-\begin{figure}[ht]   % 650x240
+\begin{figure}   % 650x240
 \centering
 \includegraphics[width=.9\textwidth]{bpStackHeap1.pdf}
 \caption{Memory contents after executing the first three lines of
@@ -326,18 +326,23 @@ reference} (or \textbf{null pointer}) and is indicated with the keyword
 one above:
 
 \begin{Verbatim}[fontsize=\small,samepage=true]
-Ballplayer oldGeezer = null;
+    Ballplayer oldGeezer = null;
 \end{Verbatim}
 
 Some people prefer to be explicit like this. I don't care either way; just
 realize that at this point, if you attempted to call \textit{any} method on
-\texttt{oldGeezer}, you will be hit with the most ubiquitous of all Java
-run-time errors, the \textbf{null-pointer exception} (or ``\textbf{NPE}''):
+\texttt{oldGeezer}, like:
+
 
 \begin{Verbatim}[fontsize=\small,samepage=true]
     Ballplayer oldGeezer = null;
     oldGeezer.strikeout();
-    . . .
+\end{Verbatim}
+
+you will then be hit with the most ubiquitous of all Java
+run-time errors, the \textbf{null-pointer exception} (or ``\textbf{NPE}''):
+
+\begin{Verbatim}[fontsize=\small,samepage=true]
 Exception in thread "main" java.lang.NullPointerException
     at Simulator.main(Simulator.java:5)
 \end{Verbatim}
@@ -424,7 +429,7 @@ for each.
 Freeze! The program's memory now looks like Figure~\ref{fig:bpStackHeap2}.
 Run your eyeballs over it and make sure you understand every box and line.
 
-\begin{figure}[ht]   % 650x400
+\begin{figure}   % 650x400
 \centering
 \includegraphics[width=.9\textwidth]{bpStackHeap2.pdf}
 \caption{Memory contents after calling the function and executing the first
@@ -437,7 +442,7 @@ three lines of \texttt{buildDaTeam()}.}
 Now for the next part of code listing~\ref{fig:functionCode}. These three
 lines:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
         ...
         Ballplayer ruth = new Ballplayer("Babe Ruth");
         ruth.setUni(3);
@@ -452,10 +457,9 @@ little: obviously it has a constructor that takes a \texttt{String} (the
 player's full name) and a couple of accessor/mutator methods to set the
 player's uniform number and position. 
 
-\pagebreak
 We then do the same sort of thing again, for another player:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
         ...
         Ballplayer gehrig = new Ballplayer("Lou Gehrig");
         gehrig.setUni(4);
@@ -465,7 +469,7 @@ We then do the same sort of thing again, for another player:
 
 to get another one. Then, we do this:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
         ...
         Ballplayer babe = ruth;
         babe.setUni(3);       // (Pointless, as it turns out.)
@@ -484,7 +488,7 @@ three variables of type \texttt{Ballplayer}, but only \textit{two}
 
 Finally, we add these players to our \texttt{ArrayList}:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
         ...
         team.add(babe);
         team.add(gehrig);
@@ -502,7 +506,7 @@ pointing to the \textit{same} object. (So we're cheating here, baseball-wise:
 you can't actually have the same player twice in the lineup! This is just an
 example.)
 
-\begin{figure}[ht]   % 800x460
+\begin{figure}   % 800x460
 \centering
 \includegraphics[width=1\textwidth]{bpStackHeap3.pdf}
 \caption{Memory after all the object creation done in \texttt{buildDaTeam()}.}
@@ -513,7 +517,7 @@ example.)
 
 And now, we're ready to polish off this bad boy.
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
         ...
         return team;
     }
@@ -546,7 +550,7 @@ what we want, because it's \texttt{main()}'s turn to take over now. Note that
 all the heap stuff is still there: objects on the heap have an unlimited
 lifespan, you'll remember.
 
-\begin{figure}[ht]   % 750x460
+\begin{figure}   % 750x460
 \centering
 \includegraphics[width=1\textwidth]{bpStackHeapFinal.pdf}
 \caption{What memory looks like when we reach the end of \texttt{main()}.}
@@ -557,7 +561,7 @@ The other thing the \texttt{return} statement does, of course, is put the
 function's return value in the proper place, just before it's nuked. In this
 case, since our original line of code was:
 
-\begin{Verbatim}[fontsize=\small,samepage=true]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
         ArrayList yankees = buildDaTeam();
 \end{Verbatim}
 
@@ -613,14 +617,11 @@ and made it at least to first base). A player's ``batting average'' is the hits
 over the at bats; it ostensibly tells you how likely (on a scale of 0 to 1)
 that player is to get a hit if he/she bats.}
 
-\begin{figure}[ht]
-\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+\begin{figure}
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 class Ballplayer {
-    String name;
-    int uni;
-    String position;
-    int numHits;
-    int numAtBats;
+    String name, position;
+    int uni, numHits, numAtBats;
 
     Ballplayer(String name) {
         this.name = name;
@@ -658,14 +659,12 @@ being able to do anything about it.} The only method we'll show on the
 (pitches to) a batter in our simulation. The result will either be strikeout
 or a hit in our extremely simplified view of the baseball world.
 
-\begin{figure}[ht]
-\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+\begin{figure}
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 class Pitcher {
-    String name;
-    int uni;
-    String handedness;  // L or R
-    double koDominance; // between 0 and 1
-    int numKos;
+    String name, handedness;   // L or R
+    int uni, numKos;
+    double koDominance;        // between 0 and 1
     static java.util.Random rng = new java.util.Random();
 
     ...
@@ -705,7 +704,7 @@ Figure~\ref{fig:showdownCode}. After executing all lines but the last one, we
 have the picture in Figure~\ref{fig:pitcherStackHeap1}. Take a moment and
 convince yourself it's correct in all details.
 
-\begin{figure}[ht]
+\begin{figure}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
     public static void main(String args[]) {
 
@@ -729,7 +728,7 @@ convince yourself it's correct in all details.
 \label{fig:showdownCode}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{pitcherStackHeap1.pdf}  % 750x350
 \caption{The baseball simulator's memory immediately before executing the
@@ -743,7 +742,7 @@ And now for the moment we've all been waiting for: the first pitch of a new
 time, will face down Willie Mays, quite possibly the greatest hitter of all
 time. I can't stand the suspense!!
 
-\begin{figure}[ht]
+\begin{figure}
 \centering
 \includegraphics[width=1\textwidth]{pitcherStackHeap2.pdf}  % 750x450
 \caption{Memory while on the last line of \texttt{.face()}.}
@@ -797,9 +796,9 @@ of Famer (Willie Stargell) once quipped, ``trying to hit against Sandy Koufax
 is like trying to drink coffee with a fork.''
 
 
-\begin{figure}[ht]
+\begin{figure}
 \centering
-\includegraphics[width=1\textwidth]{pitcherStackHeapFinal.pdf}  % 800x350
+\includegraphics[width=1.1\textwidth]{pitcherStackHeapFinal.pdf}  % 800x350
 \caption{The final memory picture. Note the changed inst vars!}
 \label{fig:pitcherStackHeapFinal}
 \end{figure}

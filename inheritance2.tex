@@ -273,12 +273,12 @@ The solution to our dilemma is to make \texttt{.getNumChromosomes()} an
 superclass -- with a name, parameter list, and return type -- there's not
 actually any \textit{code} for it there! Here's what it looks like:
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 class Animal {
     abstract public int getNumChromosomes();
     ...
 }
-\end{verbatim}
+\end{Verbatim}
 \end{samepage}
 
 \begin{samepage}
@@ -288,14 +288,14 @@ method \textit{body} for \texttt{.getNumChromosomes()} in the \texttt{Animal}
 class, we still want to be able to call it on an \texttt{Animal}. Individual 
 subclasses provide their own implementation; for example:
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 class Cow extends Animal {
     public int getNumChromosomes() {
         return 60;
     }
     ...
 }
-\end{verbatim}
+\end{Verbatim}
 \end{samepage}
 
 Notice that the subclasses do \textit{not} include the keyword \texttt{abstract}
@@ -308,12 +308,12 @@ Now I know what you're thinking. ``This is all fine, but what if we have a
 plain-old-\texttt{Animal} object and call \texttt{.getNumChromosomes()} on
 it?'' 
 
-\begin{verbatim}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
     Cow c = new Cow();
     int numc = c.getNumChromosomes();   <-- returns 60
     Animal a = new Animal();
     int numa = a.getNumChromosomes();   <-- ???
-\end{verbatim}
+\end{Verbatim}
 
 There's no code to run for a generic \texttt{Animal}, so what value would we
 get back?
@@ -325,18 +325,20 @@ any method of a class is abstract, \textbf{the class itself must be abstract},
 which means it is \textit{un-instantiatable.} In other words, the Java
 compiler forces us to amend our \texttt{Animal} class as follows:
 
-\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 abstract class Animal {                         
-  public void makeNoise() {            
-    System.out.println("Growl!");      
-  }                                    
-  public void move(int distance) {     
-    for (int i=0; i<distance; i++) {   
-      System.out.print("tramp ");      
-    }                                  
-    System.out.println();              
-  }
-  abstract public int getNumChromosomes();
+    public void makeNoise() {            
+        System.out.println("Growl!");      
+    }                                    
+
+    public void move(int distance) {     
+        for (int i=0; i<distance; i++) {   
+          System.out.print("tramp ");      
+        }                                  
+        System.out.println();              
+    }
+
+    abstract public int getNumChromosomes();
 }                                      
 \end{Verbatim}
 
@@ -422,10 +424,10 @@ whatever ordinary \texttt{Bird}s usually do.'' We would write that as follows:
 
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Duck extends Bird {
-  public void makeNoise() {
-    System.out.println("Quack quack");
-    super.makeNoise();
-  }
+    public void makeNoise() {
+        System.out.println("Quack quack");
+        super.makeNoise();
+    }
 }
 \end{Verbatim}
 
@@ -435,7 +437,7 @@ class, not the \texttt{Duck} one. (And a good thing, too: otherwise we'd have
 an infinite loop with \texttt{.makeNoise()} repeatedly calling itself!)
 Written this way, a \texttt{Duck} will make this noise:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
 Quack quack
 Chirp chirp
 \end{Verbatim}
@@ -445,16 +447,16 @@ as rapidly as normal animals. If we defined its \texttt{.move()} method thus:
 
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Chipmunk extends Animal {
-  public void move(int distance) {
-    int doubleDist = distance * 2;
-    super.move(doubleDist);
-  }
+    public void move(int distance) {
+        int doubleDist = distance * 2;
+        super.move(doubleDist);
+    }
 }
 \end{Verbatim}
 
 then calling \texttt{.move(3)} on a \texttt{Chipmunk} object would print this:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
 tramp tramp tramp tramp tramp tramp
 \end{Verbatim}
 
@@ -527,7 +529,7 @@ class Student extends Person {                  }
 }
 \end{Verbatim}
 \caption{The interaction between constructors in an inheritance hierarchy.}
-\label{fig:inhConstrClass}
+\label{fig:inhConstrCode}
 \end{figure}
 
 One other thing on this \texttt{Person}/\texttt{Professor}/\texttt{Student}
@@ -548,7 +550,7 @@ be instantiated \textit{anywhere}, even in the same package.)
 \centering
 \includegraphics[width=0.9\textwidth]{inhConstrClass.pdf}
 \caption{The class diagram for Figure~\ref{fig:inhConstrCode}.}
-\label{fig:inhConstrCode}
+\label{fig:inhConstrClass}
 \end{figure}
 
 
@@ -715,13 +717,6 @@ We also sketched a \texttt{ReservationSystem} class that would travel agents
 to browse available rooms, book hotels for customers, \textit{etc.} We'll use
 a \textbf{has-a} relationship for that (see Figure~\ref{fig:resortClass}).
 
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.9\textwidth]{resortClass.pdf}
-\caption{Using the \texttt{Comparable} interface to enable sorting.}
-\label{fig:resortClass}
-\end{figure}
-
 Now one of the things \texttt{ReservationSystem} is likely to want to do is
 \textit{sort} the \texttt{Resort} objects in its list. There's a function in
 \texttt{java.util.Collections} class called \texttt{sort()} that does just
@@ -741,6 +736,13 @@ class ReservationSystem {
     }
 }
 \end{Verbatim}
+
+\begin{figure}[hb]
+\centering
+\includegraphics[width=0.9\textwidth]{resortClass.pdf}
+\caption{Using the \texttt{Comparable} interface to enable sorting.}
+\label{fig:resortClass}
+\end{figure}
 
 The trouble is, even though \texttt{Collections} has an efficient, bug-free
 sorting algorithm all coded up for us to use, it doesn't know \textit{what
