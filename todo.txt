@@ -1,7 +1,6 @@
 
 Fiddly
 ------
-Rename all chapters "vanilla."
 High-res graphics.
 
 Substantive
