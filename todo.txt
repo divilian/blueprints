@@ -7,7 +7,6 @@ High-res graphics.
 Substantive
 -----------
 Embedded "TODOs".
-Command-line arguments (odds 'n' ends chapter).
 
 Down the road
 -------------

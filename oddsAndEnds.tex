@@ -149,11 +149,11 @@ Java's way of handling it is much appreciated.
 
 You've probably used \texttt{import} in almost every Java program you've ever
 written. Yet I've found most developers don't really understand what it does.
-Java itself is partially to blame here: the word ``import'' is a poor choice of
-words, since nothing is ``imported'' at all.\footnote{Also, the fact that it
-begins with a lower-case \texttt{i} just like C++'s ``\texttt{\#include}''
-statement does reinforces this misconception -- C++'s \texttt{\#include}
-actually \textit{does} include/import content.}
+Java itself is partially to blame here: the word ``import'' was a poor choice
+for this, since nothing is ``imported'' at all.\footnote{Also, the fact that
+it begins with a lower-case \texttt{i} just like C++'s ``\texttt{\#include}''
+statement reinforces this misconception -- C++'s \texttt{\#include} actually
+\textit{does} include/import content.}
 
 Here's a statement that surprises a lot of Java programmers: you can write
 \textit{any} Java program -- even one that uses stuff in the Java API --
@@ -187,11 +187,11 @@ and the \texttt{import} statement (right).}
 \label{fig:dontNeedImport}
 \end{figure}
 
-No \texttt{import} required. Instead, every time we wanted to refer to the
-\texttt{ArrayList} class from the Java API, we specified it as
-\texttt{java.util.ArrayList} That did require us to type out the full name
-three times, but it turns out to be all Java needs to understand perfectly
-which \texttt{ArrayList} class we want to use.
+No \texttt{import} required. Instead, on the left-hand side of the figure,
+every time we want to refer to the \texttt{ArrayList} class, we specified it
+as \texttt{java.util.ArrayList}. That does require us to type out the full
+name three times, but it turns out to be all Java needs to understand
+perfectly which \texttt{ArrayList} class we want to use.
 
 Now since programmers (myself included) are lazy, and want to avoid typing
 when possible, the Java gods invented the \texttt{import} statement. The
@@ -263,9 +263,9 @@ case).
 
 Java allows this perfectly well, for reasons we'll understand in detail later.
 Here's the rub, though: when we get something \textit{out} of the collection,
-we have to \textbf{cast} (or \textbf{typecast}) it to the correct type before
-doing anything specific with it. This code, for example, does \textit{not}
-compile:
+we have to \textbf{cast} (or \textbf{typecast}, or \textbf{downcast}) it to
+the correct type before doing anything specific with it. This code, for
+example, does \textit{not} compile:
 
 \begin{Verbatim}[fontsize=\small,samepage=true]
 // Doesn't work:
@@ -288,7 +288,8 @@ System.out.println("First item has " + ((String) stuff.get(0)).length() +
 This says, ``Java, I give you my word. I promise the thing at position
 \texttt{0} \textit{will} be a \texttt{String}, and I'll stake my reputation on
 it. Please force it to be treated as a \texttt{String}, and if it turns out
-I'm lying, you can embarrass me at runtime with a program crash.''
+I'm lying, you have permission to embarrass me at runtime with a program
+crash.''
 
 Having to do that is a rather high price to pay for the flexibility of being
 able to store any old thing in \texttt{stuff}. That's why back in 2004, Java
@@ -317,14 +318,14 @@ knows that it will only get \texttt{String}s out. Therefore,
 ``\texttt{stuff.get(0).length()}'' works just fine, no cast necessary.
 
 This is a good feature, and you should pretty much always use it. My only
-complaint is that I think the word ``generic'' is almost exactly the wrong word
-for it. They practically couldn't have chosen a worse term. Saying you have
-``a generic \texttt{ArrayList}'' sounds like it ought to mean the
-\textit{first} style (above), where the type wasn't specifically mentioned and
-therefore any object was fair game to put in it. But in actual fact, ``a
-generic \texttt{ArrayList}'' means ``a specific, decidedly \textit{non}-generic
-\texttt{ArrayList} that is declared to only hold values of a certain type.'' Go
-figure.
+complaint is that I think the word ``generic'' is exactly the wrong word for
+it. They almost couldn't have chosen a worse term. Saying you have ``a generic
+\texttt{ArrayList}'' sounds like it ought to mean the \textit{first} style
+(above), where the type wasn't specifically mentioned and therefore any object
+was fair game to put in it. But in actual fact, ``a generic
+\texttt{ArrayList}'' means ``a specific, decidedly \textit{non}-generic
+\texttt{ArrayList} that is declared to only hold values of a certain type.''
+Go figure.
 
 \section{``Wrapper'' classes}
 
@@ -544,6 +545,83 @@ is irretrievable after the fact -- and if you need to keep track of it, you'll
 need a separate data structure (perhaps an \texttt{ArrayList} of the keys, in
 order of insertion) to remember it.
 
+\section{Command-line arguments}
+
+Every Java program you've ever written has this line in it:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+    public static void main(String args[]) {
+\end{Verbatim}
+
+Have you ever wondered what that ``\texttt{args}'' thing is for?
+
+Like all programming languages, Java lets you access the \textbf{command-line
+arguments} that the user typed after the program name when she ran the
+program. Command-line arguments are nothing new for a budding Linux user. For
+instance, this sort of command is second-nature to you by now:
+
+\medskip
+\quad \texttt{\$ cp \ Program1.java \ \freakingtilde/backup }
+\medskip
+
+It consists of a command name (``\texttt{cp}'') plus two command-line
+arguments, which are: ``\texttt{Program1.java}'', and
+``\texttt{\freakingtilde/backup}.''
+
+Now it turns out that \textit{every} Linux program is capable of taking
+command-line arguments, including Java programs. Suppose I type this:
+
+\medskip
+\quad \texttt{\$ java \ Simulator \ UMW \ Marymount}
+\medskip
+
+As you know, this is a command to run a Java program whose \texttt{main()}
+method is in \texttt{Simulator.java}. Apparently, the user is trying to
+simulate a basketball game between two opponents, and is using command-line
+arguments to specify which opponents. 
+
+The only question that remains is: how does the Java code get access to those
+strings that were typed on the command line when it was run? The answer is
+\texttt{args}. When \texttt{main()} is called, \textit{Java passes the
+command-line arguments to it as an array of Strings.} It's that simple. Inside
+\texttt{main()}, you can treat the variable ``\texttt{args}'' in the same way
+as any other array. For instance, if your code says:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class Simulator {
+    public static void main(String args[]) {
+        System.out.println("There were " + args.length + " command-line args.");
+    }
+}
+\end{Verbatim}
+
+then the output, when run with the command above, will be:
+
+\medskip
+\quad \texttt{There were 2 command-line args.}
+\medskip
+
+And if your code says:
+
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+class Simulator {
+    public static void main(String args[]) {
+        System.out.println("The first argument was: " + args[0] + ".");
+        System.out.println("The second argument was: " + args[1] + ".");
+    }
+}
+\end{Verbatim}
+
+then the output, when run with the command above, will be:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+    The first argument was: UMW.
+    The second argument was: Marymount.
+\end{Verbatim}
+
+This is powerful because it allows users to run your program with different
+inputs and options \textit{without} having to recompile it (or even have
+access to a compiler at all).
 
 \section{Sameness vs.~identicality}
 
