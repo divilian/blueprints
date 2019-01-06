@@ -2,6 +2,8 @@
 \chapter{Classes and objects}
 \label{ch:classesObjects}
 
+\index{object-oriented}
+\index{class-oriented@``class-oriented''}
 Java is called an ``object-oriented'' programming language. Now if \textit{I}
 were King of the World, I would have called it a ``\textit{class}-oriented''
 language instead. That's because in Java, you don't write code for objects,
@@ -16,6 +18,9 @@ DatabaseConnection object today.'' It makes me wince. They weren't writing
 
 \section{Terms}
 
+\index{object}
+\index{class@\texttt{class}}
+\index{Venkman, Peter}
 So here's a crucial pair of definitions. A \textbf{class} is a
 \textit{category} of things. An \textbf{object} is a concrete \textit{example}
 of a class. If ``University'' is a class, then ``UMW'' is an object; if
@@ -24,6 +29,8 @@ and it is vitally important to keep at the forefront of your mind as you begin
 your OO quest. Getting them mixed up is like Peter Venkman crossing the
 streams.
 
+\index{template}
+\index{modeling}
 You'll sometimes hear alternate definitions of these terms, like ``a class is
 a template, and objects are copies of that template.'' This is better than
 out-and-out confusion, but it still misses something important. It's an
@@ -32,15 +39,20 @@ class and an object in terms of the mechanical way the virtual machine carries
 out their duties, rather than in terms of \textit{modeling}, which is what
 OOA\&D is all about.
 
+\index{category}
 In our world, every single software object will be a member of a category,
 and that category will define everything about its inner structure and rules
 of behavior.
 
+\index{type}
+\index{instance}
 By the way, an important near-synonym for class is \textbf{type}. (It's only a
 \textit{near}-synonym because primitive, non-classes like \texttt{int}s and
 \texttt{boolean}s are also types.) An important exact synonym for object is
 \textbf{instance}.
 
+\index{instantiate}
+\index{new@\texttt{new}}
 In addition to those nouns, a big verb in our vocabulary will be the term
 \textbf{instantiate}. It means ``to actually create an object of a particular
 class.'' Some people use words like \textbf{construct} or \textbf{create} for
@@ -51,6 +63,8 @@ most part we'll stick with instantiate.
 \section{A different kind of language}
 \label{sec:UMLclasses}
 
+\index{UML (Unified Modeling Language)}
+\index{design}
 Classes and objects are among the basic building blocks of any OO program, and
 they will play a prominent role on various \textbf{UML diagrams}. UML
 (``Unified Modeling Language'') is a \textit{design} language, not a
@@ -74,11 +88,13 @@ two.
 
 \subsection{Classes in UML: the first two compartments}
 
+\index{capitalization}
 Let's look at the class in detail. In the top box is its name; so far so good.
 One thing to point out, though, is that in Java, \textit{the names of all
 classes are \underline{capitalized}.} Don't ever violate this rule, for
 convention's and confusion's sake!
 
+\index{instance variables (inst vars)}
 The second compartment has the class's \textbf{instance variables}. You'll
 hear people use other terms for these like like ``member variables'' and even
 ``class variables,'' but I strongly prefer instance variables (or ``inst
@@ -97,6 +113,10 @@ of listing the variable's type and then its name, we reverse them, we use
 a colon instead of a space, and we omit the semicolon. Otherwise, it's pretty
 straightforward to interpret that second compartment.
 
+\index{class variable}
+\index{underlined}
+\index{car@\texttt{Car}}
+\index{static@\texttt{static}}
 By the way, one important piece of syntax in that second compartment is an
 \underline{underline}. If an inst var is underlined, then it actually isn't an
 ``instance variable'' after all: it's a \textbf{class variable}. This means
@@ -113,6 +133,8 @@ declared.
 
 \subsection{Classes in UML: the third compartment}
 
+\index{method}
+\index{member function}
 The third compartment isn't much harder: it contains the \textbf{methods} for
 the class. Like everything it seems, programmers have multiple terms for these
 two: they're called \textbf{member functions} or \textbf{class functions} on
@@ -120,6 +142,7 @@ occasion. We'll stick with \textbf{method}.
 
 \subsubsection{Functions vs. methods}
 
+\index{function}
 The crucial distinction between a method and a regular ol' Joe function is
 this: while you can simply call a function to trigger it, you must call a
 method \textit{on an object}. In the example, we have a \texttt{fillUp()}
@@ -153,6 +176,7 @@ say ``hey universe, fill up cars'' (which is what ``\texttt{fillUp()}'' seems to
 say) nor to say ``hey Cars-in-general, fill yourself up'' (which is what
 ``\texttt{Car.fillUp()}'' seems to say).
 
+\index{capitalized}
 By the way, notice in the example I just gave, \texttt{johnsMercedes} is
 \textit{not} capitalized. (The capital ``\texttt{M}'' in the middle doesn't
 count; that's just an artifact of CamelCase, which is a way of making multiple
@@ -171,6 +195,8 @@ thoughts betray us.
 \subsubsection{Various ``special'' methods}
 \label{page:instantiateConstructor}
 
+\index{constructor}
+\index{void@\texttt{void}}
 A few of those methods are worthy of special note. The first one listed,
 called simply ``\texttt{Car}'', is a very special kind of method called a
 \textbf{constructor} which we'll be talking about a lot. Here's an iron-clad
@@ -194,6 +220,8 @@ long as those methods have different argument lists, so it can have multiple
 constructors subject to the same conditions. This is a very common practice,
 although in this first example we have only one \texttt{Car} constructor.
 
+\index{underlined}
+\index{numCars@\texttt{numCars()}}
 Also, just as in the second compartment, an \underline{underline} indicates
 that the method ``goes with the whole class, not with each object.'' And just
 as before, this implies the use of the \texttt{static} keyword. A
@@ -205,6 +233,10 @@ to retrieve the number of \texttt{Car} objects that have been instantiated to
 that point. Static methods are quite rare, but they do arise occasionally, and
 are always indicated with an underline.
 
+\index{getter}
+\index{setter}
+\index{mutator}
+\index{accessor}
 The other methods I'll draw your attention to are the ones that begin with
 ``\texttt{get}''. People call these methods ``\textbf{getters},'' and all they
 normally do is return the value of the instance variable in question. Often
@@ -215,6 +247,8 @@ setters \textbf{accessors}, and sometimes specifically call setters
 
 \subsection{Objects in UML}
 
+\index{object}
+\index{state}
 Now let's examine the blue box in Figure~\ref{fig:classObject}, which
 represents an object rather than a class. It has only two compartments, not
 three. That's because there's no need (in most OO languages) to say anything
@@ -226,6 +260,7 @@ picture, you can see that there is a \texttt{Car} object in memory
 representing an old Chevy Malibu with a zillion miles on it and other
 suboptimal features.
 
+\index{names}
 Perhaps the strangest thing about a UML object is the top compartment. Notice
 that it says ``\texttt{:~Car}'' (``colon-Car''), which is not a typo. Here's
 the sitch. The top compartment of a \textit{class} has the class's name, since
@@ -247,6 +282,9 @@ type and its instance variable values.
 
 \subsection{The value of ``design''}
 
+\index{design}
+\index{class diagram}
+\index{blueprint}
 Before we move on to implementation, take a step back for a moment and
 consider the \textit{information} contained in that
 Figure~\ref{fig:classObject}.
@@ -267,6 +305,9 @@ just need to bust out a hammer and some nails.
 
 \section{Classes in Java}
 
+\index{class@\texttt{class}}
+\index{java file@\texttt{.java} file}
+\index{vim@\texttt{vim}}
 In Java, every class is in its own file\footnote{Technically there can be
 some exceptions to this, but don't worry about them now.} named the same as
 the name of the class (including the capital letter) with a \texttt{.java}
@@ -276,6 +317,8 @@ extension. Operationally, we can use \texttt{vim} to create it and edit it:
 $ vim  Car.java
 \end{verbatim}
 
+\index{package@\texttt{package} statement}
+\index{import@\texttt{import} statement}
 % TODO: *Do* we actually talk about "package statements" later?
 The skeleton of any class file -- after the \texttt{package} and
 \texttt{import} statements we'll talk about later -- is the class definition,
@@ -287,6 +330,7 @@ class Car {
 }
 \end{Verbatim}
 
+\index{public@\texttt{public}}
 You may be used to putting the word ``\texttt{public}'' before the word
 \texttt{class} here. For now, we won't do this, and I'll encourage you to
 ditch the habit of making classes \texttt{public} by knee-jerk reaction. As
@@ -295,6 +339,7 @@ until you have reason to do otherwise.
 
 \subsection{Instance variables in Java}
 
+\index{instance variables (inst vars)}
 Instance variables go directly inside the class definition, and outside of any
 method:
 
@@ -309,6 +354,7 @@ class Car {
 }
 \end{Verbatim}
 
+\index{private@\texttt{private}}
 You may be used to seeing the word ``\texttt{private}'' before each instance
 variable, and I do applaud that practice. More on that later. For now, we'll
 leave it off just because it's not necessary to compile. Realize that it's not
@@ -318,6 +364,7 @@ a method.
 
 \subsection{Constructors in Java}
 
+\index{constructor}
 Next on the diagram is our constructor. We put in the boilerplate to get us
 started:
 
@@ -349,6 +396,7 @@ anything when it's being used?''
 
 \subsection{Analyze \texttt{this}}
 
+\index{this@\texttt{this}}
 In our case, initializing the instance variables are all we need to do in the
 constructor. First, let's set the object's \texttt{make} and \texttt{model} to
 what was passed:
@@ -365,6 +413,7 @@ class Car {
 \end{Verbatim}
 \normalsize
 
+\index{Gosling, James}
 If this is the first time you've seen the odd word ``\texttt{this}'' in a
 program, have a good chuckle. What a weird word choice! But Gosling \&
 Co.~chose this word to denote a central OO programming concept. The word
@@ -394,6 +443,7 @@ optional, but in the present case it's required because we named our argument
 the same as the instance variable, and there has to be a way to distinguish
 between the two.
 
+\index{initialization}
 Now for our other inst vars. Some of them make sense to be set to zero:
 
 \begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
@@ -465,6 +515,7 @@ orders, you're providing a service to whoever called you. So when you write a
 method, you have to think, ``okay, some other part of the code is now calling
 me, for reasons of its own. What do I do in response to that?''
 
+\index{client code}
 Our term for ``that other part of the code that is now calling me'' is
 \textbf{client code} (or sometimes just ``a \textbf{client}.'') The word
 ``client'' is used in a lot of different ways in high-tech, but here we just
@@ -472,6 +523,7 @@ mean ``the code that wants to use a particular object.'' The word connotes a
 respected customer, whom we want to treat well. Very well, some client code
 calls one of our methods. How should we react?
 
+\index{state}
 Often we'll react by updating the object's \textbf{state} to reflect what
 should happen to it as a result of the method being called. Sometimes we'll
 produce (return) a value that is stored by the object in question or
@@ -479,6 +531,8 @@ computed on the fly. Other times we'll trigger some side effect, like printing
 to the screen, writing to a database, or calling some \textit{other} method(s)
 on the same or a different object.
 
+\index{implement}
+\index{fillUp@\texttt{.fillUp()}}
 This is best seen through examples. Let's implement\footnote{The verb
 \textbf{to implement} means ``to take a design and actually build it out.'' It
 is a synonym for the verb \textbf{to code}.} the \texttt{.fillUp()} method
@@ -541,6 +595,7 @@ class Car {
 If a client asks me what my model is, I tell them my model, duh. The same is
 true for the other accessor methods.
 
+\index{drive@\texttt{.drive()}}
 Finally, what if a client instructs me to drive $n$ miles? How should my
 internal state be adjusted to reflect that?
 
@@ -572,6 +627,7 @@ attributes of the \texttt{Car}.
 
 \section{Objects in Java}
 
+\index{object}
 We've now coded a class from the ground up (the complete code listing is in
 Figure~\ref{fig:carClassCodePreExceptions}.) We did this so clients can
 instantiate objects of that type and do something with them. Let's make a
@@ -608,6 +664,8 @@ Here's how:
     }
 \end{Verbatim}
 
+\index{new@\texttt{new}}
+\index{instantiate}
 The keyword ``\texttt{new}'' is utterly crucial here. In Java, \textit{the only
 way to instantiate an object is to use \texttt{new}}. It causes a fresh object
 of the appropriate type to spring into existence, complete with memory to hold
@@ -686,6 +744,7 @@ The output we get is:
 Whoa. The word ``\texttt{Car}'' is perhaps not surprising, but what's the rest
 of that gunk?
 
+\index{memory address}
 It turns out that Java's default way of rendering an object as a
 \texttt{String} is to concatenate the name of the class, an ``at'' sign,
 followed by \textit{the memory address} in which it is stored. We'll talk much
@@ -698,6 +757,8 @@ object, like an SSN.
 
 \begin{samepage}
 \label{pg:toString}
+\index{override}
+\index{toString@\texttt{.toString()}}
 The cool thing is, we can \textbf{override} this functionality at will, and
 change the way \texttt{Car}s will be printed. Check it out. Create a method in
 the \texttt{Car} class called \texttt{.toString()}. It must:
@@ -707,6 +768,7 @@ the \texttt{Car} class called \texttt{.toString()}. It must:
 \item be called exactly ``\texttt{.toString()}''.
 \item take no argument.
 \item return a \texttt{String}.
+\index{public@\texttt{public}}
 \item have the word \texttt{public} immediately before the return type. (We'll
 talk a lot about what \texttt{public} means in future chapters. For now, it just has to
 be there.)
@@ -733,6 +795,7 @@ just used a \texttt{Car} object in a context in which a \texttt{String} was
 required, and Java faithfully called our method instead of the one that
 generated the memory address. Pretty cool.
 
+\texttt{inheritance}
 This is actually our first foray into a really deep and powerful technique
 called ``inheritance,'' about which much more will come in later chapters. For
 now, just grasp the idea that Java lets us override its general behavior for
@@ -794,41 +857,3 @@ class Car {
 \caption{A complete Java implementation of the \texttt{Car} class.}
 \label{fig:carClassCodePreExceptions}
 \end{figure}
-%\section{Exercises}
-
-%
-%Use an index card or a piece of paper folded lengthwise, and cover up the
-%right-hand column of the exercises below. Read each exercise in the
-%left-hand column, answer it in your mind, then slide the index card down to
-%reveal the answer and see if you're right! For every exercise you missed,
-%figure out why you missed it before moving on.
-%
-%\begin{small}
-%\begin{enumerate}
-%\newcolumntype{Q}{>{\arraybackslash}m{.3\textwidth}}
-%\newcolumntype{A}{>{\arraybackslash}m{.6\textwidth}}
-%%\begin{longtable}{m{0.3\textwidth} || m{0.6\textwidth}}
-%\begin{longtable}{Q || A}
-%\hline
-%\item 
-%Would \texttt{Tweet} be a good name for a class, an object, or neither one?
-%&
-%A class.
-%\\
-%\hline
-%\item
-%How about \texttt{nextMessage}?
-%&
-%An object.
-%\\
-%\hline
-%\item
-%How about \texttt{Destroy}?
-%&
-%Neither one.
-%\\
-%\hline
-%
-%\end{longtable}
-%\end{enumerate}
-%\end{small}

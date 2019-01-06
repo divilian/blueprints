@@ -161,7 +161,7 @@ a bit looser. Not all files have extensions at all, and when they do, it's
 more a signal that they're intended to be treated a certain way than a
 hard-and-fast requirement.
 
-\index{java files@\texttt{.java} files}
+\index{java files@\texttt{.java} file}
 The most important files you'll work with in this class will have a
 \texttt{.java} extension. These are your Java source files. You'll also work
 with other various supporting files to make all the tools work correctly.
@@ -825,9 +825,9 @@ exists, and type the commands verbatim when prompted.
 \index{virtual machine}
 \index{JVM (Java Virtual Machine)}
 \index{JDK (Java Development Kit)}
-\index{SDK ((Java) Software Development Kit)}
 \index{J2SE (``Java 2 Standard Edition'')}
 \index{JRE (Java Runtime Environment)}
+
 Now, finally to some programming stuff. On your Linux system, the Java
 \textbf{compiler} (\textit{i.e.}, the program that converts your source code
 into the form the computer needs to run it) is called \texttt{javac}, and the
@@ -835,15 +835,15 @@ into the form the computer needs to run it) is called \texttt{javac}, and the
 called \texttt{java}. Both of these are part of the \textbf{JDK}, or ``Java
 Development Kit,'' that you install in order to program in Java.\footnote{Just
 to confuse you, the JDK has sometimes been called the ``Java SDK'' (``Java
-Software Development Kit'') and the ``J2SE'' (``Java 2 Standard Edition'') in the
-past, and you'll likely run across those acronyms as well. To confuse you even
-more, the software you need to simply \textit{run} a Java program (as opposed
-to writing your own) is called the ``JRE'' -- Java Runtime Environment.
-Finally, to confuse you yet further, Java version numbers were originally all
-``one-dot-something'' (like ``Java 1.3'') but in 2004 they ditched the
-``one-dot'' and started naming the versions after the second number alone. (So,
-the successor to ``Java 1.4'' was ``Java 5.'') This book assumes you're on Java
-8.}
+Software Development Kit'') and the ``J2SE'' (``Java 2 Standard Edition'') in
+the past, and you'll likely run across those acronyms as well. To confuse you
+even more, the software you need to simply \textit{run} a Java program (as
+opposed to writing your own) is called the ``JRE'' -- Java Runtime
+Environment. Finally, to confuse you yet further, Java version numbers were
+originally all ``one-dot-something'' (like ``Java 1.3'') but in 2004 they
+ditched the ``one-dot'' and started naming the versions after the second
+number alone. (So, the successor to ``Java 1.4'' was ``Java 5.'') This book
+assumes you're on Java 8.}
 
 
 \index{compiler}
@@ -854,8 +854,8 @@ program:
 $ javac  DestroyGalacticRepublic.java  Bombs.java  SinisterPlans.java
 \end{Verbatim}
 
-\index{java files@\texttt{.java} files}
-\index{class files@\texttt{.class} files}
+\index{java files@\texttt{.java} file}
+\index{class files@\texttt{.class} file}
 \index{main method@\texttt{main()} method}
 which will produce either a \texttt{.class} file for each \texttt{.java} file,
 or compiler errors for you to read. Finally, to run it, you give \texttt{java}
