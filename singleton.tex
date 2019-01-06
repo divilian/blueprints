@@ -5,7 +5,7 @@
 maybe one where nobody ever gets married. But it's actually the name of our
 first (and easiest) \textit{design pattern}, and the subject of this chapter.
 
-\section{Design patterns}
+\section{Design pattern}
 
 You know how when you sit down to write some code, there are times when you
 think, ``wait, I've written this before''? Programmer's d\'{e}j\`{a} vu is
@@ -55,6 +55,7 @@ and this:
 \end{Verbatim}
 \end{samepage}
 
+\index{programming pattern@``programming pattern''}
 I could go on and on. You might think of these as ``programming patterns.''
 They're bite-sized, go-to solutions that can handle a myriad of common little
 programming scenarios.
@@ -63,6 +64,12 @@ It turns out that the same is true of design. Certain motifs in how classes
 collaborate with each other crop up again and again in different settings.
 They're important enough that they've been identified, described, and named.
 
+\index{design pattern}
+\index{Gamma, Erich}
+\index{Vlissides, John}
+\index{Johnson, Ralph}
+\index{Helm, Richard}
+\index{gang of four@the ``Gang of Four''}
 The people who first promoted the idea of \textbf{design patterns} were Erich
 Gamma, John Vlissides, Ralph Johnson, and Richard Helm, who were thereafter
 nicknamed ``The Gang of Four.'' (You'll hear many references in the software
@@ -85,6 +92,8 @@ the \textbf{Singleton} pattern.
 
 \section{The Singleton pattern}
 
+\index{Singleton pattern}
+\index{design pattern!Singleton}
 The Singleton pattern is so simple it almost doesn't even deserve to be called
 a pattern. But it is. And it's easy to figure out when it applies to your
 situation: \textbf{a Singleton is used when you have a class for which you
@@ -99,18 +108,21 @@ special, one-of-a-kind object. Here are some examples:
 \begin{itemize}
 \itemsep.1em
 
+\index{printerManager@\texttt{PrinterManager}}
 \item Part of your operating system may have a \texttt{PrinterManager} class
 that controls sending documents to various printers. The code will create many 
 \texttt{Printer} objects, and many \texttt{Document}s, but only one
 \texttt{PrinterManager} which runs traffic control and routes print jobs to
 available printers.
 
+\index{database@\texttt{Database}}
 \item Your website that collects information about classic rock 'n' roll
 albums may have a \texttt{Database} class that represents the underlying data
 storage. You might get multiple \texttt{Connection}s to it and instantiate
 multiple \texttt{Query} objects to search it, but there's just one
 \texttt{Database} as a point of contact.
 
+\index{configuration@\texttt{Configuration}}
 \item Most programs have some way of configuring them, usually by tweaking the
 values of various configuration variables. Your program could have a
 \texttt{Config\-uration} class from which the other software components can
@@ -120,6 +132,8 @@ to a common set of settings.
 
 \end{itemize}
 
+\index{instantiation}
+\index{global point of access}
 The Singleton pattern does two things: (1) it ensures that only one
 instantiation is possible, and (2) it provides a global point of access to
 that one object, so that the rest of the code can get to it.
@@ -152,6 +166,8 @@ class Configuration {
 }
 \end{Verbatim}
 
+\index{static@\texttt{static}}
+\index{theInstance@\texttt{theInstance}}
 Let's go through each part carefully. First, we have a
 \textit{\texttt{static}} variable called ``\texttt{theInstance}''. Recall that
 \texttt{static} here means ``goes with the class as a whole, rather than with
@@ -163,6 +179,7 @@ to get a hold of \texttt{theInstance} would be to have an instance of
 \texttt{Configuration} in the first place...which would defeat the purpose of
 the pattern.
 
+\index{private@\texttt{private}}
 Note that \texttt{theInstance} is also marked \texttt{private}. This is
 partially because of our rule ``all inst vars should always be private,
 period,'' but also because making this variable accessible outside the class
@@ -171,12 +188,17 @@ the \texttt{Configuration} singleton instance would try to grab
 \texttt{theInstance} and use it, but it might not have even been set to
 anything yet!
 
+\index{instance@\texttt{.instance()}}
 Next, we have the \texttt{instance()} method. This method is also
 \texttt{static}, so that it can be called on the \textit{class} rather than on
 an object. And what does it return? A \texttt{Configuration} object...or
 perhaps I should say, \textit{the} \texttt{Configuration} object since there's
 only ever going to be one.
 
+\index{public@\texttt{public}}
+\index{package visibility}
+\index{thread}
+\index{multithreaded program}
 Unlike \texttt{theInstance}, \texttt{instance()} is public. (Package-level
 visibility is also an appropriate choice, depending on how wide your intended
 users of this Singleton are.) This is part of the public interface of the
@@ -198,6 +220,7 @@ called me, go ahead and instantiate an instance of me, and remember it (in the
 \texttt{theInstance} class variable). Then, return the one-and-only instance
 of me to the caller, to use to their heart's content.''
 
+\index{lazy instantiation}
 This is called \textbf{lazy instantiation}: the only thing that will trigger
 the one-and-only \texttt{Configuration} object being instantiated is the first
 time any other part of the program calls \texttt{Configuration.instance()}. If
@@ -207,6 +230,8 @@ will be instantiated \textit{this time only}. From that point on, all the
 subsequent times \texttt{Configuration.instance()} is called, that same object
 will be returned.
 
+\index{constructor}
+\index{private@\texttt{private}}
 Then we have the constructor. It can do anything that any constructor can do,
 which varies widely depending on what kind of class this is. (For the
 \texttt{Configuration} example, perhaps it looks at the filesystem for a
@@ -235,12 +260,15 @@ such object that will ever exist.) There's no need to set this to anything, or
 to use the word \texttt{new}; we just say ``\texttt{Configuration.instance()}''
 every time we need it.
 
+\index{instance variable (inst var)}
 Other than this scaffolding, the rest of your Singleton class can do anything
 it wants. It will almost certainly have other (non-static) instance variables,
 and other methods to carry out its evil deeds. The ``Singleton part'' is just
 the \texttt{instance()} and \texttt{theInstance} members, together with the
 private constructor.
 
+\index{Factory pattern}
+\index{design pattern!Factory}
 Singleton is often used in conjunction with the Factory pattern, by the way,
 which we will look at in a future chapter.
 
