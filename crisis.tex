@@ -1,6 +1,7 @@
 
 \chapter{The ``software crisis'' and encapsulation}
 
+\index{object-oriented}
 This book is going to dive deeply into a huge pile of nuts and bolts. But
 before we take the leap into particulars, it's important to stand briefly at
 the precipice and understand why we're jumping. What does ``object-oriented''
@@ -8,6 +9,8 @@ mean? What problem was it intended to solve? When was it invented and why?
 
 \section{Ancient history}
 
+\index{software crisis}
+\index{1970@the 1970's}
 A long time ago, in our own galaxy, a situation emerged which has been labeled
 \textbf{the software crisis}. This crisis didn't happen at an instant in time;
 it was a set of disagreeable circumstances which gradually evolved until it
@@ -28,6 +31,8 @@ components, such as system architecture, hardware design and integration, data
 collection and organization, system and network configuration, and software
 development at both the operating system and the end user levels.
 
+\index{software@``software''}
+\index{hardware}
 What managers discovered was that the \textit{software} components of projects
 were consistently coming in late and over-budget. Sometimes, they didn't get
 finished at all. When they did, they were buggy and brittle. And they were
@@ -64,6 +69,9 @@ program of various sizes. (Conceptual.)}
 \label{fig:complexityCurve}
 \end{figure}
 
+\index{complexity}
+\index{LOC (lines of code)}
+\index{KLOC (thousands of lines of code)}
 On the $x$-axis is some measure of the \textit{complexity} of a proposed
 computer program. Now complexity is devilishly difficult to quantify -- League
 of Legends is more complex than Angry Birds, but by how much? Twice as
@@ -91,6 +99,7 @@ in, \textit{etc.} That's okay. The point of this exercise is simply to
 recognize the nature of the curve, showing how these two fuzzy variables were
 related in the '70's.
 
+\index{project managers}
 And a daunting curve it is, too. And very counterintuitive to project
 managers. One would assume that if a 4,000-line program took the development
 team a couple of months to release, an 8,000-line program would take about
@@ -104,11 +113,14 @@ bug, or support a new data format, and you inevitably broke something else
 while making the change. Then you fixed what you broke, but \textit{d'oh!!}
 broke something else by doing so, \textit{etc.}
 
+\index{hardware}
+\index{software@``software''}
 It was miserable, especially because advances in other areas (like hardware)
 were making exciting technologies possible for the first time. Everyone was
 rarin' to go, yet unexpectedly the software (supposedly the easy part) was
 gumming up the works.
 
+\index{maximum complexity@``maximum complexity''}
 For a time, it almost seemed as if the human race had uncovered some built-in
 limitation of the universe, like the speed of light. This hypothetical
 constant might have been called ``maximum complexity,'' meaning the greatest
@@ -120,6 +132,9 @@ expectations.
 
 \section{Software and complexity}
 
+\index{complexity}
+\index{code chunks!code ``chunks''}
+\index{dependency!between code chunks}
 Let's consider a different way to measure a program's complexity than simply
 counting the lines of code. Instead, let's quantify its number of
 \textit{dependencies}.
@@ -129,6 +144,7 @@ of code, constructs like loops or if/else chains, functions, or something even
 bigger) means that \textit{if one of them changes, the other may possibly be
 affected.}
 
+\index{compute\_sales\_tax@\texttt{compute\_sales\_tax()}}
 For instance, suppose I define a function \texttt{compute\_sales\_tax()} to
 take one argument: the price of an item. It will return the sales tax on that
 item as a simple percentage. We'll call that ``code chunk A.'' Now suppose
@@ -146,6 +162,8 @@ different states have different laws about whether and how to collect sales
 tax), that's great and all, \textit{but B immediately breaks} unless we change
 it as well.
 
+\index{dependency!syntactic}
+\index{dependency!logical}
 This example is a syntactic dependency: the compiler will fail when trying to
 compile code chunk B because its parameter list is wrong (\textit{i.e.},
 doesn't match A's). In general, though, not all dependencies are merely
@@ -167,6 +185,9 @@ contain 51.23 because we didn't keep the two chunks of code in sync.
 
 \subsection{Dependencies == complexity}
 
+\index{dependency}
+\index{complexity}
+\index{software crisis}
 Now why do I bring all this up? Because it turns out that the \textit{length}
 of a program was not the cause of the software crisis. Instead, it was
 \textit{the number of dependencies} programs had. That turns out to be a
@@ -181,6 +202,11 @@ dependencies. On the right, there are only 83.}
 \label{fig:dependencies}
 \end{figure}
 
+\index{graph}
+\index{vertex}
+\index{node}
+\index{edge}
+\index{link}
 Consider the two graphs\footnote{A \textbf{graph} in computer science terms is
 a data structure that consists of \textbf{vertices} (or \textbf{nodes}) and
 \textbf{edges} (or \textbf{links}) connecting them. They're often drawn with
@@ -190,10 +216,13 @@ chunk of code. Each line between circles represents a dependency: the two
 chunks of code it connects rely on each other \textit{not} to change, because
 if one of them changes, the other one might break.
 
+\index{spaghetti code}
 The kind of program illustrated by the left-hand graph sometimes goes by the
 name \textbf{spaghetti code}. You can see why just by looking at it.
 Essentially, every line of code potentially depends on everything else.
 
+\index{modular}
+\index{gatekeeper@``gatekeeper''}
 By contrast, the right-hand graph depicts a \textbf{modular} program. It has
 the same amount of functionality -- 35 green circles in each case -- but far
 fewer dependencies between them (only about a third as many). Looking further,
@@ -239,6 +268,8 @@ sizes.}
 \medskip
 \end{figure}
 
+\index{superlinear}
+\index{1970@the 1970's}
 Figure~\ref{fig:dependencyGrowth} quantifies this further, and in fact finally
 gives us the insight we need to understand the cause of the curve in
 Figure~\ref{fig:complexityCurve} (on p.~\pageref{fig:complexityCurve}). If
@@ -254,6 +285,7 @@ increased faster than a straight line would have), and why everyone in the
 large programs.
 
 \section{Encapsulation}
+\index{dependency!between code chunks}
 
 This, then, was the root cause of the software crisis. Larger programs, which
 had more parts, inevitably produced too many interlocking dependencies between
@@ -263,6 +295,7 @@ features didn't take twice as long to construct; it took way more than twice
 as long. And a program with ten times as many features looked plumb out of
 reach.
 
+\index{encapsulation}
 And now finally, the punchline. The way the human race conquered the
 dependency problem, and overcame the software crisis for good, was by means of
 the single most important aspect of object-oriented programming:
@@ -284,6 +317,8 @@ tightly-knit green circles is ``encapsulated'' from the other clusters. That
 isolates them safely behind a gatekeeper such that changing them will
 \textit{not} trigger a chain reaction and require other changes.
 
+\index{cohesive (highly)}
+\index{coupled (loosely)}
 In all the code we write, we want to strive for this. We want to make our
 units of code highly \textbf{cohesive} yet loosely \textbf{coupled}. We want a
 lot of small components (not a few large ones), and we want each component's
@@ -292,11 +327,15 @@ avoid the hell of spaghetti code.
 
 \subsection{OOP's encapsulation solution: the \texttt{class}}
 
+\index{class@\texttt{class}}
 I've been using vague terms like ``chunks'' and ``units'' and ``components''
 to refer to these bits of interacting software. The key innovation of OOP
 (object-oriented programming) was a particular kind of ``unit,'' structured in
 a particular way: the \textbf{class}. It changed the world.
 
+\index{public interface}
+\index{private implementation}
+\index{gatekeeper@``gatekeeper''}
 We'll be talking lots and lots about classes throughout this book. Every
 single line of code we write, in fact, will be part of a class. For now, I
 want you to imagine a class as being comprised of two parts: a \textbf{public
@@ -343,6 +382,9 @@ you a glimpse of some of the features of this paradigm shift:
 \begin{enumerate}
 \itemsep.1em
 
+\index{abstraction}
+\index{function}
+\index{procedural programming}
 \item \textbf{A higher level of abstraction.} Before OOP, encapsulation was
 already sort of a thing, since ordinary \textbf{functions} gave programmers a
 way to group code chunks together into cohesive bits. In this old-style of
@@ -355,6 +397,8 @@ abstraction'' means you have larger, coarser-grained, more powerful pieces
 with which to assemble your whole. It's like building a story out of whole
 paragraphs instead of out of individual words or letters.
 
+\index{noun}
+\index{verb}
 \item \textbf{Nouns, not verbs.} An old-school function is conceptually a
 verb: it represents a command to \textit{do} something. As we'll see, a class
 is conceptually a noun: it has the ability to \textit{be} something. Thus,
@@ -364,6 +408,8 @@ first do this, then that, then print the output -- as about what you want to
 system? OOP is about building a representation of a world, rather than giving
 instructions.
 
+\index{struct@\texttt{struct}}
+\index{C++}
 \item \textbf{Data and behavior \textit{together}.} Before the object-oriented
 paradigm shift, programmers specified their data separately from the code that
 operated on that data. They did this deliberately. In a C++ header file,
@@ -373,6 +419,8 @@ files, they'd have lots of functions that used various of these structures.
 The ``openness'' of all this -- any function, anywhere, could see and refer to
 any field of any data structure -- was thought to be an advantage.
 
+\index{sword}
+\index{sweater}
 After many years of painful discovery, it turned out this isn't the right way
 to do it at all. Instead, you want the opposite. The data associated with a
 particular type of entity (be it a friend request, a sweater, or a magic
@@ -384,6 +432,10 @@ data needed to characterize instances of that entity and the operations that
 can be performed on those instances. The two are defined right next to each
 other and maintained in lock-step.
 
+\index{code reuse}
+\index{linked list}
+\index{binary search tree}
+\index{heapsort}
 \item \textbf{Code reuse.} I'm old enough that I remember when ``code reuse''
 was absolutely a pipe dream. People would think, ``okay, I need a linked list
 (or a heapsort algorithm, or a binary search tree, or...), and surely zillions
@@ -402,6 +454,10 @@ other stuff irrelevant to your purpose. You had to understand it enough to
 gingerly insert it into multiple places in your own files, hoping it could
 peacefully co-exist alongside your own code. The chances of this were low.
 
+\index{library}
+\index{encapsulation}
+\index{dependency!between code chunks}
+\index{Legos}
 Nowadays, code reuse is absolutely the standard. If you're writing a program
 these days, you should only write about 20\% of the code yourself; the rest
 should come from standard libraries or other public sources. You can just grab
@@ -425,29 +481,3 @@ through.
 %Doesn't it just come for free? No. Programmer's tendencies is always to
 %un-encapsulate.
 
-
-% \section{Exercises}
-% 
-% Use an index card or a piece of paper folded lengthwise, and cover up the
-% right-hand column of the exercises below. Read each exercise in the
-% left-hand column, answer it in your mind, then slide the index card down to
-% reveal the answer and see if you're right! For every exercise you missed,
-% figure out why you missed it before moving on.
-% 
-% \begin{small}
-% \begin{enumerate}
-% \newcolumntype{Q}{>{\arraybackslash}m{.3\textwidth}}
-% \newcolumntype{A}{>{\arraybackslash}m{.6\textwidth}}
-% %\begin{longtable}{m{0.3\textwidth} || m{0.6\textwidth}}
-% \begin{longtable}{Q || A}
-% \hline
-% \item 
-% What key software problem was the OO paradigm invented to address?
-% &
-% Too many dependencies.
-% \\
-% \hline
-% 
-% \end{longtable}
-% \end{enumerate}
-% \end{small}
