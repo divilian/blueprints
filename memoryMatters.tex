@@ -15,6 +15,7 @@ paper. This is how novices think about programs: they look at the lines of
 code, and ask themselves whether lines need to be added, removed, changed, or
 moved.
 
+\index{memory}
 The other way is to think about what happens to the computer's \textbf{memory}
 as the program runs, and how its variables and structure change as the program
 unfolds. Whether they realize it or not, this is how all proficient
@@ -26,6 +27,8 @@ memory.
 
 \section{Memory diagrams}
 
+\index{memory diagram}
+\index{snapshot}
 The focal point of this chapter will be the \textbf{memory diagram}, which
 incorporates the UML object representations we discussed in
 section~\ref{sec:UMLclasses}. A memory diagram depicts the contents of the
@@ -35,6 +38,10 @@ It would give you the exact state of the system at that moment.
 
 \subsection{The stack and the heap}
 
+\index{stack@the stack}
+\index{heap@the heap}
+\index{memory!statically-allocated}
+\index{memory!dynamically-allocated}
 A program's memory, it turns out, is divided into two realms with funny names:
 ``\textbf{the stack}'' and ``\textbf{the heap}.'' It is vital to understand the
 difference between the two, and which one is used for what. The stack contains
@@ -47,6 +54,7 @@ first let me show you a full list of differences:
 \textbf{stack} & \textbf{heap} \\
 \hline
 statically-allocated & dynamically-allocated \\
+\index{names}
 contains named things & contains unnamed things \\
 contains primitive types and references & contains objects\footnote{This is
 true in Java, but C++ permits programmers to store objects on the
@@ -54,6 +62,7 @@ true in Java, but C++ permits programmers to store objects on the
 that is a large part of what makes programming in C++ difficult: you have to
 account for that happening, which requires a ton of tedious and error-prone
 bookkeeping.} \\
+\index{lifespan}
 items have a limited lifespan & items have an unlimited lifespan\footnote{Not
 completely unlimited, but things on the heap stick around as long as they're
 needed, rather than evaporating at the end of their current function.} \\
@@ -84,6 +93,7 @@ Figure~\ref{fig:stackHeap1}. Let's go through it carefully.
 \label{fig:stackHeap1}
 \end{figure}
 
+\index{primitive type}
 The first line of \texttt{illustration()} creates a simple integer variable
 and sets it equal to 2018. Since an \texttt{int} is a \textbf{primitive
 type}\footnote{If you've never heard this lingo, a ``primitive type'' is one of
@@ -95,6 +105,8 @@ code executed, nothing existed in the program's memory at all, so the stack
 was nothing but a bare floor (think of it as a horizontal line). Our first
 variable goes right on top of that floor.
 
+\index{reference variable}
+\index{variable, reference}
 There's a ton packed into that second line of code, so hold on to your seats.
 The first thing to realize is that \textit{it encompasses both stack and
 heap.} We have a named \textbf{reference variable} called \texttt{minivan},
@@ -120,6 +132,7 @@ currently referring to.
 %
 %\subsubsection{(...okay, back to work...)}
 
+\index{names}
 Okay, now a head-scratcher. Look at Figure~\ref{fig:stackHeap1} again. What
 would you answer if I asked you, ``what's the \textit{name} of that blue
 object?''
@@ -146,6 +159,7 @@ void illustration() {
 \label{fig:additionalCode}
 \end{figure}
 
+\index{car@\texttt{Car}}
 Let's deal with the first two of these lines. The first one creates a new
 reference variable called \texttt{other} on the stack, and points it to a
 brand new \texttt{Car} object (unrelated to our Toyota Sienna) in the heap.
@@ -219,6 +233,7 @@ listing~\ref{fig:additionalCode}.}
 \label{fig:stackHeap3}
 \end{figure}
 
+\index{lifespan}
 Let me conclude this example by explaining what I meant earlier about
 ``limited lifespans.'' After executing the ``\texttt{other = t;}'' line, we are
 done with the function. It's time to return control to whoever called
@@ -242,6 +257,7 @@ It's a short but happy life.
 
 \section{Calling functions}
 
+\index{function}
 One thing our previous example didn't include was calling a function or
 method. In this section, we'll see what happens to memory when we do this.
 There will probably be a few eye-openers for you.
@@ -249,6 +265,7 @@ There will probably be a few eye-openers for you.
 First, take a look at our code listing (Figure~\ref{fig:functionCode}). We'll
 switch from an automotive domain to part of a baseball simulator.
 
+\index{ballplayer@\texttt{Ballplayer}}
 \begin{figure}
 \centering
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
@@ -314,6 +331,8 @@ them as primitive types on the stack. That's what we'll always do with
 
 \subsubsection{Null references and NPEs}
 
+\index{null pointer (or reference)}
+\index{null@\texttt{null}}
 The next new thing is that bizarre symbol next to \texttt{oldGeezer}.
 \textit{Whazzat?} If you look at the code listing, you'll see that we
 declare a variable of type \texttt{Ballplayer} named \texttt{oldGeezer}, but
@@ -339,6 +358,7 @@ realize that at this point, if you attempted to call \textit{any} method on
     oldGeezer.strikeout();
 \end{Verbatim}
 
+\index{NPE (null pointer exception)}
 you will then be hit with the most ubiquitous of all Java
 run-time errors, the \textbf{null-pointer exception} (or ``\textbf{NPE}''):
 
@@ -360,6 +380,8 @@ uninitialized, null reference. Guaranteed.
 
 \subsubsection{Stack frames}
 
+\index{stack frame}
+\index{recursion}
 The last new thing in Figure~\ref{fig:bpStackHeap1} is easy to miss: it's the
 word \texttt{main()} off on the left-hand side of the diagram. What this means
 is that \textit{all the variables to the right of it ``belong'' to the
@@ -393,6 +415,7 @@ function. And that defeats most of the purpose of even having a function.
 
 Okay, now the big moment. We run this line:
 
+\index{buildDaTeam@\texttt{buildDaTeam()}}
 \begin{Verbatim}[fontsize=\small,samepage=true]
         ArrayList yankees = buildDaTeam();
 \end{Verbatim}
@@ -410,6 +433,8 @@ have nothing whatsoever to do with each other. As long as
 \texttt{buildDaTeam()} has control, ``\texttt{year}'' means \textit{the top
 year}, in \texttt{buildDaTeam()}'s stack frame.
 
+\index{null@\texttt{null}}
+\index{instantiation}
 In the third line, we create our first heap object of the entire program. It
 is created (as all objects are created) with the \texttt{new} keyword. This
 newly instantiated thing is an \texttt{ArrayList}, and we'll draw it as
@@ -420,12 +445,11 @@ potential to point to an object.\footnote{You may be more used to seeing
 actually is a better choice. When we declare something as type
 ``\texttt{ArrayList<Ballplayer>}'' we're saying ``Java, please prevent me from
 storing anything in this \texttt{ArrayList} \textit{except}
-\texttt{Ballplayer}s.'' Not only does this give us good compile-time checking,
-but it allows us to retrieve elements from the list without having to
-explicitly cast them to type \texttt{Ballplayer} before using them.} Currently
-none of them do so, and therefore the diagram shows the \texttt{null} symbol
-for each.
+\texttt{Ballplayer}s.'' See section~\ref{sec:generics} for more details.}
+Currently none of them do so, and therefore the diagram shows the
+\texttt{null} symbol for each.
 
+\index{snapshot}
 Freeze! The program's memory now looks like Figure~\ref{fig:bpStackHeap2}.
 Run your eyeballs over it and make sure you understand every box and line.
 
@@ -450,6 +474,7 @@ lines:
         ...
 \end{Verbatim}
 
+\index{instantiation}
 instantiate a new \texttt{Ballplayer} object (on the heap, of course) and set
 it to some initial values. You need a little imagination to envision what the
 \texttt{Ballplayer} class does in response to these method calls, but only a
@@ -477,6 +502,7 @@ to get another one. Then, we do this:
         ...
 \end{Verbatim}
 
+\index{new@\texttt{new}}
 which you know by now does \textit{not} instantiate a new object. (After all,
 there's no \texttt{new}.) Instead, the first line \textit{points the new
 variable \texttt{babe} at the same object \texttt{ruth} is currently pointing
@@ -523,12 +549,14 @@ And now, we're ready to polish off this bad boy.
     }
 \end{Verbatim}
 
-
+\index{return@\texttt{return}}
 That ``\texttt{return}'' statement packs a wallop. When the function is
 completed, two huge things happen. First, the function's stack frame
 \textit{is entirely wiped out.} Like, off the face of the planet. Every single
 variable in there is irrevocably deleted and never mentioned again.
 
+\index{stack@the stack}
+\index{heap@the heap}
 When students first hear this, they're sometimes dismayed -- ``what's the
 point of calling a function then, if every single thing it creates is erased?''
 Ahhhh...but they're only thinking of the \textit{stack}, not the heap. The
@@ -537,6 +565,7 @@ said earlier, they are the reason the function existed in the first place.
 Almost all functions' sole job is to inspect or manipulate the heap in some
 way.
 
+\index{stack frame}
 When I say the stack frame is wiped out, here's what's wiped out: (1) all the
 named variables in the stack frame, (2) all the primitive type values in the
 stack frame (green boxes), (3) all the arrows emanating from the stack frame's
@@ -544,6 +573,7 @@ reference variables, (4) the word on the side of the diagram that names the
 function, and even (5) the horizontal line that separates it from the stack
 frame below.
 
+\index{lifespan}
 The result is that the top stack frame gets vaporized, leaving
 \texttt{main()}'s stack frame open to the outside air. And that is exactly
 what we want, because it's \texttt{main()}'s turn to take over now. Note that
@@ -557,6 +587,7 @@ lifespan, you'll remember.
 \label{fig:bpStackHeapFinal}
 \end{figure}
 
+\index{return@\texttt{return}}
 The other thing the \texttt{return} statement does, of course, is put the
 function's return value in the proper place, just before it's nuked. In this
 case, since our original line of code was:
@@ -577,6 +608,8 @@ dutifully and quietly, and \texttt{main()} gets to reap the result.
 
 \subsection{Calling a function from a function}
 
+\index{function}
+\index{stack frame}
 By the way, this point is probably obvious by now, but let me clarify anyway:
 if you call a function, and that function \textit{itself} calls
 \textit{another} function, the same thing happens. The second function gets
@@ -586,6 +619,8 @@ stack frames. When the second function returns, its stack frame disappears and
 the first function becomes active; and when the first function returns,
 \textit{its} stack frame disappears and \texttt{main()} becomes active.
 
+\index{stack@the stack!pushing on}
+\index{stack@the stack!popping off}
 The terminology we use to describe this is somewhat obscure: when we create a
 new stack frame for a newly-called function we call it \textbf{pushing} a new
 frame on the stack. When we return, and get rid of it, we call it
@@ -601,12 +636,16 @@ program operates. It's how your program breathes.
 
 \section{Calling methods}
 
+\index{method}
+\index{this@\texttt{this}}
 The mechanics of calling a function are just the same as when calling a
 method, except for one thing: \texttt{this}. It turns out that when you call a
 method on an object, you're adding one more thing to the stack: a reference to
 the object the method was called on. And that, of course, is precisely what
 ``\texttt{this}'' means.
 
+\index{ballplayer@\texttt{Ballplayer}}
+\index{batting average}
 Let's pan over to a different part of our fictitious baseball simulator: the
 \texttt{Ballplayer} class itself. Part of the code for it is in
 Figure~\ref{fig:BallplayerCode}.\footnote{Apologies to non-baseball fans. All
@@ -648,7 +687,9 @@ class Ballplayer {
 \label{fig:BallplayerCode}
 \end{figure}
 
-
+\index{pitcher@\texttt{Pitcher}}
+\index{face@\texttt{.face()}}
+\index{KO (strikeout)}
 We're going to have a different class for pitchers, since they have different
 stats (see Figure~\ref{fig:PitcherCode}).\footnote{Here, we're going to model
 each pitcher as having a ``\texttt{koDominance}'' (``KO'' is baseball lingo for
@@ -689,6 +730,9 @@ class Pitcher {
 \label{fig:PitcherCode}
 \end{figure}
 
+\index{static@\texttt{static}}
+\index{random number generation}
+\index{Random.nextDouble@\texttt{Random.nextDouble()}}
 One item of note is the \texttt{static} variable \texttt{rng}, which stands
 for \textbf{r}andom \textbf{n}umber \textbf{g}enerator. It's an instance of
 the \texttt{java.util.Random} class, which the Java API provides to roll
@@ -697,6 +741,7 @@ random numbers. Every time you call \texttt{.nextDouble()} on a
 sense for this to be a \texttt{static} variable, since the random number
 generator itself is an object that all objects will share and use.
 
+\index{face@\texttt{.face()}}
 The specifics of the \texttt{.face()} algorithm aren't important to
 understand. What is important is what happens in memory as this method is
 called. Let's say our \texttt{main()} has the code in
@@ -756,6 +801,7 @@ attention to two crucial aspects of this diagram:
 
 \begin{enumerate}
 \itemsep.1em
+\index{this@\texttt{this}}
 \item First, notice we have a visitor. On the stack frame, in addition to the
 other expected variables, is none other than ``\texttt{this}''. Realize that
 \texttt{this} is really just a reference variable like any other. What does it
@@ -803,6 +849,8 @@ is like trying to drink coffee with a fork.''
 \label{fig:pitcherStackHeapFinal}
 \end{figure}
 
+\index{pass-by-value}
+\index{pass-by-reference}
 The last diagram of the chapter, Figure~\ref{fig:pitcherStackHeapFinal}, shows
 the situation when we return to \texttt{main()}. It's important not to miss
 the main point here: both objects (\texttt{Pitcher} and \texttt{Ballplayer})
