@@ -2,6 +2,8 @@
 \chapter{UML class diagrams}
 \label{ch:classDiags}
 
+\index{dynamic (view of memory)}
+\index{static (view of memory)}
 We spent last chapter discussing the \textbf{dynamic} view of a program: what
 happens to memory, step by step, as it unfolds. In this chapter, we'll switch
 to a \textbf{static} view: long-term, what are the program's classes, methods,
@@ -17,6 +19,8 @@ contents of memory changing as the program runs''; and by ``static'' we mean
 it might be behaving at any moment, which include its classes, methods, and
 associations.''}
 
+\index{class diagram}
+\index{blueprint}
 If there's a type of UML diagram that deserves the name ``blueprint,'' it's the
 \textbf{class diagram}. Class diagrams depict a high-level, stable perspective
 of a software system. When you want to figure out how a large OO program
@@ -28,6 +32,7 @@ specific meaning. We'll cover each in turn.
 
 \section{Classes}
 
+\index{class@\texttt{class}}
 Unlike memory diagrams, which depict objects, class diagrams contain classes
 (duh). We've already seen what a single class looks like in
 section~\ref{sec:UMLclasses} (\textit{e.g.}, the left side of
@@ -35,6 +40,7 @@ Figure~\ref{fig:classObject}.) Most class diagrams contain many such classes.
 Recall that each class has three compartments, containing the class's name,
 its inst vars, and its methods, in that order.
 
+\index{car@\texttt{Car}}
 By the way, one flexible (yet slightly annoying IMO) aspect of UML is that it
 allows \textbf{varying levels of detail}. In other words, on a particular
 diagram, you may or may not want to show all the instance variables and
@@ -61,6 +67,7 @@ on this particular diagram? No way to really know.
 
 \section{Associations}
 
+\index{association}
 Perhaps the most important bits of information on a class diagram are the
 \textbf{association}s between classes. An association means that two classes
 collaborate together in some way to achieve some larger purpose. It is
@@ -80,6 +87,7 @@ to work.
 
 \subsection{Dependency associations}
 
+\texttt{dependency!dependency association}
 Figure~\ref{fig:assocArrows} shows some of the UML association arrows and
 their meaning. (There are others we'll get to in future chapters.) The dashed
 line with a crow's foot arrowhead is called a \textbf{dependency}, and is the
@@ -97,6 +105,7 @@ on} a \texttt{B} object.
 \texttt{B} class.
 \end{compactitem}
 
+\index{public interface}
 The word \textbf{interface} -- like stack, heap, dynamic, static, and many
 other computer science words -- has multiple meanings. We'll talk about the
 Java \texttt{interface} keyword later in the book. For now, when I say
@@ -106,6 +115,7 @@ with their argument lists and return types. Specifically, the interface does
 \textit{not} include the method implementations (the bodies of the methods),
 nor the instance variables.
 
+\index{scissorKick@\texttt{.scissorKick()}}
 If you think about it, you'll realize why the above two bullet points are
 actually equivalent. Suppose some class \texttt{A} method has this line of
 code in it: ``\texttt{String s = B.scissorKick(15)}''. Then clearly the code in
@@ -121,6 +131,7 @@ and returns a \texttt{String}. If any of that ever changed in the
 \label{fig:dependencyExamples}
 \end{figure}
 
+\index{stereotype}
 The strange-looking words adjacent to the dependency arrows in
 Figure~\ref{fig:assocArrows} go by the even stranger-sounding term
 \textbf{stereotypes}. A stereotype in UML is an extra bit of information that
@@ -129,6 +140,8 @@ class, method, or other element) by making its meaning more precise.
 Stereotypes are usually displayed enclosed by double-wakkas
 (``$\ll$...$\gg$'').
 
+\index{uses@``uses'' stereotype}
+\index{instantiates@``instantiates'' stereotype}
 In the case of dependency associations, the stereotype ``$\ll$uses$\gg$'' means
 pretty much what a dependency always means: that the designer intends class
 \texttt{A} to ``use'' (\textit{i.e.}, get its hands on, and call method(s) on)
@@ -137,6 +150,9 @@ bit further, and implies that some method of \texttt{A} will
 \textit{instantiate} \texttt{B} objects in addition to merely calling methods
 on them.
 
+\index{Dungeons \& Dragons}
+\index{battle@\texttt{Battle}}
+\index{die@\texttt{Die}}
 The examples in Figure~\ref{fig:dependencyExamples} are from a Dungeons \&
 Dragons type combat simulator. A \texttt{Battle} object represents a fight
 between adventurers and monsters. While simulating this fight, a
@@ -145,6 +161,8 @@ objects to roll random numbers that determine the outcome. This is a
 ``$\ll$uses$\gg$'' association, since \texttt{Battle}'s code now depends on
 \texttt{Die}'s interface not changing.
 
+\index{wizard@\texttt{Wizard}}
+\index{ranged spell@\texttt{RangedSpell}}
 Elsewhere in the program, wizards sometimes cast ranged spells, like fireballs
 or lightning bolts, to damage distant enemies. In the simulator, a
 \texttt{Wizard} object might therefore instantiate a \texttt{RangedSpell}
@@ -154,6 +172,8 @@ code there will be a ``\texttt{new RangedSpell()}'' line, we say that
 
 \subsubsection{Dependencies in code}
 
+\index{dependency association}
+\index{uses@``uses'' stereotype}
 Now what would we expect to see in the code that would reflect this kind of
 association? In the ``$\ll$uses$\gg$'' case, we expect to see one or more
 methods of the \texttt{A} class making method calls on \texttt{B} objects.
@@ -176,6 +196,7 @@ The design diagram doesn't specify exactly what \texttt{A} method will be
 called where, just that method calls are expected. This communicates something
 important to the programmer.
 
+\index{instantiates@``instantiates'' stereotype}
 For ``$\ll$instantiates$\gg$'', we'd expect to see the word \texttt{new}
 somewhere in \texttt{A}:
 
@@ -196,10 +217,14 @@ class Wizard {
 
 \subsection{``Has-a'' associations}
 
+\index{hasa association@``has-a'' association}
+\index{association!has-a@``has-a''}
 The next strongest type of association has a bizarre name: it's called
 ``\textbf{has-a}.'' We denote it with a solid arrow between classes, with a
 crow's foot on one side or both.
 
+\index{instance variable (inst var)}
+\index{collection}
 When class \texttt{A} has-a class \texttt{B}, that is nearly always a signal
 to the programmer that \texttt{A} should have an \textit{instance variable} of
 type \texttt{B}.\footnote{Or perhaps a \textbf{collection} of \texttt{B}
@@ -209,6 +234,7 @@ methods on a \texttt{B} (as in the dependency association), but an \texttt{A}
 object actually holds on to one (or more) \texttt{B} objects for the
 long-haul.
 
+\index{pizza@\texttt{Pizza}}
 Now in some cases, the ``has-a'' verbiage makes perfect sense. If our Domino's
 Pizza delivery manager application had a \texttt{Pizza} class and a
 \texttt{Topping} class, it would be no-brainer to say that every
@@ -229,6 +255,7 @@ association in Java.}
 \label{fig:wrongRightHasA}
 \end{figure}
 
+\index{containment}
 The key is making sure you have the right mental model.
 Figure~\ref{fig:wrongRightHasA} shows both the wrong, and the right, way to
 envision a has-a relationship (at least, in Java). In memory, there is
@@ -241,6 +268,8 @@ and I daresay it's not problematic at all to think of a \texttt{Pizza}
 \texttt{Pizza} object ``knows about'' a \texttt{DeliveryCar}, which is the
 particular car that's delivering it.
 
+\index{navigability}
+\index{association!bidirectional}
 Another reason that the correct mental model of ``has-a'' is important is that
 it is possible, and even common, for the association to go \textit{both ways}.
 We use the term \textbf{navigability} for the question ``which direction does
@@ -287,6 +316,7 @@ redundant, and is considered an error (see Figure~\ref{fig:wrongHasA}).
 \pagebreak
 \subsubsection{``Has-a'' associations in code}
 
+\index{hasa association@``has-a'' association}
 Obviously instance variables are how ``has-a'' associations are manifested in a
 Java program. For \texttt{Pizza} and \texttt{Topping}, we'd see:
 
@@ -298,6 +328,7 @@ class Pizza {
 }
 \end{Verbatim}
 
+\index{association!bidirectional}
 and for our bidirectional \texttt{Driver}/\texttt{DeliveryCar}, we'd see both
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 class Driver {
@@ -333,12 +364,15 @@ More on that later.
 
 \subsection{Aggregation associations}
 
+\index{association!aggregation}
+\index{aggregation association}
 Continuing on towards the ``stronger'' end of the association continuum, an
 \textbf{aggregation} implies exclusive ownership of the object(s) in question.
 In other words, if \texttt{A} aggregates \texttt{B}, not only does it mean
 that \texttt{A} has an instance variable of type \texttt{B}, but that
 \textit{no other \texttt{A} object also has that \texttt{B}.}
 
+\index{object}
 This is frequently misinterpreted, so let me expand on that. The
 ``exclusivity'' thing is a statement about \textit{objects}, not classes. If
 \texttt{A} aggregates \texttt{B}, that does \textit{not} mean that no other
@@ -353,16 +387,21 @@ if a particular \texttt{B} object is pointed to by an \texttt{A} object, no
 \label{fig:aggregationAssoc}
 \end{figure}
 
+\index{diamond!white ($\lozenge$)}
 Examples appear in Figure~\ref{fig:aggregationAssoc}. Note that the diamond
 appears on the ``aggregator'' side; \textit{i.e.}, adjacent to the class that
 will have the instance variable.
 
+\index{professor@\texttt{Professor}}
+\index{student@\texttt{Student}}
 In the first example, for a Banner-like college enrollment management system,
 each \texttt{Professor} will teach some number of \texttt{Section}s in a given
 semester. If Professor Jones is assigned to teach section 03 of BIOL 121, then
 no \textit{other} professor is also assigned to that section. That's what the
 white diamond communicates.
 
+\index{photo@\texttt{Photo}}
+\index{album@\texttt{Album}}
 In the second example, from a Facebook-like social networking site, users can
 arrange their \texttt{Photo}s into \texttt{Album}s. As indicated on this
 diagram, a given \texttt{Photo} is \textit{not} intended to simultaneously
@@ -372,6 +411,7 @@ get rid of our white diamond and use a plain-old ``has-a'' arrow instead.)
 
 \subsubsection{Aggregations in code}
 
+\index{hasa association@``has-a'' association}
 Aggregation is intended to imply some sort of collection or ownership
 relationship between the two classes. However, in terms of the Java code that
 you initially write, \textit{there is no immediate difference between an
@@ -385,6 +425,11 @@ otherwise would.
 
 \subsection{Composition associations}
 
+\index{association!composition}
+\index{composition}
+\index{lifespan}
+\index{dependency!lifespan}
+\index{diamond!black ($\blacklozenge$)}
 The last association type we'll cover, and the most tightly-binding between
 classes, is called \textbf{composition}. It's a lot like aggregation (even the
 diamond syntax is the same, except it's black) but with one difference. With
@@ -401,6 +446,8 @@ cease to exist.
 \end{figure}
 
 
+\index{profile@\texttt{Profile}}
+\index{user@\texttt{User}}
 Consider the examples in Figure~\ref{fig:compositionAssoc}. In this social
 networking site, every \texttt{User} has a \texttt{Profile}. That
 \texttt{User} is the \textit{only} one with that particular profile (hence
@@ -411,6 +458,8 @@ deletes their account, it wouldn't make sense to have a disembodied
 well. This lifespan connection is really the only difference between the white
 diamond and the black.
 
+\index{email@\texttt{Email}}
+\index{attachment@\texttt{Attachment}}
 On the right-hand side is an example from some kind of email reader
 application (like Outlook, gmail, or Thunderbird). A user can compose an
 \texttt{Email} with some text and a list of recipients, and then add
@@ -429,6 +478,7 @@ she will write the code with this in mind.
 
 \subsection{Association annotations}
 
+\index{annotation}
 As if all this weren't enough, there are also a couple more syntactic things
 to learn about UML associations. An \textbf{annotation} is another mark on
 part of a diagram that gives more detail about how it is to be understood or
@@ -438,11 +488,15 @@ arrowheads to indicate navigability. We'll learn two more in this section.
 
 \subsubsection{Multiplicity}
 
+\index{multiplicity}
 The \textbf{multiplicity} of an association indicates \textit{how many}
 objects are involved in each concrete relationship. It's important to realize
 that even though multiplicity is shown on a class diagram, it's really a
 statement about \textit{objects}.
 
+\index{license@\texttt{License}}
+\index{association!one-to-one}
+\index{one-to-one association}
 Let's start with the left-most example in Figure~\ref{fig:multiplicity}. There
 we have two classes from a DMV software system, connected with a ``has-a''
 association between \texttt{Driver} and \texttt{License}, navigable both ways.
@@ -459,6 +513,11 @@ sensibly enough.
 \label{fig:multiplicity}
 \end{figure}
 
+\index{star ($\star$)}
+\index{association!one-to-many}
+\index{one-to-many association}
+\index{adventurer@\texttt{Adventurer}}
+\index{weapon@\texttt{Weapon}}
 In the center example, on the other hand, we have a ``$\star$'' on the side of
 the arrow that connects to \texttt{Weapon}. In UML, the symbol ``$\star$''
 means \textbf{zero or more}. So here's how we interpret this
@@ -471,6 +530,10 @@ aware of which \texttt{Adventurer} owns them. This knowledge (or lack thereof)
 is perfectly okay, and does not invalidate the meaning of the \textbf{1} or
 the $\star$ in the slightest.
 
+\index{association!many-to-many}
+\index{many-to-many association}
+\index{course@\texttt{Course}}
+\index{transcript@\texttt{Transcript}}
 Finally, on the right side, we have a \textbf{many-to-many association}
 between \texttt{Tran\-script} and \texttt{Course}. This says that every
 \texttt{Transcript} object is associated with potentially multiple
@@ -480,6 +543,8 @@ than one \texttt{Transcript}. Navigability-wise, in this example
 whereas \texttt{Course} objects don't know which \texttt{Transcript}s they
 appear on (if any).
 
+\index{zero or more (0..$\star$)}
+\index{one or more (1..$\star$)}
 You'll occasionally see more elaborate multiplicity notations on class
 diagrams. The notation ``\textbf{0..$\star$}'' means ``zero or more''...which is
 of course exactly what plain old ``$\star$'' means. The only reason for a
@@ -501,6 +566,12 @@ language like Java.
 
 \subsubsection{Multiplicity in code}
 
+\index{instance variable (inst var)}
+\index{driver@\texttt{Driver}}
+\index{license@\texttt{License}}
+\index{adventurer@\texttt{Adventurer}}
+\index{weapon@\texttt{Weapon}}
+\index{collection}
 So what does all this look like in code? Well, first remember that inst vars
 are only used in the direction(s) along which the association is navigable.
 For Figure~\ref{fig:multiplicity}, this means that only \texttt{Driver},
@@ -536,6 +607,7 @@ faithful to the design, neither choice is right or wrong.
 
 \subsubsection{Roles}
 
+\index{role}
 Our last type of association annotation has to do with \textbf{roles}.
 Sometimes, a design will be specific not only about the \textit{existence} of
 the association between two classes, and about which-knows-about-which, and
@@ -551,6 +623,8 @@ abstract, but some examples will make it clearer.
 \label{fig:roles}
 \end{figure}
 
+\index{hero@\texttt{Hero}}
+\index{villain@\texttt{Villain}}
 The upper-left example in Figure~\ref{fig:roles} shows a piece of a Marvel
 comic book database application. We have \texttt{Hero} and \texttt{Villain}
 classes, and a one-to-one association between them...but what does the
@@ -559,11 +633,13 @@ does that mean that \texttt{X} has recently beaten up \texttt{Y}? That
 \texttt{X} admires \texttt{Y}? That \texttt{X} secretly \textit{is}
 \texttt{Y}, unbeknownst to the public?
 
+\index{archnemesis}
 The word ``archnemesis'' next to the \texttt{Villain}-side of the arrow spells
 it out. It's called a \textbf{role name}. It tells us that in this
 relationship, the role that the \texttt{Villain} plays with respect to the
 \texttt{Hero} is that the former is the archenemy of the latter.
 
+\index{twitteruser@\texttt{TwitterUser}}
 Moving to the right side of the diagram, we have an interesting situation
 involving only one class: \texttt{TwitterUser}. This class apparently has an
 association to itself! This turns out not to be as weird as it might seem. In
@@ -583,6 +659,8 @@ according to the design, a \texttt{TwitterUser} object is aware of what other
 he/she follows. If the design team decided they needed to track that
 separately, they'd need another arrowhead on the top side of the line.
 
+\index{student@\texttt{Student}}
+\index{professor@\texttt{Professor}}
 Finally, the bottom example illustrates two \textit{different} associations
 between the same two classes. This can happen as well. In this case, there are
 two distinct roles that \texttt{Professor}s play with respect to
@@ -608,15 +686,14 @@ since those names were handed to us on a silver platter in the design diagram.
 
 \section{Visibility}
 
-% TODO: reference encapsulation chapter.
-
+\index{visibility}
 The other parts of UML class diagrams that we'll annotate with extra
 information will indicate the level of \textbf{visibility} that the designer
 intends the various inst vars, methods, and even classes to possess.
-Visibility has to do with promoting \textbf{encapsulation}, perhaps the most
-important of all OO principles, which will be the subject of an entire future
-chapter. For now, let me just give you the syntax and the operational
-implications of the different visibility levels.
+Visibility has to do with promoting \textbf{encapsulation}, the most important
+of all OO principles as we learned in Chapter~\ref{ch:encapsulation}. Let's
+look at the syntax and the operational implications of the different
+visibility levels.
 
 This is one area where our UML diagrams, ostensibly
 programming-language-neutral, will betray a very Java-ish flavor. That's
@@ -627,6 +704,10 @@ Figures~\ref{fig:visibilityLevels} and \ref{fig:visibilityLevelsClasses}. In
 both tables, the visibility levels are listed in order from most restrictive
 to least restrictive.
 
+\index{private@\texttt{private}}
+\index{protected@\texttt{protected}}
+\index{public@\texttt{public}}
+\index{package visibility}
 \begin{figure}[ht]
 \centering
 \begin{tabular}{c|c|c|l}
@@ -646,6 +727,8 @@ public & \texttt{public} & \textbf{$\plus$} & any method anywhere \\
 \label{fig:visibilityLevels}
 \end{figure}
 
+\index{plus (+)}
+\index{minus (-)}
 \begin{figure}[hb]
 \centering
 \begin{tabular}{c|c|c|l}
@@ -666,6 +749,7 @@ crucially, visibility is about the very \textit{existence} of the method, inst
 var, or class, not its \textit{value.} This is very commonly misconstrued, so
 let me clarify with an example.
 
+\index{ballplayer@\texttt{Ballplayer}}
 Suppose a class diagram included the class in
 Figure~\ref{fig:visAboutClasses}. Here, for the first time, we see visibility
 modifiers in action. In particular, the \texttt{numHits} and
@@ -679,7 +763,8 @@ modifiers in action. In particular, the \texttt{numHits} and
 \label{fig:visAboutClasses}
 \end{figure}
 
-Here's the kind of code we want to make possible with this method:
+\index{client code}
+Here's the kind of client code we want to make possible with this method:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
     ...
@@ -740,6 +825,7 @@ another object's private data.''
 
 This sounds so eminently reasonable, and yet it is dead wrong. Here's why:
 
+\index{private@\texttt{private}}
 \begin{itemize}
 \itemsep.1em
 \item A ``private'' inst var does \underline{not} mean that one object's
@@ -749,6 +835,7 @@ This sounds so eminently reasonable, and yet it is dead wrong. Here's why:
 \textit{classes}.
 \end{itemize}
 
+\index{encapsulation}
 In other words, it's not a ``data privacy'' thing like keeping your information
 inaccessible to creepy people online. Instead, it's a \textit{code
 encapsulation thing} that prevents one class from making (and thereafter
@@ -769,11 +856,10 @@ Social Security Numbers at all.
 In yet other words, visibility is about \textit{variables} and
 \textit{classes}, not \textit{values} and \textit{objects}.
 
-We'll see why this is useful in the encapsulation chapter. For now, just
-realize that the code above \textit{does} compile cleanly for one simple
-reason: it's a method of the \texttt{Ballplayer} class. Any method of the
-\texttt{Ballplayer} class can talk about any inst var or method of the
-\texttt{Ballplayer} class, regardless of which particular object is in view.
+The code above \textit{does} compile cleanly for one simple reason: it's a
+method of the \texttt{Ballplayer} class. Any method of the \texttt{Ballplayer}
+class can talk about any inst var or method of the \texttt{Ballplayer} class,
+regardless of which particular object is in view.
 
 To complete the example, here's some code which indeed does \textit{not}
 compile because of those private \texttt{numHits} and \texttt{numAtBats}:
@@ -792,6 +878,7 @@ class Team {
 }
 \end{Verbatim}
 
+\index{team@\texttt{Team}}
 \begin{samepage}
 When we try to compile it, the \texttt{println()} statement inside the
 \texttt{for} loop barfs with:
@@ -823,6 +910,7 @@ designer.
 
 \subsection{Which visibility level to choose}
 
+\index{visibility}
 Both inst vars and methods can technically have any of the four visibility
 levels assigned to them from the table in Figure~\ref{fig:visibilityLevels}.
 Here are the rules (and strong suggestions) to keep in mind:
@@ -841,12 +929,14 @@ its visibility lower on the chart without breaking anything. The reverse is
 not true.
 \end{enumerate}
 
+\index{package visibility}
 Lastly, a word about package-level visibility. Recall that a Java
 \textbf{package} is an organizational mechanism that allows a developer to
 group related classes together. One reason to do this is to promote neatness
 and tidiness throughout your code base: instead of having all your classes in
 one huge directory, you divvy them up according to functional area. 
 
+\index{Gosling, James}
 Another reason is to take advantage of package-level visibility. There may be
 design decisions you make (namely, certain methods you create on a class) that
 you don't necessarily want to make publicly accessible to all users of the
@@ -867,6 +957,7 @@ if it's ``non-public'' (yep, that's actually the term) it effectively has
 package-level visibility (\textit{i.e.}, only other classes in its package can
 use it.)
 
+\index{non-public classes}
 Non-public classes thus play the same sort of role as private helper methods
 do: the public classes use them to help get their job done, but the non-public
 ones aren't designed to be directly instantiated (or even seen) by the outside
