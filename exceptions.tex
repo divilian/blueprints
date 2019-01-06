@@ -1,6 +1,9 @@
 \chapter{Exceptions}
 \label{ch:exceptions}
 
+\index{exception}
+\index{drive@\texttt{.drive()}}
+\index{car@\texttt{Car}}
 %\section{Recognizing error conditions}
 
 Let's go back and revisit our \texttt{.drive()} method from the \texttt{Car}
@@ -51,6 +54,8 @@ class Car {
 }
 \end{Verbatim}
 
+\index{console}
+\index{state!illegal}
 This is done in the hopes that someone will hear us and be alarmed. The
 problem is, this error will go to the console, where it may or may not ever be
 seen; and even if someone notices it, we've still already done the dirty deed.
@@ -76,9 +81,11 @@ class Car {
 }
 \end{Verbatim}
 
+\index{return@\texttt{return}}
 Now, in addition to printing the error, we also \texttt{return} from the
 method prematurely, before carrying out the nonsensical operation.
 
+\index{client code}
 The problem with this approach is that \textit{the client code is not alerted
 that anything went wrong.} We'll see some actual client code in action in the
 next section, but for now just realize that whoever called
@@ -88,6 +95,8 @@ that no such drive actually occurred.
 
 \section{The right way: \texttt{throw}ing and \texttt{catch}ing}
 
+\index{throw@\texttt{throw}}
+\index{catch@\texttt{catch}}
 The right way to handle this is with Java's \texttt{Exception} mechanism. We
 don't return prematurely, as above; instead, \textit{we don't return at all.}
 Exceptions are Java's way of allowing a method \textit{not} to return, but
@@ -146,7 +155,7 @@ the problem.
 
 \section{Calling a method that \texttt{throws} an \texttt{Exception}}
 
-
+\index{drive@\texttt{.drive()}}
 The only remaining fly in our ointment (don't worry; he's easily swatted) is
 that when client code \textit{calls} \texttt{.drive()}, it might not
 necessarily run to completion. In fact, if we compile the above main program,
@@ -155,6 +164,7 @@ through implementing the Exception-throwing stuff. It'll say we're being
 unconscionably remiss by refusing to deal with the error that might occur
 every time we tell one of our cars to drive.
 
+\index{try/catch@\texttt{try}/\texttt{catch}}
 The Java way to handle this is with a \textbf{try/catch block}. Essentially,
 this just builds a little scaffolding around our call to suspicious methods
 like \texttt{.drive()} so that if and exception is indeed ``thrown'' when we
@@ -198,14 +208,15 @@ exception would indicate that we need to find a new, temporary destination
 other than the one we're currently seeking: one that has gas so we can fill
 up.
 
+\index{throws@\texttt{throws}}
 Once all the method calls that are defined as ``\texttt{throws Exception}''
 have been enclosed in try/catch blocks that at least nominally handle the
 errors, the code compiles again and it can hopefully run error-free.
 
-% TODO: Include "how to interpret a stack trace".
-
 \section{Stack traces}
 
+\index{stack trace}
+\index{printStackTrace@\texttt{.printStackTrace()}}
 One more thing before we leave this chapter on exceptions. It often proves
 useful to look at an \texttt{Exception}'s \textbf{stack trace}, which is
 accomplished by simply calling \texttt{.printStackTrace()} on the
@@ -292,6 +303,8 @@ This is usually your first line of defense when debugging: read the stack
 trace of the \texttt{Exception}, reconstruct exactly what was going on when
 the error occurred, and then set about figuring out why it was caused.
 
+\index{stack trace}
+\index{printStackTrace@\texttt{.printStackTrace()}}
 By the way, you can also print a stack trace from any place in your code, even
 if no error condition has arisen or exception is thrown. If you just type:
 
@@ -308,6 +321,8 @@ wrong in this method...but how did I get here, anyway?'' The stack trace tells
 you exactly how.
 
 \bigskip
+\index{C++}
+\index{segmentation fault (seg fault)}
 Oh, I should also mention that these stack trace outputs are a Java thing.
 C++'s equivalent output for many of these kinds of error cases is simply this:
 
