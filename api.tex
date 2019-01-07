@@ -4,6 +4,7 @@
 \chapter{Documenting an API}
 \label{ch:api}
 
+\index{API (application programming interface)}
 ``\textbf{API}'' -- which historically stands for ``Application Programming
 Interface'' -- is one of the dumber acronyms you'll encounter. And worse, it's
 commonly used to mean two different things: (1) a set of classes (and their
@@ -48,6 +49,9 @@ First, pretend you're back in the 1990's, a glorious time to be young and
 alive. In particular, pretend that \textit{GPS and cell phones are not yet
 commonly available.} (Believe it or not, this was true in the recent past.)
 
+\index{party}
+\index{Biff}
+\index{Filbert}
 Let's suppose it's Friday night, and you're going to a party at the apartment
 of your acquaintance Biff. Biff lives up in North Stafford, and you've never
 been to his place before. Luckily, your close friend Filbert is also going to
@@ -140,6 +144,7 @@ discipline, practice, and painstaking effort.
 
 \section{JavaDoc: mechanics}
 
+\index{javadoc@\texttt{javadoc}}
 One of Java's supplementary (but in retrospect, killer) features was the
 \texttt{javadoc} utility shipped with the JDK. The idea behind JavaDoc was to
 combine two previously incompatible aspects of code documentation. The key
@@ -160,6 +165,7 @@ So we seem to have two conflicting desires: to keep the documentation close to
 (and embedded in) the code, and to author it in a more flexible (and ideally,
 web-browser-accessible) way outside the code.
 
+\index{java file@\texttt{.java} file}
 JavaDoc's innovation was to say: ``go ahead and store the documentation in the
 \texttt{.java} files themselves, to promote consistency. But we'll create a
 separate tool that can examine the \texttt{.java} files and extract the
@@ -197,6 +203,7 @@ class, and hints as to its usage.
 \item Immediately before a method definition, to describe what the method
 does, how to call it, and what will happen in exceptional conditions.
 
+\index{package.html@\texttt{package.html}}
 \item In a special file called ``\texttt{package.html}'', which will be placed
 in the source directory for a package, if you're using Java packages.
 
@@ -233,6 +240,7 @@ Tag/syntax & Location & Purpose\\
 \hline
 \hline
 
+\index{author tag@\texttt{"@author} tag}
 \texttt{@author} \ Jezebel & class & 
 \makecell[l]{
 The primary or original author of the class.\\
@@ -241,6 +249,7 @@ author are common choices.}\\
 
 \hline
 
+\index{param tag@\texttt{"@param} tag}
 \texttt{@param} \ \texttt{name} \ description & method & 
 \makecell[l]{
 What one of the arguments to the method means.\\
@@ -250,6 +259,7 @@ and end with a period.}\\
 
 \hline
 
+\index{return tag@\texttt{"@return} tag}
 \texttt{@return} \ description & method & 
 \makecell[l]{
 How the return value of the method should be\\
@@ -258,6 +268,7 @@ lower-case letter and end with a period.}\\
 
 \hline
 
+\index{throws tag@\texttt{"@throws} tag}
 \texttt{@throws} \ type \ description & method & 
 \makecell[l]{
 What type of exception might be thrown from the\\
@@ -266,6 +277,7 @@ method and how it should be interpreted.\\
 end with a period.}\\
 
 \hline
+\index{link tag@\texttt{"@link} tag}
 \texttt{\{@link className\}} & anywhere &
 \makecell[l]{
 Create a clickable hyperlink to the class named.}\\
@@ -278,6 +290,7 @@ Create a clickable hyperlink to the method named.}\\
 
 \hline
 
+\index{deprecated tag@\texttt{"@deprecated} tag}
 \texttt{@deprecated} \ explanation & class/method & 
 \makecell[l]{
 Mark this class or method as old and not to be used\\
@@ -297,6 +310,7 @@ A representative example showing many of these tags is in
 Figure~\ref{fig:javadocTags}, the HTML for which appears in
 Figure~\ref{fig:javadocApi}.
 
+\index{ballplayer@\texttt{Ballplayer}}
 \begin{figure}
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 /**
@@ -344,6 +358,7 @@ public class Ballplayer {
 
 \subsection{Generating the mini-website}
 
+\index{javadoc@\texttt{javadoc}}
 To actually generate the HTML in Figure~\ref{fig:javadocApi}, you'll need to
 run the \texttt{javadoc} command with some options. Generally, if I'm running
 on a Google Cloud instance, this is how I run it:
@@ -352,6 +367,8 @@ on a Google Cloud instance, this is how I run it:
 $ sudo javadoc -d /var/www/html -author *.java
 \end{Verbatim}
 
+\index{sudo@\texttt{sudo}}
+\index{root user@\texttt{root} user}
 The word ``\texttt{sudo}'' at the start of this sentence means ``please allow
 me to execute the following command as the \textbf{root} user of the system'';
 \textit{i.e.}, the super user who has all privileges. The reason this is
@@ -360,6 +377,7 @@ says to write content in, is by default not writeable by ordinary mortals. You
 have to temporarily become Superman in order to write to it, which will
 require typing your password to confirm you're really Clark Kent.
 
+\index{option}
 The ``\texttt{-d /var/www/html}'' bit is a command option with a parameter. The
 \texttt{-d} stands for ``directory'' and it says that the HTML that
 \texttt{javadoc} generates should be written to this directory. It's a
@@ -371,6 +389,8 @@ control over, you can often substitute something like ``\texttt{-d
 /home/yourusername/public\_html}'' which will write the content to your
 account's own directory for hosting HTML content to the world.
 
+\index{public@\texttt{public}}
+\index{private@\texttt{private}}
 The ``\texttt{-author}'' part of the command says ``yes, please \textit{do}
 extract \texttt{@author} information and include it in the HTML. (The default
 is to not do that, which I've never understood.) Semi-related: by default
@@ -380,6 +400,7 @@ Sometimes there are reasons to produce JavaDoc content for \textit{everything}
 in the class files -- private, public, or anything else -- and to do this you
 merely need to include a ``\texttt{-private}'' option here as well.
 
+\index{java file@\texttt{.java} file}
 Finally, the ``\texttt{*.java}'' means to generate HTML for all the Java source
 files in the current directory. If you're using packages, you can instead
 replace ``\texttt{*.java}'' with a sequence of fully-specified package names
@@ -391,6 +412,7 @@ mini-website will consist of nothing \textit{but} that one class.
 
 \subsubsection{Starting the Web server and connecting}
 
+\index{Apache Web Server}
 After all the JavaDoc's mini-website content has been generated, you can
 access it via your browser. You can find out whether Apache Web Server is
 running by typing:
@@ -412,6 +434,7 @@ If it says it's not currently running, then you'll need to start it via:
 $ sudo systemctl start apache2
 \end{Verbatim}
 
+\index{IP address}
 Lastly, when this seems to be working, figure out what the external IP address
 is of your machine (it'll be four numbers, each in the range 0-255, set apart
 by periods; for example, 35.237.255.14). Then, you can point your browser to
@@ -420,6 +443,7 @@ prettily-formatted HTML website like in Figure~\ref{fig:javadocApi}.
 
 \subsubsection{Firewall settings}
 
+\index{firewall settings (Google Cloud)}
 If you can't reach your JavaDoc site via the above URL, your problem might be
 that your Google Cloud firewall is blocking the traffic. At the time of this
 writing, here's how to fix that problem:
@@ -496,6 +520,7 @@ write JavaDoc for. That's because the purpose of class JavaDoc is mostly to
 orient the reader to the class's purpose and what it collaborates with. Still,
 it's certainly possible to leave important information undefined or ambiguous.
 
+\index{team@\texttt{Team}}
 Let's take a look a bad attempt to document the \texttt{Team} class from the
 baseball simulator example, followed by a good one.
 
@@ -523,6 +548,7 @@ is a group of \texttt{Ballplayer}s, but if that's all it is, I'll just use
 \texttt{ArrayList} instead, since I'm more familiar with it.'' It's a fair
 point: our JavaDoc hasn't made the sale as to why it's worth using.
 
+\index{simulator@\texttt{Simulator}}
 Okay, so why \textit{is} it worth using? At least two reasons are (1) it can
 be used as input to the \texttt{Simulator} class, in order to simulate a
 virtual ballgame, and (2) it has useful methods on it that provide summary
@@ -588,6 +614,8 @@ public class Team {
 }
 \end{Verbatim}
 
+\index{Stephen}
+\index{Henderson, Rickey}
 Apparently, \texttt{Stephen} has decided to write the \texttt{Team} code to
 deliberately \textit{allow} a ballplayer to be a member of more than one team.
 This JavaDoc also spells out a possibly unexpected caveat of this decision:
@@ -616,6 +644,7 @@ often that a fellow developer gets off in the weeds about what a class is even
 used for; but it's not rare for them to code to a method incorrectly because
 the JavaDoc is spurious or misleading.
 
+\index{getOPS@\texttt{.getOPS()}}
 Taking again the baseball example, let's look a bad attempt to document the
 \texttt{.getOPS()} method.
 
@@ -662,6 +691,7 @@ actually) word. We don't want to move away from standard baseball
 conventions, so we'll keep the terms but then make the scale clear in a note
 in the JavaDoc.
 
+\label{batting average}
 Speaking of standard baseball conventions...all the stats like batting
 average, slugging percentage, OPS, \textit{etc.} are traditionally reported to
 exactly \textit{three} decimal places. We say ``Simpson is hitting .325,'' not
@@ -678,6 +708,7 @@ themselves are is a judgment call. If there are other methods on the
 better to link to them in the \texttt{.getOPS()} JavaDoc rather than duplicate
 the text.
 
+\label{corner case}
 Finally, you always have to ask yourself ``what corner cases are there?'' What
 scenarios might unfold that are unusual and need special treatment? Here, the
 important one turns out to be a ballplayer \textit{with no at-bats.} In this
@@ -721,6 +752,7 @@ public class Ballplayer {
 }
 \end{Verbatim}
 
+\index{return tag@\texttt{"@return} tag}
 You may be thinking that the \texttt{@return} line at the end doesn't really
 add anything useful. You would be correct. I included it only for
 completeness; in general, it's fine to leave out redundant information. Some
@@ -744,6 +776,11 @@ really the key to communication of all kinds.
 
 \section{How to lose a battle through bad documentation}
 
+\index{Burnside, Ambrose}
+\index{Battle of Fredericksburg}
+\index{Civil War}
+\index{Franklin, William}
+\index{Lincoln, Abraham}
 I'll close this chapter with a somewhat humorous anecdote which was
 nevertheless deadly serious in its ramifications.
 
