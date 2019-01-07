@@ -1,6 +1,7 @@
 
 \chapter{Inheritance (1 of 2)}
 
+\index{inheritance}
 If one had to name object-oriented programming's most ``killer feature,'' a
 good case could be made for \textbf{inheritance}. This specific technique for
 code reuse and modular flexibility underlies much of the ``magic'' that happens
@@ -22,6 +23,9 @@ We'll cover both in this chapter.
 
 \section{``Bottom-up'' (implementation) inheritance}
 
+\index{inheritance!bottom-up (implementation)}
+\index{object}
+\index{class}
 As you know, the Java API contains a class called \texttt{ArrayList}. The
 class diagram below shows an abbreviated version of it. Already there's one
 possibly unfamiliar element to you here: the literal word ``\texttt{Object}''.
@@ -42,6 +46,8 @@ as the argument of \texttt{.add()}, \texttt{.remove()}, \textit{etc.}
 \label{fig:abbrArrayList}
 \end{wrapfigure}
 
+\index{countUniqueArrayList@\texttt{CountUniqueArrayList}}
+\index{client code}
 Now suppose we were writing a program that needed to manage a bunch of
 list-like data, and that \texttt{ArrayList} was just the ticket...except that
 it was missing one or more important features. For example, maybe in addition
@@ -75,6 +81,8 @@ This client code already works except for the last line, which of course
 contains a method we just made up. It's sad that \texttt{ArrayList} meets all
 our needs except this one teensy one.
 
+\index{hasa association@``has-a'' association}
+\index{association!has-a@``has-a''}
 Several ways to get around this limitation come to mind. We could use a
 \textbf{has-a} association between \texttt{ArrayList} and a new class of our
 devising, ``\texttt{CountUniqueArrayList}.'' Each \texttt{CountUniqueArrayList}
@@ -88,6 +96,7 @@ actually store the data. Figure~\ref{fig:countUnique1} gives the idea.
 \label{fig:countUnique1}
 \end{figure}
 
+\index{method!pass-through}
 We could code our \texttt{.countUnique()} in a variety of ways, and now the
 last line of Figure~\ref{fig:dreamCountUnique} would work like a charm.
 Trouble is...the other lines wouldn't work anymore. Obviously we have to be
@@ -138,6 +147,8 @@ Figure~\ref{fig:assocArrows}.)}
 \label{fig:inheritanceArrows}
 \end{figure}
 
+\index{isa association@``is-a'' association}
+\index{association!is-a@``is-a''}
 The solution is to use inheritance. \textit{Instead of ``\textbf{has-a},'' an
 inheritance association means ``\textbf{is-a}.''} (See
 Figure~\ref{fig:inheritanceArrows}.) Instead of each
@@ -158,6 +169,7 @@ multiplicity, or role indicators.
 \label{fig:countUnique3}
 \end{figure}
 
+\index{superclass}
 This may seem like cheating. Surely if we want to call a method on an object,
 we're entitled to see that method in the UML diagram for that object's class?
 Clearly, \texttt{.add()}, \texttt{.get()}, and \texttt{.size()} do not appear
@@ -168,6 +180,7 @@ method is defined on the object's class...or on any \textbf{superclass}.
 \texttt{CountUniqueArrayList}. And that brings us to a slew of equivalent
 terminology.
 
+\index{subclass}
 \begin{samepage}
 All of these expressions mean exactly the same thing:
 \begin{center}
@@ -194,6 +207,7 @@ it's like saying I'm both a son (of my mom and dad) and also a father (of my
 three kids). You can totally be a son and a father at the same time. And a
 class can be both a superclass and a subclass.
 
+\index{inheritance hierarchy}
 By the way, if you have sharp eyes, you'll have noticed I said ``or
 \textit{any} superclass'' a few paragraphs ago. That's because if A inherits
 from B, B can in turn inherit from some other class, which can itself inherit,
@@ -207,6 +221,8 @@ simple. When we instantiate a \texttt{CountUniqueArrayList}, we not only
 allocate memory for all the \texttt{CountUniqueArrayList}-specific parts (if
 any), but also for its superclass parts.
 
+\index{student@\texttt{Student}}
+\index{person@\texttt{Person}}
 Let's take a different example so that we know what the ``parts'' actually
 are.\footnote{It may or may not surprise you that I honestly don't know what
 instance variables the \texttt{java.util.ArrayList} class has, or what they're
@@ -257,6 +273,7 @@ separate little chamber inside the \texttt{Student} box is just a detail.
 \label{fig:studentObject}
 \end{figure}
 
+\section{``Bottom-up'' (implementation) inheritance}
 The reason I call this technique ``bottom-up inheritance'' is that in order to
 use the special features of your new class, \textit{you need to know you have
 an instance of the subclass.} In the code above, we couldn't call
@@ -279,10 +296,13 @@ Someone has already gone to the trouble of writing an \texttt{ArrayList} class
 we make use of that implementation (the code in the methods) and just add
 whatever else we want to the mix.
 
+
 \section{``Top-down'' (interface) inheritance}
 
+\index{inheritance!top-down (interface)}
 Now top-down inheritance is where the real action is.
 
+\index{sortedArrayList@\texttt{SortedArrayList}}
 Let's go back to our \texttt{ArrayList} example, and this time I'm going to
 write a different subclass, called ``\texttt{SortedArrayList}.''
 Figure~\ref{fig:sortedAL} shows this arrangement. The open-triangle arrow and
@@ -323,6 +343,8 @@ want a new feature so much as \textit{different behavior for the original
 features.} We don't want to add any new methods, but have \textit{the existing
 methods act differently.} And thus is the essence of top-down inheritance.
 
+\index{override}
+\index{method!overriden}
 Before we see it in action, let's think about the implementation. You'll
 notice that in Figure~\ref{fig:sortedAL} only \textit{some} of the methods
 appear in the subclass. These are called \textbf{overridden} methods: we say
@@ -387,10 +409,14 @@ new special type.
 
 \begin{samepage}
 Okay, now to drill the concept all the way home. I want to ask you a question.
-Before reading on, consider the code below and ask
-yourself ``what will its output be?'' (Commit to an answer before you
-continue.)
+Before reading on, consider the code below and ask yourself ``what will its
+output be?'' (Commit to an answer before you continue.)
 
+\index{Thor}
+\index{Banner, Bruce}
+\index{Captain America}
+\index{Hulk}
+\index{getMad@\texttt{.getMad()}}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
     public static void main(String args[]) {
         SortedArrayList sal = new SortedArrayList();
@@ -463,12 +489,15 @@ is triggered, whether or not the user of the object even knew that.
 
 \subsection{``Masquerading'' and ``smuggling''}
 
+\index{inheritance!top-down (interface)}
 Now why do I call this ``top-down inheritance?'' The reason is that unlike with
 bottom-up inheritance, you can use objects of your new subclass
 \textit{without knowing they're of that subclass, or that there even is a
 subclass.} As a user of the classes -- like \texttt{main()}, above -- you're
 looking at the inheritance hierarchy from the top down.
 
+\index{masquerading}
+\index{smuggling}
 A couple of other descriptive words I like to use for this are ``masquerading''
 and ``smuggling.'' In the above example, the \texttt{SortedArrayList}
 \texttt{sal} is masquerading as an \texttt{ArrayList} -- pretending to be one
@@ -483,6 +512,7 @@ disguise.
 \pagebreak
 \subsection{Why this matters}
 
+\index{decoupling}
 The reason this idea is so powerful is that it allows programmers to decouple
 the \textit{what} from the \textit{how}.
 
@@ -499,6 +529,9 @@ in the appropriate place to preserve the order. The original code chunk can be
 blissfully ignorant of how the details of \texttt{.add()}, \texttt{.insert()},
 \textit{etc.}~work for any particular type of \texttt{ArrayList}.
 
+\index{Super Smash Bros}
+\index{Zelda}
+\index{Peach}
 If you're a videogamer, think of it in Smash Bros.~terms. Every character in
 the game looks different, has different attack stats, different animations for
 punching and falling, a different ``up smash'' and ``side special,'' and so
@@ -516,6 +549,7 @@ then says, ``thanks. Now display your `hit stun' animation from your current
 position up to coordinates 562, 431.'' The Peach object then shows her
 character flying through the air with her umbrella in a tizzy.
 
+\index{separation of concerns}
 For even moderately complex programs, this ability to compartmentalize these
 two jobs is crucial -- otherwise you end up with a 500-line function that's a
 mass of spaghetti code. Software engineers call this decoupling
@@ -554,14 +588,20 @@ where it's \textit{not} called for. And this turns out to be even worse.
 Although there are shades of grey, the basic rule for knowing when inheritance
 is appropriate can actually be boiled down to a single principle:
 
+\index{isa association@``is-a'' association}
+\index{association!is-a@``is-a''}
 \begin{quote}
 \textbf{Remember that ``is-a'' means ``is-a.''}
 \end{quote}
 
-The time \textit{not} to use
-inheritance is when you see some code that you want to reuse, but you really
-\textit{don't} have a conceptual ``subtype'' in mind.
+\index{subclass}
+The time \textit{not} to use inheritance is when you see some code that you
+want to reuse, but you really \textit{don't} have a conceptual ``subtype'' in
+mind.
 
+\index{runner@\texttt{Runner}}
+\index{performance@\texttt{Performance}}
+\index{race@\texttt{Race}}
 An actual example: suppose your team is building a database system for 5k and
 10k race results. There's a \texttt{Runner} class with inst vars like
 \texttt{name} and \texttt{gender} and \texttt{dateOfBirth}. Then you say,
