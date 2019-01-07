@@ -1,6 +1,7 @@
 
 \chapter{Use cases}
 
+\index{startup company}
 During my start-up-company days\footnote{None of my entrepreneurial endeavors
 ended in IPOs or lucrative buy-outs, partially because of the lessons of this
 chapter.}, it occurred to me that in order to have a successful product, you
@@ -61,6 +62,9 @@ knowing what program to write in the first place is a different realm
 entirely, and it requires a lot of intuition about people and their
 fickleness. 
 
+\index{Jobs, Steve}
+\index{Wozniak, Steve}
+\index{Apple Computer}
 Steve Jobs was a genius at \#1, and he had Steve Wozniak as his wingman doing
 \#2. When top engineers came and went at Apple, the company could survive the
 changes because the principles they were using were transcendent. When Jobs
@@ -68,6 +72,9 @@ wasn't there, though, you could sure see the difference.
 
 \section{Capturing requirements}
 
+\index{software development lifecycle}
+\index{artifact}
+\index{phase (of software development)}
 This chapter is a brief look at \#1. It's a different phase of the
 \textbf{software development lifecycle} than you're used to focusing on. A
 simplified picture of this lifecycle is given in Figure~\ref{fig:swDevCycle}.
@@ -87,6 +94,9 @@ it can then be the input to the next phase.
 \label{fig:swDevCycle}
 \end{figure}
 
+\index{idea}
+\index{requirements!formulation}
+\index{requirements!specification (``req spec'')}
 Any application starts with an \textbf{idea}, of course, which is ``something
 that could exist, but doesn't yet.'' For bite-size projects, one could set to
 work coding up the idea directly, dispensing with most of this diagram. But
@@ -106,6 +116,11 @@ one of which (Use Cases) is the subject of this chapter. Regardless of how
 they are elucidated, though, the result is some form of \textbf{requirements
 specification} (or ``req spec'') as we first saw on p.\pageref{reqSpec}.
 
+\index{design!design document}
+\index{implementation}
+\index{testing!unit}
+\index{testing!system}
+\index{deployment}
 Churning out a \textbf{design document} from a req spec is the subject of
 \textbf{design}, of course, which we covered in chapters \ref{design1} and
 \ref{design2}. The term ``\textbf{implementation}'' is a fancy word for
@@ -137,6 +152,7 @@ For now, though, the diagram suffices for our needs. My only real motive for
 showing it to you is to help you mentally place this chapter's content in the
 proper overall position, namely:
 
+\index{requirements!formulation}
 \begin{quote}
 \textit{This chapter concerns the \textbf{requirements formulation} phase.}
 \end{quote} 
@@ -147,6 +163,7 @@ object-oriented program needs to do, when it is ultimately built.
 
 \subsection{``What'' vs. ``how''}
 
+\index{what vs. how@``what'' vs.~``how''}
 The dichotomy between ``what'' and ``how'' runs deep through human thought,
 well beyond just software development. Think of a military hierarchy in
 wartime. The general may decide that \textbf{what} needs to happen in a
@@ -164,6 +181,7 @@ higher-up and a ``how'' for the underling. The same phenomenon is seen in the
 Org Chart for a business, a government agency, a sports team, or even a
 family.
 
+\index{strategy vs.~tactics}
 Another pair of terms for this phenomenon are \textbf{strategy} and
 \textbf{tactics}. Think of ``strategy'' as the ``what,'' and ``tactics'' as
 the ``how.'' To continue the military analogy: sending a group of aircraft to
@@ -175,6 +193,7 @@ major becomes a ``how'' for his captain to solve, and ``what'' his captain
 decides gets fleshed out in ``how'' his lieutenants decide to operationalize
 it, \textit{etc.}
 
+\index{micromanaging}
 By the way, you'll sometimes hear people complain about
 ``\textbf{micromanaging}.'' Here's my definition of the term: when someone
 ``above'' you in the hierarchy is supposed to tell you \textbf{what} to do,
@@ -191,6 +210,8 @@ carry out a complex task composed of many interlocking levels.
 
 \section{Use Cases}
 
+\index{Use Case}
+\index{requirements!capturing}
 Use Cases are one methodology for capturing\footnote{``Capturing'' means
 ``identifying and then precisely describing.''} requirements. Rather than
 describing the entire system in a block of text, as in our examples on
@@ -202,6 +223,7 @@ each one. Each of these units of functionality is called a \textbf{use case}
 
 Here are some important terms:
 
+\index{actor}
 \begin{description}
 \item[Actor:] A role that a person plays when interacting with a system.
 \item[Use Case (UC):] A function of the system that yields a result of value to an
@@ -219,6 +241,8 @@ contains \textit{almost zero information}. That's because the UC descriptions
 -- which are the important part of all this -- tell you everything the diagram
 tells you, and much more.
 
+\index{system boundary}
+\index{Amazon}
 For the record, though, Figure~\ref{fig:amazonUcDiag} presents a UC diagram
 for an online bookseller (like Amazon). The large rectangle represents the
 \textbf{system boundary}; in other words, the stuff inside the box is
@@ -239,6 +263,7 @@ and ``Update inventory'' use cases.
 
 \subsubsection{About actors}
 
+\index{role}
 There's a couple things worth mentioning about Actors. For one, different
 actors can sometimes execute the same UC. In our diagram, both the Anonymous
 User and Registered User actors can ``Search for books,'' and both the
@@ -309,6 +334,9 @@ to use:
 Here's what goes in each field:
 \vspace{-.1in}
 
+\index{verb}
+\index{synopsis}
+\index{precondition}
 \begin{description}
 \item[Name:] The UC's name. Use Cases should always be \textbf{verb phrases},
 never nouns or other parts of speech. They're titled according to
@@ -322,11 +350,13 @@ functionality.
 \item[Precondition(s):] A short list of assumptions that \textit{must be true}
 before this UC can even apply. This helps orient the reader as to where in the
 grand scheme of things this functionality is expected to take place.
+\index{Sunny Day flow@``Sunny Day'' flow}
 \item[Sunny Day flow:] Each of a UC's ``flows'' is a step-by-step narrative of
 what takes place. The ``Sunny Day'' flow (also sometimes called the ``primary
 flow'') describes what happens \textit{when all goes as expected}. There is
 almost always only \textit{one} Sunny Day flow, because there's typically only
 one ``way'' things can go right.
+\index{Rainy Day flow@``Rainy Day'' flow}
 \item[Rainy Day flow(s):] The Rainy Day flows explain exceptional conditions
 or errors; in other words, what the system should do when things
 \textit{don't} go as expected. There are often several Rainy Day flows, since
@@ -342,6 +372,7 @@ characters'' in the password. The line between specifying too little and
 specifying too much is admittedly a bit fuzzy at times, and every development
 team settles on their own preferred practices.
 
+\index{contract}
 The general rule is: the UC flows must be specified in enough detail that the
 design \& programming teams know \textit{what} they're supposed to make the
 system do. Inevitably there will be details that the implementers have to
@@ -436,6 +467,7 @@ the implementation team how they should \textit{handle} that case.
 
 \section{A more complex example}
 
+\index{Zork}
 I'll end this chapter with one more Use Case description that isn't quite as
 obvious as the ``Register'' example. This one is for a text-based adventure
 game like the classic \textit{Zork} games of the 1980's. Players type text
