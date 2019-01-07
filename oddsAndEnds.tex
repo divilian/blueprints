@@ -6,10 +6,13 @@ Java-specific idiosyncrasies which will be all up in our business soon enough.
 
 \section{Garbage collection}
 
+\index{garbage collection}
 No, I didn't make that term up just to be funny. \textbf{Garbage collection}
 is actually the official name for a Java feature which was super innovative at
 the time, but which we now often take for granted.
 
+\index{ball@\texttt{Ball}}
+\index{play@\texttt{.play()}}
 Consider the code for a \texttt{Ball} class given in
 Figure~\ref{fig:ballCode}. When we run it, Java calls \texttt{main()}, which
 calls \texttt{play()}. At the end of \texttt{play()}, right before it returns,
@@ -55,6 +58,7 @@ class Ball {
 \label{fig:ballCode}
 \end{figure}
 
+\index{stack frame}
 At this moment, we have an active stack frame for the \texttt{play()} function
 which contains five variables of various types. And we're getting ready to
 return the reference variable \texttt{basket} back to \texttt{main()}, which
@@ -69,6 +73,7 @@ returns back to \texttt{main()}.}
 \label{fig:ballMemory}
 \end{figure}
 
+\index{memory diagram}
 Okay, now let's do it. We return to \texttt{main()}. As soon as we do, the
 memory diagram looks like Figure~\ref{fig:ballMemory2}. Take a close look.
 That second diagram is all correct, but something about it may strike you as a
@@ -94,6 +99,8 @@ could write to do that. To even get off the ground we'd have to start with a
 \textit{name}, and there is no name we could possibly use to get at either of
 those red \texttt{Ball} objects.
 
+\index{C++}
+\index{memory leak}
 Now with C++, a language that preceded Java by decades, this would be a bad
 situation called (I kid you not) a \textbf{memory leak}. The memory the
 program used to store those now-unreachable \texttt{Ball}s is now inaccessible
@@ -103,6 +110,7 @@ memory that could be used to store other things instead. The program never
 realizes this, and so never reclaims that space. So the actual amount of
 memory the program has available to it has effectively shrunk.
 
+\index{delete@\texttt{delete}}
 In C++, the only remedy for this situation is for the programmer herself to
 keep track of which objects no longer have any stack references to them, and
 to explicitly \texttt{delete} those objects. This is a delicate task: fail to
@@ -111,6 +119,7 @@ eagerly \texttt{delete} what actually does have other references to it and
 your program will crash when that memory is reused by something else writing
 over the top of it. The whole situation is fraught with peril.
 
+\index{garbage collection}
 Enter Java, in 1995. Java featured \textbf{automatic garbage collection} which
 outsourced the whole responsibility for this from the programmer to a special
 Java background task called the \textbf{garbage collector}. Whenever the
@@ -127,11 +136,13 @@ run, figure that out, and reacquire that memory so it can be used again. All
 this without the programmer having to think a thing about it. Memory leaks are
 in principle a thing of the past.
 
+\index{pacemaker}
+\index{C++}
 As with most good things, there are downsides too. One downside to Java's
 approach is that the garbage collector thread decides to run ``any time it
-damn well pleases.'' As developers, we don't ever tell Java to get off its butt
-and take out the trash (although there is a way to suggest this); rather, we
-just wait for it to run when it periodically thinks it needs to. This isn't
+darn well pleases.'' As developers, we don't ever tell Java to get off its
+butt and take out the trash (although there is a way to suggest this); rather,
+we just wait for it to run when it periodically thinks it needs to. This isn't
 normally a problem, but it can be in mission-critial real-time applications
 with absolute performance deadlines. Think of the software running on a
 pacemaker, which is embedded in a human heart. The code \textit{must} respond
@@ -147,6 +158,8 @@ Java's way of handling it is much appreciated.
 
 \section{The \texttt{import} statement}
 
+\index{import statement@\texttt{import} statement}
+\index{include@\texttt{\#include}}
 You've probably used \texttt{import} in almost every Java program you've ever
 written. Yet I've found most developers don't really understand what it does.
 Java itself is partially to blame here: the word ``import'' was a poor choice
@@ -220,6 +233,7 @@ import com.google.search.engines.*;
 import edu.umw.stephen.coolclasses.*;
 \end{Verbatim}
 
+\texttt{scanner@\texttt{Scanner}}
 This isn't a good idea. The reason is that it's ambiguous. Suppose in my code
 I refer to a class called \texttt{Scanner}. Which \texttt{Scanner} do I mean?
 Should Java assume I wanted to avoid typing ``\texttt{java.util.Scanner}'' or
@@ -258,10 +272,16 @@ stuff.add("Lunchbox");
 stuff.add(new Car("Mazda", "MX-5"));
 \end{Verbatim}
 
+\index{collection}
+\index{collection!heterogeneous}
+\index{heterogeneous collection}
 This is called a \textbf{heterogeneous} collection, because the things it
 contains are of different types (\texttt{String}s and \texttt{Car}s, this
 case).
 
+\index{cast}
+\index{typecast}
+\index{downcast}
 Java allows this perfectly well, for reasons we'll understand in detail later.
 Here's the rub, though: when we get something \textit{out} of the collection,
 we have to \textbf{cast} (or \textbf{typecast}, or \textbf{downcast}) it to
@@ -292,6 +312,7 @@ it. Please force it to be treated as a \texttt{String}, and if it turns out
 I'm lying, you have permission to embarrass me at runtime with a program
 crash.''
 
+\index{generics}
 Having to do that is a rather high price to pay for the flexibility of being
 able to store any old thing in \texttt{stuff}. That's why back in 2004, Java
 introduced the idea of \textbf{generics}, which allow you to restrict a
@@ -330,6 +351,8 @@ Go figure.
 
 \section{``Wrapper'' classes}
 
+\index{pass-by-value}
+\index{pass-by-reference}
 This is a good time to explain the usage of Java's \textbf{wrapper} classes.
 Recall that there are two kinds of Java variables: those that store primitive
 types (like \texttt{int}) and those that refer to objects (like \texttt{Car}).
@@ -338,6 +361,7 @@ they're stored: primitive types go on the stack (and hence are pass-by-value)
 whereas the objects pointed to by reference variables go on the heap (and
 hence are pass-by-reference).
 
+\index{primitive type}
 Another difference relates to the container classes like \texttt{ArrayList}
 that we've just been discussing. All those \texttt{java.util} goodies, it
 turns out, can store any type of object...but it must be exactly that: an
@@ -355,6 +379,7 @@ because there's no such thing as ``an \texttt{ArrayList} of \texttt{int}s.''
 That sucks because \texttt{int}s, \texttt{double}s, and \texttt{boolean}s are
 things we'd like to make \texttt{ArrayList}s of all the time.
 
+\index{wrapper class}
 Fortunately, there's an easy way around this. Each primitive type has a
 ``wrapper class'' in Java: it is the mold for objects so simple that they don't
 do anything except hold a piece of data: an \texttt{int} (or \texttt{char}, or
@@ -406,6 +431,10 @@ immediate future.
 
 \section{The \texttt{Hashtable} data structure}
 
+\index{hashtable@\texttt{Hashtable}}
+\index{dictionary}
+\index{Python}
+\index{key-value pair}
 One very, very common container type that we'll use is
 \texttt{java.util.Hashtable}. (If you've used a \textbf{dictionary} in Python,
 this is essentially the same thing.) A \texttt{Hashtable} holds a container of
@@ -415,12 +444,14 @@ piece of data -- the key is the name, and the value is the data. So unlike an
 a numerical index, a \texttt{Hashtable} uses the keys to specify which piece
 of data is required.
 
+\index{alterEgos@\texttt{alterEgos}}
 An example will make this all clear. Suppose we want to keep track of
 superheroes and the names of their secret identities, so that if the
 government decides to legislate against super powers, we can hunt down all the
 potential perpetrators. We'll do so in a \texttt{Hashtable} called
 \texttt{alterEgos}:
 
+\index{Batman}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
     import java.util.Hashtable;
     ...
@@ -430,6 +461,7 @@ potential perpetrators. We'll do so in a \texttt{Hashtable} called
     alterEgos.put("Elastigirl","Helen Incredible");
 \end{Verbatim}
 
+\index{instantiation}
 This instantiation syntax may make you bug-eyed. You'll see that we include
 not one but \textit{two} types inside the ``$\ll...\gg$'' markers; in this
 case, both are \texttt{String}s. These two specify \textit{the type of the
@@ -437,6 +469,7 @@ keys, and the type of the values}. Since our keys are text (superhero names)
 and our values are also text (the names of the alter egos) it makes sense to
 make this a \texttt{String}-to-\texttt{String} hash table.
 
+\index{put@\texttt{.put()}}
 The \texttt{.put()} method is used to add a new key-value pair to the table.
 It is also used to \textit{change} the value that goes with a particular key.
 That works because in a hash table, \textit{every key goes with just one
@@ -464,6 +497,7 @@ except for \texttt{ArrayList.get()} we passed an integer, and for
 A very common use of \texttt{Hashtable}s is to store objects based on some
 kind of name or identifier. For example:
 
+\index{customer@\texttt{Customer}}
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
     import java.util.Hashtable;
     ...
@@ -499,17 +533,23 @@ customer IDs.}
 
 \subsection{Iterating through \texttt{Hashtable}s}
 
+\index{iteration}
 One last thing about \texttt{Hashtable}s: you can iterate through them as you
 can iterate through any other collection (like an \texttt{ArrayList}). But
 it's kind of tricky. Remember that there isn't any inherent ``order'' to the
 key-value pairs, so you can't say ``give me the first one, then the second,
 then ..., all the way to the end.''
 
+\index{enumeration@\texttt{Enumeration}}
+\index{design pattern!Iterator}
+\index{Iterator pattern}
 The way you achieve this is by using an \textbf{\texttt{Enumeration}} object,
 also from the \texttt{java.util} package. This is actually an example of the
 \textbf{Iterator} design pattern, which we'll see in a later chapter. For now,
 mostly just memorize the approach.
 
+\index{keys@\texttt{.keys()}}
+\index{nextElement@\texttt{.nextElement()}}
 First, you call \texttt{.keys()} on the \texttt{Hashtable} which returns an
 \texttt{Enumeration} of the ``key halves'' of the key/value pairs. Think of an
 \texttt{Enumeration} as just ``a way to iterate through a group of things, one
@@ -554,8 +594,10 @@ Every Java program you've ever written has this line in it:
     public static void main(String args[]) {
 \end{Verbatim}
 
+\index{args@\texttt{args}}
 Have you ever wondered what that ``\texttt{args}'' thing is for?
 
+\index{command-line argument}
 Like all programming languages, Java lets you access the \textbf{command-line
 arguments} that the user typed after the program name when she ran the
 program. Command-line arguments are nothing new for a budding Linux user. For
@@ -576,6 +618,7 @@ command-line arguments, including Java programs. Suppose I type this:
 \quad \texttt{\$ java \ Simulator \ UMW \ Marymount}
 \medskip
 
+\index{main method@\texttt{main()} method}
 As you know, this is a command to run a Java program whose \texttt{main()}
 method is in \texttt{Simulator.java}. Apparently, the user is trying to
 simulate a basketball game between two opponents, and is using command-line
@@ -626,6 +669,8 @@ access to a compiler at all).
 
 \section{Sameness vs.~identicality}
 
+\index{sameness}
+\index{identicality}
 Our last odd/end has to do with how Java determines whether two objects are
 ``equal'' to each other. It turns out that there are two different definitions
 of equality, which must be kept firmly separate in your mind:
@@ -643,6 +688,7 @@ variables do you consider to be \textit{equal} to each other?
 \label{fig:sameness}
 \end{figure}
 
+\index{equality}
 I think we can agree that \texttt{p2} does not ``equal'' any of the others.
 That leaves the other three. Are \texttt{p1} and \texttt{p3} ``equal?'' Are
 \texttt{p3} and \texttt{p4} ``equal?''
@@ -673,6 +719,8 @@ they're duplicate copies, but copies nevertheless.
 Sometimes a programmer cares about one of these conditions, and sometimes the
 other. Java has two syntaxes to distinguish between the two tests.
 
+\index{== (double equals)}
+\index{equals@\texttt{.equals()}}
 \textbf{To test for sameness, use ``\texttt{==}''. To test for identicality, use
 ``\texttt{.equals()}''.}
 
@@ -704,6 +752,8 @@ take the special step described next.
 
 \subsection{Overriding \texttt{.equals()}}
 
+\index{equals@\texttt{.equals()}}
+\index{ballplayer@\texttt{Ballplayer}}
 It turns out that the last print statement of the preceding code statement
 will actually \textit{not} get printed \textit{unless we inform Java about
 what ``identical'' actually means for this class.} By default, Java will fall
@@ -753,6 +803,8 @@ class Ballplayer {
 }
 \end{Verbatim}
 
+\index{Gibson, Josh}
+\index{Dimaggio, Joe}
 Now any two \texttt{Ballplayer}s whose name started with the same letter would
 be considered ``identical'' -- \texttt{Josh Gibson} would be considered
 identical to \texttt{Joe Dimaggio}. This is a weird idea, and not normally
@@ -762,6 +814,7 @@ information matches.
 
 \subsection{\textit{Beware} comparing \texttt{String}s! (Use \texttt{.equals()})}
 
+\index{equals@\texttt{.equals()}}
 Notice how in the very definition of \texttt{Ballplayer.equals()} we called
 the \texttt{.equals()} method for \texttt{String}s. You may have expected it
 to say:
