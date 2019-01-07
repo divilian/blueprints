@@ -6,6 +6,8 @@ executions of the program. They're intended to be durable and lasting, and so
 we need a way to record their details in some kind of permanent record so they
 can be resurrected later.
 
+\index{profile@\texttt{Profile}}
+\index{user@\texttt{User}}
 Examples abound. Consider a social media app, where new users can register,
 login, post messages, friend each other, \textit{etc.} We'd likely store
 information about all this in various \texttt{User}, \texttt{Post},
@@ -13,6 +15,9 @@ information about all this in various \texttt{User}, \texttt{Post},
 bummer if all that data disappeared any time the server needed to be
 restarted!
 
+\index{drawing@\texttt{Drawing}}
+\index{line@\texttt{Line}}
+\index{rectangle@\texttt{Rectangle}}
 Or consider a drawing application, which we can use to create figures like
 lines, rectangles, circles, and so forth, to create the kinds of diagrams
 contained in this book. Our \texttt{Drawing}, \texttt{Line}, and
@@ -21,6 +26,8 @@ size, and color, would be next to useless if they weren't able to store
 themselves permanently somehow, to be reloaded in a later execution of the
 app. It would be like a word processor without a ``save'' function.
 
+\index{persistence}
+\index{hydration}
 What we want is a way to \textbf{persist} (or save) an object, and
 \textbf{hydrate} (or restore) it later. Persistence is taking an ephemeral,
 in-memory object and writing it out to some form of permanent storage -- a
@@ -31,6 +38,9 @@ breathing object once again.
 
 \section{Java object serialization}
 
+\index{serialization}
+\index{objectoutputstream@\texttt{ObjectOutputStream}}
+\index{serializable@\texttt{Serializable}}
 There are several ways to implement such operations. One, which I don't
 recommend, is built into Java and is called ``serialization.'' The
 \texttt{java.io} package has classes \texttt{ObjectOutputStream} and
@@ -45,6 +55,9 @@ interfaces in Section~\ref{sec:interfaces}.} Just open an
 the object you pass, in its entirety, will be saved in the file.
 \texttt{ObjectInputStream.readObject()} performs the reverse process.
 
+\index{binary format}
+\index{text format}
+\index{vim@\texttt{vim}}
 This all sounds like a great idea, but there's some serious practical
 difficulties to consider. For one, \texttt{ObjectOutputStream} stores objects
 in a \textbf{binary format} rather than a \textbf{text format}. This means
@@ -54,6 +67,8 @@ editor like \texttt{vim} to inspect what objects and values it contains,
 you'll get gobbledy-gook. The upshot is that it's nearly impossible to debug
 your program or even get visibility into what was saved.
 
+\index{forwards-compatible}
+\index{java file@\texttt{.java} file}
 Just as problematic is the fact that serialization is not
 \textbf{forwards-compatible}. When you write an object to a stream in this
 way, the data that is persisted is hard-wired to the particular version of the
@@ -74,6 +89,10 @@ if you change the class's definition later on.
 
 \section{Using a relational (or non-relational) database}
 
+\index{database}
+\index{connection}
+\index{CPSC 350}
+\index{DBMS (Database Management System)}
 An excellent solution for persistence and hydration is to use a Database
 Management System (DBMS) like MySQL, PostgreSQL, or MongoDB. These products
 specialize in this very task. Some, like those with ``SQL'' in the name,
@@ -91,6 +110,8 @@ do the whole persistence/hydration thing.
 
 \section{Using plain text files}
 
+\index{text file}
+\index{file!I/O}
 In this book, I'll just explain how to do caveman-style persistence and
 hydration: using plain text files. This will allow you to leverage your basic
 file I/O knowledge from previous programming courses to achieve our purpose of
@@ -119,6 +140,8 @@ later on, it reads all those files to reconstruct its previous state.
 \subsection{Example: a resort reservation system}
 \label{sec:resortExample}
 
+\index{resort@\texttt{Resort}}
+\index{reservationSystem@\texttt{ReservationSystem}}
 Here, let's assume that we want the first scenario: a single file that
 contains all relevant information to the application. We'll create part of a
 simple hotel reservation system, which stores and retrieves information about
@@ -136,12 +159,15 @@ things:
 
 \begin{compactitem}
 
+\index{printWriter@\texttt{PrintWriter}}
+\index{fileWriter@\texttt{FileWriter}}
 \item For persistence, a \texttt{.persist()} method that writes the object out
 to the \texttt{PrintWriter}\footnote{\texttt{PrintWriter} is a class in
 \texttt{java.io} that has \texttt{.println()} methods for various data types.
 I like it for that reason. Otherwise, it's essentially the same as any other
 kind of \texttt{Writer}, like a \texttt{FileWriter}.} passed.
 
+\index{scanner@\texttt{Scanner}}
 \item For hydration, a constructor that takes a \texttt{Scanner}\footnote{A
 \texttt{Scanner} is a class in \texttt{java.util} that can parse primitive
 types from a stream of text.} and creates a new object based on the
@@ -179,6 +205,7 @@ the expense of the resort (on a scale of \$ to \$\$\$\$).
 \item A line containing only a period. \label{item:delimiter}
 \end{compactenum}
 
+\index{delimiter}
 As you'll remember from your previous programming courses, that last item
 (\#\ref{item:delimiter}) is called a \textbf{delimiter} since it ``delimits''
 (marks the end of) the resort entry.
@@ -226,6 +253,10 @@ class Resort {
 
 \subsubsection{\texttt{Resort}: hydration}
 
+\index{constructor}
+\index{cursor}
+\index{nextInt@\texttt{.nextInt()}}
+\index{nextLine@\texttt{.nextLine()}}
 The constructor is used for hydration. Perhaps the trickiest thing about it is
 that we \textit{pass it a \texttt{Scanner} object}. Even if you've worked with
 \texttt{Scanner} before, this may be a new idea to you: passing one around
@@ -278,6 +309,8 @@ Just a few things of note here:
 
 \begin{compactitem}
 
+\index{conditional expression}
+\index{? : (conditional expression)}
 \item If you haven't seen the wacky syntax at the end of the
 ``\texttt{rating}'' line, it's worth knowing. It's called a ``conditional
 expression'' or a ``question-mark-colon operator'' and is a compact way of
@@ -291,6 +324,7 @@ for experts.
 string of dollar signs. We also have an explicit \texttt{.println()} after
 that loop so that we include the line feed after those dollar signs.
 
+\index{delimiter}
 \item We explicitly write the delimiter (``\texttt{.}'') at the end of the
 description, so that when read back by the hydration process, the constructor
 knows where the description stops.
@@ -320,6 +354,7 @@ calling ``\texttt{new Resort(someScanner)}'' \textit{in a loop} to hydrate all
 the objects. This will work great until the point at which we hit the end of
 the list. What then?
 
+\index{exception}
 In that case, the \texttt{Resort} constructor can't be allowed to finish,
 because \textit{it doesn't make sense for an object to be constructed at all}.
 So what should the constructor do in that case? Throw an \texttt{Exception},
@@ -328,6 +363,8 @@ client that the instantiation \textit{failed} -- there is no \texttt{Resort}
 object to be constructed, and the client should do what's appropriate in that
 event (in this case, simply stop reading from the file).
 
+\index{inheritance}
+\index{noMoreResortsException@\texttt{NoMoreResortsException}}
 The exception we throw can either be a ``plain old \texttt{Exception},'' or a
 special type of exception that we create for this purpose. The latter approach
 requires the technique of \textit{inheritance}, which we won't cover until the
@@ -435,6 +472,7 @@ Copyright (C) 2019
 \label{fig:wholeFile}
 \end{figure}
 
+\index{constructor}
 Given this structure, here's the way our \texttt{ReservationSystem}'s
 constructor should work:
 
@@ -466,6 +504,7 @@ public class ReservationSystem {
 }
 \end{Verbatim}
 
+\index{try/catch@\texttt{try}/\texttt{catch}}
 Check out that \texttt{try}/\texttt{catch}/\texttt{while} loop construct
 very carefully. It's short, but it's also a doozy. Inside the body of the
 \texttt{try} block, we have what appears to be an \textit{infinite} loop:
@@ -482,6 +521,7 @@ a \texttt{NoMoreResortsException}. When that happens, we pop out of the
 the body of the loop}. So we're officially done with the loop at that point,
 and carry on to read the copyright information at the end and we're done.
 
+\index{catch@\texttt{catch}}
 And what does the \texttt{catch} block do? \textit{Nothing.} That may seem
 pretty weird, but a moment's thought will convince you otherwise. What should
 we do when we reach the end of the resorts? \textit{Simply carry on.} Even
