@@ -9,6 +9,7 @@ technical and some social.
 
 \section{Team-based version control with \texttt{git}}
 
+\index{git@\texttt{git}}
 Waaaay back in \chapref{ch:gettingOff} (p.~\pageref{introduceGit}) I briefly
 introduced the \texttt{git} version control system. Hopefully you've been
 using it all along to do the simple process of ``committing'' code to your
@@ -20,6 +21,12 @@ anything to work with.
 Now it's time to learn a little more about \texttt{git}, and especially how it
 works in a team environment.
 
+\index{repository@``repo'' (repository)}
+\index{directory!child}
+\index{bleeding edge}
+\index{workspace}
+\index{vim@\texttt{vim}}
+\index{Filbert}
 Figure~\ref{fig:filbertGit} shows the environment you've been using so far: a
 single developer, with a single \textbf{repo}. I use the term
 \textbf{workspace} to mean ``the directory (and possibly subdirectories) in
@@ -38,6 +45,8 @@ instantly updated based on what he just typed, warts and all.
 \label{fig:filbertGit}
 \end{figure}
 
+\index{git@\texttt{git}!\texttt{.git} directory}
+\index{cd@\texttt{cd}}
 Filbert's personal git repo is shown as a green box. At this point, you should
 view a repo as a sort of ``mysterious'' thing that somehow maintains a record
 of all the previous changes to all the project's files, yet in a way you don't
@@ -48,6 +57,10 @@ dot -- inside the top-level directory of your workspace. If you \texttt{cd} in
 there, you'll see all kinds of crazy stuff under the hood. Do \textit{not}
 modify any of it, or you'll probably break your repo and lose all its contents!}
 
+\index{staging area}
+\index{git@\texttt{git}!\texttt{git status}}
+\index{git@\texttt{git}!\texttt{git add}}
+\index{git@\texttt{git}!\texttt{git commit}}
 Also shown is a purple diamond called the \textbf{staging area}. Normally you
 don't think too hard about the purple diamond explicitly, but it is there, and
 the command ``\texttt{git status}'' will only fully make sense if you recognize
@@ -72,6 +85,8 @@ for the new files.
 Anyway, just to repeat the basic instructions for reproducing
 Figure~\ref{fig:filbertGit}:
 
+\index{mkdir@\texttt{mkdir}}
+\index{hairball}
 \begin{compactenum}
 \item The command ``\texttt{mkdir someDirectoryName}'' creates the workspace,
 under whatever directory you're currently in (which can be seen via
@@ -96,6 +111,7 @@ editor, and quit the editor.
 Two extremely common commands for inspecting your workspace are ``\texttt{git
 status}'' and ``\texttt{git log}''. Let's look at each in turn.
 
+\index{git@\texttt{git}!\texttt{git status}}
 The \texttt{git status} command tells you the current state of your workspace
 as compared with your repo. The output might look something like this:
 
@@ -123,6 +139,7 @@ Several things of interest here:
 
 \begin{itemize}
 
+\index{branch}
 \item The ``\texttt{On branch master}'' means you're on the main, default code
 ``trunk.'' Later in your career, you'll discover that you sometimes want to
 create \textbf{branch}es, which are independently developed sequences of
@@ -148,6 +165,8 @@ in the yellow oval only. In a moment, I'll teach you how to find out which
 changes are in which category. For now, just grasp the fact that the same file
 can be in both sections of the ``\texttt{git status}'' output.
 
+\index{untracked file}
+\index{file!untracked}
 \item The ``untracked'' files are the files in your workspace that
 \texttt{git} doesn't yet know about. Looking at this list is a good way to
 avoid making the ``oops I did a \texttt{git commit -a} but forgot to add my
@@ -157,6 +176,9 @@ reminds us that we may want to ``\texttt{git add}'' it. If we don't, our next
 commit will \textit{only} have the (first set of) \texttt{Cat} changes, not
 the \texttt{Hairball} changes.
 
+\index{java file@\texttt{.java} file}
+\index{class file@\texttt{.class} file}
+\index{git@\texttt{git}!\texttt{.gitignore} file}
 \item The other entries under ``untracked'' are compiled \texttt{.class}
 files, not \texttt{.java} source files. \textbf{Normally, we \textit{want}
 those to be untracked}, and so it's actually good that they're not set up as
@@ -194,6 +216,8 @@ necessary. For instance:
 
 \begin{compactitem}
 
+\index{git@\texttt{git}!\texttt{git reset}}
+\index{git@\texttt{git}!\texttt{git checkout}}
 \item If we decide we don't want to check in that first set of
 \texttt{Cat.java} changes after all, we run the command ``\texttt{git reset
 HEAD Cat.java}'' to remove it from the purple diamond.
@@ -214,6 +238,7 @@ weird syntax but you have to use it.)
 
 \subsection{Understanding \texttt{git log}}
 
+\index{git@\texttt{git}!\texttt{git log}}
 While \texttt{git status} is a detailed look at the present, ``\texttt{git
 log}'' is a detailed look at the \textit{past}. With it, we can see the time,
 author, and description of every change that's been made during our whole
@@ -250,6 +275,8 @@ Date:   2018-10-15
     Add Cat.java, Hairball.java.
 \end{Verbatim}
 
+\index{hash}
+\index{commit hash}
 Notice that the entries are in reverse-chronological order (most recent at the
 top), which is what you want to get used to. Each five-line section represents
 one commit. The big hairy numbers immediately after the word \texttt{commit}
@@ -285,6 +312,7 @@ $ git log
 (e447191) \textcolor{blue}{Jezebel}: \textcolor{darkgreen}{Add Cat.java, Hairball.java.} (2018-10-15)
 \end{Verbatim}
 
+\index{man@\texttt{man}}
 Easier on the eyes, IMO. Run the command ``\texttt{man git config}'' to see
 all the options. Btw, you may be wondering what good it does to only list the
 first few characters of the commit hash. It turns out that for most commands
@@ -294,6 +322,7 @@ at.
 
 \subsection{Comparing versions}
 
+\index{diff@\texttt{diff}}
 A very common operation for a developer is to compare two versions (of the
 code base, or of a single file) to see what changed between them.
 Colloquially, comparing two versions of something is called ``\textbf{doing a
@@ -302,6 +331,8 @@ way of comparing versions.
 
 \subsubsection{The \texttt{vimdiff} comparison tool}
 
+\index{vimdiff@\texttt{vimdiff}}
+\index{git@\texttt{git}!\texttt{git config}}
 First, make these changes to your \texttt{git} profile\footnote{By the way,
 any time you want to see \textit{all} of your \texttt{git} configuration
 settings, you can do so with the command ``\texttt{git config -e -{}-global}''.
@@ -316,6 +347,7 @@ $ git config --global diff.tool vimdiff
 $ git config --global difftool.prompt false
 \end{Verbatim}
 
+\index{git@\texttt{git}!\texttt{git difftool}}
 This tells \texttt{git} to use the ``\texttt{vimdiff}'' tool to do
 side-by-side comparisons. Then, ``\texttt{git difftool}'' is your principal
 way of bringing up a comparison. When you run it, you will get a somewhat
@@ -338,13 +370,15 @@ skip over them.)
 \label{fig:catDiff}
 \end{figure}
 
+\index{cat.java@\texttt{Cat.java}}
 Figure~\ref{fig:catDiff} shows what \texttt{vimdiff} looks like when you run
 it. Its vertically-split pane shows two versions of the same file, with the
 differences between the two in various colors. It is plain from the figure
 that the differences between the two \texttt{Cat.java} versions are:
 
+\index{javadoc@\texttt{javadoc}}
 \begin{compactenum}
-\item The JavaDoc class comment has an extra phrase.
+\item The JavaDoc class comment (see Chapter~\ref{ch:api}) has an extra phrase.
 \item A new ``\texttt{breed}'' inst var has been added.
 \item A bug has been fixed by changing the ``\texttt{args[1]}'' in the
 \texttt{for} loop to ``\texttt{args[0]}''.
@@ -372,21 +406,27 @@ If you just type the command with no other arguments:
 $ git difftool
 \end{Verbatim}
 
+\index{workspace}
 you'll be comparing \textit{your workspace} (yellow oval) against \textit{your
 staging area} (purple diamond). This shows you the things that you have
 changed \textit{since your last \texttt{git add}}. This is useful when asking,
 ``I'm about to do a commit...have I forgotten anything I meant to include?''
 
+\index{staged@\texttt{-{}-staged} argument}
 If you add the ``\texttt{-{}-staged}'' argument:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
 $ git difftool --staged
 \end{Verbatim}
 
+\index{staging area}
+\index{repository@``repo'' (repository)}
 you'll be comparing \textit{your staging area} (purple diamond) with the
 \textit{repo} (green box). This is useful when asking, ``if I do a commit
 right now, exactly what changes will be recorded?''
 
+\index{commit hash}
+\index{hash}
 Finally, to compare \textit{any two versions}, include the first few letters
 of the commit hash of each. For instance, this command:
 
@@ -394,6 +434,7 @@ of the commit hash of each. For instance, this command:
 $ git difftool bdb0fa3 7813b19
 \end{Verbatim}
 
+\index{Filbert}
 will examine the changes Filbert made when he added multi-hairball support.
 (Refer to the commit hashes in the \texttt{git log} output, above.) The first
 hash identifies the commit Filbert was working with when he began making
@@ -417,6 +458,9 @@ revised picture in Figure~\ref{fig:teamGit}.
 \label{fig:teamGit}
 \end{figure}
 
+\index{Betty Lou}
+\index{github}
+\index{BitBucket}
 We now have two developers working on this feline program: Filbert and his
 colleague Betty Lou. The picture is considerably more complex. First, notice
 that the three salmon-colored squares represent \textit{different machines}
@@ -432,11 +476,13 @@ There are also some new \texttt{git} verbs we need to learn about to make this
 picture work. To wit:
 
 \begin{itemize}
+\index{git@\texttt{git}!\texttt{git clone}}
 \item \texttt{git clone}: Normally, the way this whole process kicks off is
 that someone creates the initial version of the repo on github, and the other
 team members \textbf{clone} copies of it. ``Clone'' is exactly what it sounds
 like: it means to make an exact duplicate.
 
+\index{git@\texttt{git}!\texttt{git push}}
 github makes it easy to do this in a variety of ways. Perhaps the most common
 is when one developer starts with an embryonic version of the code base,
 creates his/her own local git repo, and then ``pushes'' (see below) this to a
@@ -462,6 +508,7 @@ $ git clone https://github.com/stuff/projectName.git projectName
 which will populate your filesystem with a copy of all the repo's files.
 
 \pagebreak
+\index{git@\texttt{git}!\texttt{git push}}
 \item \texttt{git push}: As usual, you'll constantly be making your own local
 commits to your own copy of the repo as you work. You should do this every
 time you reach a stopping point.
@@ -471,6 +518,7 @@ A new operation in the team environment is the ``\texttt{git push}''. It says
 committed) and propagate them up to the team repo in github.'' This is how you
 share your changes with your teammates.
 
+\index{git@\texttt{git}!\texttt{git commit}}
 Rule of thumb: making a local \texttt{commit} should be a common operation.
 Doing a \texttt{push}, on the other hand, is rarer: you only do it when your
 teammates need your latest code, and when your code is stable enough to
@@ -480,6 +528,7 @@ Last thing on \texttt{git push}: you normally don't do a \texttt{push} until
 \textit{after} doing a \texttt{pull} to make sure you have your teammate's
 latest code integrated in yours. See next bullet.
 
+\index{git@\texttt{git}!\texttt{git pull}}
 \item \texttt{git pull}: The inverse process of \texttt{push} is
 \texttt{pull}. It means, ``go to github, fetch whatever changes have been made
 by my fellow developers, and integrate them into my repo so I have the latest
@@ -492,6 +541,8 @@ files}. Doesn't that seem like it would be a nightmare? Doesn't it seem like
 you would each be making incompatible changes, and that one person's work is
 ultimately doomed to be wiped out by the other person's changes?
 
+\index{merge}
+\index{git@\texttt{git}!auto-merge}
 That fear is indeed true if you're thinking of your code ``a file at a time.''
 But \texttt{git} is smart enough to consider your code ``a \textit{line} at a
 time.'' So if Filbert and Betty Lou are both making changes to
@@ -525,6 +576,8 @@ CONFLICT (content): Merge conflict in Hairball.java
 Automatic merge failed; fix conflicts and then commit the result.
 \end{Verbatim}
 
+\index{conflict}
+\index{git@\texttt{git}!conflict}
 This situation is called a \textbf{conflict} and essentially means that you
 and your teammate were working in the same \textit{part} of the file and made
 incompatible changes. Perhaps one of you changed line 57 in one way, and the
@@ -582,6 +635,10 @@ has a living, breathing, healthy, working repository of shared code.
 
 Here are the most common pitfalls I see:
 
+\index{git@\texttt{git}!\texttt{git push}}
+\index{git@\texttt{git}!\texttt{git pull}}
+\index{git@\texttt{git}!\texttt{git stash}}
+\index{man@\texttt{man}}
 \begin{compactitem} \item Forgetting to do a \texttt{pull} before trying a
 \texttt{push}. git won't allow you to \texttt{push} into a repo if you're
 out-of-date. You must first \texttt{pull} the recent changes so you're all in
