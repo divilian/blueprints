@@ -9,17 +9,28 @@ make an observation about the classes in an OO program. They tend to come from
 two different sources. We call these two categories ``the \textbf{problem
 domain}'' and ``the \textbf{solution domain}.''
 
+\index{problem domain}
 The problem domain provides classes that relate to the \textit{problem} the
 program is designed to solve. A key give-away of a problem domain class is
 that the user herself recognizes the term used. She thinks of that entity as
 central in what the system does/is.
 
+\index{bid@\texttt{Bid}}
+\index{auction@\texttt{Auction}}
+\index{item@\texttt{Item}}
+\index{seller@\texttt{Seller}}
+\index{buyer@\texttt{Buyer}}
+\index{eBay}
 For instance, in an eBay type application, classes like \texttt{Bid},
 \texttt{Auction}, \texttt{Item}, \texttt{Seller}, and \texttt{Buyer} are all
 from the problem domain. eBay users think about, and talk about, these very
 concepts when they think about the system, even if ``code'' never crosses their
 mind.
 
+\index{solution domain}
+\index{smtpServer@\texttt{SMTPServer}}
+\index{messageListener@\texttt{MessageListener}}
+\index{loginPane@\texttt{LoginPane}}
 The other source of classes is the solution domain, which consists of
 supportive classes that don't really represent things about the problem
 itself, but which are necessary to solve the problem. Suppose an email
@@ -38,6 +49,10 @@ listeners,'' nor Spotify users of the ``login panes'' in their UI. So we
 relegate those classes to a different realm of sorts; one that contains
 classes to perform functions, not to represent the domain's reality.
 
+\index{connection}
+\index{Spotify}
+\index{song@\texttt{Song}}
+\index{playlist@\texttt{Playlist}}
 You might wonder which of the two domains is most important to get right. The
 answer is unquestionably the \textit{problem domain}. Think about it: if
 Spotify decided to change their underlying storage mechanism, and therefore

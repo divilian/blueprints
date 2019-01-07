@@ -2,6 +2,8 @@
 \chapter{Doing design (1 of 2)}
 \label{design1}
 
+\index{analysis}
+\index{synthesis}
 This chapter marks a watershed of sorts. Up to this point, we've been doing
 \textbf{analysis} instead of \textbf{synthesis}. Analysis is when you look at
 something that already exists -- a design diagram or a code snippet, say --
@@ -10,6 +12,7 @@ parts. Synthesis, on the other hand, is designing something that doesn't
 already exist. Instead of scrutinizing a UML diagram, we're creating a UML
 diagram; instead of examining a method, we're writing a method.
 
+\index{ballplayer@\texttt{Ballplayer}}
 Until now, I've presented you with example after example of classes and
 methods already written, and diagrams illustrating their various parts. But
 now it's time to ask the question: ``how do we figure out what the right
@@ -25,6 +28,8 @@ as much an art as a science. It calls for intuition and imagination more than
 adherence to a set of rules. Nevertheless, there are principles that guide the
 selection of good classes, and we'll talk about them in this chapter.
 
+\index{Wirfs-Brock, Rebecca}
+\index{responsibility-driven design}
 Of all the OO pioneers who weighed in on the question of how to arrive at a
 good design, the one who had the most influence on me was Rebecca Wirfs-Brock,
 who invented the technique called \textbf{responsibility-driven design}. I'm
@@ -34,6 +39,7 @@ Object-Oriented Software.} Prentice Hall, 1991.}
 
 \section{``Discovering the design''}
 
+\index{discovering the design@``discovering the design''}
 I don't know who first coined the phrase ``discovering the design'' (it
 certainly wasn't me; it might have been Wirfs-Brock) but when I originally
 heard it my ears perked up. It sounded strangely paradoxical. ``Design'' was
@@ -70,6 +76,7 @@ will do so reasonably well.
 \section{Straight from the horse's mouth}
 \label{reqSpec}
 
+\index{requirements specification (``req spec'')}
 Wirfs-Brock's procedure is paraphrased in Figure~\ref{fig:discovering}. We
 have to somehow come up with a written description to kick things off. Often,
 a \textbf{requirements specification}\footnote{Sometimes called a ``req spec''
@@ -108,6 +115,7 @@ what classes would be appropriate for the program it describes. Let's see how.
 
 \subsection{Nouns, and only nouns}
 
+\index{noun}
 If you flash back to \textit{Schoolhouse Rock} or \textit{Sesame Street},
 you'll remember your grammatical parts of speech and realize that a
 \textbf{noun} is the right kind of word for a class name. Every object (and
@@ -144,6 +152,7 @@ valid class name. Can you find it?
 \label{fig:nouns}
 \end{figure}
 
+\index{noun!proper}
 I claim the only legit class name in this list is
 \underline{\textit{crocodile}}. Here's why. First, some of these entries are
 ``proper nouns'' which means they refer to specific instances of things, rather
@@ -151,6 +160,7 @@ than categories. In English, we almost always use \textit{capital letters} to
 denote proper nouns, which means when you see ``Beyonc\'{e}'' and ``London''
 you can immediately roll your eyes and move on.
 
+\label{instantiation}
 Second, most of the other nouns aren't \textit{instantiate-able}. Here's the
 litmus test for whether a noun is instantiate-able: can you meaningfully
 put the word ``a'' (or ``an'') before it? And can you meaningfully make it
@@ -189,6 +199,7 @@ right, with its own properties and operations.
 
 \subsubsection{Noun phrases}
 
+\index{noun!noun phrase}
 By the way, it's often the case that instead of a bare noun, we use a
 \textbf{noun phrase} as a class name. A noun phrase is simply a noun with one
 or more modifiers. ``Grizzly bear,'' ``chess tournament,'' and ``public liberal
@@ -196,6 +207,7 @@ arts college'' are examples.
 
 \subsubsection{Singular, not plural}
 
+\index{noun!singular}
 Finally, it should hardly be worth stating that all class names must be
 \textbf{singular}, not plural. I don't work in ``a buildings,'' but a
 \textit{building}; and nobody has ``a dogs'' as a pet. When we instantiate an
@@ -208,6 +220,7 @@ object, we're going to say ``\texttt{Crocodile alice = new Crocodile()}'', not
 process of deriving class names by starting with a written description of the
 program's requirements. Here's a short example:
 
+\index{bicycle}
 \setlength{\fboxsep}{10pt}
 \begin{center}
 \label{blockRequirements1}
@@ -337,6 +350,7 @@ The choice of which synonym to retain is mostly aesthetic. All other things
 being equal, I usually choose the shorter one.
 
 \vspace{.3in}
+\index{instantiation}
 \textbf{2b. Eliminate nouns that aren't instantiate-able.} Now we apply our
 test: ``can we put `a/an' or a number before the noun phrase, and have it make
 sense?''
@@ -421,6 +435,7 @@ So now all that remains are:
 \end{samepage}
 \vspace{-.1in}
 
+\label{candidate class}
 We dub these our \textbf{candidate classes}, which essentially means ``those
 noun phrases which each have a very good chance of actually turning into a
 class in our program.'' We're not 100\% committed to them yet, but they pass
@@ -439,6 +454,7 @@ the ten candidate classes, here's what comes to mind:
 \begin{itemize}
 \itemsep.1em
 
+\index{requirements specification (``req spec'')}
 \item First, and most importantly, I realize that the word ``order'' was used
 in \textit{two different ways} in the requirements description. You may have
 actually noticed this earlier when we scratched out ``expected arrival date''
@@ -479,6 +495,7 @@ first one a \texttt{PurchaseOrder} and the second one a
 \textit{avoid} using the original word altogether, since it was ambiguous to
 begin with and therefore may encourage confusion down the road.)
 
+\index{inheritance}
 \item Second, I notice that some of these nouns have overlapping meanings, and
 I sense that \textit{inheritance} might be applicable. In particular, consider
 these four noun phrases:
@@ -536,12 +553,14 @@ With these changes, our list is now:
 
 \textbf{3b. Identify what each one \textit{knows} and can \textit{do}.}
 
-% TODO: add reference to chapter number
-
-As you'll recall from our chapter on encapsulation, a well-conceived class
+\index{encapsulation}
+\index{state}
+\index{behavior}
+As you'll recall from Chapter~\ref{ch:encapsulation}, a well-conceived class
 combines both \textbf{state} and related \textbf{behavior}. This is the
 cornerstone of good object-oriented design.
 
+\index{CRC card}
 Hence at this stage, we apply this litmus test to the candidate classes that
 remain. One tool to facilitate this procedure is creating a set of \textbf{CRC
 cards}, which stands for ``Class, Responsibilities, Collaborations.'' The idea
@@ -549,6 +568,9 @@ is for your design team to create a literal $3\times5$ card for each candidate
 class, put them on a flat workspace so you can move them around and compare
 and group them, and see whether they seem to fit into a cohesive whole.
 
+\index{class@\texttt{class}}
+\index{responsibilities}
+\index{collaborations}
 The \textbf{Class} for each card is just the class name (which can be fluid as
 you try to zero in on the best name). The \textbf{Responsibilities} are the
 state (``what an object of that type knows'') and the behavior (``what an
@@ -563,6 +585,7 @@ flag that perhaps this isn't a good class after all.
 \begin{samepage}
 Let's start at the top.
 
+\index{shipment@\texttt{Shipment}}
 \begin{center}
 \begin{tabular}{|l|}
 \hline
@@ -624,6 +647,7 @@ together.
 
 Let's walk through a couple of other CRC cards.
 
+\index{accessory@\texttt{Accessory}}
 \begin{center}
 \begin{tabular}{|l|}
 \hline
@@ -653,6 +677,7 @@ It can also be purchased (duh), either on the spot or as part of a special
 customer order. It can also provide its quantity information by interfacing
 with the \texttt{Inventory} class. Speaking of which...
 
+\index{inventory@\texttt{Inventory}}
 \begin{center}
 \begin{tabular}{|l|}
 \hline
@@ -670,6 +695,8 @@ with the \texttt{Inventory} class. Speaking of which...
 \end{tabular}
 \end{center}
 
+\index{Singleton pattern}
+\index{design pattern!Singleton}
 I smell a Singleton. Our store is likely going to have a single
 \texttt{Inventory} object which can be used to query and update its item
 quantities. By the way, you may have noticed that one of the ``Can'' items --
@@ -681,6 +708,7 @@ We've discovered a key shared function between classes.
 
 That's the inventory of the store, and now for the \texttt{Store} itself:
 
+\index{store@\texttt{Store}}
 \begin{center}
 \begin{tabular}{|l|}
 \hline
@@ -714,6 +742,8 @@ classes that are cohesive, modular, encapsulated, and work well together.
 
 \section{A longer example}
 
+\index{requirements specification (``req spec'')}
+\index{Uno"!}
 Figure~\ref{fig:uno} gives a second, longer example of a req spec. We'll
 develop this example in the remainder of this chapter and in the next one. In
 particular, it involves a non-trivial inheritance hierarchy.
@@ -1041,6 +1071,8 @@ classes that are going to survive the whole design vetting. These are quality
 classes that will ensure a solid design that's robust for the present and the
 future!
 
+\index{CRC card}
+\index{simulation@\texttt{Simulation}}
 \small
 \begin{center}
 \begin{tabular}{|l|}
@@ -1060,6 +1092,7 @@ future!
 \end{tabular}
 \end{center}
 
+\index{card@\texttt{Card}}
 \begin{center}
 \begin{tabular}{|l|}
 \hline
@@ -1080,6 +1113,7 @@ future!
 \end{tabular}
 \end{center}
 
+\index{deck@\texttt{Deck}}
 \begin{center}
 \begin{tabular}{|l|}
 \hline
@@ -1098,6 +1132,7 @@ future!
 \end{tabular}
 \end{center}
 
+\index{game@\texttt{Game}}
 \begin{center}
 \begin{tabular}{|l|}
 \hline
@@ -1117,6 +1152,7 @@ future!
 \end{tabular}
 \end{center}
 
+\index{hand@\texttt{Hand}}
 \begin{center}
 \begin{tabular}{|l|}
 \hline
@@ -1135,6 +1171,7 @@ future!
 \end{tabular}
 \end{center}
 
+\index{player@\texttt{Player}}
 \begin{center}
 \begin{tabular}{|l|}
 \hline
