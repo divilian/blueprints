@@ -6,6 +6,7 @@ simple-yet-ubiquitous design pattern, called \textbf{Factory}. It's a pretty
 easy one to grasp. Simply put, a factory is \textit{a class whose purpose is
 to instantiate objects.}
 
+\index{new@\texttt{new}}
 Up to now, we've used the \texttt{new} operator directly in order to
 instantiate. If we want a new \texttt{Ballplayer} object, we \texttt{new} one
 up:
@@ -14,6 +15,7 @@ up:
   Ballplayer joe = new Ballplayer("Dimaggio","OF");
 \end{Verbatim}
 
+\index{ballplayer@\texttt{BallplayerFactory}}
 We're now going to outsource this instantiation process to a special class
 called a \texttt{BallplayerFactory}. It'll seem like unnecessary wiring at
 first, but there are advantages that come to light when the instantiation
@@ -23,6 +25,9 @@ process is more complicated. Our new line of code will be this:
   Ballplayer joe = BallplayerFactory.instance().create("Dimaggio","OF");
 \end{Verbatim}
 
+\index{Singleton pattern}
+\index{design pattern!Singleton}
+\index{instance@\texttt{.instance()}}
 The sharp-eyed reader will see the \texttt{.instance()} and wonder if this is
 using the \textbf{Singleton} pattern. The answer is yes! In fact,
 \textit{factories are nearly always singletons.} This is simply because
@@ -67,6 +72,8 @@ code to do nothing but ``\texttt{new} up a \texttt{Ballplayer},'' which we were
 doing before with one line of code and a lot less work. What's the point of
 all this?''
 
+\index{decoupling}
+\index{subclass}
 The answer is that oftentimes \textit{the code which needs to instantiate an
 object isn't aware of what specific subtype of object it needs.} Read that
 sentence again and let it sink in. This type of decoupling -- one part of the
@@ -77,6 +84,7 @@ bring.
 
 \section{Top-down inheritance and the Factory pattern}
 
+\index{inheritance!top-down (interface)}
 This is in fact the launch point of top-down inheritance. We've seen that with
 top-down inheritance, the client code can treat all specific subtypes (like
 \texttt{Cow}, \texttt{Duck}, \textit{etc.}) in exactly the same way -- in
@@ -90,6 +98,8 @@ come into existence in the first place?'' Somewhere the specific subtype
 ``\texttt{new}'' it. How can we be blissfully ignorant of the subtypes if we're
 the one who has to instantiate them?
 
+\index{Factory pattern}
+\index{design pattern!Factory}
 The answer is the Factory pattern. With it, we turn over control of the actual
 instantiation to the factory class, rather than burdening the client code with
 it.
@@ -102,6 +112,7 @@ instead). It might make sense to use an inheritance hierarchy here with
 subclasses of \texttt{Ballplayer}, as shown in
 Figure~\ref{ballplayerInheritance}.
 
+\index{inheritance hierarchy}
 \begin{figure}[ht]
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 class Ballplayer {
@@ -160,9 +171,11 @@ has to be updated, not the code that (unknowingly) uses them.
 
 \section{Random type generation and the Factory pattern}
 
+\index{random number generation}
 In games and simulations, it's common to instantiate objects according to some
 random pattern, rather than specifying each type of object deterministically.
 
+\index{monsterFactory@\texttt{MonsterFactory}}
 Imagine a fantasy-genre videogame in which the player acts as a swordsman or
 Valkyrie and wanders through dungeon levels looking for monsters to slay. We
 might have a \texttt{MonsterFactory} class to generate monsters as they are
@@ -181,6 +194,7 @@ stats of these basic creatures get buffed, but now an occasional
 \label{fig:monsterFactory}
 \end{figure}
 
+\index{create@\texttt{.create()}}
 The Factory pattern makes this easy. All we need to do is encapsulate the
 functionality for creating monsters into the \texttt{.create()} method, as
 shown in Figure~\ref{fig:monsterFactoryCode}. Then, whenever our program needs
@@ -200,6 +214,7 @@ client code simply calls:
 
 and away we go.
 
+\index{Random.nextDouble@\texttt{Random.nextDouble()}}
 \begin{figure}
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class MonsterFactory {
@@ -240,16 +255,11 @@ class MonsterFactory {
     }
 }
 \end{Verbatim}
-\caption{A factory to generate baddies randomly, based on the game's level.}
+\caption{A factory to generate baddies randomly, based on the game's level.
+(Recall the \texttt{java.util.Random} class from Section~\ref{Random} on
+p.~\pageref{Random}.)}
 \label{fig:monsterFactoryCode}
 \end{figure}
-
-(By the way, if you're not familiar with the \texttt{java.util.Random} class,
-it's a simple way of generating random numbers. I usually instantiate one and
-call it \texttt{rng} for \textbf{r}andom \textbf{n}umber \textbf{g}enerator.
-Then, every time you call \texttt{.nextDouble()} it returns a uniform random
-floating-point number between 0 and 1. The \texttt{.nextInt(n)} method returns
-a random integer from 0 to \texttt{n}-1.)
 
 Hopefully you're getting the gist, here: if the instantiation process for an
 object is a bit complex, it makes sense to separate it into its own class.
