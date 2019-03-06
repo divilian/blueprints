@@ -108,14 +108,16 @@ on} a \texttt{B} object.
 \end{compactitem}
 
 \index{public interface}
+
 The word \textbf{interface} -- like stack, heap, dynamic, static, and many
-other computer science words -- has multiple meanings. We'll talk about the
-Java \texttt{interface} keyword later in the book. For now, when I say
-interface I mean \textit{those aspects of a class that a user of that type of
-object can see.} This boils down to: the methods you can call on it, together
-with their argument lists and return types. Specifically, the interface does
-\textit{not} include the method implementations (the bodies of the methods),
-nor the instance variables.
+other computer science words -- has multiple meanings. We've seen one usage
+already, in Figure~\ref{fig:mostImportant} (p.~\pageref{fig:mostImportant}).
+We'll talk about the Java \texttt{interface} keyword later in the book. For
+now, when I say interface I mean \textit{those aspects of a class that a user
+of that type of object can see.} This boils down to: the methods you can call
+on it, together with their argument lists and return types. Specifically, the
+interface does \textit{not} include the method implementations (the bodies of
+the methods), nor the instance variables.
 
 \index{scissorKick@\texttt{.scissorKick()}}
 If you think about it, you'll realize why the above two bullet points are
@@ -254,8 +256,8 @@ inside it. So what does it mean then?
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{wrongRightHasA.pdf}   % 
-\caption{The \textbf{wrong}, and \textbf{right}, way of visualizing a ``has-a''
-association in Java.}
+\caption{The wrong, and right, way to visualize a ``has-a'' association in
+Java.}
 \label{fig:wrongRightHasA}
 \end{figure}
 
@@ -305,8 +307,8 @@ biggie.
 \begin{figure}[ht]
 \centering
 \includegraphics[width=1\textwidth]{wrongHasA.pdf}   % 640x180
-\caption{One wrong way to model an instance variable. The ``has-a'' arrow
-already indicates that every \texttt{Pizza} has-a \texttt{Topping}: the
+\caption{One incorrect way to model an instance variable. The ``has-a'' arrow
+\textit{already} indicates that every \texttt{Pizza} has-a \texttt{Topping}: the
 extraneous \texttt{topping} entry in the \texttt{Pizza} class's second box is
 redundant and incorrect.}
 \label{fig:wrongHasA}
@@ -393,9 +395,11 @@ if a particular \texttt{B} object is pointed to by an \texttt{A} object, no
 
 \index{diamond!white ($\lozenge$)}
 \index{line!solid (---)}
-Examples appear in Figure~\ref{fig:aggregationAssoc}. Note that the diamond
-appears on the ``aggregator'' side; \textit{i.e.}, adjacent to the class that
-will have the instance variable.
+
+Examples appear in Figure~\ref{fig:aggregationAssoc}. Note carefully: the
+diamond appears \textit{on the ``aggregator'' side} of the arrow;
+\textit{i.e.}, adjacent to the class that will have the instance variable. (I
+remember getting this backwards at first.)
 
 \index{professor@\texttt{Professor}}
 \index{student@\texttt{Student}}
@@ -564,7 +568,7 @@ should keep that in mind as you code.'' Even more rarely, you'll see
 multiplicities like ``\textbf{5}'' (``each object of type A is associated with
 exactly five objects of type B''), or ``\textbf{3..8}'' (``each object of type A
 is associated with anywhere from three to eight objects of type B''),
-\textit{etc.} These are rare, especially since as we'll see in the next
+\textit{etc.} These are uncommon, especially since as we'll see in the next
 section, there really isn't any way to code those constraints explicitly in a
 language like Java.
 
@@ -578,17 +582,20 @@ language like Java.
 \index{adventurer@\texttt{Adventurer}}
 \index{weapon@\texttt{Weapon}}
 \index{collection}
+
 So what does all this look like in code? Well, first remember that inst vars
-are only used in the direction(s) along which the association is navigable.
-For Figure~\ref{fig:multiplicity}, this means that only \texttt{Driver},
+are only used in the direction(s) along which the association is navigable. For
+Figure~\ref{fig:multiplicity}, this means that only \texttt{Driver},
 \texttt{License}, \texttt{Adventurer}, and \texttt{Transcript} will have inst
 vars related to these associations; \texttt{Weapon} and \texttt{Course} will
 not. Furthermore, if the multiplicity is a \textbf{1}, the inst var will be of
 the type the arrow is pointing to; if it's a $\star$, it will be \textit{some
 collection} of that type. Which sort of collection is used -- an array, an
-\texttt{ArrayList}, a \texttt{Hashtable}, a \texttt{Set}, \textit{etc.}~-- is
-normally up to the programmer, and is decided based on the run-time
-performance features of that collection type.
+\texttt{ArrayList}, a \texttt{Hashtable}\footnote{See
+section~\ref{sec:hashtable} (p.~\pageref{sec:hashtable}) if you're unfamiliar
+with the \texttt{Hashtable} data type.}, a \texttt{Set},
+\textit{etc.}~-- is normally up to the programmer, and is decided based on the
+run-time performance features of that collection type.
 
 So here's some code we might reasonably expect to see from our three examples:
 
@@ -697,9 +704,7 @@ The other parts of UML class diagrams that we'll annotate with extra
 information will indicate the level of \textbf{visibility} that the designer
 intends the various inst vars, methods, and even classes to possess.
 Visibility has to do with promoting \textbf{encapsulation}, the most important
-of all OO principles as we learned in Chapter~\ref{ch:encapsulation}. Let's
-look at the syntax and the operational implications of the different
-visibility levels.
+of all OO principles as we learned in Chapter~\ref{ch:encapsulation}.
 
 This is one area where our UML diagrams, ostensibly
 programming-language-neutral, will betray a very Java-ish flavor. That's
@@ -709,6 +714,55 @@ syntax to indicate each. The complete list can be found in the tables in
 Figures~\ref{fig:visibilityLevels} and \ref{fig:visibilityLevelsClasses}. In
 both tables, the visibility levels are listed in order from most restrictive
 to least restrictive.
+
+\subsection{Java packages}
+\label{sec:packages}
+\index{package}
+
+Now's as good a time as any to mention the notion of Java ``packages.'' This
+was a language innovation intended to provide an organizational mechanism:
+related classes can be grouped together into a construct called a
+\textbf{package}. This really isn't much more than being able to store
+\texttt{.java} files in different directories to keep them organized, except
+for one thing: the language itself is aware of which Java classes are members
+of which packages, and can enforce visibility based on that notion, as we'll
+see below. For now, here's the basics about packages:
+
+\begin{compactenum}
+\item Package names can be a single word (like ``combat'') or a dot-separated
+sequence of words (like ``com.gearbox.halo.simulator.combat'').
+\item The dot-separated-sequence variety is kinda sorta meant to convey a
+hierarchy, from general to specific. In the previous example -- from the
+\textit{Halo} videogame created by Gearbox Software -- ``combat'' is a subset
+of ``simulator,'' which is part of the ``halo'' program designed at
+``gearbox.com''. (Since ``com'' is more general than ``gearbox'' -- just like
+``edu'' is more general than ``umw'' -- many package names begin with a domain
+name written in reverse order like this.)
+\item However, even though it looks like a hierarchy, \textit{Java has no
+notion of subpackages.} In other words, although the
+``com.gearbox.halo.simulator'' package looks like it would be a
+``subpackage'' of ``com.gearbox.halo,'' in actual fact it is not. It's just a
+naming convention, and there's no way (for example) to ``import everything from
+com.gearbox.halo on down.''
+\item Every class is in one (and only one) package. This must be specified in
+\textit{both} of two ways: (1) the first (non-comment) line of the file must be
+a \textbf{package declaration} like ``\texttt{package
+com.gearbox.halo.simulator.combat}'', and (2) the \texttt{.java} file itself
+must be physically in a directory called
+``\texttt{com/gearbox/halo/ simulator/combat}.''\footnote{If you forget either one of
+these two things, or make them incompatible with each other, your code will
+be officially unreachable by any Java program. (Yes, that was a dumb design
+decision on Java's part.)}
+\item If a class has no \texttt{package} statement, then it is considered to be
+in ``the default package,'' which just means ``the package with no name.''
+\end{compactenum}
+
+\subsection{Visibility levels}
+
+Okay, back to visibility. Let's look at the syntax and the operational
+implications of the different visibility levels in
+Figures~\ref{fig:visibilityLevels} (for methods and inst vars) and
+\ref{fig:visibilityLevelsClasses} (for classes themselves).
 
 \index{private@\texttt{private}}
 \index{protected@\texttt{protected}}
@@ -722,10 +776,11 @@ to least restrictive.
 \hline
 private & \texttt{private} & \textbf{--} & the class itself \\
 package & (none) & \textbf{\freakingtilde} & any class from the same package\\
-protected & \texttt{protected} & \textbf{\#} & \makecell{from the same
+protected & \texttt{protected} & \textbf{\#} & from the same
 package, or a subclass\footnote{A ``subclass'' has to
-do with the topic of \textbf{inheritance} in OO, a subject of a future
-chapter. For now, I just want to make the table complete.}} \\
+do with the topic of \textbf{inheritance} in OO, which we will cover in gory
+detail in Chapters~\ref{ch:inheritance} and \ref{ch:inheritance2}.
+For now, I just want to make the table complete.} \\
 public & \texttt{public} & \textbf{$\plus$} & any method anywhere \\
 \end{tabular}
 \vspace{.1in}
@@ -762,7 +817,7 @@ modifiers in action. In particular, the \texttt{numHits} and
 \texttt{numAtBats} inst vars are both marked as private, while the
 \texttt{isBetterThan()} method is public.
 
-\begin{figure}[hb]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=0.5\textwidth]{visAboutClasses.pdf}
 \caption{A class whose components bear visibility annotations.}
@@ -816,7 +871,7 @@ of the method. It reads:
 double otherBattingAvg = ((double) other.numHits) / other.numAtBats;
 \end{verbatim}
 
-My question to you, the dear reader, is this: do you think this line ought to
+My question to you, dear reader, is this: do you think this line ought to
 compile without errors, or no? Take a moment to consider your answer.
 
 Many, many students assume this line will \textit{not} compile cleanly. Here's
@@ -834,9 +889,9 @@ This sounds so eminently reasonable, and yet it is dead wrong. Here's why:
 \index{private@\texttt{private}}
 \begin{itemize}
 \itemsep.1em
-\item A ``private'' inst var does \underline{not} mean that one object's
+\item[{\color{darkred} \XSolidBold}] A ``private'' inst var does \underline{not} mean that one object's
 \textit{value} is hidden from another \textit{object}.
-\item A ``private'' inst var \underline{does} mean that the very
+\item[{\color{darkgreen} \CheckmarkBold}] A ``private'' inst var \underline{does} mean that the very
 \textit{existence} of one class's inst var is hidden from other
 \textit{classes}.
 \end{itemize}
@@ -850,22 +905,22 @@ of the online creep example, here's how I'd explain it:
 
 \begin{itemize}
 \itemsep.1em
-\item Making \texttt{SSN} (Social Security Number) a private inst var of the
-\texttt{Person} class does \underline{not} mean that one person cannot find
-out another person's SSN.
-\item Making \texttt{SSN} a private inst var of the \texttt{Person} class
+\item[{\color{darkred} \XSolidBold}] Making \texttt{SSN} (Social Security Number) a private inst var of the
+\texttt{Person} class does \underline{not} mean that one \texttt{Person} object
+cannot find out another \texttt{Person} object's SSN.
+\item[{\color{darkgreen} \CheckmarkBold}] Making \texttt{SSN} a private inst var of the \texttt{Person} class
 \underline{does} mean that \texttt{Dog}s, \texttt{Website}s,
 \texttt{CreditCard}s, \textit{etc.}~don't even know that people \textit{have}
-Social Security Numbers at all.
+Social Security Numbers.
 \end{itemize}
 
 In yet other words, visibility is about \textit{variables} and
 \textit{classes}, not \textit{values} and \textit{objects}.
 
-The code above \textit{does} compile cleanly for one simple reason: it's a
-method of the \texttt{Ballplayer} class. Any method of the \texttt{Ballplayer}
-class can talk about any inst var or method of the \texttt{Ballplayer} class,
-regardless of which particular object is in view.
+The code above does compile cleanly for one simple reason: it's a method of the
+\texttt{Ballplayer} class. Any method of the \texttt{Ballplayer} class can talk
+about any inst var or method of the \texttt{Ballplayer} class, regardless of
+which particular object is in view.
 
 To complete the example, here's some code which indeed does \textit{not}
 compile because of those private \texttt{numHits} and \texttt{numAtBats}:
@@ -923,10 +978,11 @@ Here are the rules (and strong suggestions) to keep in mind:
 
 \begin{enumerate}
 \itemsep.1em
-\item Always make all instance variables \texttt{private}. That's the easiest
-design decision you'll ever make. As we'll see in the encapsulation chapter,
-giving an inst var any other level of visibility unacceptably sacrifices
-encapsulation.
+\item Always make all instance variables \texttt{private}\footnote{Or
+possibly \texttt{protected}, if you intend to inherit from the class. See
+Chapter~\ref{ch:inheritance2}.}. That's the easiest
+design decision you'll ever make. \textbf{Public instance variables
+unacceptably sacrifice encapsulation.}
 \item Always make methods ``as private as possible.'' This promotes
 encapsulation and reduces dependencies. When in doubt, err on the side of the
 \textit{higher} entry in Figure~\ref{fig:visibilityLevels}, not the lower. If
@@ -936,21 +992,15 @@ not true.
 \end{enumerate}
 
 \index{package visibility}
-Lastly, a word about package-level visibility. Recall that a Java
-\textbf{package} is an organizational mechanism that allows a developer to
-group related classes together. One reason to do this is to promote neatness
-and tidiness throughout your code base: instead of having all your classes in
-one huge directory, you divvy them up according to functional area. 
-
 \index{Gosling, James}
-Another reason is to take advantage of package-level visibility. There may be
-design decisions you make (namely, certain methods you create on a class) that
-you don't necessarily want to make publicly accessible to all users of the
-class, yet which it does make sense to make available to the other classes
-that are collaborating with that class. Package-level visibility was designed
-for this purpose. Note that there is no Java keyword for it: it's the default.
-This is because Gosling \& Co.~(the designers of Java) were proud of the
-package concept and wanted to promote its use among Java developers as much as
+Lastly, a word about package-level visibility. There may be design decisions
+you make (namely, certain methods you create on a class) that you don't
+necessarily want to make publicly accessible to all users of the class, yet
+which it does make sense to make available to the other classes that are
+collaborating with that class. Package-level visibility was designed for this
+purpose. Note that there is no Java keyword for it: it's the default. This is
+because Gosling \& Co.~(the designers of Java) were proud of the package
+concept and wanted to promote its use among Java developers as much as
 possible. So you have to explicitly type if you want any other choice. I think
 package-level visibility is a neat feature, but is underutilized.
 
@@ -971,6 +1021,7 @@ world. Their use in practice is somewhat rarer than private methods, but I
 encourage their use.
 
 
+\pagebreak
 \section{Putting it all together}
 
 All right, let's close this chapter with a small but still full-blown class
@@ -1003,8 +1054,9 @@ specify a city and a mascot.)}
 
 \item \textcolor{Turquoise}{Any method that gets its hands on a
 \texttt{Ballplayer} can find out his/her age. But only methods of the
-\texttt{Ballplayer} class itself can change its age.}
+\texttt{Ballplayer} class itself can change his/her age.}
 
+\pagebreak
 \item \textcolor{Red}{Every \texttt{Team} object will have a private instance
 variable\footnote{Notice that the ``\textbf{--}'' immediately before the word
 ``roster'' is a visibility modifier, indicating that the inst var that results

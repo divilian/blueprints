@@ -4,6 +4,7 @@
 %   pdflatex blue.tex
 \documentclass[11pt]{book}
 \usepackage[usenames,dvipsnames]{color}
+\usepackage{bbding}  % for checkmark and X
 \usepackage{array}           % For double-column exercises.
 \usepackage{longtable}       % For double-column exercises.
 \usepackage[normalem]{ulem}  % For strikethrough.
@@ -29,8 +30,16 @@
 \usepackage{wrapfig}
 \usepackage[hidelinks]{hyperref}
 \usepackage[width=.9\textwidth,singlelinecheck=true,skip=1pt,font=small,labelfont=bf]{caption}
+
 \newcommand{\freakingtilde}{\raisebox{0.5ex}{\texttildelow}}
+
 \makesavenoteenv{tabular}  % to allow footnotes in tables
+\makesavenoteenv{figure}  % to allow footnotes in tables
+
+\definecolor{darkgreen}{rgb}{0,.55,0}
+\definecolor{darkred}{rgb}{.75,0,0}
+
+
 %\captionsetup{width=.9\textwidth}
 
 %\usepackage{enumerate}
