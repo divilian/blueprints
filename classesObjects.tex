@@ -520,8 +520,9 @@ Our term for ``that other part of the code that is now calling me'' is
 \textbf{client code} (or sometimes just ``a \textbf{client}.'') The word
 ``client'' is used in a lot of different ways in high-tech, but here we just
 mean ``the code that wants to use a particular object.'' The word connotes a
-respected customer, whom we want to treat well. Very well, some client code
-calls one of our methods. How should we react?
+respected customer, whom we want to treat well.
+
+Very well, some client code calls one of our methods. How should we react?
 
 \index{state}
 Often we'll react by updating the object's \textbf{state} to reflect what
@@ -539,7 +540,7 @@ is a synonym for the verb \textbf{to code}.} the \texttt{.fillUp()} method
 first. Don't think about Java; think about cars. If I fill up a car, what
 happens?
 
-Does the make or model or mileage change? Of course not: the amount of gas in
+Does the make or model or mileage change? Of course not. The amount of gas in
 the tank does. And ``fill 'er up'' means to raise it to its maximum. The
 correct implementation of \texttt{.fillUp()}, then, is simply:
 
@@ -581,6 +582,7 @@ class Car {
 
 I chose to omit \texttt{this}, but again it's a personal choice.
 
+% TODO: actually show a setter in addition to a getter (not obvious to some).
 Some methods are no-brainers:
 
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
