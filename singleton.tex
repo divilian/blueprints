@@ -9,56 +9,12 @@ first (and easiest) \textit{design pattern}, and the subject of this chapter.
 
 You know how when you sit down to write some code, there are times when you
 think, ``wait, I've written this before''? Programmer's d\'{e}j\`{a} vu is
-commonplace, especially because certain tips and tricks end up working in
-a lot of different settings. For instance, we've all seen this sort of thing:
-
-\vspace{-.1in}
-\begin{Verbatim}[fontsize=\small]
-    int multiplyAllTogether(int arr[]) {
-        product = 1;
-        for (int i=0; i<arr.length; i++) {
-            product = product * arr[i];
-        }
-        return product;
-    }
-\end{Verbatim}
-
-and this:
-
-\pagebreak
-\begin{Verbatim}[fontsize=\small]
-    boolean hasAtLeastOneFive(int arr[]) {
-        for (int i=0; i<arr.length; i++) {
-            if (arr[i] == 5) {
-                return true;
-            }
-        }
-        return false;
-    }
-\end{Verbatim}
-
-and this:
-
-\begin{samepage}
-\begin{Verbatim}[fontsize=\small]
-    int getIndexOfHighest(int arr[]) {
-        highestSoFar = arr[0];
-        index = 0;
-        for (int i=1; i<arr.length; i++) {
-            if (arr[i] > highestSoFar) {
-                index = i;
-                highestSoFar = arr[i];
-            }
-        }
-        return index;
-    }
-\end{Verbatim}
-\end{samepage}
-
-\index{programming pattern@``programming pattern''}
-I could go on and on. You might think of these as ``programming patterns.''
-They're bite-sized, go-to solutions that can handle a myriad of common little
-programming scenarios.
+commonplace, especially because certain tips and tricks end up working in a lot
+of different settings. For example, we've all seen how to go through an array
+and add up all its elements, or find its maximum value, or check whether it
+contains a particular item. You might think of these as ``programming
+patterns.'' They're bite-sized, go-to solutions that can handle a myriad of
+common little programming scenarios.
 
 It turns out that the same is true of design. Certain motifs in how classes
 collaborate with each other crop up again and again in different settings.
@@ -197,19 +153,23 @@ only ever going to be one.
 
 \index{public@\texttt{public}}
 \index{package visibility}
+
+Unlike \texttt{theInstance}, \texttt{instance()} is public. (Package-level
+visibility may also be an appropriate choice, depending on how wide your
+intended users of this Singleton are.) This is part of the public interface of
+the class, designed to be called by code external to the class.
+
 \index{thread}
 \index{multithreaded program}
-Unlike \texttt{theInstance}, \texttt{instance()} is public. (Package-level
-visibility is also an appropriate choice, depending on how wide your intended
-users of this Singleton are.) This is part of the public interface of the
-class, designed to be called by code external to the class. The other word on
-the declaration line is probably foreign to you: it's called
-\texttt{synchronized}, and its purpose is beyond the scope of this chapter.
-Very briefly, ``\texttt{synchronized}'' prevents two different \textbf{threads}
-of execution from entering the \texttt{instance()} method at the same time.
-A \textbf{multithreaded program} is one that executes more than one flow of
-control simultaneously, each with its own stack. It turns out that if more
-than one thread was inside this method at the same time, we might accidentally
+\index{synchronized@\texttt{synchronized}}
+
+The other word on the declaration line -- \texttt{synchronized} -- is probably
+foreign to you. Its purpose is beyond the scope of this chapter. Very briefly,
+``\texttt{synchronized}'' prevents two different \textbf{threads} of execution
+from entering the \texttt{.instance()} method at the same time. A
+\textbf{multithreaded program} is one that executes more than one flow of
+control simultaneously, each with its own stack. It turns out that if more than
+one thread was inside this method at the same time, we might accidentally
 instantiate \textit{two} (or more) \texttt{Configuration} objects. For our
 single-threaded programs this isn't an issue, but it's good practice to get in
 the habit of making your Singleton \texttt{instance()} methods synchronized.
