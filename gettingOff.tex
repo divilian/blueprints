@@ -394,7 +394,7 @@ command.'' Just type the stuff after it.
 Also, depending on your system and configuration, your prompt may look
 different or have other information in it. One common setting, for instance,
 is for the current directory to always appear as the prompt. (I personally
-hate that, since it makes some commands start at different horizontal
+hate that, since it makes different commands start at different horizontal
 locations as I work, plus it consumes a lot of space.) No matter what, though,
 just mentally substitute ``the dollar sign'' for ``whatever your Linux prompt
 is.''
@@ -614,11 +614,15 @@ them, most often beginning with a minus sign.
 Another important one for the \texttt{ls} command is ``\texttt{-a}'' which
 stands for ``\textbf{a}ll files, please.'' If that sounds like a strange
 option, that's because it is. It turns out that \texttt{ls} by default doesn't
-show you all the files; in particular, \textit{it omits those whose names
-start with a dot (.).} Why? There are reasons. The only time this will be
-relevant to you soon is when you want to work with the \texttt{.bashrc} file,
-as described later in this chapter. You'd have to type ``\texttt{ls -a}'' in
-your home directory to actually see it in the listing.
+show you all the files; in particular, \textit{it omits those whose names start
+with a dot (.).} Why? There are reasons. The only time this will be relevant to
+you soon is if you want to work with your \texttt{.bashrc} file.\footnote{If,
+in your \textit{home} directory, you create a file with \texttt{vim} called
+literally \texttt{.bashrc} (pronounced ``dot-bash-arr-see'') then whatever
+Linux commands it contains will be executed automatically every time you log
+in. Once you get proficient with Linux, it's very handy to put shortcuts,
+aliases, and various preferences in it.} You'd have to type ``\texttt{ls -a}''
+in your home directory to actually see it in the listing.
 
 
 \bigline

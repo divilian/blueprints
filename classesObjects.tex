@@ -31,13 +31,15 @@ streams.
 
 \index{template}
 \index{modeling}
-You'll sometimes hear alternate definitions of these terms, like ``a class is
-a template, and objects are copies of that template.'' This is better than
+
+You'll sometimes hear alternate definitions of these terms, like ``a class is a
+template, and objects are copies of that template.'' This is better than
 out-and-out confusion, but it still misses something important. It's an
-operational definition, instead of a conceptual definition. It thinks of a
-class and an object in terms of the mechanical way the virtual machine carries
-out their duties, rather than in terms of \textit{modeling}, which is what
-OOA\&D is all about.
+operational definition, instead of a conceptual definition. It describes
+``class'' and ``object'' in terms of the mechanical way the virtual machine
+carries out its duties, rather than in terms of their role in
+\textit{modeling}, which is what OOA\&D is all about.
+% TODO: do we ever define "OOA&D"? No.
 
 \index{category}
 In our world, every single software object will be a member of a category,
@@ -91,8 +93,8 @@ two.
 \index{capitalization}
 Let's look at the class in detail. In the top box is its name; so far so good.
 One thing to point out, though, is that in Java, \textit{the names of all
-classes are \underline{capitalized}.} Don't ever violate this rule, for
-convention's and confusion's sake!
+classes are CAPITALIZED.} Don't ever violate this rule, for convention's and
+confusion's sake!
 
 \index{instance variable (inst var)}
 The second compartment has the class's \textbf{instance variables}. You'll
@@ -126,7 +128,7 @@ the integer \texttt{num} variable is the only underlined one. So even though
 every \texttt{Car} has its own \texttt{make}, \texttt{model},
 \texttt{odo}meter reading, \textit{etc.}, they all share one \texttt{num}
 (which presumably represents the total number of \texttt{Car} objects
-instantiated so far.) This makes sense, since after all such a variable is not
+instantiated so far). This makes sense, since after all such a variable is not
 specific to a certain \texttt{Car}. We'll see that in Java, class variables
 are created by using the ``\texttt{static}'' keyword where the variable is
 declared.
@@ -136,19 +138,34 @@ declared.
 \index{method}
 \index{member function}
 The third compartment isn't much harder: it contains the \textbf{methods} for
-the class. Like everything it seems, programmers have multiple terms for these
-two: they're called \textbf{member functions} or \textbf{class functions} on
+the class. Like everything it seems, programmers have multiple terms for this
+too: they're called \textbf{member functions} or \textbf{class functions} on
 occasion. We'll stick with \textbf{method}.
 
 \subsubsection{Functions vs. methods}
 
 \index{function}
+\index{pass (argument)}
+\index{call (a function)}
+\index{subroutine}
+Many programming languages (including Python and C++) allow the programmer to
+create \textbf{functions}, which are coherent chunks of code that can be
+\textbf{called}, \textbf{passed} \textbf{arguments}, and \textbf{return} a
+value. You've undoubtedly seen, and written, many such functions in your
+previous programming courses. They're also sometimes called
+``\textbf{subroutines}.''
+
+Java is somewhat strange in this regard in that you normally don't write
+ordinary functions, but rather \textbf{methods}.\footnote{As we'll see, adding
+the word ``\texttt{static}'' before a method declaration makes it a so-called
+``\textbf{static method},'' which \textit{is} essentially a function.}
+
 The crucial distinction between a method and a regular ol' Joe function is
 this: while you can simply call a function to trigger it, you must call a
-method \textit{on an object}. In the example, we have a \texttt{fillUp()}
-method defined on the \texttt{Car} class. Since it's not an ordinary function,
-but rather an OO method, we must call it on a particular instance of a
-\texttt{Car}. In Java code, this does \textit{not} work:
+method \textbf{\textit{on an object}}. In the example, we have a
+\texttt{fillUp()} method defined on the \texttt{Car} class. Since it's not an
+ordinary function, but rather an OO method, we must call it on a particular
+instance of a \texttt{Car}. In Java code, this does \textit{not} work:
 
 \begin{verbatim}
     fillUp();        // NOPE
@@ -167,7 +184,8 @@ Instead, one must call \texttt{fillUp()} like this:
 \end{verbatim}
 
 where \texttt{johnsMercedes} is the name of a valid \texttt{Car} object,
-previously instantiated.
+previously instantiated. This is what we mean by ``calling \texttt{.fillUp()}
+\textit{\textbf{on}} the \texttt{johnsMercedes} \texttt{Car} object.''
 
 Beginners sometimes view this as a syntactic nuisance. It is not. It is
 fundamental to what your code \textit{means}. Conceptually, it makes sense to
@@ -446,7 +464,7 @@ between the two.
 \index{initialization}
 Now for our other inst vars. Some of them make sense to be set to zero:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
 class Car {
     ...
     Car(String make, String model) {
@@ -465,7 +483,7 @@ sense, however; brand new cars still have a gas tank of a certain size, and
 they certainly get more than 0 mpg. For this example, I'm going to go with a
 very limited notion of automotive properties:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
 class Car {
     ...
     Car(String make, String model) {
@@ -495,7 +513,7 @@ I'm totally not bitter about my car's gas mileage, by the way.
 
 The other methods follow a similar syntactic pattern. But it's super important
 to keep this truth in the front of your mind: \textit{because they are methods
-(not functions), they are called \underline{on an object.}} That means that
+(not functions), they are called \textbf{on an object.}} That means that
 you can refer to instance variables inside of them -- and when you do, you're
 talking about \textit{the instance variables of the object the method was
 called on.} Put another way, you're talking about the instance variables of
@@ -532,6 +550,7 @@ computed on the fly. Other times we'll trigger some side effect, like printing
 to the screen, writing to a database, or calling some \textit{other} method(s)
 on the same or a different object.
 
+\pagebreak
 \index{implement}
 \index{fillUp@\texttt{.fillUp()}}
 This is best seen through examples. Let's implement\footnote{The verb
@@ -582,6 +601,7 @@ class Car {
 
 I chose to omit \texttt{this}, but again it's a personal choice.
 
+\pagebreak
 % TODO: actually show a setter in addition to a getter (not obvious to some).
 Some methods are no-brainers:
 

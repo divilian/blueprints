@@ -83,7 +83,7 @@ class Car {
 
 \index{return@\texttt{return}}
 Now, in addition to printing the error, we also \texttt{return} from the
-method prematurely, before carrying out the nonsensical operation.
+method prematurely, instead of carrying out the nonsensical operation.
 
 \index{client code}
 The problem with this approach is that \textit{the client code is not alerted
@@ -122,7 +122,7 @@ class Car {
 
 Operationally, throwing an exception has the same immediate effect as
 returning: the method instantly terminates and returns control back to the
-client code. The difference, as we'll see in the next section, is that the
+client code. The differences, as we'll see in the next section, are that the
 client code is aware that something unusual happened, does not get a return
 value, and can take evasive action.
 
@@ -134,10 +134,10 @@ If you try to compile the above code, though, you get an error, which says:
 
 It's actually nice of Java to give this error, and here's why. Inside our
 method, we've created a possibility that we won't return at \textit{all}, and
-will instead barf with this error. Java requires that if we do that, we 'fess
-up and declare that this is a possibility. That prevents unwitting programmers
-from blithely calling our method and not accounting for the fact that it might
-not even work.
+will instead barf because of an insoluble problem. Java requires that if we do
+that, we 'fess up and declare that this is a possibility. That prevents
+unwitting programmers from blithely calling our method and not accounting for
+the fact that it might not even run to completion.
 
 Fixing it is simple; we just change the first line of the function to:
 
@@ -162,7 +162,7 @@ necessarily run to completion. In fact, if we compile the above main program,
 we'll get the same kind of compile error that we did when we were midway
 through implementing the Exception-throwing stuff. It'll say we're being
 unconscionably remiss by refusing to deal with the error that might occur
-every time we tell one of our cars to drive.
+any time we tell one of our cars to drive.
 
 \index{try/catch@\texttt{try}/\texttt{catch}}
 The Java way to handle this is with a \textbf{try/catch block}. Essentially,
@@ -269,7 +269,7 @@ encountered. Other cases are of course more complicated. Suppose your stack
 trace looked like this:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
-java.lang.BattleException: Power not charged.
+BattleException: Power not charged.
     at Hyperbeam.useAgainst(Hyperbeam.java:24)
     at Snorlax.attack(Snorlax.java:43)
     at Pokemon.takeTurn(Pokemon.java:181)
@@ -316,9 +316,9 @@ if no error condition has arisen or exception is thrown. If you just type:
 
 anywhere you please, then whenever that line of code is encountered, a stack
 trace like those above will be spewed to your screen. It's often quite helpful
-when you're scratching your head saying, ``okay, I know something's going
-wrong in this method...but how did I get here, anyway?'' The stack trace tells
-you exactly how.
+when you're scratching your head saying, ``okay, I know something's going wrong
+in this method... ...but how did I even \textit{get} here?'' The stack trace
+tells you exactly how.
 
 \bigskip
 \index{C++}
