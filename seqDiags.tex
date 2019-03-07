@@ -94,7 +94,7 @@ class Simulator {
 
 Normally, we \textit{start} with a UML design and then write the code to
 implement it; but here, we're going to reverse-engineer the UML sequence
-diagram \textit{from} the code. This is simply because you've seen a lot more
+diagram \textit{from} the code. This is because so far you've seen a lot more
 code than sequence diagrams in your life, and I think you'll better understand
 how sequence diagrams work if I show it to you this way first. (In the next
 section we'll go the other way.)
@@ -133,11 +133,11 @@ and is labeled ``\texttt{size()}''. As I'm sure you can guess, this corresponds
 to the line of code: ``\texttt{int numTeams = teams.size();}'' which is the
 first thing we do in \texttt{.printAllStars()}.
 
-{\huge $\star$} Here's how you interpret \textit{any} arrow on a sequence diagram:
+{\large \HandRight} \ Here's how you interpret \textit{any} arrow on a sequence diagram:
 
 \begin{compactenum}
 \index{method}
-\item Every arrow is a method call. (Important: method calls are the
+\item Every horizontal arrow is a method call. (Important: method calls are the
 \textit{only} part of the code that can be shown on a sequence diagram.)
 \item The vertical dashed line where the arrow \textit{starts} is the object
 that makes that call. (In other words, if an arrow starts from a ``:Person''
@@ -152,10 +152,10 @@ any parameters.
 \end{compactenum}
 
 So, that first arrow in Figure~\ref{fig:baseballSeqDiag} means:
-
+\vspace{-.1in}
 \begin{center}
 \begin{tabular}{m{.1in} m{4in}}
-\huge $\star$ & \large ``Somewhere in a method of the \texttt{Simulator} class, we're calling
+\large \HandRight & ``Somewhere in a method of the \texttt{Simulator} class, we're calling
 \texttt{.size()} on an \texttt{ArrayList} object named \texttt{teams}.''
 \end{tabular}
 \end{center}
@@ -165,12 +165,12 @@ and make sure you're absolutely certain of every detail. This one key idea is
 the secret to understanding sequence diagrams.)
 
 Notice that the arrow terminates on the top of a skinny box that extends a
-centimeter or so down the \texttt{teams:ArrayList}'s vertical dashed line.
-This skinny box represents \textit{the time during which the program is ``in''
-the \texttt{.size()} method.} It's not actually intended to specify a duration
-of time (like, ``the \texttt{.size()} method will take 1.4 milliseconds to
-complete'') but rather the-fact-that-it's-being-executed at all. Later, we'll
-see that these skinny boxes can be (much) taller if we want our sequence
+centimeter or so down the \texttt{teams:ArrayList}'s vertical dashed line. This
+skinny box represents \textit{the time during which the program is ``in'' the
+\texttt{.size()} method.} It's not actually intended to specify a duration of
+time (as in ``the \texttt{.size()} method will take 1.4 milliseconds to
+complete'') but rather the-fact-that-it's-being-executed at all. In a moment,
+we'll see that these skinny boxes can be (much) taller if we want our sequence
 diagram to show detail about what happens \textit{inside} that method.
 
 \subsection{Following the flow}
@@ -355,6 +355,7 @@ way.}
 \label{fig:rightWrongSeqDiag}
 \end{figure}
 
+\pagebreak
 \item \textbf{Misinterpreting what the non-arrowhead-side of the arrow means.}
 Each arrow originates from a line which represents \textit{the object whose
 code is making the method call} (on a different object, normally). 
@@ -396,10 +397,10 @@ illustrate the behavior of a system to a new member of our programming team.
 (It's usually easier for them to see the diagram at a glance than it is for
 them to wade through a bunch of code and try to make sense of it.)
 
-So now we'll start with a design (both class and sequence diagram), and see
-what we can infer about what the code to implement it should look like.
-Figures~\ref{fig:playlistClassDiag} and \ref{fig:playlistSeq} give the
-design, which you are encouraged to study in detail.
+We'll now \textit{start} with a design (both class and sequence diagram), and
+see what we can infer about what the code to implement it should look like.
+Figures~\ref{fig:playlistClassDiag} and \ref{fig:playlistSeq} give the design,
+which you are encouraged to study in detail.
 
 \begin{figure}
 \centering
@@ -557,7 +558,7 @@ methods called \texttt{.play()} in this design, on each of three different
 classes: \texttt{Playlist}, \texttt{Play}, and \texttt{MP3Stream}.}, it
 apparently involves calling its own \texttt{.genStream()} method, which in
 turn instantiates an \texttt{MP3Stream} object to do the actual playing. After
-this, it gets the Singleton \textit{.instance()} from the
+this, it gets the Singleton \texttt{.instance()} from the
 \texttt{SettingsCenter} (note that arrows can go right-to-left on sequence
 diagrams in addition to left-to-right) and gets the user's \texttt{"volume"}
 setting. Finally, it calls \texttt{.play()} on its \texttt{MP3Stream} to play
