@@ -166,7 +166,7 @@ power'' that it can use in combat. Whenever a \texttt{Pokemon} object's
 \texttt{.attack()} method is called, it will use its primary power on the foe
 it is passed.
 
-Figure~\ref{fig:wrongPokemon} shows the \texttt{WRONG} way to code this. The
+Figure~\ref{fig:wrongPokemon} shows the \textbf{WRONG} way to code this. The
 \texttt{.attack()} method itself, in the \texttt{Pokemon} class, is
 scrutinizing its \texttt{primaryPower} object, figuring out what subclass it
 is and responding appropriately. You can see the (evil) Java
@@ -221,7 +221,7 @@ Figure~\ref{fig:rightPokemon}, on the other hand, shows a good, healthy,
 proper OO design for the Pok\'{e}mon model. None of that
 \texttt{if}/\texttt{else} junk is even necessary, and the \texttt{Pokemon}'s
 \texttt{.attack()} method becomes a one-liner, as it should be. Java will
-automatically call the proper ``thunder shock ''code, ``roar of time ''code,
+automatically call the proper ``thunder shock'' code, ``roar of time'' code,
 ``hyperbeam'' code, or whatever, without us having to try to do its work for
 it. And adding a new \texttt{Power} is just a matter of creating a new,
 encapsulated subclass, with its own \texttt{.useAgainst()} code. Neither the
@@ -304,7 +304,7 @@ superclass -- with a name, parameter list, and return type -- there's not
 actually any \textit{code} for it there! Here's what it looks like:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-class Animal {
+class Animal {     // (not finished yet...)
     abstract public int getNumChromosomes();
     ...
 }
@@ -373,8 +373,8 @@ abstract class Animal {
 }                                      
 \end{Verbatim}
 
-If we ever try to execute the code ``\texttt{new Animal()}'', Java will stop us
-with a compilation error.
+If we ever try to write the code ``\texttt{new Animal()}'', Java will (rightly)
+stop us with a compilation error.
 
 \begin{Verbatim}[fontsize=\small,samepage=true]
 Animal.java:5: error: Animal is abstract; cannot be instantiated
@@ -447,7 +447,7 @@ indicate abstract classes and methods.}
 \label{fig:zooClassAbstract}
 \end{figure}
 
-\section{That's super}
+\section{That's just super}
 
 \index{super@\texttt{super}}
 \subsubsection{Calling a superclass's methods with ``\texttt{super.}''}
@@ -472,6 +472,7 @@ class, not the \texttt{Duck} one. (And a good thing, too: otherwise we'd have
 an infinite loop with \texttt{.makeNoise()} repeatedly calling itself!)
 Written this way, a \texttt{Duck} will make this noise:
 
+\pagebreak
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
 Quack quack
 Chirp chirp
@@ -501,9 +502,9 @@ By the way, students often ask whether they can call
 \texttt{super.super.move()} to invoke the ``grandparent's method.'' The answer
 is \textbf{no}, for reasons having to do with encapsulation. It's fine for a
 \texttt{Duck} to know it's a subclass of \texttt{Bird}, but it shouldn't know
-what \texttt{Bird}'s superclass is, nor even that it \textit{has} a
+what \texttt{Bird}'s superclass is, nor even that \texttt{Bird} \textit{has} a
 superclass. That knowledge (which we would be baking in to our program through
-a ``\texttt{super.super.}'' call) is outside the realm of the \texttt{Duck}
+a ``\texttt{super.super.}''\ call) is outside the realm of the \texttt{Duck}
 class, and therefore should not be known to it. If later, for instance, we
 refactor our code and make \texttt{Bird} its own class instead of inheriting
 from \texttt{Animal}, \texttt{Duck} would break if it had a
@@ -538,7 +539,7 @@ must pass it a \texttt{String} if we want to instantiate one. In the
 \texttt{Student} constructor (which takes a couple arguments of its own) we
 call ``\texttt{super(name)}'' which passes the \texttt{name} the subclass was
 given and passes it up to its superclass's constructor. In the
-\texttt{Professor} constructor, we take a \texttt{"Dr. "} on to the front of
+\texttt{Professor} constructor, we take a \texttt{"Dr.\ "} on to the front of
 the name before passing it the superclass. Note that there's no ``dot'' after
 these \texttt{super()}s; that's how we indicate we want to call the
 constructor, rather than an ordinary method.
@@ -547,9 +548,9 @@ Somewhat weirdly, in Java the call to \texttt{super()} must be the
 \textit{first} line of the constructor. That's because Java says, ``a
 \texttt{Student} is a special type of \texttt{Person}. So if you want to be a
 \texttt{Student}, you have to first be a fully-baked \texttt{Person}. Only
-then will we get around to the \texttt{Student}-specific stuff. (Note this
+then will we get around to the \texttt{Student}-specific stuff.'' (Note this
 restriction does \textit{not} apply to ``\texttt{super.}'' (``super dot'')
-method calls; they can be put anywhere.
+method calls; they can be put anywhere.)
 
 \begin{figure}[ht]
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
@@ -570,7 +571,7 @@ class Student extends Person {                  }
     }
 }
 \end{Verbatim}
-\caption{The interaction between constructors in an inheritance hierarchy.}
+\caption{The interaction between constructors when inheriting.}
 \label{fig:inhConstrCode}
 \end{figure}
 
@@ -628,7 +629,8 @@ like a class. The only differences are: (1) there are
 (sometimes\footnote{Designers aren't consistent about this, I've found. Some
 do include all three compartments for an interface, even though the middle one
 must by definition be empty.}) only two compartments instead of three, and (2)
-the stereotype $\ll$interface$\gg$ appears in the name box.
+the \textbf{stereotype} $\ll$interface$\gg$ appears in the name box (recall
+``stereotypes'' from p.~\pageref{stereotype}).
 
 \begin{figure}[ht]
 \centering
@@ -708,8 +710,10 @@ class Runner implements Storable, Participant {
 
 Take note of the fact that the \texttt{Runner} class definition has
 \textit{two} \texttt{interface} names in its declaration line, separated by a
-comma. And now we come to the reason Java \texttt{interface}s matter:
-\textit{because a class can implement more than one of them.}
+comma. 
+
+And that takes us, at last, to the reason Java \texttt{interface}s matter:
+\textbf{\textit{because a class can implement more than one of them.}}
 
 \index{inheritance!multiple}
 \index{C++}
@@ -743,8 +747,8 @@ use multiple \textit{top-down} inheritance, they rarely want to use multiple
 \textit{bottom-up} inheritance. And it's the latter that gives rise to all the
 paradoxes and strange corner cases. As long as a class simply wants to
 masquerade as one of several different things (as opposed to wanting to steal
-method implementations and inst vars from more than one superclass), multiple
-``inheritance'' turns out not to be a big deal. One of Java's big wins was
+method implementations and inst vars from more than one superclass), ``multiple
+inheritance'' turns out not to be a big deal. One of Java's big wins was
 allowing multiple interfaces to be implemented, not multiple classes to be
 inherited from, thereby sidestepping the whole issue.
 
@@ -897,5 +901,6 @@ say, two \texttt{String}s, three \texttt{Ballplayer}s and a \texttt{Duck} --
 is that the list is treating them all as the ultimate supertype
 (\texttt{Object}), in true top-down inheritance fashion. In C++ there isn't
 really any way to do that, since if you have two classes that don't explicitly
-inherit from a common type, they simply have nothing in common.
+inherit from a common type, then as Steely Dan says, they simply ``got nothing
+in common.''
 
