@@ -65,7 +65,7 @@ that the files it produces can't be easily analyzed -- they're compact, but
 opaque, sequences of 1's and 0's. If you try to open such a file in a text
 editor like \texttt{vim} to inspect what objects and values it contains,
 you'll get gobbledy-gook. The upshot is that it's nearly impossible to debug
-your program or even get visibility into what was saved.
+your program or even figure out what was saved.
 
 \index{forwards-compatible}
 \index{java file@\texttt{.java} file}
@@ -255,16 +255,16 @@ class Resort {
 \index{cursor}
 \index{nextInt@\texttt{.nextInt()}}
 \index{nextLine@\texttt{.nextLine()}}
-The constructor is used for hydration. Perhaps the trickiest thing about it is
-that we \textit{pass it a \texttt{Scanner} object}. Even if you've worked with
-\texttt{Scanner} before, this may be a new idea to you: passing one around
-between objects so that different objects can read different parts of a file.
-But that's precisely what we're doing here. Remember that with file I/O, you
-have a \textbf{cursor} open to a file, which is always ``at'' a particular
-location within the file. Reading from the \texttt{Scanner} (perhaps using one
-of the \texttt{.next*()} methods like \texttt{.nextInt()} or
-\texttt{.nextLine()}) \textbf{advances} the cursor through the file to the
-next bit.
+In Figure~\ref{fig:resort1}, the constructor is used for hydration. Perhaps the
+trickiest thing about it is that we \textit{pass it a \texttt{Scanner} object}.
+Even if you've worked with \texttt{Scanner} before, this may be a new idea to
+you: passing one around between objects so that different objects can read
+different parts of a file. But that's precisely what we're doing here. Remember
+that with file I/O, you have a \textbf{cursor} open to a file, which is always
+``at'' a particular location within the file. Reading from the \texttt{Scanner}
+(perhaps using one of the \texttt{.next*()} methods like \texttt{.nextInt()} or
+\texttt{.nextLine()}) \textbf{advances} the cursor through the file to the next
+bit.
 
 So when a client calls ``\texttt{new Resort(someScanner)}'', they're saying
 ``this \texttt{Scanner}'s cursor is currently positioned right at the

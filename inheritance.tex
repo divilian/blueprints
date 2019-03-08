@@ -11,7 +11,7 @@ consider in later chapters. Developers need to know it, and know it well.
 
 Interestingly, inheritance is used for two distinct (and essentially
 unrelated) reasons to achieve two very different kinds of results. I call
-these ``\textbf{top-down inheritance}'' and ``\textbf{bottom-up inheritance},
+these ``\textbf{top-down inheritance}'' and ``\textbf{bottom-up inheritance},''
 for reasons I'll explain; the more standard terms are \textbf{interface
 inheritance} and \textbf{implementation inheritance}, respectively.
 
@@ -97,17 +97,25 @@ actually store the data. Figure~\ref{fig:countUnique1} gives the idea.
 \label{fig:countUnique1}
 \end{figure}
 
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{countUnique2.pdf}  % 700x190
+\caption{.....but this necessitates duplicating all the original methods.}
+\label{fig:countUnique2}
+\end{figure}
+
 \index{method!pass-through}
-We could code our \texttt{.countUnique()} in a variety of ways, and now the
-last line of Figure~\ref{fig:dreamCountUnique} would work like a charm.
-Trouble is...the other lines wouldn't work anymore. Obviously we have to be
-able to do ``normal'' \texttt{ArrayList} things with our class as well as
-calling our new special method. So we'd have to duplicate all the other
-\texttt{ArrayList} methods on our new class, and have them ``pass through'' the
-arguments to the underlying \texttt{ArrayList} that it holds. The result is
-the unwieldy, repetitive monstrosity in Figure~\ref{fig:countUnique2}, which
-is obviously not a good solution. Here's what each of our ``pass-through''
-methods would look like:
+
+After writing the \texttt{.countUnique()} code, the last line of
+Figure~\ref{fig:dreamCountUnique} would work like a charm. Trouble is...the
+other lines wouldn't work anymore.$\frownie$ Obviously we have to be able to do
+``normal'' \texttt{ArrayList} things with our class as well as calling our new
+special method. So we'd have to duplicate all the other \texttt{ArrayList}
+methods on our new class, and have them ``pass through'' the arguments to the
+underlying \texttt{ArrayList} that it holds. The result is the unwieldy,
+repetitive monstrosity in Figure~\ref{fig:countUnique2}, which is obviously not
+a good solution. Here's what each of our ``pass-through'' methods would look
+like:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 public class CountUniqueArrayList {
@@ -122,14 +130,7 @@ public class CountUniqueArrayList {
     ...etc...
 }\end{Verbatim}
 
-
-\begin{figure}
-\centering
-\includegraphics[width=0.9\textwidth]{countUnique2.pdf}  % 700x190
-\caption{.....but this necessitates duplicating all the original methods.}
-\label{fig:countUnique2}
-\end{figure}
-
+\pagebreak
 At the very least, this is clumsy, duplicative, and error-prone. But it could
 be even worse, if the \texttt{ArrayList} class evolves. Suppose the Java API
 expands to include a \texttt{.shuffle()} method on \texttt{ArrayList}, which
@@ -144,7 +145,7 @@ other \texttt{ArrayList} could automatically do.
 \centering
 \includegraphics[width=0.7\textwidth]{inheritanceArrows.pdf}
 \caption{Diagrammatic elements for inheritance. (Compare with
-Figure~\ref{fig:assocArrows}.)}
+Figure~\ref{fig:assocArrows}, p.~\pageref{fig:assocArrows}.)}
 \label{fig:inheritanceArrows}
 \end{figure}
 
@@ -276,7 +277,6 @@ separate little chamber inside the \texttt{Student} box is just a detail.
 \label{fig:studentObject}
 \end{figure}
 
-\section{``Bottom-up'' (implementation) inheritance}
 The reason I call this technique ``bottom-up inheritance'' is that in order to
 use the special features of your new class, \textit{you need to know you have
 an instance of the subclass.} In the code above, we couldn't call
@@ -540,17 +540,17 @@ the game looks different, has different attack stats, different animations for
 punching and falling, a different ``up smash'' and ``side special,'' and so
 forth. But the main game engine code that coordinates the interaction between
 characters on a stage doesn't have to worry about all those details. It can
-simply say, ``hey, character \#1, your player just input a dash-left. Display
-the appropriate animation please.'' The object for character \#1, who may
-happen to be Zelda, then displays her determinedly zooming to the left with
-her hair flowing behind her.
+simply say, ``hey, P1 (character \#1), your player just input a dash-left.
+Display the appropriate animation please.'' The object for P1, who may happen
+to be Zelda, then displays her determinedly zooming to the left with her hair
+flowing behind her.
 
-The game then says, ``hey, character \#4, you just got punched. First, tell me
-your weight class so I know how far the knockback should be.'' If character \#4
-is Peach, her object responds, ``I'm in the medium weight class.'' The game
-then says, ``thanks. Now display your `hit stun' animation from your current
-position up to coordinates 562, 431.'' The Peach object then shows her
-character flying through the air with her umbrella in a tizzy.
+The game then says, ``hey, P4, you just got punched. First, tell me your weight
+class so I know how far the knockback should be.'' If character \#4 is Peach,
+her object responds, ``I'm in the medium weight class.'' The game then says,
+``thanks. Now display your `hit stun' animation from your current position up
+to coordinates 562, 431.'' The Peach object then shows her character flying
+through the air with her umbrella in a tizzy.
 
 \index{separation of concerns}
 For even moderately complex programs, this ability to compartmentalize these
@@ -559,7 +559,6 @@ mass of spaghetti code. Software engineers call this decoupling
 ``\textbf{separation of concerns},'' and it is among the most important
 principles in all of software development.
 \vspace{1in}
-\pagebreak
 
 \section{``Cool! Can we do both?''}
 
@@ -572,7 +571,7 @@ have some brand new methods in \texttt{A} that weren't present in \texttt{B}.
 Any code that deals with \texttt{B} objects will automatically work for
 \texttt{A} objects also, and your new method implementations will be called
 when it does. And you can write code that calls your brand new methods, as
-long as that code \textit{knows it's dealing with a \texttt{A}}.
+long as that code \textit{knows it's dealing with an \texttt{A}}.
 
 It's not super common to combine the techniques, but I've seen it done.
 
@@ -593,9 +592,9 @@ is appropriate can actually be boiled down to a single principle:
 
 \index{isa association@``is-a'' association}
 \index{association!is-a@``is-a''}
-\begin{quote}
-\textbf{Remember that ``is-a'' means ``is-a.''}
-\end{quote}
+\begin{center}
+{\large \HandRight} \ \textbf{Remember that ``is-a'' means ``is-a.''} \ {\large \HandLeft}
+\end{center}
 
 \index{subclass}
 The time \textit{not} to use inheritance is when you see some code that you
