@@ -178,7 +178,6 @@ five oxygens.'' I still like \texttt{OxygenAtom} much, much better as a class
 name even here, though.} (?)
 \item a teamwork (?)
 \columnbreak
-\item three communisms (?)
 \item a communism (?)
 \item nineteen recreations (?)
 \end{compactitem}
@@ -401,13 +400,13 @@ represent the \texttt{Manager} as an object? We'll cross out both of these.
 \textbf{2d. Eliminate likely \textit{attributes} of a class.} Things are
 getting a bit more subjective, but some of these remaining nouns definitely
 seem ``too small'' to be their own classes. Consider \textit{expected arrival
-date}. Surely this is better modeled as a property of an order, rather than
-its own individual object. The same could be said for \textit{down payment}
-and \textit{inventory level}. Generally speaking, noun phrases that seem to
-refer to bits of data that have an obvious ``home'' in another class ought to
-be modeled as inst vars, not classes.
+date}. Surely this is better modeled as a property of an order, rather than as
+its own individual object. The same could be said for \textit{down payment} and
+\textit{inventory level}. Generally speaking, noun phrases that seem to refer
+to bits of data that have an obvious ``home'' in another class ought to be
+modeled as inst vars, not classes.
 
-So now all that remains are:
+So now here's all that remains:
 
 \vspace{-.2in}
 \begin{samepage}
@@ -477,7 +476,9 @@ and
 \textsf{``...The store manager must be able to place orders from vendors...''}
 \end{quote}
 
-Aha! Different beasts entirely.
+Aha! Different beasts entirely. One is something Mrs.~Jamison places with
+\textit{us};
+the other is something \textit{we} place with Schwinn, Inc.
 
 This sort of post-noun-phrase-stage epiphany isn't uncommon. English words are
 used in a variety of ways, which makes them versatile and suggestive, yet
@@ -572,19 +573,21 @@ and group them, and see whether they seem to fit into a cohesive whole.
 \index{responsibilities}
 \index{collaborations}
 The \textbf{Class} for each card is just the class name (which can be fluid as
-you try to zero in on the best name). The \textbf{Responsibilities} are the
+you try to zero in on the best name). The \textbf{Responsibilities} include the
 state (``what an object of that type knows'') and the behavior (``what an
 object can do''), which I usually designate in separate sections. Finally, the
-\textbf{Collaborations} are a list of other classes the class is likely to
-work closely with to accomplish its job.
+\textbf{Collaborations} are the other classes the class is likely to work
+closely with to accomplish its job.
 
 If you try to make a CRC card for a class, and have trouble coming up with
 appropriate contents (particularly the Responsibilities section), that's a red
 flag that perhaps this isn't a good class after all.
 
+\pagebreak
 \begin{samepage}
 Let's start at the top.
 
+\bigskip
 \index{shipment@\texttt{Shipment}}
 \begin{center}
 \begin{tabular}{|l|}
@@ -606,6 +609,7 @@ Let's start at the top.
 \end{tabular}
 \end{center}
 \end{samepage}
+\bigskip
 
 Our \texttt{Shipment} class looks like a good one. It clearly bears the
 hallmarks of good OO design: it has state (information about what's in the
@@ -619,14 +623,14 @@ have to try to create a little egocentric world in your mind, the center of
 which is the class in question. 
 
 Here, I said to myself, ``let's view the entire world through the lens of a
-Shipment. First, in the real world, what ought a shipment to `know'?'' The
-answer is things that relate directly to that shipment. The items it should
-contain and the expected date of receipt are good examples; the number of
+Shipment. First, in the real world, what ought a shipment to `\textit{know}'?''
+The answer is things that relate directly to that shipment. The items it should
+contain and the expected date of receipt are good examples. The number of
 bicycles in the store is not, nor is a customer's contact information. Then, I
-asked ``in the real world, what actions pertain to a shipment?'' The main one,
-of course, is to receive that shipment, which involves paying for it and
-adding the items to the store. We also might ask the supplier for an update if
-the shipment is past date, or even decide to cancel it and go with another
+asked ``in the real world, what \textit{actions} pertain to a shipment?'' The
+main one, of course, is to receive that shipment, which involves paying for it
+and adding the items to the store. We also might ask the supplier for an update
+if the shipment is past date, or even decide to cancel it and go with another
 vendor if it's taking too long.
 
 The important thing here isn't to get all the ``knows'' and ``cans'' 100\%
@@ -647,6 +651,7 @@ together.
 
 Let's walk through a couple of other CRC cards.
 
+\bigskip
 \index{accessory@\texttt{Accessory}}
 \begin{center}
 \begin{tabular}{|l|}
@@ -668,6 +673,7 @@ Let's walk through a couple of other CRC cards.
 \hline
 \end{tabular}
 \end{center}
+\bigskip
 
 An \texttt{Accessory} -- which we've tentatively identified as a subclass of
 \texttt{Item} -- has attributes like name and cost, and also knows which bike
@@ -677,6 +683,7 @@ It can also be purchased (duh), either on the spot or as part of a special
 customer order. It can also provide its quantity information by interfacing
 with the \texttt{Inventory} class. Speaking of which...
 
+\bigskip
 \index{inventory@\texttt{Inventory}}
 \begin{center}
 \begin{tabular}{|l|}
@@ -694,12 +701,15 @@ with the \texttt{Inventory} class. Speaking of which...
 \hline
 \end{tabular}
 \end{center}
+\bigskip
 
 \index{Singleton pattern}
 \index{design pattern!Singleton}
 I smell a Singleton. Our store is likely going to have a single
 \texttt{Inventory} object which can be used to query and update its item
-quantities. By the way, you may have noticed that one of the ``Can'' items --
+quantities.
+
+By the way, you may have noticed that one of the ``Can'' items --
 ``find quantity in stock'' -- was listed on the CRC card for both
 \texttt{Accessory} and \texttt{Inventory}. This isn't wrong; probably an
 \texttt{Accessory} object, when asked for its current quantity, will turn
@@ -708,6 +718,7 @@ We've discovered a key shared function between classes.
 
 That's the inventory of the store, and now for the \texttt{Store} itself:
 
+\bigskip
 \index{store@\texttt{Store}}
 \begin{center}
 \begin{tabular}{|l|}
@@ -724,6 +735,7 @@ That's the inventory of the store, and now for the \texttt{Store} itself:
 \end{tabular}
 \end{center}
 
+\bigskip
 If we didn't realize it before, this is the moment when we discover that our
 \texttt{Store} class is weak sauce. Turns out there really isn't anything for
 a \texttt{Store} object to know or do, other than manage its inventory, which
@@ -736,14 +748,14 @@ many different designs are possible, and it's only important to get a set of
 classes that are cohesive, modular, encapsulated, and work well together.
 
 
-\vspace{3in}
+\vspace{2.8in}
 
 \pagebreak
 
 \section{A longer example}
 
 \index{requirements!specification (``req spec'')}
-\index{Uno"!}
+\index{Uno"!\textsuperscript{\textregistered}}
 Figure~\ref{fig:uno} gives a second, longer example of a req spec. We'll
 develop this example in the remainder of this chapter and in the next one. In
 particular, it involves a non-trivial inheritance hierarchy.
@@ -751,18 +763,19 @@ particular, it involves a non-trivial inheritance hierarchy.
 First, test yourself on identifying noun phrases, and see if you find the same
 ones marked in Figure~\ref{fig:unoNouns}.
 
-\begin{figure}
+\begin{figure}[hb]
 \label{blockRequirements2}
 \centering
 \small
 \setlength{\fboxsep}{10pt}
 \fbox{\parbox{.91\textwidth}{
 
-\textsf{To test his intro student's algorithmic development skills, a
-professor is developing an Uno simulation program. The simulator simulates a
-number of consecutive Uno games, each of which has four players participating
-in it. Students write their own Player classes, which are called by the
-simulator in order to play cards and call colors after wilds are played.}
+\textsf{To test his intro student's algorithmic development skills, a professor
+is developing an Uno!\textsuperscript{\textregistered} simulation program. The
+simulator simulates a number of consecutive Uno games, each of which has four
+players participating in it. Students write their own Player classes, which are
+called by the simulator in order to play cards and call colors after wilds are
+played.}
 
 \vspace{.1in}
 
