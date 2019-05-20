@@ -56,13 +56,42 @@ classes to perform functions, not to represent the domain's reality.
 You might wonder which of the two domains is most important to get right. The
 answer is unquestionably the \textit{problem domain}. Think about it: if
 Spotify decided to change their underlying storage mechanism, and therefore
-retire their \texttt{DatabaseConnection} class, that's not a big deal to their
+needed to retire their \texttt{DatabaseConnection} class, that's not a big deal to their
 user base. If the new program version is implemented well and doesn't
 introduce a lot of lagginess or bugs, the user will be unaware that it was
 even changed. But change something in the \textit{problem} domain, and whoo
 Nellie, the whole system experiences a change. Imagine if Spotify got rid of
 their \texttt{Song} or \texttt{Playlist} classes. The entire application would
 have to perform differently, with serious consequences for the user.
+
+
+\section{Turning CRC cards into UML}
+
+\index{CRC card}
+When we last left our heroes in chapter~\ref{design1}, they had succeeded in
+turning an English language description into a set of CRC cards. That's a ton
+of progress. All they need to do now is complete the trick: turn those CRC
+cards into a UML class diagram, and then into Java code. And that's just what
+we'll do in the rest of this chapter.
+
+\subsection{The bike store example, continued}
+
+Reacquaint yourself with the CRC cards on
+pp.~\pageref{bikeCRC1}--\pageref{bikeCRC2}. These reflect some candidate
+classes from the bike store example.
+
+You've probably already figured out that when turning a CRC card into a class,
+the ``Knows:'' section typically becomes instance variables, and the ``Can:''
+section becomes methods. It isn't always a straightforward one-to-one mapping,
+but it's often pretty close.
+
+Let's start with \texttt{Shipment} on p.~\pageref{bikeCRC1}.
+
+\textit{...Stephen completes this in summer 2019...}
+
+\subsection{The Uno! game example, continued}
+
+\textit{...Stephen completes this in summer 2019...}
 
 % "god classes"
 % TODO: Goals:
