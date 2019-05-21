@@ -76,18 +76,83 @@ we'll do in the rest of this chapter.
 
 \subsection{The bike store example, continued}
 
+\index{CRC card}
 Reacquaint yourself with the CRC cards on
-pp.~\pageref{bikeCRC1}--\pageref{bikeCRC2}. These reflect some candidate
-classes from the bike store example.
+pp.~\pageref{bikeCRC1}--\pageref{bikeCRC2}. These reflect some of the candidate
+classes from our bike store example.
 
 You've probably already figured out that when turning a CRC card into a class,
-the ``Knows:'' section typically becomes instance variables, and the ``Can:''
-section becomes methods. It isn't always a straightforward one-to-one mapping,
-but it's often pretty close.
+the ``Knows:'' section typically gets turned into instance variables, and the
+``Can:'' section becomes methods. It isn't always a straightforward one-to-one
+mapping, but it's often pretty close.
 
-Let's start with \texttt{Shipment} on p.~\pageref{bikeCRC1}.
+Let's start with \texttt{Shipment} on p.~\pageref{bikeCRC1}. The four items on
+its ``knows'' items all call out for instance variables:
 
-\textit{...Stephen completes this in summer 2019...}
+\begin{samepage}
+\begin{compactitem}
+\item ``which vendor is delivering it'': type \texttt{Supplier}
+\item ``which purchase order it is fulfilling'': type
+\texttt{ArrayList<PurchaseOrder>}
+\item ``the expected arrival date'': type \texttt{Date}\footnote{The
+\texttt{java.util} package has a \texttt{Date} class that represents all the
+necessary aspects of a day in time on planet Earth. This is a better choice
+than a \texttt{String} or a handful of \texttt{int}s to do it ourselves.}
+\item ``the items in each shipment'': type \texttt{ArrayList<Item>}
+\end{compactitem}
+\end{samepage}
+
+\index{instance variable (inst var)}
+\index{association}
+In terms of a UML diagram, we would depict the third of these as an entry in
+the middle class box (see Figure~\ref{fig:bikeClassDiag}), and the other three
+as associations to other classes. Also, the ``can'' list mentions that we can
+update the ``status'' of a \texttt{Shipment}, which will probably entail a
+\texttt{String status} inst var as well.
+
+As for its methods, we have getters and setters for status and supplier, and
+also the ability to \texttt{.cancel()} and \texttt{.receive()} the shipment. At
+this point we're sort of guessing as to argument types and return values for
+each method; it seems to me that both \texttt{.cancel()} and
+\texttt{.receive()} can simply be argument-less and return \texttt{void}. (We'll
+amend this assumption later if it turns out to be incorrect.) The finished
+class is in the upper-left corner of Figure~\ref{fig:bikeClassDiag}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.95\textwidth]{bikeClassDiag.png}
+\caption{A first crack at converting CRC cards from Chapter~\ref{design1}'s
+bicycle example into UML.}
+\label{fig:bikeClassDiag}
+\end{figure}
+
+We didn't actually write full CRC cards for all the classes in this design, but
+that's okay: to complete \texttt{Shipment}, we can just sketch in temporary
+placeholders for classes like \texttt{PurchaseOrder} and \texttt{Supplier}.
+
+The \texttt{Accessory} card from p.~\pageref{bikeCRC2} has a number of
+``knows'' entries, though when we consider where to put them, we realize that
+many of them will go in the abstract \texttt{Item} class. Only an
+\texttt{ArrayList} of \texttt{Bicycle} objects seems appropriate as an inst var
+for the \texttt{Accessory} subclass specifically, and that is what the diagram
+shows. Since p.~\pageref{bikeCRC2} tells us that an \texttt{Accessory} ``knows
+its compatible bicycle models,'' it seems appropriate for the class to support
+a \texttt{.compatibleWith()} method that returns a \texttt{boolean} indicating
+whether the accessory in question is compatible with a particular bike.
+
+\index{singleton}
+Finally, our \texttt{Inventory} CRC card (also on p.~\pageref{bikeCRC2}) tells
+us that in addition to the standard Singleton stuff, we need to be able to
+\texttt{.add()} and \texttt{.remove()} quantities of items from the
+\texttt{Inventory}, as well as get a current count of how many units of an
+\texttt{Item} we have in stock. One way to implement this would be through a
+\texttt{Hashtable} that maps each \texttt{Item} to an in-stock quantity, and
+that is what Figure~\ref{fig:bikeClassDiag} shows.
+
+I think you'll agree this is a pretty straightforward, though not completely
+mechanical, process. CRC cards have already identified the lion's share of the
+program's important static structure, and go a long way towards giving us a UML
+class diagram from which we can write code.
 
 \subsection{The Uno! game example, continued}
 
