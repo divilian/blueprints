@@ -154,10 +154,96 @@ mechanical, process. CRC cards have already identified the lion's share of the
 program's important static structure, and go a long way towards giving us a UML
 class diagram from which we can write code.
 
-\subsection{The Uno! game example, continued}
+\subsection{The Uno!\textsuperscript{\textregistered} game example, continued}
 
-\textit{...Stephen completes this in summer 2019...}
+Now let's work on the Uno!\textsuperscript{\textregistered} example from the
+CRC cards on pp.~\pageref{unoCRC1}--\pageref{unoCRC2}. We'll break this up into
+two UML diagrams, one for the principal classes
+(Figure~\ref{fig:unoClassDiag}), and the other for the \texttt{Card}
+inheritance hierarchy (Figure~\ref{fig:unoCardHier}).
 
+The CRC cards didn't explicitly say that \texttt{Simulation} would be our
+\texttt{main()} class, but it's as good a choice as any, so that's what's
+reflected in the diagram (bottom-left). All the ``knows'' have been given inst
+vars. The \texttt{Simulation} will instantiate lots of \texttt{Game} objects:
+one for each of the 50,000 games in the match, to be precise. Each
+\texttt{Game}'s \texttt{.play()} method will simulate a single game to
+completion, and return an array of the scores to add to each player's
+cumulative total (held in the \texttt{Simulation} class). Btw,
+we could have made \texttt{Simulation} a Singleton, and given it non-static
+inst vars. Your call.
+
+\index{double dispatch}
+\subsubsection{The ``double dispatch'' technique}
+
+The \texttt{Game} CRC card (middle of p.\pageref{unoCRC2}) tells us that it
+must maintain the current player and the direction of play at all times. These
+two bits of information are represented as inst vars in the second compartment
+of the class. \texttt{Game} also has methods on it to
+\texttt{.advanceToNextPlayer()} and to \texttt{.reverseDirection()}. These can
+be called by any other part of the program in order to modify the game's state.
+Our plan is for different \texttt{Card} subclasses to invoke these methods to
+carry out their special effects: see the \texttt{.performCardEffect()} method
+on the abstract \texttt{Card} class in the upper-left corner.
+
+This technique is referred to as \textbf{double dispatch}, and it can be
+disorienting at first. In double dispatch, you call a method on object A,
+passing it another object B as an argument. Object A's method then, in addition
+to whatever else it might need to do, will call method(s) on B.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{UnoClassDiagram.png}
+\medskip
+\caption{A first crack at converting CRC cards from Chapter~\ref{design1}'s
+Uno game example into UML.}
+\label{fig:unoClassDiag}
+\end{figure}
+
+Figure~\ref{fig:doubleDispatchUno} shows this in action for the Uno game. In
+this scenario, the \texttt{Game} object determines that the next player is \#3,
+and therefore instructs the third \texttt{Hand} to \texttt{.play()} a card.
+\textbf{Note that \texttt{g} passes \texttt{h3} the argument ``\texttt{this}''
+in the call to \texttt{.play()}.} That's how double dispatch works:
+\texttt{h3}'s \texttt{.play()} method now has possession of the \texttt{Game}
+object \texttt{g}, which it can call methods on and/or pass around further. In
+this case it does both: first, \texttt{h3} turns around and calls
+\texttt{.getUpCard()} on \texttt{g}, to find out what the up card is. Then,
+when it passes that \texttt{up} card along to \texttt{p3}'s \texttt{.play()}
+method, and learns that the \texttt{Player} algorithm chooses to play card \#7
+from her hand (a blue reverse), it calls \texttt{.performCardEffect()} on that
+\texttt{ReverseCard}. The \texttt{Card} object \texttt{c} now also has
+possession of the \texttt{Game} object, and can tell it to do the two things
+required: reverse the direction of play, and then advance to the next player's
+turn. Other types of cards would do different things instead, as described
+in the next section.
+
+\index{double dispatch}
+\begin{figure}[hb]
+\centering
+\includegraphics[width=1\textwidth]{doubleDispatchUno.png}
+\medskip
+\caption{An illustration of the double dispatch technique.}
+\label{fig:doubleDispatchUno}
+\end{figure}
+
+Back to Figure~\ref{fig:unoClassDiag}. We see that the \texttt{Deck} class --
+whose CRC card was given on p.~\pageref{unoCRC2} -- contains \texttt{two}
+collections of \texttt{Card} objects, one to hold a sequence of face-down cards
+and one for the face-up cards. The rest of this class is self-explanatory.
+
+\texttt{Hand} objects each hold on to a list of \texttt{Card}s, of course, as
+well as the corresponding player's name for good measure (which wasn't on the
+CRC card). It also maintains an inst var to a ``\texttt{Player}'': this is the
+creation by each of Stephen's students that implements the \texttt{Player}
+interface and thus provides an algorithm for choosing cards and colors. Two
+example players have been shown: one that plays wild cards as soon as it can,
+and another that holds them until forced to. (Surprisingly, to me anyway, the
+former outperformed the latter in most simulated games.)
+
+\subsubsection{The \texttt{Card} class hierarchy}
+
+\section{Evaluating a design}
 % "god classes"
 % TODO: Goals:
 % \begin{itemize}

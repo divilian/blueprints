@@ -1,0 +1,24 @@
+participant "g:Game" as g
+participant ":Deck" as d
+participant "h3:Hand" as h
+participant "up:NumberedCard" as up
+participant "p3:Player" as p3
+participant "c:ReverseCard" as c
+
+g->g:getNextPlayer()
+g->+h:play(this)
+h->+g:getUpCard()
+g->+d:upCard()
+d-->-g:up
+g-->-h:up
+h->+p3:play(cardsInHand, up)
+p3-->-h:7
+h->+c:canPlayOn(up)
+c-->-h:true
+h->+c:performCardEffect(g)
+c->+g:reverseDirection()
+g-->-c:
+c->+g:advanceToNextPlayer()
+g-->-c:
+c-->-h:
+h-->-g:
