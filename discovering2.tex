@@ -86,6 +86,7 @@ the ``Knows:'' section typically gets turned into instance variables, and the
 ``Can:'' section becomes methods. It isn't always a straightforward one-to-one
 mapping, but it's often pretty close.
 
+\index{shipment@\texttt{Shipment}}
 Let's start with \texttt{Shipment} on p.~\pageref{bikeCRC1}. The four items on
 its ``knows'' items all call out for instance variables:
 
@@ -126,10 +127,13 @@ bicycle example into UML.}
 \label{fig:bikeClassDiag}
 \end{figure}
 
+\index{purchase order@\texttt{Purchase Order}}
+\index{supplier@\texttt{Supplier}}
 We didn't actually write full CRC cards for all the classes in this design, but
 that's okay: to complete \texttt{Shipment}, we can just sketch in temporary
 placeholders for classes like \texttt{PurchaseOrder} and \texttt{Supplier}.
 
+\index{accessory@\texttt{Accessory}}
 The \texttt{Accessory} card from p.~\pageref{bikeCRC2} has a number of
 ``knows'' entries, though when we consider where to put them, we realize that
 many of them will go in the abstract \texttt{Item} class. Only an
@@ -140,7 +144,8 @@ its compatible bicycle models,'' it seems appropriate for the class to support
 a \texttt{.compatibleWith()} method that returns a \texttt{boolean} indicating
 whether the accessory in question is compatible with a particular bike.
 
-\index{singleton}
+\index{Singleton pattern}
+\index{inventory@\texttt{Inventory}}
 Finally, our \texttt{Inventory} CRC card (also on p.~\pageref{bikeCRC2}) tells
 us that in addition to the standard Singleton stuff, we need to be able to
 \texttt{.add()} and \texttt{.remove()} quantities of items from the
@@ -155,13 +160,18 @@ program's important static structure, and go a long way towards giving us a UML
 class diagram from which we can write code.
 
 \subsection{The Uno!\textsuperscript{\textregistered} game example, continued}
+\index{Uno"!\textsuperscript{\textregistered}}
 
+\index{card@\texttt{Card}}
 Now let's work on the Uno!\textsuperscript{\textregistered} example from the
 CRC cards on pp.~\pageref{unoCRC1}--\pageref{unoCRC2}. We'll break this up into
 two UML diagrams, one for the principal classes
 (Figure~\ref{fig:unoClassDiag}), and the other for the \texttt{Card}
 inheritance hierarchy (Figure~\ref{fig:unoCardHier}).
 
+\index{simulation@\texttt{Simulation}}
+\index{game@\texttt{Game}}
+\index{play@\texttt{.play()}}
 The CRC cards didn't explicitly say that \texttt{Simulation} would be our
 \texttt{main()} class, but it's as good a choice as any, so that's what's
 reflected in the diagram (bottom-left). All the ``knows'' have been given inst
@@ -173,8 +183,10 @@ cumulative total (held in the \texttt{Simulation} class). Btw,
 we could have made \texttt{Simulation} a Singleton, and given it non-static
 inst vars. Your call.
 
-\index{double dispatch}
 \subsubsection{The ``double dispatch'' technique}
+\index{double dispatch}
+\index{advanceToNextPlayer@\texttt{\texttt{.advanceToNextPlayer()}}}
+\index{performCardEffect@\texttt{.performCardEffect()}}
 
 The \texttt{Game} CRC card (middle of p.\pageref{unoCRC2}) tells us that it
 must maintain the current player and the direction of play at all times. These
@@ -195,11 +207,17 @@ to whatever else it might need to do, will call method(s) on B.
 \centering
 \includegraphics[width=1\textwidth]{UnoClassDiagram.png}
 \medskip
-\caption{A first crack at converting CRC cards from Chapter~\ref{design1}'s
-Uno game example into UML.}
+\caption{A first cut at converting CRC cards from Chapter~\ref{design1}'s
+Uno example into UML.}
 \label{fig:unoClassDiag}
 \end{figure}
 
+\index{player@\texttt{Player} (Uno"! example)}
+\index{hand@\texttt{Hand}}
+\index{reverseCard@\texttt{ReverseCard}}
+\index{play@\texttt{.play()}}
+\index{getUpCard@\texttt{.getUpCard()}}
+\index{performCardEffect@\texttt{.performCardEffect()}}
 Figure~\ref{fig:doubleDispatchUno} shows this in action for the Uno game. In
 this scenario, the \texttt{Game} object determines that the next player is \#3,
 and therefore instructs the third \texttt{Hand} to \texttt{.play()} a card.
@@ -227,11 +245,13 @@ in the next section.
 \label{fig:doubleDispatchUno}
 \end{figure}
 
+\index{deck@\texttt{Deck}}
 Back to Figure~\ref{fig:unoClassDiag}. We see that the \texttt{Deck} class --
 whose CRC card was given on p.~\pageref{unoCRC2} -- contains \texttt{two}
 collections of \texttt{Card} objects, one to hold a sequence of face-down cards
 and one for the face-up cards. The rest of this class is self-explanatory.
 
+\index{hand@\texttt{Hand}}
 \texttt{Hand} objects each hold on to a list of \texttt{Card}s, of course, as
 well as the corresponding player's name for good measure (which wasn't on the
 CRC card). It also maintains an inst var to a ``\texttt{Player}'': this is the
@@ -242,14 +262,125 @@ and another that holds them until forced to. (Surprisingly, to me anyway, the
 former outperformed the latter in most simulated games.)
 
 \subsubsection{The \texttt{Card} class hierarchy}
+\index{inheritance hierarchy}
+\index{card@\texttt{Card}}
+
+Finally, let's figure out the \texttt{Card} class and its subclasses. It's a
+bit tricky. One might think that a \texttt{Card} having a ``\texttt{number}''
+is a no-brainer...except that not all cards \textit{have} numbers (like Skips
+or Draw 2's.) Very well, then, at least all \texttt{Card}s have a
+\textit{color}, you say...except that wild cards don't have that either.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth]{UnoClassHierarchy.png}
+\medskip
+\caption{The \texttt{Card} class hierarchy from Chapter~\ref{design1}'s
+Uno game example.}
+\label{fig:unoCardHier}
+\end{figure}
+
+\index{abstract class}
+\index{card@\texttt{Card}}
+\index{reverseCard@\texttt{ReverseCard}}
+\index{drawTwoCard@\texttt{DrawTwoCard}}
+\index{skipCard@\texttt{SkipCard}}
+\index{wildCard@\texttt{WildCard}}
+\index{wildDrawFourCard@\texttt{WildDrawFourCard}}
+\index{actionCard@\texttt{ActionCard}}
+\index{coloredCard@\texttt{ColoredCard}}
+
+The trick is to recognize when there are commonalities between card types, and
+to infer the presence of appropriate \textit{abstract} classes.
+Figure~\ref{fig:unoCardHier} gives the idea. In addition to all the concrete
+\texttt{Card} types you'd expect -- \texttt{DrawTwoCard}, \texttt{ReverseCard},
+\texttt{WildCard}, \textit{etc.} -- we have created abstract
+\texttt{ColoredCard} and \texttt{ActionCard} classes.
+
+But isn't this overkill, you might ask? It is not, for the following reason:
+each piece of information is now in only one place. For example, all numbered
+cards \textit{and} ``action cards'' have a color, but wilds (of either variety)
+do not. Therefore, it makes sense to define the \texttt{color} inst var in the
+superclass of all the \texttt{Card} types that have colors. It shouldn't be in
+the \texttt{Card} class itself -- that's too general, since not all
+\texttt{Cards} have colors. And it shouldn't be in the \texttt{NumberedCard}
+class -- that's too specific, since more than just numbered cards have colors.
+By similar logic, only the \texttt{NumberedCard} class should have an
+\texttt{int} inst var.
+
+\index{actionCard@\texttt{ActionCard}}
+\index{forfeitCost@\texttt{.forfeitCost()}}
+
+Furthermore, since all ``action cards'' have the same forfeit cost (20~points)
+it is appropriate to define a (non-abstract) \texttt{.forfeitCost()} method in
+the (abstract) \texttt{ActionCard} class. That way, \texttt{SkipCard},
+\texttt{ReverseCard}, and \texttt{DrawTwoCard} don't need to override it.
+
+\index{wildCard@\texttt{WildCard}}
+\index{wildDrawFourCard@\texttt{WildDrawFourCard}}
+\index{performCardEffect@\texttt{.performCardEffect()}}
+
+Note that \texttt{WildCard} is a concrete class, even though it has a subclass.
+This is perfectly okay (in Java), and necessary since there are indeed ordinary
+wild cards in the deck. Both types of wilds have the same forfeit cost
+(50~points) and both require the player to call a color, but the Draw 4 variety
+obviously has a different effect on the game, and therefore provides its own
+\texttt{.performCardEffect()} method that overrides that of the
+\texttt{WildCard} superclass (and the \texttt{Card} superclass).
+
 
 \section{Evaluating a design}
-% "god classes"
-% TODO: Goals:
-% \begin{itemize}
-% \itemsep.1em
-% \item Each class does one thing well.
-% \item Distributed responsibility (no god classes, \textit{e.g.}).
-% \item Encapsulation (each class's design decisions are insulated from others).
-% \end{itemize}
 
+I end this chapter by giving a few simple guidelines for sanity-checking your
+design once you've gotten this far. Again, there is no one ``right way'' to
+design a program, but there are plenty of wrong ways, and some of them are easy
+to spot.
+
+Here's my super short ``must-do'' checklist:
+
+\index{encapsulation}
+\begin{compactenum}
+\itemsep.1em
+\item Each class represents a \textbf{crisp} and \textbf{coherent} entity.
+\item Each class does \textbf{one thing} well.
+\item Responsibilities are \textbf{distributed} over the entire design.
+\item There is evidence of \textbf{encapsulation}.
+\end{compactenum}
+
+The first item on the list is somewhat intangible, but oh-so-important. It
+basically means that the meaning and purpose of each class should be natural
+and easy to describe. If you find yourself struggling to articulate what
+specific type of entity one of your classes actually represents, rethink it.
+
+\index{god class@``god class''}
+The second item involves a very common pitfall for beginning designers: having
+\textit{too few classes, each of which does too much.}\footnote{I have a theory
+that this is normally due to simple laziness in creating new files, but I've
+never seen that proven.} There's a funny name for a class that does too much:
+it's called a ``\textbf{god class}'' (no joke.) Very often, I see students
+creating designs that on the surface seem to have several collaborating
+classes, but which in actuality have all the real functionality in one god
+class while the others serve merely as data containers.
+
+Strive instead to have each class do only one self-contained job, and to do it
+well. Remember: the larger your classes are, and the more tasks each one
+encompasses, the less encapsulated your program is bound to be.
+
+Related to this is the third item, which is that when your program is in
+operation, most of its important responsibilities should be \textit{shared}
+between the different classes. This is exposed clearly on sequence diagrams:
+if you find that most of your arrows are emanating from a single vertical line,
+that's a bad sign. If you look at the Uno design, you'll see that any
+significant operation -- like a player actually taking her turn -- involves
+many classes operating in tandem: \texttt{Game}, \texttt{Deck}, \texttt{Hand},
+a \texttt{Player} implementation, and some subclass of \texttt{Card}. This is A
+Good Thing.\texttrademark
+
+\index{association}
+Finally, for each class, you want to scrutinize its list of inst vars (both
+those in the second compartment and those implied by associations) and its
+methods and make sure they all ``fit together'' well. They should all make
+sense for that type, and the data and behavior should go hand in hand. Each
+class's design decisions should be cleanly insulated from others. Ideally, when
+you look at your design, you should see a picture like the right-hand side of
+Figure~\ref{fig:dependencies} (p.~\pageref{fig:dependencies}), not the left.
