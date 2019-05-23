@@ -97,6 +97,7 @@ classes are CAPITALIZED.} Don't ever violate this rule, for convention's and
 confusion's sake!
 
 \index{instance variable (inst var)}
+\index{object-oriented}
 The second compartment has the class's \textbf{instance variables}. You'll
 hear people use other terms for these like like ``member variables'' and even
 ``class variables,'' but I strongly prefer instance variables (or ``inst
@@ -116,7 +117,7 @@ a colon instead of a space, and we omit the semicolon. Otherwise, it's pretty
 straightforward to interpret that second compartment.
 
 \index{class variable}
-\index{underlined}
+\index{underlined@\underline{underlined}}
 \index{car@\texttt{Car}}
 \index{static@\texttt{static}}
 By the way, one important piece of syntax in that second compartment is an
@@ -147,7 +148,7 @@ occasion. We'll stick with \textbf{method}.
 \index{static@\texttt{static}}
 \index{function!vs.~method}
 \index{method!vs.~function}
-\index{pass (argument)}
+\index{pass (an argument)}
 \index{call (a function)}
 \index{subroutine}
 Many programming languages (including Python and C++) allow the programmer to
@@ -196,7 +197,7 @@ say ``hey universe, fill up cars'' (which is what ``\texttt{fillUp()}'' seems to
 say) nor to say ``hey Cars-in-general, fill yourself up'' (which is what
 ``\texttt{Car.fillUp()}'' seems to say).
 
-\index{capitalized}
+\index{capitalization}
 By the way, notice in the example I just gave, \texttt{johnsMercedes} is
 \textit{not} capitalized. (The capital ``\texttt{M}'' in the middle doesn't
 count; that's just an artifact of CamelCase, which is a way of making multiple
@@ -240,7 +241,7 @@ long as those methods have different argument lists, so it can have multiple
 constructors subject to the same conditions. This is a very common practice,
 although in this first example we have only one \texttt{Car} constructor.
 
-\index{underlined}
+\index{underlined@\underline{underlined}}
 \index{numCars@\texttt{numCars()}}
 Also, just as in the second compartment, an \underline{underline} indicates
 that the method ``goes with the whole class, not with each object.'' And just
@@ -553,7 +554,7 @@ to the screen, writing to a database, or calling some \textit{other} method(s)
 on the same or a different object.
 
 \pagebreak
-\index{implement}
+\index{implement@``to implement'' (to code)}
 \index{fillUp@\texttt{.fillUp()}}
 This is best seen through examples. Let's implement\footnote{The verb
 \textbf{to implement} means ``to take a design and actually build it out.'' It
@@ -674,6 +675,7 @@ or this:
     }
 \end{Verbatim}
 
+\index{object-oriented}
 Yes you'll get compiler errors, but those errors reflect a deeper and more
 fundamental misunderstanding. In OOP, you have to call a method \textit{on an
 object}. Conceptually, nothing else makes sense. In real life you don't

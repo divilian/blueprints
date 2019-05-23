@@ -107,6 +107,8 @@ You also may have noticed that the \texttt{Bird}'s \texttt{.move()} method
 completely ignores its \texttt{distance} argument. That, too, is not a
 problem.
 
+\index{tree}
+\index{inheritance hierarchy}
 Finally, and most importantly, note that the \texttt{Duck} class does not
 override \texttt{.move()}, but its superclass (\texttt{Bird}) does, and so a
 \texttt{Duck} will ``\texttt{Flap flap swoosh}'' like ordinary \texttt{Bird}s
@@ -166,6 +168,7 @@ power'' that it can use in combat. Whenever a \texttt{Pokemon} object's
 \texttt{.attack()} method is called, it will use its primary power on the foe
 it is passed.
 
+\index{modularity}
 Figure~\ref{fig:wrongPokemon} shows the \textbf{WRONG} way to code this. The
 \texttt{.attack()} method itself, in the \texttt{Pokemon} class, is
 scrutinizing its \texttt{primaryPower} object, figuring out what subclass it
@@ -876,6 +879,8 @@ provide a way to compare two \texttt{Resort} objects.
 
 \index{object}
 \index{C++}
+\index{inheritance hierarchy}
+\index{tree}
 One other difference between C++ and Java is that Java has a
 \textbf{single-rooted inheritance hierarchy}. This means that in Java, if you
 trace \textit{any} class's ancestry up from superclass to superclass, you

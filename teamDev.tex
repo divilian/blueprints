@@ -10,6 +10,7 @@ technical and some social.
 \section{Team-based version control with \texttt{git}}
 
 \index{git@\texttt{git}}
+\index{CLI (command-line interface)}
 Waaaay back in \chapref{ch:gettingOff} (p.~\pageref{introduceGit}) I briefly
 introduced the \texttt{git} version control system. Hopefully you've been
 using it all along to do the simple process of ``committing'' code to your
@@ -27,6 +28,7 @@ works in a team environment.
 \index{workspace}
 \index{vim@\texttt{vim}}
 \index{Filbert}
+\index{tree}
 Figure~\ref{fig:filbertGit} shows the environment you've been using so far: a
 single developer, with a single \textbf{repo}. I use the term
 \textbf{workspace} to mean ``the directory (and possibly subdirectories) in
@@ -61,6 +63,7 @@ modify any of it, or you'll probably break your repo and lose all its contents!}
 \index{git@\texttt{git}!\texttt{git status}}
 \index{git@\texttt{git}!\texttt{git add}}
 \index{git@\texttt{git}!\texttt{git commit}}
+\index{commit}
 Also shown is a purple diamond called the \textbf{staging area}. Normally you
 don't think too hard about the purple diamond explicitly, but it is there, and
 the command ``\texttt{git status}'' will only fully make sense if you recognize
@@ -519,6 +522,7 @@ committed) and propagate them up to the team repo in github.'' This is how you
 share your changes with your teammates.
 
 \index{git@\texttt{git}!\texttt{git commit}}
+\index{commit}
 Rule of thumb: making a local \texttt{commit} should be a common operation.
 Doing a \texttt{push}, on the other hand, is rarer: you only do it when your
 teammates need your latest code, and when your code is stable enough to

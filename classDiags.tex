@@ -145,8 +145,8 @@ class, method, or other element) by making its meaning more precise.
 Stereotypes are usually displayed enclosed by double-wakkas
 (``$\ll$...$\gg$'').
 
-\index{uses@``uses'' stereotype}
-\index{instantiates@``instantiates'' stereotype}
+\index{uses@$\ll$uses$\gg$ stereotype}
+\index{instantiates@$\ll$instantiates$\gg$ stereotype}
 In the case of dependency associations, the stereotype ``$\ll$uses$\gg$'' means
 pretty much what a dependency always means: that the designer intends class
 \texttt{A} to ``use'' (\textit{i.e.}, get its hands on, and call method(s) on)
@@ -178,7 +178,7 @@ code there will be a ``\texttt{new RangedSpell()}'' line, we say that
 \subsubsection{Dependencies in code}
 
 \index{dependency!dependency association}
-\index{uses@``uses'' stereotype}
+\index{uses@$\ll$uses$\gg$ stereotype}
 Now what would we expect to see in the code that would reflect this kind of
 association? In the ``$\ll$uses$\gg$'' case, we expect to see one or more
 methods of the \texttt{A} class making method calls on \texttt{B} objects.
@@ -201,7 +201,7 @@ The design diagram doesn't specify exactly what \texttt{A} method will be
 called where, just that method calls are expected. This communicates something
 important to the programmer.
 
-\index{instantiates@``instantiates'' stereotype}
+\index{instantiates@$\ll$instantiates$\gg$ stereotype}
 For ``$\ll$instantiates$\gg$'', we'd expect to see the word \texttt{new}
 somewhere in \texttt{A}:
 

@@ -3,6 +3,7 @@
 \label{ch:inheritance}
 
 \index{inheritance}
+\index{modularity}
 If one had to name object-oriented programming's most ``killer feature,'' a
 good case could be made for \textbf{inheritance}. This specific technique for
 code reuse and modular flexibility underlies much of the ``magic'' that happens
@@ -211,6 +212,7 @@ it's like saying I'm both a son (of my mom and dad) and also a father (of my
 three kids). You can totally be a son and a father at the same time. And a
 class can be both a superclass and a subclass.
 
+\index{tree}
 \index{inheritance hierarchy}
 By the way, if you have sharp eyes, you'll have noticed I said ``or
 \textit{any} superclass'' a few paragraphs ago. That's because if A inherits
@@ -499,8 +501,8 @@ bottom-up inheritance, you can use objects of your new subclass
 subclass.} As a user of the classes -- like \texttt{main()}, above -- you're
 looking at the inheritance hierarchy from the top down.
 
-\index{masquerading}
-\index{smuggling}
+\index{masquerading@``masquerading''}
+\index{smuggling@``smuggling''}
 A couple of other descriptive words I like to use for this are ``masquerading''
 and ``smuggling.'' In the above example, the \texttt{SortedArrayList}
 \texttt{sal} is masquerading as an \texttt{ArrayList} -- pretending to be one

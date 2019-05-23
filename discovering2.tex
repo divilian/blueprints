@@ -145,6 +145,7 @@ a \texttt{.compatibleWith()} method that returns a \texttt{boolean} indicating
 whether the accessory in question is compatible with a particular bike.
 
 \index{Singleton pattern}
+\index{design pattern!Singleton}
 \index{inventory@\texttt{Inventory}}
 Finally, our \texttt{Inventory} CRC card (also on p.~\pageref{bikeCRC2}) tells
 us that in addition to the standard Singleton stuff, we need to be able to
@@ -163,6 +164,7 @@ class diagram from which we can write code.
 \index{Uno"!\textsuperscript{\textregistered}}
 
 \index{card@\texttt{Card}}
+\index{tree}
 Now let's work on the Uno!\textsuperscript{\textregistered} example from the
 CRC cards on pp.~\pageref{unoCRC1}--\pageref{unoCRC2}. We'll break this up into
 two UML diagrams, one for the principal classes
@@ -218,6 +220,7 @@ Uno example into UML.}
 \index{play@\texttt{.play()}}
 \index{getUpCard@\texttt{.getUpCard()}}
 \index{performCardEffect@\texttt{.performCardEffect()}}
+\index{sequence diagram}
 Figure~\ref{fig:doubleDispatchUno} shows this in action for the Uno game. In
 this scenario, the \texttt{Game} object determines that the next player is \#3,
 and therefore instructs the third \texttt{Hand} to \texttt{.play()} a card.
@@ -263,6 +266,7 @@ former outperformed the latter in most simulated games.)
 
 \subsubsection{The \texttt{Card} class hierarchy}
 \index{inheritance hierarchy}
+\index{tree}
 \index{card@\texttt{Card}}
 
 Finally, let's figure out the \texttt{Card} class and its subclasses. It's a
@@ -290,10 +294,14 @@ Uno game example.}
 \index{actionCard@\texttt{ActionCard}}
 \index{coloredCard@\texttt{ColoredCard}}
 
+\index{isa association@``is-a'' association}
+\index{association!is-a@``is-a''}
+\index{inheritance!top-down (interface)}
 The trick is to recognize when there are commonalities between card types, and
 to infer the presence of appropriate \textit{abstract} classes.
-Figure~\ref{fig:unoCardHier} gives the idea. In addition to all the concrete
-\texttt{Card} types you'd expect -- \texttt{DrawTwoCard}, \texttt{ReverseCard},
+Figure~\ref{fig:unoCardHier} gives the idea. All of the associations here are
+top-down inheritance (``is-a''). In addition to all the concrete \texttt{Card}
+types you'd expect -- \texttt{DrawTwoCard}, \texttt{ReverseCard},
 \texttt{WildCard}, \textit{etc.} -- we have created abstract
 \texttt{ColoredCard} and \texttt{ActionCard} classes.
 
@@ -339,6 +347,8 @@ to spot.
 Here's my super short ``must-do'' checklist:
 
 \index{encapsulation}
+\index{responsibilities}
+\index{cohesive (highly)}
 \begin{compactenum}
 \itemsep.1em
 \item Each class represents a \textbf{crisp} and \textbf{coherent} entity.
@@ -366,6 +376,7 @@ Strive instead to have each class do only one self-contained job, and to do it
 well. Remember: the larger your classes are, and the more tasks each one
 encompasses, the less encapsulated your program is bound to be.
 
+\index{sequence diagram}
 Related to this is the third item, which is that when your program is in
 operation, most of its important responsibilities should be \textit{shared}
 between the different classes. This is exposed clearly on sequence diagrams:
