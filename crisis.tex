@@ -17,7 +17,7 @@ A long time ago, in our own galaxy, a situation emerged which has been labeled
 it was a set of disagreeable circumstances which gradually evolved until it
 became unbearable. The crisis is usually dated somewhere in the 1970's. This
 was just as the high-tech computing industry was really starting to heat up,
-on its way to permanently changing the lives of almost everyone on the planet.
+on its way to permanently changing the lives of almost every person on the planet.
 
 Now ``crisis'' is an alarming word, designed to get your attention. It's worth
 asking what all the hubbub was about. The immediate symptom may not strike you
@@ -47,9 +47,9 @@ This astonished everyone at the time. After all, ``\textit{soft}ware'' -- a
 pun on ``hardware'' -- was a term intended to convey the flexible, malleable
 nature of computer programs as contrasted with physical devices. Software was
 supposed to be easy to write and easy to change. That was the point. You
-didn't need complex manufacturing processes: you needed a desktop computer and
+didn't need complex manufacturing processes: you needed a computer and
 a text editor. And you (seemingly) didn't face challenges of scale the way you
-did with hardware: you could run out of room to put logic circuits on a chip
+did with hardware: you might run out of room to put logic circuits on a chip
 or a motherboard, but there was no limit to the size of a text file. 
 
 So building complex stuff quickly, and turning on a dime when necessary, ought
@@ -58,8 +58,8 @@ to be easy to do in software. Right?
 \subsection{Quantifying the crisis}
 
 I've never seen any hard data quantifying the budget overruns and delays that
-software projects faced in the 1970's. It's possible to sketch it
-conceptually, though. Take a look at Figure~\ref{fig:complexityCurve}. This is
+software projects faced in the 1970's, but it's possible to sketch it
+conceptually. Take a look at Figure~\ref{fig:complexityCurve}. This is
 my attempt to show the main dynamic at work.
 
 \begin{figure}[ht]
@@ -89,16 +89,16 @@ than a real-life ten-thousand-line program and I'll change my mind.} (``LOC''
 or ``KLOC.''\footnote{``Lines of code'' is sometimes abbreviated ``LOC.'' Even
 more common is the abbreviation ``KLOC'' for ``thousands of lines of code.''}
 
-On the $y$-axis is the corresponding amount of time it would take a
-programming team of a certain size to design, build (code), and test the
+On the $y$-axis is the corresponding amount of time it would take a programming
+team of a certain size to design, build (code), debug, and test the
 program.\footnote{Note carefully that this has nothing to do with how long the
 code takes to \textit{run}. We're talking about programmer-time here, not
 CPU-time.} As with the $x$-axis, we're making all kinds of simplifying
-assumptions here: we're not worrying about exactly how many developers
-there are, how much experience they each have, what language they're writing
-in, \textit{etc.} That's okay. The point of this exercise is simply to
-recognize the nature of the curve, showing how these two fuzzy variables were
-related in the '70's.
+assumptions here: we're not worrying about exactly how many developers there
+are, how much experience they each have, what language they're writing in,
+\textit{etc.} That's okay. The point of this exercise is simply to recognize
+the nature of the curve, showing how these two fuzzy variables were related in
+the '70's.
 
 \index{project managers}
 And a daunting curve it is, too. And very counterintuitive to project
@@ -145,11 +145,11 @@ of code, constructs like loops or if/else chains, functions, or something even
 bigger) means that \textit{if one of them changes, the other may possibly be
 affected.}
 
-\index{compute\_sales\_tax@\texttt{compute\_sales\_tax()}}
-For instance, suppose I define a function \texttt{compute\_sales\_tax()} to
-take one argument: the price of an item. It will return the sales tax on that
-item as a simple percentage. We'll call that ``code chunk A.'' Now suppose
-that I call the function in ``code chunk B'' as follows:
+\index{compute\_sales\_tax@\texttt{compute\_sales\_tax()}} For instance,
+suppose that in ``code chunk A,'' I define a function
+\texttt{compute\_sales\_tax()} to take one argument: the price of an item. It
+will return the sales tax on that item as a simple percentage. Now, suppose
+that in ``code chunk B,'' I call the method as follows:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
    // In code chunk B...
@@ -194,12 +194,15 @@ of a program was not the cause of the software crisis. Instead, it was
 \textit{the number of dependencies} programs had. That turns out to be a
 different, and more salient, measure of a program's complexity.
 
+\index{modular}
+\index{encapsulation}
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.45\textwidth]{highDependencies.png}
 \includegraphics[width=0.45\textwidth]{lowDependencies.png}
 \caption{Two programs, each with 35 code chunks. On the left, there are 230
-dependencies. On the right, there are only 83.}
+dependencies. On the right, there are only 83. The right program is properly
+\textbf{encapsulated} and \textbf{modular}, whereas the left one is neither.}
 \label{fig:dependencies}
 \end{figure}
 
@@ -316,6 +319,7 @@ isolates them safely behind a gatekeeper such that changing them will
 
 \index{cohesive (highly)}
 \index{coupled (loosely)}
+%\index{Hell}
 In all the code we write, we want to strive for this. We want to make our
 units of code highly \textbf{cohesive} yet loosely \textbf{coupled}. We want a
 lot of small components (not a few large ones), and we want each component's
@@ -384,7 +388,7 @@ you a glimpse of some of the features of this paradigm shift:
 \index{procedural programming}
 \item \textbf{A higher level of abstraction.} Before OOP, encapsulation was
 already sort of a thing, since ordinary \textbf{functions} gave programmers a
-way to group code chunks together into cohesive bits. In this old-style of
+way to group code chunks together into cohesive bits. In this older style of
 \textbf{procedural programming}, developers wrote code to compose and combine
 these functions to achieve a larger purpose. The difference with OOP is that
 the fundamental building block is no longer the function, but the class, which
@@ -434,12 +438,12 @@ other and maintained in lock-step.
 \index{binary search tree}
 \index{heapsort}
 \item \textbf{Code reuse.} I'm old enough that I remember when ``code reuse''
-was absolutely a pipe dream. People would think, ``okay, I need a linked list
+was a pipe dream. People would think, ``okay, I need a linked list
 (or a heapsort algorithm, or a binary search tree, or...), and surely zillions
 of people have written this sort of thing before. However, it's just too hard
 to find someone else's code, figure out how to use it, trust that it works,
 and assimilate it into my program. So I'll just write it from scratch.''
-Seriously: that's how the world worked. I wrote many programs in my early days
+Seriously. That's how the world worked. I wrote many programs in my early days
 without using a single line of code from anyone else.
 
 There were several reasons code reuse was hard, including poor documentation,
