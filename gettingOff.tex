@@ -114,14 +114,15 @@ same prompt that understands the same stuff.
 \index{Unix}
 \index{CLI (command-line interface)}
 \item \textbf{Stability.} CLIs rarely change. When they do, it's very very
-rarely in a non-backwards-compatible way. Every time a new graphical user
-interface is released, you have to go through a period of hunting around and
-finding out where everything is. With Unix/Linux, you can literally run
-commands that were written last century and they will likely still work as is.
+rarely in a non-backwards-compatible way. By contrast, every time a new
+graphical user interface is released, you have to go through a period of
+hunting around and finding out where everything is. With Unix/Linux, you can
+literally run commands that were written last century and they will likely
+still work as is.
 
 \end{itemize}
 
-There's always a few students who despite the above benefits, resist learning
+There's always a few students who, despite the above benefits, resist learning
 this material at first. I get it. It's like learning a new language, and the
 immense effort to understand an alien world sure doesn't feel like it's going
 to pay off any time soon. All I can say is that if you're not convinced it's
@@ -142,12 +143,13 @@ Okay. The backdrop for all our use of the Linux command-line interface is the
 \textbf{filesystem}.\footnote{Often, not always, written as a single word as I
 have it here.} Any general-purpose computer, no matter its architecture or OS,
 has an area of permanent storage for user data. Interestingly, and
-conveniently, they're all organized in pretty much the same way: as a
-\textbf{tree} of \textbf{files} and \textbf{directories}. (Windows/Mac users
-will be familiar with the term ``\textbf{folder},'' which \textit{means exactly
-the same thing as ``directory.''}) In what follows, we'll be using a different
-syntax (text instead of visual icons) to work with what is conceptually the
-same organizational structure you're used to on your own computer.
+conveniently, all computers organize their filesystems in pretty much the same
+way: as a \textbf{tree} of \textbf{files} and \textbf{directories}.
+(Windows/Mac users will be familiar with the term ``\textbf{folder},'' which
+\textit{means exactly the same thing as ``directory.''}) In what follows, we'll
+be using a different syntax (text instead of visual icons) to work with what is
+conceptually the same organizational structure you're used to on your own
+computer.
 
 \subsection{Files and directories}
 
@@ -158,34 +160,35 @@ Windows, you're used to each of these files having a filesystem ``extension''
 designating its type: ``.doc'' means a Word doc, and ``.jpg'' means an image
 file, for example. This is sort of true with Linux, although the rules are
 a bit looser. Not all files have extensions at all, and when they do, it's
-more a signal that they're intended to be treated a certain way than a
+more a signal that they're intended to be treated a certain way than it is a
 hard-and-fast requirement.
 
 \index{java file@\texttt{.java} file}
+%\index{source file}
 The most important files you'll work with in this class will have a
-\texttt{.java} extension. These are your Java source files. You'll also work
-with other various supporting files to make all the tools work correctly.
-It's important to realize that \textit{a file is fundamentally just some data,
-which can theoretically be opened and dealt with by any program}. When we say
-that HamletPaper.doc ``\textit{is}'' a Word doc, what we really mean is that
-its data is formatted in a certain way that the Microsoft Word application
-expects to see, so it can render it on the screen for editing. But it is
-possible to open that same HamletPaper.doc file with other programs and
+\texttt{.java} extension. These are your Java \textbf{source files}. You'll
+also work with other various supporting files to make all the tools work
+correctly. It's important to realize that \textit{a file is fundamentally just
+some data, which can theoretically be opened and dealt with by any program}.
+When we say that HamletPaper.doc ``\textit{is}'' a Word doc, what we really
+mean is that its data is formatted in a certain way that the Microsoft Word
+application expects to see, so it can render it on the screen for editing. But
+it is possible to open that same HamletPaper.doc file with other programs and
 manipulate its contents. This may seem sketchy, but it is actually a force for
 good.
 
 In particular, you'll be tempted this semester to think of a \texttt{.java}
 file as ``a \texttt{vim} file,'' in the same way that you may think of an
-\texttt{.xls} file as ``an Excel file.'' I hope to eventually break you of this
-habit, as you learn to see files as text or data that is actually independent
-of what kind of program might be used to open and manipulate it.
+\texttt{.xls} file as ``an Excel file.'' I hope to break you of this habit, as
+you learn to see a file as text or data that is actually independent of what
+kind of program might be used to open and manipulate it.
 
 \index{directory}
 A directory is a container for files \textit{and also other directories}. That
 last italicized phrase is what gives rise to the overall tree structure of the
 filesystem, as discussed in the following section.
 
-\index{Foreman, George}
+%\index{Foreman, George}
 By the way, every file and directory \textit{in a particular directory} must
 have a unique name. You can't have a file called ``DireStraits.mp3'' and
 another one also called ``DireStraits.mp3'' sitting there in the same folder:
@@ -222,11 +225,11 @@ just spoke of.
 \label{fig:tree}
 \end{figure}
 
-Note that in order to keep you on your toes, I've given several entries in
-this example filesystem the same name: in addition to a couple different
-\texttt{america}s, we've got several \texttt{states}, multiple different
-\texttt{A.txt}s, etc. In no case, however, are the duplicately-named entries
-in the same directory. (Convince yourself of that fact.)
+In order to keep you on your toes, I've given several entries in this example
+filesystem the same name: in addition to a couple different \texttt{america}s,
+we've got several \texttt{states}, multiple different \texttt{A.txt}s, etc. In
+no case, however, are the duplicately-named entries in the same directory.
+(Convince yourself of that fact.)
 
 \subsubsection{Only one surprise}
 
@@ -259,19 +262,20 @@ it's the one within the current directory. But if our current directory were
 \texttt{unitedstates}, ``\texttt{A.txt}'' would instead mean the far-right blue
 node.
 
-I've found that failure to understand the current directory is one of the most
-common trouble spots for beginning Linux programmers.
+I've found that failure to understand the ``current directory'' concept is one
+of the most common trouble spots for beginning Linux programmers.
 
 \subsubsection{The root directory}
 
 \index{directory!root}
 \index{root directory}
 \index{tree}
+
 Okay, back to the filesystem as a whole. At the top of the tree is the
 \textbf{root directory}, which has no parents. (This is often disorienting to
-non-computer-scientists, since in the real world trees actually grow
-\textit{up}, not down. But in computer science, we always draw trees growing
-down from the root.)
+non-computer-scientists, since in the real world you may have noticed that
+trees actually grow \textit{up}, not down. But in computer science, we always
+draw trees growing down from the root.)
 
 \index{backslash}
 \index{forward slash}
@@ -308,11 +312,12 @@ example. Its path is:
 \index{slash}
 Look very carefully at that string as we dissect it. The most important thing
 to grasp is that the two slash (``\texttt{/}'') characters \textit{each mean
-something different}. The first one means ``the root directory, which is
-called slash.'' But the second one is merely a separator, delimiting the
+something different}. The first one means ``the root directory, which is called
+slash.'' But the second one is merely a separator, delimiting the
 \texttt{unitedstates} from the \texttt{B.java}. So this path means
-``\textit{start at the root directory}, go down to its \texttt{unitedstates}
-entry (which is a directory), and there you have the \texttt{B.java} file.''
+``start at the \textit{root} directory, go down to its \texttt{unitedstates}
+entry (which itself is a directory), and there you have the \texttt{B.java}
+file.''
 
 Similarly, the path to \texttt{loveLetter.txt} is:
 
@@ -339,20 +344,19 @@ entire absolute path. To do so, we use a \textbf{relative path}.
 \index{current directory}
 A relative path is relative \textit{to the current directory}. And it does
 \textit{\textbf{not}} begin with a slash. Instead, it gives directory names,
-separated by slashes, indicating where to start descending \textit{from the
-current directory}.
+separated by slashes, indicating where to start descending from the
+\textit{current} directory.
 
 For example, let's say the current directory was ``\texttt{/states}''. And
 suppose I used this relative path:
 
 \quad\quad \texttt{united/states/mysteryNovel.txt}
 
-(Note \textit{carefully} that it has \textit{no} initial slash!) This relative
-path would instruct us to \textit{start at the current directory}
-(\texttt{/states}) and from there traverse down to \texttt{united},
-\texttt{states}, and then finally \texttt{mysteryNovel.txt}. Obviously, where
-you end up is critically dependent on where you start -- on what the current
-directory is.
+(Note carefully that it has \textit{no} initial slash!) This relative path
+would instruct us to start at the \textit{current} directory (\texttt{/states})
+and from there traverse down to \texttt{united}, \texttt{states}, and then
+finally \texttt{mysteryNovel.txt}. Obviously, where you end up is critically
+dependent on where you start -- on what the current directory is.
 
 \index{directory!current}
 \index{current directory}
@@ -373,7 +377,7 @@ current directory to be the root (``\texttt{/}''), suddenly the relative path
 With the filesystem always hovering in the background, let's introduce the
 first basic Linux commands to work with the files and directories. These
 commands are so basic that they're like the alphabet of speaking any Linux
-sentence. Using them should eventually be as familiar and effortless as
+sentence. Using them should eventually be as familiar and effortless to you as
 clicking the mouse.
 
 \index{prompt}
@@ -421,9 +425,9 @@ contained within the \texttt{united} directory, which is contained within the
 root directory.
 
 \textbf{Tip:} get in the habit of typing \texttt{pwd} a \textit{lot},
-especially at first. Get ingrained in your brain the concept of ``where am I
-in the filesystem right now?'' because it matters, yet is not in your face
-except when you type this command.
+especially at first. Get ingrained in your brain the question ``where am I in
+the filesystem right now?'' because it matters, yet is not in your face except
+when you type this command.
 
 \bigline
 \item \textbf{\texttt{cd}}
@@ -449,7 +453,7 @@ $ pwd
 \index{path!relative}
 \index{absolute path}
 \index{path!absolute}
-More common is to specify a relative path. If we go back to our original
+More common is to specify a relative path. If we first go back to our original
 location:
 
 \begin{Verbatim}[fontsize=\small]
@@ -549,9 +553,9 @@ A shortcut for ``the home directory'' (which means ``the current directory when
 you first log in'') is a tilde. It's commonly used in conjunction with other
 relative path stuff, like the last double-dot example, above.
 
-Your home directory (which you can verify by just typing \texttt{pwd} when
-you first log in) will probably be something like \texttt{/home/joeschmo}.
-Suppose it is. Then, if you type:
+Your home directory will probably be something like \texttt{/home/joeschmo}
+(which you can verify by just typing \texttt{pwd} when you first log in).
+Suppose it is. Then, you can use the tilde:
 
 \begin{Verbatim}[fontsize=\small]
 $ pwd
@@ -561,7 +565,7 @@ $ pwd
 /home/joeschmo/shortStories/scifi
 \end{Verbatim}
 
-you can go to any of your subdirectories.
+to go to any of your subdirectories.
 
 \end{itemize}
 
@@ -569,22 +573,23 @@ you can go to any of your subdirectories.
 \item \textbf{\texttt{ls}}
 
 \index{ls@\texttt{ls}}
-While \texttt{pwd} tells you what the current directory is, \texttt{ls}
-command (``\textbf{l}i\textbf{s}t'') gives you its contents. If I type it while
-in the \texttt{/america} directory, for instance, it tells me:
+While \texttt{pwd} tells you what the current directory is, the \texttt{ls}
+command (which sort of stands for ``\textbf{l}i\textbf{s}t'') gives you its
+contents. If I type it while in the \texttt{/america} directory, for instance,
+it tells me:
 
 \begin{Verbatim}[fontsize=\small]
 $ ls
 nation   A.txt
 \end{Verbatim}
 
-there are the two entries from Figure~\ref{fig:tree}.
+These are the two entries from Figure~\ref{fig:tree}.
 
 \index{ls@\texttt{ls}}
-A few gotchas to be aware of here. First, there's no way from that listing to
+A few gotchas to be aware of. First, there's no way from that listing to
 tell that \texttt{nation} is a directory whereas \texttt{A.txt} is a file. If
-you want to see that, you need to add the ``\texttt{-l}'' (a minus sign
-followed by the lower-case letter ``ell'') option:
+you want to see that, you need to add the ``\texttt{-l}'' option (a minus sign
+followed by the lower-case letter ``ell''):
 
 \begin{Verbatim}[fontsize=\small]
 $ ls  -l
@@ -631,7 +636,7 @@ in your home directory to actually see it in the listing.
 \index{pwd@\texttt{pwd}}
 \index{ls@\texttt{ls}}
 *The above three commands -- \texttt{pwd}, \texttt{cd}, and \texttt{ls}, go
-together like Rey, Finn, and Poe. Get in the habit of using them literally
+together like Luke, Han, and Leia. Get in the habit of using them literally
 every minute you're working on the Linux command line.
 \vspace{.1in}
 \bigline
@@ -662,7 +667,7 @@ $ pwd
 \end{Verbatim}
 
 \index{cd@\texttt{cd}}
-You have to \texttt{cd} as a separate step if you want to now be in
+You have to \texttt{cd} as a separate step if you want to now be \textit{in}
 \texttt{evilplans}:
 
 \begin{Verbatim}[fontsize=\small]
@@ -753,15 +758,15 @@ you need to be a truly efficient software developer. It's kind of like
 learning to use the Force for the first time.
 
 \index{vimtutor@\texttt{vimtutor}}
-For now, I'll make this (strong) suggestion: when you're first learning vim,
-type this command (all one word) at the command line,
+For now, I'll make this (strong) suggestion: to learn \texttt{vim} for the
+first time, type this command (all one word) at the command line:
 
 \begin{Verbatim}[fontsize=\small]
 $ vimtutor
 \end{Verbatim}
 
 \index{Coke}
-grab a Coke, and spend 30-40 minutes patiently reading and following the
+Grab a Coke, and spend 30-40 minutes patiently reading and following the
 instructions. This tutorial is quite good, and will teach you the very basics
 of getting a file created and edited with this incredible tool.
 
@@ -775,25 +780,27 @@ of getting a file created and edited with this incredible tool.
 \texttt{git} is another one that doesn't really fit in this list, since it's
 much more than just ``a command.'' For now, though, all you need to understand
 is that it's a \textbf{version control system} that allows you to track and
-manage the changes you make to your software over time. Up until now, you've
-been dealing with the paradigm of ``the IDE always has the most recent copy of
-my code, and that's the only version of it that exists.'' It turns out that
-you'll need much more flexibility than that when you work on large systems.
+manage the changes you make to your software over time.
 
-Here's all you need to know at present:
+Up until now, you've been dealing with a paradigm like ``the IDE always has the
+most recent copy of my code, and that's the only version of it that exists.''
+It turns out that you'll need much more flexibility than that when you work on
+large systems.
+
+Here's all you need to know at present, though:
 
 \begin{compactitem}
 \index{git@\texttt{git}!\texttt{git init}}
 \index{repository@``repo'' (repository)}
-\item The command ``\texttt{\$ git init .}'' (don't forget the dot at the end,
+\item The command ``\texttt{git init .}'' (don't forget the dot at the end,
 after a space) creates a git \textbf{repository}
 (or ``\textbf{repo}'') in the current directory. That just means that your
 current directory, and everything under it, are now ``under git's
-management.'')
+management.''
 \index{git@\texttt{git}!\texttt{git add}}
 \item You use ``\texttt{git add}'' to make git aware of
 one or more files that you want it to track from that point forward. You'll
-type ``\texttt{\$ git add }file1 file2 file3'' or however many files you want
+type ``\texttt{git add }file1 file2 file3'' or however many files you want
 to add at that point. Ordinarily you'll want to \texttt{git add} all of your
 \texttt{.java} files.
 \index{git@\texttt{git}!\texttt{git commit}}
@@ -809,14 +816,14 @@ Each such change is called a \textbf{commit}. Think of it as taking a
 snapshot of your code that you can return to later.
 \index{git@\texttt{git}!\texttt{git status}}
 \index{git@\texttt{git}!\texttt{git log}}
-\item ``\texttt{\$ git status}'' and ``\texttt{\$ git log}'' are two useful
+\item ``\texttt{git status}'' and ``\texttt{git log}'' are two useful
 commands that show the current state of your files as git sees them, and a
 history of all the different commits you've made. Type them occasionally just
 to get a feel for what kind of information they show.
 \end{compactitem}
 
 We'll talk much more about \texttt{git} later. For now, just know that it
-exists, and type the commands verbatim when prompted.
+exists, and type the above commands verbatim when prompted.
 
 \bigline
 \item \textbf{\texttt{javac}} and \textbf{\texttt{java}}
@@ -830,6 +837,7 @@ exists, and type the commands verbatim when prompted.
 \index{J2SE (``Java 2 Standard Edition'')}
 \index{JRE (Java Runtime Environment)}
 
+\index{source file}
 Now, finally to some programming stuff. On your Linux system, the Java
 \textbf{compiler} (\textit{i.e.}, the program that converts your source code
 into the form the computer needs to run it) is called \texttt{javac}, and the
@@ -845,7 +853,7 @@ Environment. Finally, to confuse you yet further, Java version numbers were
 originally all ``one-dot-something'' (like ``Java 1.3'') but in 2004 they
 ditched the ``one-dot'' and started naming the versions after the second
 number alone. (So, the successor to ``Java 1.4'' was ``Java 5.'') This book
-assumes you're on Java 8.}
+assumes you're on Java 8, by the way.}
 
 
 \index{compiler}
@@ -859,7 +867,7 @@ $ javac  DestroyGalacticRepublic.java  Bombs.java  SinisterPlans.java
 \index{java file@\texttt{.java} file}
 \index{class file@\texttt{.class} file}
 \index{main method@\texttt{main()} method}
-which will produce either a \texttt{.class} file for each \texttt{.java} file,
+which will either produce a \texttt{.class} file for each \texttt{.java} file,
 or compiler errors for you to read. Finally, to run it, you give \texttt{java}
 the name of \textit{the class that contains your \texttt{main()} method}:
 
@@ -882,13 +890,15 @@ All I can do is promise you it will get easier as you get used to that new
 country. And there will be parts of it you will like -- maybe you'll even like
 it better than the point-and-click country you grew up in.
 
+\pagebreak
 \index{Hello World@``Hello, World"!'' program}
 In the meantime, let's pull together all the steps to get a ``Hello World''
 Java program running on the Linux command line.
 
 \begin{enumerate}
 \itemsep.1em
-\item Log on to your Linux system, however you do that.
+\item Log on to your Linux system (for instance, your Google Cloud instance),
+however you do that.
 \item Create a directory to hold your project:
 \begin{Verbatim}[fontsize=\small]
 $ mkdir  myFirstProgram
@@ -919,7 +929,7 @@ $ vim  HelloWorld.java
 \begin{Verbatim}[fontsize=\small,frame=single]
 class HelloWorld {
     public static void main(String args[]) {
-        System.out.println("Yo 'sup dawg!");
+        System.out.println("yo sup dawg");
     }
 }
 \end{Verbatim}
