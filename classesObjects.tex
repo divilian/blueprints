@@ -55,11 +55,11 @@ By the way, an important near-synonym for class is \textbf{type}. (It's only a
 
 \index{instantiation}
 \index{new@\texttt{new}}
-In addition to those nouns, a big verb in our vocabulary will be the term
-\textbf{instantiate}. It means ``to actually create an object of a particular
-class.'' Some people use words like \textbf{construct} or \textbf{create} for
-this, or even ``\texttt{new}'' (or ``\texttt{new} up'') as a verb, but for the
-most part we'll stick with instantiate.
+In addition to those nouns, an important verb in our vocabulary will be the
+term \textbf{instantiate}. It means ``to actually create an object of a
+particular class.'' Some people use words like \textbf{construct} or
+\textbf{create} for this, or even ``\texttt{new}'' (or ``\texttt{new} up'') as
+a verb, but for the most part we'll stick with instantiate.
 
 
 \section{A different kind of language}
@@ -93,23 +93,23 @@ two.
 \index{capitalization}
 Let's look at the class in detail. In the top box is its name; so far so good.
 One thing to point out, though, is that in Java, \textit{the names of all
-classes are CAPITALIZED.} Don't ever violate this rule, for convention's and
-confusion's sake!
+classes are \textbf{Capitalized}.} Don't ever violate this rule, for
+convention's and confusion's sake!
 
 \index{instance variable (inst var)}
 \index{object-oriented}
-The second compartment has the class's \textbf{instance variables}. You'll
-hear people use other terms for these like like ``member variables'' and even
-``class variables,'' but I strongly prefer instance variables (or ``inst
-vars'' for short) and here's why: \textit{every instance of a class has its
-own copy of its instance variables.} This truth is absolutely fundamental to
-OOP, and it's worth re-reading that sentence again and again until it's part
-of your core being. Declaring a plain-ol' variable like ``\texttt{int x;}''
-creates a single storage location in which a value can be stored. But
+The second compartment has the class's \textbf{instance variables}. You'll hear
+people use other terms for these like like ``member variables'' and even
+``class variables,'' but I strongly prefer instance variables (or ``inst vars''
+for short) and here's why: \textit{every instance of a class has its own copy
+of its instance variables.} This truth is absolutely fundamental to OOP, and
+it's worth re-reading that sentence again and again until it's part of your
+core being. As you know, declaring a plain-ol' variable like ``\texttt{int
+x;}'' creates a single storage location in which a value can be stored. But
 declaring an \textit{instance} variable is a far-reaching choice that destines
-every \texttt{Car} (or whatever) that will come about in the future to have
-its own copy of that variable. It's our way of defining the very structure of
-Cars in perpetuity.
+every \texttt{Car} (or whatever) that will come about in the future to have its
+own copy of that variable. It's our way of defining the very structure of Cars
+in perpetuity.
 
 One slight headache is that the UML syntax differs from Java's a bit: instead
 of listing the variable's type and then its name, we reverse them, we use
@@ -198,14 +198,15 @@ say) nor to say ``hey Cars-in-general, fill yourself up'' (which is what
 ``\texttt{Car.fillUp()}'' seems to say).
 
 \index{capitalization}
+\index{camelCase}
 By the way, notice in the example I just gave, \texttt{johnsMercedes} is
 \textit{not} capitalized. (The capital ``\texttt{M}'' in the middle doesn't
-count; that's just an artifact of CamelCase, which is a way of making multiple
+count; that's just an artifact of camelCase, which is a way of making multiple
 words easier to read.) This is \textit{always} true: in Java, object names
 should always begin with a lower-case letter.
 
-Back to the third compartment. You can probably tell that the stuff inside the
-parentheses is arguments to the respective methods, with the same
+Back to the third compartment. You can probably tell that the things inside the
+parentheses are arguments to the respective methods, with the same
 name-first-then-type colon-syntax, and you can probably tell that after the
 closing parenthesis, you have the return type of the function. All of this
 looks vaguely Java-like, and that's because even though a UML diagram is
@@ -218,23 +219,23 @@ thoughts betray us.
 
 \index{constructor}
 \index{void@\texttt{void}}
-A few of those methods are worthy of special note. The first one listed,
-called simply ``\texttt{Car}'', is a very special kind of method called a
+A few of those methods are worthy of special note. The first one listed, called
+simply ``\texttt{Car}'', is a very special kind of method called a
 \textbf{constructor} which we'll be talking about a lot. Here's an iron-clad
 rule which is fundamental to much that follows: \textit{whenever an object is
 instantiated, one of its class's constructors is called.} This happens
 automatically; it's not something we have to do ourselves. (Java's syntax for
 this, as we'll see, makes it kind of look like we're calling the constructor
-ourselves, which is a mixed blessing.) In Java, there are two things that
+ourselves. This is a mixed blessing.) In Java, there are two things that
 ``make'' a method a constructor: (1) it must have exactly the same name as the
 class, and (2) it must have \textit{no} return type. (Note that ``no'' return
 type is not the same as a \texttt{void} return type! I mean \textit{no return
-type at all.}\footnote{If you mistakenly include a \texttt{void} before your
-constructor when you write the code, it is officially no longer a constructor!
-It's now just an ordinary method -- weirdly named the same as the name of the
-class it's in -- which will not be automatically invoked at instantiation time
-as a constructor should. I once had a nasty bug at the eleventh hour of a
-software release because of this exact issue.})
+type at all.}\footnote{If you mistakenly include the word \texttt{void} before
+your constructor when you write the code, it is officially no longer a
+constructor! It's now just an ordinary method -- weirdly named the same as the
+name of the class it's in -- which will \textit{not} be automatically invoked
+at instantiation time as a constructor should. I once had a nasty bug at the
+eleventh hour of a software release because of this exact issue.})
 
 By the way, just as a class can have multiple methods with the same name as
 long as those methods have different argument lists, so it can have multiple
@@ -252,17 +253,17 @@ class itself.} In the example above, \texttt{numCars()} method is
 \texttt{static}, which means that you could write ``\texttt{Cars.numCars()}''
 to retrieve the number of \texttt{Car} objects that have been instantiated to
 that point. Static methods are quite rare, but they do arise occasionally, and
-are always indicated with an underline.
+are always indicated with an underline in UML.
 
 \index{getter}
 \index{setter}
 \index{mutator}
 \index{accessor}
 The other methods I'll draw your attention to are the ones that begin with
-``\texttt{get}''. People call these methods ``\textbf{getters},'' and all they
-normally do is return the value of the instance variable in question. Often
-one also has ``\texttt{set}'' methods to set the values of inst vars, although
-our example doesn't have any of those. Btw, some people also call getters and
+``\texttt{get}''. People call these methods ``\textbf{getters},'' and normally
+they simply return the value of the instance variable in question. Often one
+also has ``\texttt{set}'' methods to set the values of inst vars, although our
+example doesn't have any of those. Btw, some people also call getters and
 setters \textbf{accessors}, and sometimes specifically call setters
 ``\textbf{mutators},'' a term which always made me chuckle.
 
@@ -274,12 +275,11 @@ Now let's examine the blue box in Figure~\ref{fig:classObject}, which
 represents an object rather than a class. It has only two compartments, not
 three. That's because there's no need (in most OO languages) to say anything
 about an object's methods when focusing on the object: after all, the methods
-are simply defined by the class, and are common to all instances of that
-class. It is important, however, to specify the current \textbf{state} of the
-object, which means the current values of all its instance variables. In the
-picture, you can see that there is a \texttt{Car} object in memory
-representing an old Chevy Malibu with a zillion miles on it and other
-suboptimal features.
+are simply defined by the class, and are common to all instances of that class.
+It is important, however, to specify the current \textbf{state} of the object,
+which means the values, as of now, of all its instance variables. In the
+picture, you can see that there is a \texttt{Car} object in memory representing
+an old Chevy Malibu with a zillion miles on it and other suboptimal features.
 
 \index{names}
 Perhaps the strangest thing about a UML object is the top compartment. Notice
@@ -288,13 +288,14 @@ the sitch. The top compartment of a \textit{class} has the class's name, since
 that's all there is to say about it. The top compartment of an \textit{object},
 meanwhile, has the \textit{object's} name, followed by a colon and then its
 class. Just like we said ``\texttt{make :~String}'' earlier, so here we can
-say ``\texttt{johnsMercedes :~Car}''. Why, then, is
-Figure~\ref{fig:classObject} missing the name before the colon? Because we've
-chosen \textit{not to name this object in the diagram.} It's just ``a Car''
-with certain properties, not a named Car. This may seem odd, but in fact 99\%
-of the time we will do exactly this. And that's because bizarrely,
-\textit{objects don't have names in Java}, even though it may seem at first
-that they do.
+say ``\texttt{johnsMercedes :~Car}''.
+
+Okay...but why, then, is Figure~\ref{fig:classObject} missing the name before
+the colon entirely? Because we've chosen \textit{not to name this object in the
+diagram.} It's just ``a Car'' with certain properties, not a named Car. This
+may seem odd, but in fact 99\% of the time we will do exactly this. And that's
+because bizarrely, \textit{objects don't have names in Java}, even though it
+may seem at first that they do.
 
 More on that later. For now, just accept the fact that UML diagrams can depict
 objects, and normally we don't choose to specify the object's name -- only its
@@ -310,18 +311,18 @@ Before we move on to implementation, take a step back for a moment and
 consider the \textit{information} contained in that
 Figure~\ref{fig:classObject}.
 
-Suppose you were given the job to write a car maintenance tracking program,
-and you were getting started figuring out how to accomplish that. I think
-you'll agree that if someone handed you that diagram, it would be valuable
-indeed. There's no code in it \textit{per se}, but a great deal of the work
-has already been done for you! You already know what to name your class, the
-names and types of all its constituent variables, and what methods its objects
-should support. With that diagram alone, I'd say 70\% of the work has been
-done. All it takes now is to convert that diagram into Java (or whatever
-language you're working with), and flesh out the methods to do the right
-thing. But the overall blueprint communicates a ton of information about
-decisions that have already been made. Your structure is defined, and now you
-just need to bust out a hammer and some nails.
+Suppose you were given the job to write a car maintenance tracking program, and
+you were getting started figuring out how to accomplish that. I think you'll
+agree that if someone handed you that diagram, it would be valuable indeed.
+There's no code in it \textit{per se}, but a great deal of the work has already
+been done for you! You already know what to name your class, the names and
+types of all its constituent variables, and what methods its objects should
+support. With the diagram alone, I'd say 70\% of the work has been done for
+you.
+
+The blueprint communicates a ton of information about decisions that have
+already been made. With your structure defined, you now just need to bust out a
+hammer and some nails.
 
 
 \section{Classes in Java}
