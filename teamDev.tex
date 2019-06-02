@@ -64,17 +64,18 @@ modify any of it, or you'll probably break your repo and lose all its contents!}
 \index{git@\texttt{git}!\texttt{git add}}
 \index{git@\texttt{git}!\texttt{git commit}}
 \index{commit}
+
 Also shown is a purple diamond called the \textbf{staging area}. Normally you
 don't think too hard about the purple diamond explicitly, but it is there, and
 the command ``\texttt{git status}'' will only fully make sense if you recognize
 its use. Essentially, the staging area is for changes that the developer is
 ``about to commit'' (or ``fixin' to commit,'' as they sometimes say in the
 South) but hasn't actually pulled the trigger on yet. When you execute the two
-commands ``\texttt{git add}'' and ``\texttt{git commit}'', back to back, the
-\texttt{add} puts a snapshot of the change to the staging area, and
-\texttt{commit} actually records it in the repo. If you're in the habit of
-using ``\texttt{git commit -a}'' to commit your files, it effectively does both
-the add and the commit all in one step.
+commands ``\texttt{git add} filename'' and ``\texttt{git commit -m "My commit
+message"}'', back to back, the \texttt{add} puts a snapshot of the change to
+the staging area, and \texttt{commit} actually records it in the repo. (If
+you're in the habit of using ``\texttt{git commit -a}'' to commit your files,
+it effectively does both the add and the commit all in one step.)
 
 \label{commitPitfall}
 Beware a common pitfall with ``\texttt{git commit -a}'', though: it only
@@ -105,8 +106,13 @@ diamond.
 anticipation of doing a commit, you type ``\texttt{git add nameOfFile}''. This
 adds the current contents to the purple diamond. You can now proceed editing
 further, or go straight to the commit.
-\item To actually commit, type ``\texttt{git commit}'', enter a comment in the
-editor, and quit the editor.
+
+\item To actually commit, type ``\texttt{git commit -m "My commit
+message"}''.\footnote{Or, in place of steps 5 \textit{and} 6, you can do the
+shortcut operation ``\texttt{git commit -a -m "message"}'', but only
+\textit{if} all the files you're changing were already explicitly
+``\texttt{git add}''ed at some point.}
+
 \end{compactenum}
 
 \subsection{Understanding \texttt{git status}}
@@ -118,7 +124,7 @@ status}'' and ``\texttt{git log}''. Let's look at each in turn.
 The \texttt{git status} command tells you the current state of your workspace
 as compared with your repo. The output might look something like this:
 
-\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 $ git status
 On branch master
 Changes to be committed:
@@ -151,9 +157,9 @@ merged into the trunk at a later time.
 
 \item The output lists \texttt{Cat.java} as a ``change to be committed.'' This
 means that an updated version of \texttt{Cat.java} is \textit{in your purple
-diamond.} If we were to follow up this command with a ``\texttt{git commit}'',
-that version of \texttt{Cat.java} would be committed to the repo for
-posterity.
+diamond.} (Refer back to Figure~\ref{fig:filbertGit}.) If we were to follow up
+this command with a ``\texttt{git commit}'', that version of \texttt{Cat.java}
+would be committed to the repo for posterity.
 
 \item Somewhat weirdly, the output shows \texttt{Cat.java} as being in the
 ``changes \textit{not} staged for commit'' section as well! What the heck is
@@ -162,7 +168,7 @@ going on here -- is \texttt{Cat.java} going to be committed, or not?
 The answer to that question is ``both.'' When a file shows up in both lists,
 it means there have been several \textit{different} changes to it, only
 \textit{some} of which were present the last time a ``\texttt{git add}'' was
-performed, and which are therefore in the purple box. Other changes to this
+performed, and which are therefore in the purple diamond. Other changes to this
 same file were made \textit{after} the ``\texttt{git add}'', and so they are
 in the yellow oval only. In a moment, I'll teach you how to find out which
 changes are in which category. For now, just grasp the fact that the same file
@@ -466,7 +472,7 @@ revised picture in Figure~\ref{fig:teamGit}.
 \index{BitBucket}
 We now have two developers working on this feline program: Filbert and his
 colleague Betty Lou. The picture is considerably more complex. First, notice
-that the three salmon-colored squares represent \textit{different machines}
+that the three large salmon-colored squares represent \textit{different machines}
 which communicate only over the Internet. Filbert and Betty Lou each have
 their own laptop to do development on. And in addition, there is a third
 machine involved: a publicly-available hosting service like BitBucket,
@@ -486,6 +492,7 @@ team members \textbf{clone} copies of it. ``Clone'' is exactly what it sounds
 like: it means to make an exact duplicate.
 
 \index{git@\texttt{git}!\texttt{git push}}
+\index{Microsoft}
 github makes it easy to do this in a variety of ways. Perhaps the most common
 is when one developer starts with an embryonic version of the code base,
 creates his/her own local git repo, and then ``pushes'' (see below) this to a
@@ -493,11 +500,12 @@ new github project. It's also possible to start on github with a brand-new
 blank project. At the time of this writing, a very helpful and obvious green
 ``New'' button is present on the github main account screen, with instructions
 to follow for each of these different starting techniques.\footnote{Services
-like github and BitBucket are free to use, by the way, as long as you keep
-your repo public and visible to the world. The idea is that they're trying to
+like github and BitBucket are free to use, by the way, as long as you keep your
+repo public and visible to the world. The idea is that they're trying to
 promote open source software, so in exchange for sharing your ideas, they're
-giving you free storage space and tools. Some services even have free private
-repos, sometimes in exchange for viewing ads.}
+giving you free storage space and tools. Some services even have free
+\textit{private} repos -- after being purchased by Microsoft, github now offers
+this feature for teams with three or fewer developers.}
 
 On the github project page, you'll see a button that says ``Clone or
 download,'' and which will display a specific URL to your project if you click
@@ -555,7 +563,7 @@ that file, it turns out that git can automatically and intelligently
 \textbf{merge} the changes without you even having to worry about it.
 
 When you do a \texttt{git pull} operation, \textit{read the output carefully.}
-About 95\% of the time, it will give you happy messages like this:
+About 95\% of the time, it will give you a happy message like this:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
 Auto-merging Hairball.java
@@ -607,6 +615,7 @@ Resolving it is generally pretty easy. You open up the offending file(s) in
 ...
 \end{Verbatim}
 
+\index{Slack}
 Here's how to decipher that. The lines between the ``$<<<<<$ \texttt{HEAD}''
 and the ``$=====$'' are what \textit{you} had in your version of the file. In
 this example, you changed the \texttt{Cat} class JavaDoc entirely by rewriting
@@ -614,15 +623,14 @@ it in a more feline-friendly way. Meanwhile, your teammate (whose code is
 marked between the ``$=====$'' and the ``$>>>>>$ \texttt{c6812...}'') made a
 smaller change to that comment, changing ``furry'' to ``fuzzy.'' All that
 matters now is what you want to do about these changes. It's your job as a
-developer to restore that part of the \texttt{Cat.java} file to be
-\textit{what your team wants the code to look like moving forward.} Perhaps
-you keep your change, perhaps you keep your teammate's, perhaps it's a
-combination of both. But after fixing it up the way it should be (with maybe a
-phone call or chat session with your colleague to make sure you're on the same
-page), you will have removed the ``$<<<<<$'' and ``$=====$'' and ``$>>>>>$''
-markers and can ``\texttt{git add}'' and commit your changes. Finally, you can
-then push the combined changes to the team repo, and everything goes on hunky
-dory.
+developer to restore that part of the \texttt{Cat.java} file to be \textit{what
+your team wants the code to look like moving forward.} Perhaps you keep your
+change, perhaps you keep your teammate's, perhaps it's a combination of both.
+But after fixing it up the way it should be (with maybe a phone call or chat
+session on Slack with your colleague to make sure you're on the same page), you
+will have removed the ``$<<<<<$'' and ``$=====$'' and ``$>>>>>$'' markers and
+can ``\texttt{git add}'' and commit your changes. Finally, you can then push
+the combined changes to the team repo, and everything goes on hunky dory.
 
 Normally, the only time you end up in the 5\% conflict case (instead of the
 95\% auto-merge case) is when you and your teammates aren't communicating well
@@ -661,4 +669,7 @@ details, type ``\texttt{man git stash}'' and read carefully.}
 
 \end{compactitem}
 
+% TODO: Add: "rewinding to old versions" to:
+%  - compare
+%  - actually permanently roll back
 

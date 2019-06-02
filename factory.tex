@@ -116,12 +116,14 @@ Figure~\ref{ballplayerInheritance}.
 \index{inheritance hierarchy}
 \index{tree}
 \begin{figure}[ht]
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 class Ballplayer {
     protected String name;
     private int uni;
     private int salary;
     private String handedness;  //  "L" or "R"
+
+    public abstract double estimatedMarketValue();
 }
 
 class Pitcher extends Ballplayer {
@@ -129,6 +131,9 @@ class Pitcher extends Ballplayer {
     private int numKos;
 
     public Pitcher(String name) { this.name = name; }
+    public double estimatedMarketValue() {
+        return koDominance * 20000000;
+    }
 }
 
 class PositionPlayer extends Ballplayer {
@@ -139,6 +144,9 @@ class PositionPlayer extends Ballplayer {
     public PositionPlayer(String name, String pos) {
         this.name = name;
         this.position = pos;
+    }
+    public double estimatedMarketValue() {
+        return numHits * 100000 - numAtBats * 1000;
     }
 }
 \end{Verbatim}
