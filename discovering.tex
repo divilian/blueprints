@@ -356,12 +356,12 @@ test: ``can we put `a/an' or a number before the noun phrase, and have it make
 sense?''
 
 Actually almost all of these remaining entries pass that test, with the
-exception of \textit{customer demand}, and possibly \textit{contact
+exception of \textsf{customer demand}, and possibly \textsf{contact
 information}. While one could indeed envision ``four or five customer demands''
 in other contexts, it's pretty clear from the text that this is being used as
 an abstract concept, not an individual object. ``Contact information'' is a
 closer call, but by inspecting the requirements again, we can see that this is
-really an attribute of \textit{vendor/supplier}. We'll therefore strike the
+really an attribute of \textsf{vendor/supplier}. We'll therefore strike the
 idea of a ``\texttt{ContactInformation}'' class. We're now down to:
 
 \begin{multicols}{3}
@@ -400,10 +400,10 @@ represent the \texttt{Manager} as an object? We'll cross out both of these.
 
 \textbf{2d. Eliminate likely \textit{attributes} of a class.} Things are
 getting a bit more subjective, but some of these remaining nouns definitely
-seem ``too small'' to be their own classes. Consider \textit{expected arrival
+seem ``too small'' to be their own classes. Consider \textsf{expected arrival
 date}. Surely this is better modeled as a property of an order, rather than as
-its own individual object. The same could be said for \textit{down payment} and
-\textit{inventory level}. Generally speaking, noun phrases that seem to refer
+its own individual object. The same could be said for \textsf{down payment} and
+\textsf{inventory level}. Generally speaking, noun phrases that seem to refer
 to bits of data that have an obvious ``home'' in another class ought to be
 modeled as inst vars, not classes.
 
@@ -487,7 +487,7 @@ imprecise. Here, we clearly have two different notions of ``order'': (1) a
 contract for delivery from one of our big suppliers like Trek or Cannondale
 (which might include a dozen bikes or more), and (2) a customer's reservation
 of a particular model/color/style of bike, which he or she is anxiously
-waiting to take home for its first ride. More succinctly, one kind we buy, and
+waiting to take home for its first ride. More succinctly: one kind we buy, and
 the other kind we sell.
 
 We're going to have to invent at least one noun phrase of our own here, since
@@ -510,11 +510,11 @@ item}
 \end{center}
 \end{quote}
 
-These clearly all refer to things that can be purchased. When we go back to
-the Bible, we see that the modifier ``incoming'' on \textit{product} really
-refers to the temporary state of a product (\textit{i.e.}, one in transit from
-a supplier), not a fundamentally distinct kind of thing. So I'm going to be
-bold, ditch ``incoming,'' and make these two assertions:
+These clearly all refer to things that can be purchased. When we go back to the
+Bible, we see that the modifier ``\textsf{incoming}'' on \textsf{product}
+really refers to the temporary state of a product (\textit{i.e.}, one in
+transit from a supplier), not a fundamentally distinct kind of thing. So I'm
+going to be bold, ditch ``incoming,'' and make these two assertions:
 
 \begin{compactenum}
 \item \textsf{item == product}
@@ -620,9 +620,9 @@ it, cancel it, get an updated status).
 
 You might be thinking, ``that's great, Stephen, but how did you know what to
 write in that box?'' I admit it's not a turn-the-crank process. This is part of
-the design process that's \textit{art}, not science. Basically, though, you
-have to try to create a little egocentric world in your mind, the center of
-which is the class in question. 
+the design process that's art, not science. Basically, though, you have to try
+to create a little egocentric world in your mind, the center of which is the
+class in question. 
 
 Here, I said to myself, ``let's view the entire world through the lens of a
 Shipment. First, in the real world, what ought a shipment to `\textit{know}'?''
