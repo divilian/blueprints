@@ -9,7 +9,8 @@
 Let's go back and revisit our \texttt{.drive()} method from the \texttt{Car}
 example on p.~\pageref{fig:carClassCodePreExceptions}. It looked like this:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\vspace{-.2in}
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Car {
     ...
     void drive(int numMiles) {
@@ -19,14 +20,15 @@ class Car {
     }
 }
 \end{Verbatim}
+\vspace{-.2in}
 
 The shrewd reader (and driver!)~will realize that this method is a bit
 optimistic: when told to drive \texttt{numMiles}, it blindly does so, even if
 there's not enough gas to get that far. We ought to guard against this kind of
 wishful thinking by \textit{not permitting} a drive that's outside our range.
 If told to drive 1000 miles when we only have enough gas to go 200, we'll just
-say ``no.'' That's way better than ending up with a negative gas tank and
-wreaking unknown havoc later in the program!
+say ``no.'' That's way better than ending up with a negative gas tank!
+% and wreaking unknown havoc later in the program!
 
 The first step in implementing this kind of defensive coding is to figure out
 \textit{when} to refuse to carry out orders. That's not too hard in this case:
@@ -34,7 +36,7 @@ our local \texttt{galsBurned} variable is exactly what we need: if it turns
 out to be higher than the gas remaining in the tank, we are officially in
 Nonsense Land. A simple \texttt{if} statement can take care of that.
 
-\section{Suboptimal ways of handling error conditions}
+\section{Bad ways of handling error conditions}
 
 The second step is figuring out \textit{what to do} when this occurs. Most
 people's first instinct is to blare out a siren:
@@ -73,7 +75,7 @@ class Car {
         double galsBurned = numMiles / this.gasMileage;
         if (galsBurned > this.galsRemaining) {
             System.out.println("Not enough gas!!");
-            return;                                     //  <---  NOTICE THIS!
+            return;                       //  <---  NOTICE THIS!
         }
         this.galsRemaining = this.galsRemaining - galsBurned;
         this.odo += numMiles;
@@ -105,14 +107,14 @@ flat didn't work. It's the only responsible thing to do.
 
 Our first step is to ``throw an exception'' instead of returning. Here's how:
 
-\begin{Verbatim}[samepage=true,fontsize=\small,frame=single]
+\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
 // Correct approach (not finished yet)
 class Car {
     ...
     void drive(int numMiles) {
         double galsBurned = numMiles / this.gasMileage;
         if (galsBurned > this.galsRemaining) {
-            throw new Exception("Not enough gas!!");    //  <---  NOTICE!
+            throw new Exception("Not enough gas!!");  //  NOTICE!
         }
         this.galsRemaining = this.galsRemaining - galsBurned;
         this.odo += numMiles;
@@ -128,8 +130,8 @@ value, and can take evasive action.
 
 If you try to compile the above code, though, you get an error, which says:
 
-\begin{Verbatim}[samepage=true,fontsize=\footnotesize]
-  error: unreported exception Exception; must be caught or declared to be thrown
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize]
+  error: unreported Exception; must be caught or declared to be thrown
 \end{Verbatim}
 
 It's actually nice of Java to give this error, and here's why. Inside our
@@ -153,7 +155,7 @@ as we'll see, it allows the code that uses \texttt{Car}s to properly deal with
 the problem.
 
 
-\section{Calling a method that \texttt{throws} an \texttt{Exception}}
+\section{Calling a method that \texttt{throws} \texttt{Exception}}
 
 \index{drive@\texttt{.drive()}}
 The only remaining fly in our ointment (don't worry; he's easily swatted) is
@@ -174,7 +176,7 @@ looks like:
 \begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
     public static void main(String args[]) {
         ...
-        // Caravan to Disneyworld -- whoo-hoo!  (Grammy's meeting us there.)
+        // Caravan to Disneyworld!  (Grammy's meeting us there.)
         minivan.fillUp();
         try {
             minivan.drive(500);
@@ -227,7 +229,7 @@ we change the previous try/catch block to this:
         try {
             minivan.drive(500);
         } catch (Exception e) {
-            e.printStackTrace();                <--- NOTICE THIS LINE
+            e.printStackTrace();           <--- NOTICE THIS LINE
             System.exit(1);
         }
 \end{Verbatim}
