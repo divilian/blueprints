@@ -43,8 +43,8 @@ breathing object once again.
 \index{serializable@\texttt{Serializable}}
 There are several ways to implement such operations. One, which I don't
 recommend, is built into Java and is called ``serialization.'' The
-\texttt{java.io} package has classes \texttt{ObjectOutputStream} and
-\texttt{ObjectInputStream} for this purpose. The idea is that just as you can
+\texttt{java.io} package has two classes -- \texttt{ObjectOutputStream} and
+\texttt{ObjectInputStream} -- for this purpose. The idea is that just as you can
 write primitive types like integers and strings to a stream with familiar file
 I/O operations, you can also read and write bona fide objects
 themselves.\footnote{All objects that are saved and restored in this way must
@@ -87,7 +87,7 @@ them in a format which is transparent and forwards-compatible. You need to be
 able to inspect exactly what was stored, and have that data be readable even
 if you change the class's definition later on.
 
-\section{Using a relational (or non-relational) database}
+\section{Using a database}
 
 \index{database}
 \index{connection}
@@ -215,34 +215,34 @@ want. Look at it carefully.
 \centering
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Resort {
-    private String name, desc, phone;
-    private int rating, cost;
+  private String name, desc, phone;
+  private int rating, cost;
 
-    Resort(Scanner s) {
-        name = s.nextLine();
-        phone = s.nextLine();
-        rating = s.nextInt();
-        s.nextLine();    // read and discard the " stars" part.
-        cost = s.nextLine().length();
-        desc = "";
-        String next = s.nextLine();
-        while (!next.equals(".")) {
-            desc = desc + next + "\n";
-            next = s.nextLine();
-        }
-    }
-    
-    void persist(PrintWriter pw) {
-        pw.println(name);
-        pw.println(phone);
-        pw.println(rating + " " + (rating == 1 ? "star" : "stars"));
-        for (int i=0; i<cost; i++) {
-            pw.print("$");
-        }
-        pw.println();  // newline for the $$$
-        pw.println(desc);
-        pw.println(".");
-    }
+  Resort(Scanner s) {
+      name = s.nextLine();
+      phone = s.nextLine();
+      rating = s.nextInt();
+      s.nextLine();    // read and discard the " stars" part.
+      cost = s.nextLine().length();
+      desc = "";
+      String next = s.nextLine();
+      while (!next.equals(".")) {
+          desc = desc + next + "\n";
+          next = s.nextLine();
+      }
+  }
+  
+  void persist(PrintWriter pw) {
+      pw.println(name);
+      pw.println(phone);
+      pw.println(rating + " " + (rating == 1 ? "star" : "stars"));
+      for (int i=0; i<cost; i++) {
+          pw.print("$");
+      }
+      pw.println();  // newline for the $$$
+      pw.println(desc);
+      pw.println(".");
+  }
 }
 \end{Verbatim}
 \caption{Our first cut at the \texttt{Resort} class.}
@@ -388,8 +388,17 @@ the resorts list, our file will contain a line with these five characters:
 ``\texttt{-END-}''. When we hit this, we'll know there are no more resorts to be
 hydrated.
 
-Here's the modified \texttt{Resort} constructor:
+Figure~\ref{fig:modifiedResort} has the modified \texttt{Resort} constructor.
+It's exactly the same except that after reading what it supposes is the
+resort's name, the constructor sanity-checks that against the string
+``\texttt{--END-}''. If they're equal, it realizes that it didn't read a
+resort's name after all, but instead \textit{it hit the end of the list.} In
+response, it abandons the rest of the constructor, \textit{refuses to
+instantiate an object}, and throws the exception back to the caller.
 
+
+\begin{figure}[ht]
+\centering
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
     Resort(Scanner s) throws NoMoreResortsException {
         name = s.nextLine();
@@ -408,13 +417,9 @@ Here's the modified \texttt{Resort} constructor:
         }
     }
 \end{Verbatim}
-
-It's exactly the same except that after reading what it supposes is the
-resort's name, the constructor sanity-checks that against the string
-``\texttt{--END-}''. If they're equal, it realizes that it didn't read a
-resort's name after all, but instead \textit{it hit the end of the list.} In
-response, it abandons the rest of the constructor, \textit{refuses to
-instantiate an object}, and throws the exception back to the caller.
+\caption{The modified \texttt{Resort} constructor.}
+\label{fig:modifiedResort}
+\end{figure}
 
 \subsubsection{\texttt{ReservationSystem}: hydration}
 
@@ -471,9 +476,20 @@ Copyright (C) 2019
 \end{figure}
 
 \index{constructor}
-Given this structure, here's the way our \texttt{ReservationSystem}'s
-constructor should work:
+\index{try/catch@\texttt{try}/\texttt{catch}}
 
+Given this structure, our \texttt{ReservationSystem}'s constructor should work
+as in Figure~\ref{fig:reservationSysClass}
+(p.~\pageref{fig:reservationSysClass}). Check out that
+\texttt{try}/\texttt{catch}/\texttt{while} loop construct very carefully. It's
+short, but it's also a doozy. Inside the body of the \texttt{try} block, we
+have what appears to be an \textit{infinite} loop: after all,
+\texttt{while(true)} means ``forever.'' So we instantiate a \texttt{Resort}
+object and add it to our \texttt{ArrayList}, do it again, do it again, do it
+again...
+
+\begin{figure}[ht]
+\centering
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 public class ReservationSystem {
     private int year;
@@ -501,14 +517,10 @@ public class ReservationSystem {
     }
 }
 \end{Verbatim}
+\caption{The \texttt{ReservationSystem} class's constructor.}
+\label{fig:reservationSysClass}
+\end{figure}
 
-\index{try/catch@\texttt{try}/\texttt{catch}}
-Check out that \texttt{try}/\texttt{catch}/\texttt{while} loop construct
-very carefully. It's short, but it's also a doozy. Inside the body of the
-\texttt{try} block, we have what appears to be an \textit{infinite} loop:
-after all, \texttt{while(true)} means ``forever.'' So we instantiate a
-\texttt{Resort} object and add it to our \texttt{ArrayList}, do it again, do
-it again, do it again...
 
 But it's not really infinite and here's why: eventually, the \texttt{Resort}
 constructor is going to discover that there aren't any more resort entries in
@@ -530,6 +542,7 @@ aren't any. Carry on with your other business, Mr.~Client.''
 To be crystal clear, here's what happens in the \texttt{try}/\texttt{while}
 construct when we read Figure~\ref{fig:wholeFile}:
 
+\pagebreak
 \begin{compactenum}
 \item It hydrates a \texttt{Resort} object, and adds it to the
 \texttt{resorts} \texttt{ArrayList}.
@@ -544,8 +557,8 @@ instead, pops out of the \texttt{try} block (and therefore also the
 \item It carries on reading the rest of the file.
 \end{compactenum}
 
-Note carefully that \textit{no exception is thrown from the
-\texttt{ReservationSystem} constructor in this case!} Rather, the exceptions
+Note carefully that \textit{no exception is thrown from the constructor of the
+\texttt{ReservationSystem} class in this case!} Rather, the exceptions
 thrown by the \textit{\texttt{Resort}} constructor are caught and dealt with
 by the \texttt{ReservationSystem} constructor. The only time the
 \texttt{ReservationSystem} constructor would throw an \texttt{Exception} is if
