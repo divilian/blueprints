@@ -355,19 +355,19 @@ suppose I used this relative path:
 \quad\quad \texttt{united/states/mysteryNovel.txt}
 
 (Note carefully that it has \textit{no} initial slash!) This relative path
-would instruct us to start at the \textit{current} directory (\texttt{/states})
-and from there traverse down to \texttt{united}, \texttt{states}, and then
-finally \texttt{mysteryNovel.txt}. Obviously, where you end up is critically
-dependent on where you start -- on what the current directory is.
+would start at the \textit{current} directory (\texttt{/states}) and from there
+traverse down to \texttt{united}, \texttt{states}, and then finally
+\texttt{mysteryNovel.txt}. Obviously, where you end up is critically dependent
+on where you start -- on what the current directory is.
 
 \index{directory!current}
 \index{current directory}
 To test your understanding, realize that in this case where the current
 directory is \texttt{/states}, there is no such file called
-\texttt{united/states/america/loveLetter.txt}. In fact, even 
-\texttt{united/states/america} doesn't exist. However, if we changed the
+\path{united/states/america/loveLetter.txt}. In fact, even 
+\path{united/states/america} doesn't exist. However, if we changed the
 current directory to be the root (``\texttt{/}''), suddenly the relative path
-\texttt{united/states/ america/loveLetter.txt} would be legit.
+\path{united/states/ america/loveLetter.txt} would be legit.
 
 \section{Linux A-B-C's}
 
@@ -405,7 +405,7 @@ locations as I work, plus it consumes a lot of space.) No matter what, though,
 just mentally substitute ``the dollar sign'' for ``whatever your Linux prompt
 is.''
 
-\newcommand{\bigline}{\begin{center} \line(1,0){300} \end{center}}
+\newcommand{\bigline}{\vspace{-.3in} \begin{center} \line(1,0){300} \end{center}}
 
 
 \begin{enumerate}
@@ -520,8 +520,8 @@ you this example was useless.)
 \index{directory!parent}
 \index{parent directory}
 More immediately useful is the double-dot, which means ``the parent of the
-current directory.'' If we're in \texttt{/united/states} and want to go to
-\texttt{/united}, one way to do it is:
+current directory.'' If we're currently in \path{/united/states} and want to go
+to \texttt{/united}, one way to do it is:
 
 \begin{Verbatim}[fontsize=\small]
 $ cd  ..
@@ -593,7 +593,7 @@ tell that \texttt{nation} is a directory whereas \texttt{A.txt} is a file. If
 you want to see that, you need to add the ``\texttt{-l}'' option (a minus sign
 followed by the lower-case letter ``ell''):
 
-\begin{Verbatim}[fontsize=\small]
+\begin{Verbatim}[fontsize=\footnotesize]
 $ ls  -l
 -rw-r--r-- 1 kyloren   sithlords   17 Sep  5 16:21 A.txt
 drwxr-xr-x 2 kyloren   sithlords 4096 Sep  5 16:21 nation
@@ -633,13 +633,13 @@ in your home directory to actually see it in the listing.
 
 
 \bigline
-\vspace{.1in}
 \index{cd@\texttt{cd}}
 \index{pwd@\texttt{pwd}}
 \index{ls@\texttt{ls}}
-*The above three commands -- \texttt{pwd}, \texttt{cd}, and \texttt{ls}, go
-together like Luke, Han, and Leia. Get in the habit of using them literally
-every minute you're working on the Linux command line.
+\vspace{-.1in}
+\begin{tabular}{m{.5in}m{3in}}
+{\Huge \leftthumbsup} & The above three commands -- \texttt{pwd}, \texttt{cd}, and \texttt{ls}, go together like Luke, Han, and Leia. Get in the habit of using them literally every minute you're working on the Linux command line.
+\end{tabular}
 \vspace{.1in}
 \bigline
 
@@ -786,8 +786,7 @@ manage the changes you make to your software over time.
 
 Up until now, you've been dealing with a paradigm like ``the IDE always has the
 most recent copy of my code, and that's the only version of it that exists.''
-It turns out that you'll need much more flexibility than that when you work on
-large systems.
+You'll need much more flexibility than that when you work on large systems.
 
 Here's all you need to know at present, though:
 
@@ -811,7 +810,7 @@ to add at that point. Ordinarily you'll want to \texttt{git add} all of your
 \item When you've made a
 significant change to one or more of your files that you want git to be aware
 of, you'll enter this command:
-\begin{Verbatim}[fontsize=\small]
+\begin{Verbatim}[fontsize=\footnotesize]
 $ git  commit  -a  -m  "A message describing the change."
 \end{Verbatim}
 Each such change is called a \textbf{commit}. Think of it as taking a
@@ -862,7 +861,7 @@ assumes you're on Java 8, by the way.}
 To compile, you give \texttt{javac} all the Java files that are part of your
 program:
 
-\begin{Verbatim}[fontsize=\small]
+\begin{Verbatim}[fontsize=\scriptsize]
 $ javac  DestroyGalacticRepublic.java  Bombs.java  SinisterPlans.java
 \end{Verbatim}
 
@@ -873,7 +872,7 @@ which will either produce a \texttt{.class} file for each \texttt{.java} file,
 or compiler errors for you to read. Finally, to run it, you give \texttt{java}
 the name of \textit{the class that contains your \texttt{main()} method}:
 
-\begin{Verbatim}[fontsize=\small]
+\begin{Verbatim}[fontsize=\footnotesize]
 $ java  DestroyGalacticRepublic
 \end{Verbatim}
 
@@ -883,6 +882,7 @@ notice we don't mention every Java class, only the one that has the
 
 \end{enumerate}
 
+\pagebreak
 \section{The quickest path through the woods}
 
 Whew. That was a lot. It's kind of like moving to another country: every
@@ -892,7 +892,6 @@ All I can do is promise you it will get easier as you get used to that new
 country. And there will be parts of it you will like -- maybe you'll even like
 it better than the point-and-click country you grew up in.
 
-\pagebreak
 \index{Hello World@``Hello, World"!'' program}
 In the meantime, let's pull together all the steps to get a ``Hello World''
 Java program running on the Linux command line.
@@ -928,6 +927,7 @@ $ vim  HelloWorld.java
 ``vim cheat sheets'' on the Internet, is relevant now. Good luck.)}
 
 \item Give it these contents:
+\begin{samepage}
 \begin{Verbatim}[fontsize=\small,frame=single]
 class HelloWorld {
     public static void main(String args[]) {
@@ -935,6 +935,7 @@ class HelloWorld {
     }
 }
 \end{Verbatim}
+\end{samepage}
 
 \item Save your file and exit \texttt{vim}.
 
