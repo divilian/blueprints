@@ -50,7 +50,7 @@ on the other.
 
 \section{Going backwards}
 
-\vspace{-.2in}
+\vspace{-.1in}
 {\large \textbf{Reverse-engineering a sequence diagram from code}}
 
 \index{ballplayer@\texttt{Ballplayer}}
@@ -86,7 +86,8 @@ class Simulator {
         int numTeams = teams.size();
         for (int i=0; i<numTeams; i++) {
             Team nextTeam = teams.get(i);
-            System.out.println(nextTeam + " - " nextTeam.getBestHitter());
+            System.out.println(nextTeam + " - " +
+                nextTeam.getBestHitter());
         }
     }
 }
@@ -247,7 +248,6 @@ same \texttt{.println()} call. This commences an even longer skinny box,
 because \texttt{.bestHitter()} has a lot to do. Here it is:
 
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
-public class Team {
     ...
     private Ballplayer bestHitter() {
         int numPlayers = roster.size();
@@ -260,7 +260,6 @@ public class Team {
         }
         return best;
     }
-    ...
 }
 \end{Verbatim}
 
@@ -279,8 +278,8 @@ lifetime average, especially for a power hitter). A moment later, it does the
 same with the second player (say, Joe Dimaggio) and gets his average (still
 amazing, but ``only'' .325) for comparison.
 
-\item More detail is shown inside the calls to
-\texttt{Ballplayer.getBattingAvg()}. That code looks like this:
+\item More detail is shown inside the \path{Ballplayer.getBattingAvg()} calls.
+That code looks like this:
 
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 public class Ballplayer {
@@ -325,8 +324,9 @@ decisions the programmer would otherwise have to make. What a windfall!
 Before we move to our second example, let me tell you the two most common
 errors I see among students trying to interpret (or create) sequence diagrams:
 
+\vspace{-.1in}
 \begin{enumerate}
-\itemsep.1em
+\itemsep.5em
 \item \textbf{Misinterpreting what the arrowhead-side of the arrow means.}
 Each arrow points to a line which represents \textit{the object on which the
 method is being called.} There's a great way to sanity check this: make sure
@@ -355,7 +355,6 @@ way.}
 \label{fig:rightWrongSeqDiag}
 \end{figure}
 
-\pagebreak
 \item \textbf{Misinterpreting what the non-arrowhead-side of the arrow means.}
 Each arrow originates from a line which represents \textit{the object whose
 code is making the method call} (on a different object, normally). 
@@ -388,7 +387,7 @@ the ``\texttt{m.add(r)}'' line would be somewhere in \texttt{Review.java}.
 
 \section{Going forwards}
 
-\vspace{-.2in}
+\vspace{-.1in}
 {\large \textbf{Using a sequence diagram to guide the implementation}}
 
 Now normally we won't be drawing a sequence diagram after we've written the
@@ -404,15 +403,15 @@ which you are encouraged to study in detail.
 
 \begin{figure}
 \centering
-\includegraphics[width=1\textwidth]{playlistClassDiag.pdf}
+\includegraphics[width=1.1\textwidth]{playlistClassDiag.pdf}
 \caption{The playlist program's class diagram.}
 \label{fig:playlistClassDiag}
 
 \end{figure}
 \begin{figure}
 \centering
-\hspace*{-1.2in}
-\includegraphics[width=1.25\textwidth]{playlistSeq.pdf}
+\hspace*{-.3in}
+\includegraphics[width=1.1\textwidth]{playlistSeq.pdf}
 \vspace{.1in}
 \caption{One of the playlist program's sequence diagrams.}
 \quad\quad\quad\quad\quad % hack to center caption
@@ -474,7 +473,7 @@ After creating this new \texttt{Song}, we \texttt{.add()} it to the
 \texttt{Playlist}. We then do the same for another \texttt{Song}. In sum,
 here's the kind of thing that \texttt{.getSampleList()} must contain:
 
-\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 class PlaylistFactory {
     ...
     Playlist genSampleList(String genre) {
@@ -524,11 +523,11 @@ class TunesMgr {
 }
 \end{Verbatim}
 
-Nothing explicitly told us to save the return value from
-\texttt{.getNumSongs()} in a variable, but we did it anyway. We're also not
-told what specifically we would do with that information -- perhaps display it
-for the user, or estimate the duration of the playlist based on it. At any
-rate, for now we'll just save it and move on.
+Nothing explicitly told us to save the \texttt{.getNumSongs()} return value in
+a variable, but we did it anyway. We're also not told what specifically we
+would do with that information -- perhaps display it for the user, or estimate
+the duration of the playlist based on it. At any rate, for now we'll just save
+it and move on.
 
 \index{play@\texttt{.play()}}
 \item Finally, calling \texttt{.play()} on the \texttt{Playlist} turns around
@@ -568,7 +567,7 @@ at the correct volume. Putting it all together, we infer this sort of code:
 public class Song {
     ...
     public void play() {
-        // (the "0" argument means "start at the beginning of the song")
+        // ("0" means "start at the beginning of the song")
         MP3Stream s = this.genStream(0);  
         int vol = SettingsCenter.instance().getSetting("volume");
         s.play(vol);
@@ -581,7 +580,7 @@ public class Song {
 }
 \end{Verbatim}
 
-Here we choose to chain the calls to \texttt{.instance()} and
+Here we choose to chain together the calls to \texttt{.instance()} and
 \texttt{.getSetting()} rather than saving the \texttt{SettingsCenter} instance
 to a variable. This is programmer's discretion. 
 
