@@ -49,25 +49,27 @@ difference between the two, and which one is used for what. The stack contains
 \textbf{dynamically-allocated} memory. We'll unpack what all this means, but
 first let me show you a full list of differences:
 
+\small
 \vspace{.2in}
 \begin{tabular}{c|c}
 \textbf{stack} & \textbf{heap} \\
 \hline
 statically-allocated & dynamically-allocated \\
 \index{names}
-contains named things & contains unnamed things \\
-contains primitive types and references & contains objects\footnote{This is
+holds named things & holds unnamed things \\
+holds primitive types and references & holds objects\footnote{This is
 true in Java, but C++ permits programmers to store objects on the
 \textit{stack} as well as the heap. I will argue that's universally dumb, and
 that is a large part of what makes programming in C++ difficult: you have to
 account for that happening, which requires a ton of tedious and error-prone
 bookkeeping.} \\
 \index{lifespan}
-items have a limited lifespan & items have an unlimited lifespan\footnote{Not
+items have limited lifespan & items have unlimited lifespan\footnote{Not
 completely unlimited, but things on the heap stick around as long as they're
 needed, rather than evaporating at the end of their current function.} \\
 \end{tabular}
 \vspace{.2in}
+\normalsize
 
 This is best understood by example, and in fact can be illustrated with just a
 small function:
@@ -751,7 +753,7 @@ have the picture in Figure~\ref{fig:pitcherStackHeap1}. Take a moment and
 convince yourself it's correct in all details.
 
 \begin{figure}
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
     public static void main(String args[]) {
 
         Ballplayer joltinJoe = new Ballplayer("Joe Dimaggio");
@@ -807,7 +809,7 @@ attention to two crucial aspects of this diagram:
 other expected variables, is none other than ``\texttt{this}''. Realize that
 \texttt{this} is really just a reference variable like any other. What does it
 refer to? \textit{The object the method was called on}, of course. In this
-case, it's Sandy Koufax. How do we know? Because when we called it, we didn't
+case, it's Sandy Koufax. How do we know? Because we didn't
 just say ``\texttt{face(theSayHeyKid)}'' but
 ``\texttt{\textit{bestOfAllTime.}face(theSayHeyKid)}''. So the object that
 \texttt{bestOfAllTime} refers to will be pointed to by \texttt{this} while
@@ -845,7 +847,7 @@ is like trying to drink coffee with a fork.''
 
 \begin{figure}
 \centering
-\includegraphics[width=1.1\textwidth]{pitcherStackHeapFinal.pdf}  % 800x350
+\includegraphics[width=1.05\textwidth]{pitcherStackHeapFinal.pdf}  % 780x350
 \caption{The final memory picture. Note the changed inst vars!}
 \label{fig:pitcherStackHeapFinal}
 \end{figure}
