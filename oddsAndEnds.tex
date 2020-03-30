@@ -175,26 +175,27 @@ Here's a statement that surprises a lot of Java programmers: you can write
 Figure~\ref{fig:dontNeedImport} is such a program.
 
 \begin{figure}[ht]
-\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
-                                                  import java.util.ArrayList;
+\begin{Verbatim}[fontsize=\tiny,samepage=true,frame=single]
+                                            import java.util.ArrayList;
 
-class YouDontNeedImport {                         class YouDontNeedImport {                                                 
-  public static void main(String args[]) {          public static void main(String args[]) {
-    java.util.ArrayList celebs =                      ArrayList celebs =
-      new java.util.ArrayList();                        new ArrayList();
-    celebs.add("Kim Kardashian");                     celebs.add("Kim Kardashian");
-    celebs.add("Justin Bieber");                      celebs.add("Justin Bieber");
-    celebs.add("Taylor Swift");                       celebs.add("Taylor Swift");
-    printEm(celebs);                                  printEm(celebs);
-  }                                                 }
-                                                
-  static void printEm(java.util.ArrayList l) {      static void printEm(ArrayList l) {
-    for (int i=0; i<l.size(); i++) {                  for (int i=0; i<l.size(); i++) {
-      System.out.println("People love "                 System.out.println("People love "
-        + l.get(i));                                      + l.get(i));
-    }                                                 }
-  }                                                 }
-}                                                 }
+class YouDontNeedImport {                   class YouDontNeedImport {                                                 
+  public static void main(String args[])      public static void main(String args[])
+  {                                           {
+    java.util.ArrayList celebs =                ArrayList celebs =
+      new java.util.ArrayList();                  new ArrayList();
+    celebs.add("Kim Kardashian");               celebs.add("Kim Kardashian");
+    celebs.add("Justin Bieber");                celebs.add("Justin Bieber");
+    celebs.add("Taylor Swift");                 celebs.add("Taylor Swift");
+    p(celebs);                                  p(celebs);
+  }                                           }
+                                           
+  static void p(java.util.ArrayList l) {      static void p(ArrayList l) {
+    for (int i=0; i<l.size(); i++) {            for (int i=0; i<l.size(); i++) {
+      System.out.println("People love "           System.out.println("People love "
+        + l.get(i));                                + l.get(i));
+    }                                           }
+  }                                           }
+}                                           }
 \end{Verbatim}
 \caption{The same Java program, using explicit inline package names (left),
 and the \texttt{import} statement (right).}
@@ -237,9 +238,9 @@ import edu.umw.stephen.coolclasses.*;
 \index{scanner@\texttt{Scanner}}
 This isn't a good idea. The reason is that it's ambiguous. Suppose in my code
 I refer to a class called \texttt{Scanner}. Which \texttt{Scanner} do I mean?
-Should Java assume I wanted to avoid typing ``\texttt{java.util.Scanner}'' or
-``\texttt{com.google.search.engines.Scanner}'' or
-``\texttt{edu.umw.stephen.coolclasses.Scanner}''? It has no way of knowing. So
+Should Java assume I wanted to avoid typing ``\path{java.util.Scanner}'' or
+``\path{com.google.search.engines.Scanner}'' or
+``\path{edu.umw.stephen.coolclasses.Scanner}''? It has no way of knowing. So
 if more than one of those packages defines a class with the same name (which
 is very possible), Java will at best not compile, and at worst give unexpected
 runtime behavior.
@@ -290,8 +291,8 @@ example, does \textit{not} compile:
 
 \begin{Verbatim}[fontsize=\small,samepage=true]
 // Doesn't work:
-System.out.println("First item has " + stuff.get(0).length() +
-    " letters.");
+System.out.println("First item has " +
+    stuff.get(0).length() + " letters.");
 \end{Verbatim}
 
 The reason is that we're calling \texttt{.length()} on whatever object happens
@@ -302,8 +303,8 @@ else. In particular, it can't know that that object will even \textit{have} a
 
 \begin{Verbatim}[fontsize=\small,samepage=true]
 // Works, due to explicit cast:
-System.out.println("First item has " + ((String) stuff.get(0)).length() +
-    " letters.");
+System.out.println("First item has " +
+    ((String) stuff.get(0)).length() + " letters.");
 \end{Verbatim}
 
 This says, ``Java, I give you my word. I promise the thing at position
@@ -369,10 +370,10 @@ turns out, can store any type of object...but it must be exactly that: an
 
 So this means we can't do this:
 
-\begin{Verbatim}[fontsize=\small,samepage=true]
-    import java.util.ArrayList;
-    ...
-    ArrayList<int> uniformNumbers = new ArrayList<int>();     // NOPE
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true]
+  import java.util.ArrayList;
+  ...
+  ArrayList<int> uniformNumbers = new ArrayList<int>();   // NOPE
 \end{Verbatim}
 
 because there's no such thing as ``an \texttt{ArrayList} of \texttt{int}s.''
@@ -405,10 +406,10 @@ So far this isn't very exciting. But one reason we need it is so we can store
 primitive types in container objects like \texttt{ArrayLists}s. Here's all we
 need to do to create our list of uniform numbers:
 
-\begin{Verbatim}[fontsize=\small,samepage=true]
-    import java.util.ArrayList;
-    ...
-    ArrayList<Integer> uniformNumbers = new ArrayList<Integer>();
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true]
+  import java.util.ArrayList;
+  ...
+  ArrayList<Integer> uniformNumbers = new ArrayList<Integer>();
 \end{Verbatim}
 
 and it works, since the elements of the \texttt{ArrayList} are declared to be
@@ -437,7 +438,7 @@ immediate future.
 \index{Python}
 \index{key-value pair}
 One very, very common container type that we'll use is
-\texttt{java.util.Hashtable}. (If you've used a \textbf{dictionary} in Python,
+\path{java.util.Hashtable}. (If you've used a \textbf{dictionary} in Python,
 this is essentially the same thing.) A \texttt{Hashtable} holds a container of
 \textbf{key-value pairs}. Each key-value pair represents a \textit{named}
 piece of data -- the key is the name, and the value is the data. So unlike an
@@ -453,13 +454,13 @@ potential perpetrators. We'll do so in a \texttt{Hashtable} called
 \texttt{alterEgos}:
 
 \index{Batman}
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-    import java.util.Hashtable;
-    ...
-    Hashtable<String,String> alterEgos = new Hashtable<String,String>();
-    alterEgos.put("Superman","Clark Kent");
-    alterEgos.put("Batman","Bruce Wayne");
-    alterEgos.put("Elastigirl","Helen Incredible");
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+  import java.util.Hashtable;
+  ...
+  Hashtable<String,String> alterEgos = new Hashtable<String,String>();
+  alterEgos.put("Superman","Clark Kent");
+  alterEgos.put("Batman","Bruce Wayne");
+  alterEgos.put("Elastigirl","Helen Incredible");
 \end{Verbatim}
 
 \index{instantiation}
@@ -476,8 +477,8 @@ It is also used to \textit{change} the value that goes with a particular key.
 That works because in a hash table, \textit{every key goes with just one
 value}. If we ran a line of code like this:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-    alterEgos.put("Batman","Rich Dude");
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+  alterEgos.put("Batman","Rich Dude");
 \end{Verbatim}
 
 then the \texttt{String} ``\texttt{Bruce Wayne}'' would be permanently removed
@@ -485,29 +486,29 @@ from memory, and replaced by ``\texttt{Rich Dude}''.
 
 To retrieve the value that goes with a particular key, we use \texttt{.get()}:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-    String elastigirlTrueIdentity = alterEgos.get("Elastigirl");
-    System.out.println("Pssst...Superman is really: " + 
-        alterEgos.get("Superman"));
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+  String elastigirlTrueIdentity = alterEgos.get("Elastigirl");
+  System.out.println("Pssst...Superman is really: " + 
+      alterEgos.get("Superman"));
 \end{Verbatim}
 
-This looks very much like the way we obtain items from an \texttt{ArrayList},
-except for \texttt{ArrayList.get()} we passed an integer, and for
-\texttt{Hashtable.get()} we pass a key (whatever type that may be).
+This looks much like the way we obtain items from an \texttt{ArrayList},
+except that with \texttt{ArrayList.get()}, we passed an integer, and for\\
+\texttt{Hashtable.get()}, we pass a key (whatever type that may be).
 
 A very common use of \texttt{Hashtable}s is to store objects based on some
 kind of name or identifier. For example:
 
 \index{customer@\texttt{Customer}}
-\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
-    import java.util.Hashtable;
-    ...
-    Hashtable<Integer,Customer> customers = new Hashtable<Integer,Customer>();
-    ...
-    customers.put(7533, new Customer("Joe Blow", "New Plymouth, ID"));
-    customers.put(6717, new Customer("Jill Hill", "New York, NY"));
-    ...
-    Customer custNum6717 = customers.get(6717);
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+import java.util.Hashtable;
+...
+Hashtable<Integer,Customer> customers = new Hashtable<Integer,Customer>();
+...
+customers.put(7533, new Customer("Joe Blow", "New Plymouth, ID"));
+customers.put(6717, new Customer("Jill Hill", "New York, NY"));
+...
+Customer custNum6717 = customers.get(6717);
 \end{Verbatim}
 
 Here we're storing \texttt{Customer} objects by their customer ID numbers, for
@@ -551,7 +552,7 @@ mostly just memorize the approach.
 
 \index{keys@\texttt{.keys()}}
 \index{nextElement@\texttt{.nextElement()}}
-First, you call \texttt{.keys()} on the \texttt{Hashtable} which returns an
+You call \texttt{.keys()} on the \texttt{Hashtable} which returns an
 \texttt{Enumeration} of the ``key halves'' of the key/value pairs. Think of an
 \texttt{Enumeration} as just ``a way to iterate through a group of things, one
 by one.'' In this case, the ``things'' are the \texttt{Hashtable}'s keys. Every
@@ -563,27 +564,27 @@ just what you need to write a \texttt{while} loop to cycle through all the
 keys; and each time you get a key, you can use the original \texttt{Hashtable}
 to retrieve the corresponding value. To wit:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-    import java.util.Hashtable;
-    import java.util.Enumeration;
-    ...
-    Hashtable<String,String> alterEgos = new Hashtable<String,String>();
-    ...
-    Enumeration<String> superheroNames = alterEgos.keys();
-    while (superheroNames.hasMoreElements()) {
-        String superheroName = superheroNames.nextElement();
-        System.out.println(superheroName + " is really " +
-            alterEgos.get(superheroName));
-    }
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+  import java.util.Hashtable;
+  import java.util.Enumeration;
+  ...
+  Hashtable<String,String> alterEgos = new Hashtable<String,String>();
+  ...
+  Enumeration<String> superheroNames = alterEgos.keys();
+  while (superheroNames.hasMoreElements()) {
+      String superheroName = superheroNames.nextElement();
+      System.out.println(superheroName + " is really " +
+          alterEgos.get(superheroName));
+  }
 \end{Verbatim}
 
-Note how whereas the \textit{key} is retrieved directly from the
-\texttt{.nextElement()} method, to get the \textit{value} we have to go back
-to the \texttt{Hashtable} itself and call \texttt{.get()} with the key.
+So the \textit{key} is retrieved directly from the \texttt{.nextElement()}
+method, but to get the \textit{value} we have to go back to the
+\texttt{Hashtable} itself and call \texttt{.get()} with the key.
 
 Also, remember that the order in which you're given the key-value pairs here
 is \textit{not} necessarily the order in which you inserted them. That order
-is irretrievable after the fact -- and if you need to keep track of it, you'll
+is irretrievable after the fact -- if you need to keep track of it, you'll
 need a separate data structure (perhaps an \texttt{ArrayList} of the keys, in
 order of insertion) to remember it.
 
@@ -636,7 +637,8 @@ as any other array. For instance, if your code says:
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Simulator {
     public static void main(String args[]) {
-        System.out.println("There were " + args.length + " command-line args.");
+        System.out.println("There were " + args.length +
+            " command-line args.");
     }
 }
 \end{Verbatim}
@@ -652,8 +654,8 @@ And if your code says:
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Simulator {
     public static void main(String args[]) {
-        System.out.println("The first argument was: " + args[0] + ".");
-        System.out.println("The second argument was: " + args[1] + ".");
+        System.out.println("First arg was: " + args[0] + ".");
+        System.out.println("Second arg was: " + args[1] + ".");
     }
 }
 \end{Verbatim}
@@ -661,8 +663,8 @@ class Simulator {
 then the output, when run with the command above, will be:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
-    The first argument was: UMW.
-    The second argument was: Marymount.
+    First arg was: UMW.
+    Second arg was: Marymount.
 \end{Verbatim}
 
 This is powerful because it allows users to run your program with different
