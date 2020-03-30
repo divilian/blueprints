@@ -92,26 +92,31 @@ Figure~\ref{fig:filbertGit}:
 \index{mkdir@\texttt{mkdir}}
 \index{hairball}
 \begin{compactenum}
-\item The command ``\texttt{mkdir someDirectoryName}'' creates the workspace,
-under whatever directory you're currently in (which can be seen via
-``\texttt{pwd}'').
-\item The command ``\texttt{cd someDirectoryName}'' actually goes into that
-directory (remember that \texttt{mkdir} alone does \textit{not} change your
-current directory).
-\item The command ``\texttt{git init .}'' creates the green box and the purple
-diamond.
-\item You use ``\texttt{vim}'' to create/edit files like \texttt{Cat.java} and
-\texttt{Hairball.java} directly in your workspace (blue rectangles).
-\item When you want to snapshot the current version of one of your files, in
-anticipation of doing a commit, you type ``\texttt{git add nameOfFile}''. This
-adds the current contents to the purple diamond. You can now proceed editing
-further, or go straight to the commit.
 
-\item To actually commit, type ``\texttt{git commit -m "My commit
-message"}''.\footnote{Or, in place of steps 5 \textit{and} 6, you can do the
+\item The command ``{\small \texttt{mkdir someDirName}}'' creates the
+workspace, under whatever directory you're currently in (which can be seen via
+``{\small \texttt{pwd}}'').
+
+\item The command ``{\small \texttt{cd someDirectoryName}}'' actually goes into
+that directory (remember that \texttt{mkdir} alone does \textit{not} change
+your current directory).
+
+\item The command ``{\small \texttt{git init .}}'' creates the green box and
+the purple diamond.
+
+\item You use ``{\small \texttt{vim}}'' to create files like {\small
+\texttt{Hairball.java}} and {\small \texttt{Cat.java}} directly in your
+workspace (blue rectangles). \item When you want to snapshot the current
+version of one of your files, in anticipation of doing a commit, you type
+``{\small \texttt{git add nameOfFile}}''. This adds the current contents to the
+purple diamond. You can now proceed editing further, or go straight to the
+commit.
+
+\item To actually commit, type ``{\small \texttt{git commit -m "My
+message"}}''.\footnote{Or, in place of steps 5 \textit{and} 6, you can do the
 shortcut operation ``\texttt{git commit -a -m "message"}'', but only
-\textit{if} all the files you're changing were already explicitly
-``\texttt{git add}''ed at some point.}
+\textit{if} all the files you're changing were already explicitly ``\texttt{git
+add}''ed at some point.}
 
 \end{compactenum}
 
@@ -121,8 +126,9 @@ Two extremely common commands for inspecting your workspace are ``\texttt{git
 status}'' and ``\texttt{git log}''. Let's look at each in turn.
 
 \index{git@\texttt{git}!\texttt{git status}}
-The \texttt{git status} command tells you the current state of your workspace
-as compared with your repo. The output might look something like this:
+
+The {\small \texttt{git status}} command tells you the current state of your
+workspace as compared with your repo. The output will look like this:
 
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 $ git status
@@ -133,7 +139,7 @@ Changes to be committed:
 
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
+  (use "git checkout -- <file>..." to discard changes in directory)
     modified:   Cat.java
 
 Untracked files:
@@ -143,7 +149,6 @@ Untracked files:
     Hairball.java
 \end{Verbatim}
 
-\pagebreak
 Several things of interest here:
 
 \begin{itemize}
@@ -303,8 +308,8 @@ at git logs a \textit{lot} and need them to be just the right format to
 quickly cull maximum information from them.) I like mine to be all on one
 line, and in color. To do this, I execute the line:
 
-\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=none]
-$ git config --global format.pretty "(%h) %Cblue%an%Creset: %Cgreen%s %Creset(%ad)"
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=none]
+$ git config format.pretty "(%h) %Cblue%an%Creset: %Cgreen%s %Creset(%ad)"
 \end{Verbatim}
 
 which looks bizarre, but there's a method to its madness. Each one of these
@@ -313,12 +318,12 @@ of information or formatting. The result, when I type \texttt{git log} is
 this:
 
 \definecolor{darkgreen}{rgb}{0,.65,0}
-\begin{Verbatim}[commandchars=\\\{\},fontsize=\footnotesize,samepage=true,frame=single]
+\begin{Verbatim}[commandchars=\\\{\},fontsize=\scriptsize,samepage=true,frame=single]
 $ git log
-(928ab49) \textcolor{blue}{Betty Lou}: \textcolor{darkgreen}{Fix NPE bug caused by multiple hairballs.} (2018-11-03)
-(7813b19) \textcolor{blue}{Filbert}: \textcolor{darkgreen}{Add support for multiple, simultaneous hairballs.} (2018-11-02)
-(bdb0fa3) \textcolor{blue}{Betty Lou}: \textcolor{darkgreen}{Make most setters private.} (2018-10-21)
-(e447191) \textcolor{blue}{Jezebel}: \textcolor{darkgreen}{Add Cat.java, Hairball.java.} (2018-10-15)
+(928ab49) \textcolor{blue}{Betty Lou}: \textcolor{darkgreen}{Fix NPE caused by multiple hairballs.} (2020-11-03)
+(7813b19) \textcolor{blue}{Filbert}: \textcolor{darkgreen}{Add support for simultaneous hairballs.} (2020-11-02)
+(bdb0fa3) \textcolor{blue}{Betty Lou}: \textcolor{darkgreen}{Make most setters private.} (2020-10-21)
+(e447191) \textcolor{blue}{Jezebel}: \textcolor{darkgreen}{Add Cat.java, Hairball.java.} (2020-10-15)
 \end{Verbatim}
 
 \index{man@\texttt{man}}
@@ -373,7 +378,8 @@ skip over them.)
 
 \begin{figure}
 \centering
-\includegraphics[width=1.1\textwidth]{catDiff.png}
+\hspace*{-.2in}
+\includegraphics[width=1.05\textwidth]{catDiff.png}
 \vspace{-.05in}
 \caption{Using ``\texttt{git difftool}'' when configured with ``\texttt{vimdiff}''.}
 \label{fig:catDiff}
@@ -462,7 +468,8 @@ revised picture in Figure~\ref{fig:teamGit}.
 
 \begin{figure}
 \centering
-\includegraphics[width=1.1\textwidth]{teamGit.pdf}  % 700x550
+\hspace*{-.1in}
+\includegraphics[width=1.05\textwidth]{teamGit.pdf}  % 700x550
 \caption{A development team's repos and workspaces.}
 \label{fig:teamGit}
 \end{figure}
@@ -512,13 +519,12 @@ download,'' and which will display a specific URL to your project if you click
 on it. Then, on your local machine, you can go to the directory you want to be
 the parent of your project, and type something like:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=none]
 $ git clone https://github.com/stuff/projectName.git projectName
 \end{Verbatim}
 
 which will populate your filesystem with a copy of all the repo's files.
 
-\pagebreak
 \index{git@\texttt{git}!\texttt{git push}}
 \item \texttt{git push}: As usual, you'll constantly be making your own local
 commits to your own copy of the repo as you work. You should do this every
@@ -565,7 +571,7 @@ that file, it turns out that git can automatically and intelligently
 When you do a \texttt{git pull} operation, \textit{read the output carefully.}
 About 95\% of the time, it will give you a happy message like this:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=none]
 Auto-merging Hairball.java
 Merge made by the 'recursive' strategy.
  Hairball.java | 1 +
@@ -582,7 +588,7 @@ to stop worrying and love the bomb, and it really is ``all good.''
 The other 5\% of the time, you're not so lucky, and you'll get a sad message
 that says:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=none]
 Auto-merging Hairball.java
 CONFLICT (content): Merge conflict in Hairball.java
 Automatic merge failed; fix conflicts and then commit the result.
@@ -602,15 +608,15 @@ Resolving it is generally pretty easy. You open up the offending file(s) in
 \texttt{vim}, and look for the markers ``$<<<<<$'', ``$=====$'', and
 ``$>>>>>$''. Here's the kind of thing you'll see:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 ...
 <<<<<<< HEAD
  * <tt>Cats</tt> are wonderful creatures that make good 
  * house pets.
 =======
- * A <tt>Cat</tt> is a small fuzzy animal that coerces humans
- * into paying enormous sums of money and weekends of labor
- * in exchange for being "cute."
+ * A <tt>Cat</tt> is a small fuzzy animal that coerces
+ * humans into paying enormous sums of money and weekends
+ * of labor in exchange for being "cute."
 >>>>>>> c6812dcd33b977de0e7f0e9cab1eb1376bcfda88
 ...
 \end{Verbatim}
