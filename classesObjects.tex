@@ -342,9 +342,9 @@ $ vim  Car.java
 \index{package declaration@\texttt{package} declaration}
 \index{import statement@\texttt{import} statement}
 The skeleton of any class file -- after the \texttt{package} and
-\texttt{import} statements we'll talk about later (p.~\pageref{sec:packages} and 
-p.~\pageref{sec:import}, respectively) -- is the class definition,
-with curly braces:
+\texttt{import} statements we'll talk about later (p.~\pageref{sec:packages}
+and p.~\pageref{sec:import}, respectively) -- is the class definition, with
+curly braces:
 
 \begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
 class Car {
@@ -442,16 +442,19 @@ Co.~chose this word to denote a central OO programming concept. The word
 ``\texttt{this}'' means one of two different things, and they both need to be
 memorized:
 
-\begin{enumerate}
-\large
-\itemsep.1em
+\begin{samepage}
+\definecolor{shadecolor}{rgb}{.9,.9,1}
+\begin{shaded}
+\begin{compactenum}
 \item Inside a \textit{constructor}, ``\texttt{this}'' means ``the object that is
 currently being instantiated.''
 \item Inside a \textit{method}, ``\texttt{this}'' means ``the object the
 method was called on.''
-\item[-.] (Anywhere else, ``\texttt{this}'' is illegal.)
+\item[$\times$.] (Anywhere else, ``\texttt{this}'' is illegal.)
 \normalsize
-\end{enumerate}
+\end{compactenum}
+\end{shaded}
+\end{samepage}
 
 It's weird and meta and self-referential, but it's also necessary. There are
 times when we need to have a name for ``the very object I'm `in' right now,''
@@ -554,7 +557,6 @@ computed on the fly. Other times we'll trigger some side effect, like printing
 to the screen, writing to a database, or calling some \textit{other} method(s)
 on the same or a different object.
 
-\pagebreak
 \index{implement@``to implement'' (to code)}
 \index{fillUp@\texttt{.fillUp()}}
 This is best seen through examples. Let's implement\footnote{The verb
@@ -605,7 +607,6 @@ class Car {
 
 I chose to omit \texttt{this}, but again it's a personal choice.
 
-\pagebreak
 % TODO: actually show a setter in addition to a getter (not obvious to some).
 Some methods are no-brainers:
 
@@ -710,28 +711,28 @@ shows that our \texttt{Car} class has uses.
 \begin{figure}[h]
 \centering
 \begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
-    public static void main(String args[]) {
-
-        // The archaic Davies family vehicles
-        Car minivan = new Car("Toyota","Sienna");
-        minivan.setYear(2002);
-        Car stephensLemon = new Car("Chevy","Malibu");
-        minivan.setYear(2001);
-
-        // Grammy lives in Colorado
-        Car grammysCar = new Car("Lexus","ES");
-        grammysCar.setYear(2018);
-
-        // Caravan to Disneyworld -- whoo-hoo!  (Grammy's meeting us there.)
-        minivan.fillUp();
-        minivan.drive(500);
-        stephensLemon.fillUp();
-        stephensLemon.drive(500);
-        System.out.println("The van is " + minivan.getTankPerc() + 
-            "% full, while the chevy is " + stephensLemon.getTankPerc() +
-            "% full.");
-        grammysCar.drive(1899);  // a long way from Colorado
-    }
+  public static void main(String args[]) {
+  
+      // The archaic Davies family vehicles
+      Car minivan = new Car("Toyota","Sienna");
+      minivan.setYear(2002);
+      Car stephensLemon = new Car("Chevy","Malibu");
+      minivan.setYear(2001);
+  
+      // Grammy lives in Colorado
+      Car grammysCar = new Car("Lexus","ES");
+      grammysCar.setYear(2018);
+  
+      // Caravan to Disneyworld!  (Grammy's meeting us there.)
+      minivan.fillUp();
+      minivan.drive(500);
+      stephensLemon.fillUp();
+      stephensLemon.drive(500);
+      System.out.println("The van is " + minivan.getTankPerc() + 
+          "% full, while the chevy is " +
+          stephensLemon.getTankPerc() + "% full.");
+      grammysCar.drive(1899);  // a long way from Colorado
+  }
 \end{Verbatim}
 \caption{A client \texttt{main()} program that uses the \texttt{Car} class.}
 \label{fig:wholeNewWorld}
@@ -746,13 +747,13 @@ variables to help us hunt down an error. Printing an \texttt{int} or other
 standard type is straightforward:
 
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
-    int numEnchiladas = 3;
-    System.out.println("The number of enchiladas is: " + numEnchiladas + ".");
+  int numEnchiladas = 3;
+  System.out.println("We'll eat " + numEnchiladas + "enchiladas.");
 \end{Verbatim}
 
-and will produce a message like ``\texttt{The number of enchiladas is 3.}''
-What happens, though, if we print out an \textit{object}, like a \texttt{Car}?
-How can such a complex entity be reduced to a string of text?
+and will produce a message like ``\texttt{We'll eat 3 enchiladas.}'' What
+happens, though, if we print out an \textit{object}, like a \texttt{Car}? How
+can such a complex entity be reduced to a string of text?
 
 Heck, let's try it:
 
