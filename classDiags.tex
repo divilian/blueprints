@@ -169,8 +169,8 @@ objects to roll random numbers that determine the outcome. This is a
 \index{wizard@\texttt{Wizard}}
 \index{ranged spell@\texttt{RangedSpell}}
 Elsewhere in the program, wizards sometimes cast ranged spells, like fireballs
-or lightning bolts, to damage distant enemies. In the simulator, a
-\texttt{Wizard} object might therefore instantiate a \texttt{RangedSpell}
+or lightning bolts, to damage distant enemies. So in the simulator, a
+\texttt{Wizard} object might instantiate a \texttt{RangedSpell}
 object to carry out this attack. Since somewhere in the \texttt{Wizard} class's
 code there will be a ``\texttt{new RangedSpell()}'' line, we say that
 \texttt{Wizard} $\ll$instantiates$\gg$ \texttt{RangedSpell}.
@@ -320,7 +320,6 @@ Note, by the way, that the has-a arrow implies the existence of the inst var
 duplicate copy of the inst var in its second compartment. That would be
 redundant, and is considered an error (see Figure~\ref{fig:wrongHasA}).
 
-\pagebreak
 \subsubsection{``Has-a'' associations in code}
 
 \index{hasa association@``has-a'' association}
@@ -545,14 +544,14 @@ the $\star$ in the slightest.
 \index{many-to-many association}
 \index{course@\texttt{Course}}
 \index{transcript@\texttt{Transcript}}
-Finally, on the right side, we have a \textbf{many-to-many association}
-between \texttt{Tran\-script} and \texttt{Course}. This says that every
+Finally, on the right side, we have a \textbf{many-to-many association} between
+\texttt{Tran\-script} and \texttt{Course}. This says that every
 \texttt{Transcript} object is associated with potentially multiple
-\texttt{Course} objects, while each \texttt{Course} object appears on more
-than one \texttt{Transcript}. Navigability-wise, in this example
-\texttt{Transcript}s maintain a record of which \texttt{Course}s they contain,
-whereas \texttt{Course} objects don't know which \texttt{Transcript}s they
-appear on (if any).
+\texttt{Course} objects, while each \texttt{Course} object appears on more than
+one \texttt{Transcript}. In terms of navigability, \texttt{Transcript}s
+maintain a record of which \texttt{Course}s they contain, but
+\texttt{Course} objects don't know which \texttt{Transcript}s they appear on
+(if any).
 
 \index{zero or more (0..$\star$)}
 \index{one or more (1..$\star$)}
@@ -601,17 +600,17 @@ run-time performance features of that collection type.
 So here's some code we might reasonably expect to see from our three examples:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-    class Driver {                        class Adventurer {
-        String name;                          String name;
-        License license;                      int hitPoints;
-        ...                                   ArrayList<Weapon> weapons;
-    }                                         ...
-                                          }
-    class License {
-        String number;                    class Transcript {
-        Driver owner;                         Course[] courses;
-        ...                                   ...
-    }                                     }
+class Driver {               class Adventurer {
+    String name;                 String name;
+    License license;             int hitPoints;
+    ...                          ArrayList<Weapon> weapons;
+}                                ...
+                             }
+class License {
+    String number;           class Transcript {
+    Driver owner;                Course[] courses;
+    ...                          ...
+}                            }
 \end{Verbatim}
 
 Here the programmer of the \texttt{Adventurer} class has chosen to use an
@@ -730,30 +729,37 @@ of which packages, and can enforce visibility based on that notion, as we'll
 see below. For now, here's the basics about packages:
 
 \begin{compactenum}
-\item Package names can be a single word (like ``combat'') or a dot-separated
-sequence of words (like ``com.gearbox.halo.simulator.combat'').
+
+\item Package names can be a single word (like ``\texttt{combat}'') or a
+dot-separated sequence of words (like
+``\path{com.gearbox.halo.simulator.combat}'').
+
 \item The dot-separated-sequence variety is kinda sorta meant to convey a
 hierarchy, from general to specific. In the previous example -- from the
-\textit{Halo} videogame created by Gearbox Software -- ``combat'' is a subset
-of ``simulator,'' which is part of the ``halo'' program designed at
-``gearbox.com''. (Since ``com'' is more general than ``gearbox'' -- just like
-``edu'' is more general than ``umw'' -- many package names begin with a domain
-name written in reverse order like this.)
+\textit{Halo} videogame created by Gearbox Software -- ``\texttt{combat}'' is a
+subset of ``\texttt{simulator},'' which is part of the ``\texttt{halo}''
+program designed at ``\texttt{gearbox.com}''. (Since ``\texttt{com}'' is more
+general than ``\texttt{gearbox}'' -- just like ``\texttt{edu}'' is more general
+than ``\texttt{umw}'' -- many package names begin with a domain name written in
+reverse order like this.)
+
 \item However, even though it looks like a hierarchy, \textit{Java has no
 notion of subpackages.} In other words, although the
-``com.gearbox.halo.simulator'' package looks like it would be a
-``subpackage'' of ``com.gearbox.halo,'' in actual fact it is not. It's just a
-naming convention, and there's no way (for example) to ``import everything from
-com.gearbox.halo on down.''
+``\path{com.gearbox.halo.simulator}'' package looks like it would be a
+``subpackage'' of ``\path{com.gearbox.halo},'' in actual fact it is not. It's
+just a naming convention, and there's no way (for example) to ``import
+everything from \path{com.gearbox.halo} on down.''
+
 \item Every class is in one (and only one) package. This must be specified in
 \textit{both} of two ways: (1) the first (non-comment) line of the file must be
-a \textbf{package declaration} like ``\texttt{package
+a \textbf{package declaration} like ``\path{package
 com.gearbox.halo.simulator.combat}'', and (2) the \texttt{.java} file itself
 must be physically in a directory called
-``\texttt{com/gearbox/halo/ simulator/combat}.''\footnote{If you forget either one of
-these two things, or make them incompatible with each other, your code will
+``\path{com/gearbox/halo/simulator/combat}.''\footnote{If you forget either one
+of these two things, or make them incompatible with each other, your code will
 be officially unreachable by any Java program. (Yes, that was a dumb design
 decision on Java's part.)}
+
 \item If a class has no \texttt{package} statement, then it is considered to be
 in ``the default package,'' which just means ``the package with no name.''
 \end{compactenum}
@@ -771,14 +777,15 @@ Figures~\ref{fig:visibilityLevels} (for methods and inst vars) and
 \index{package visibility}
 \begin{figure}[ht]
 \centering
+\small
 \begin{tabular}{c|c|c|l}
-\thead{visibility level} & \thead{Java keyword} & \thead{UML syntax} &
+\thead{visibility level} & \thead{Java keyword} & \thead{UML} &
 \thead{visible to...} \\
 \hline
 private & \texttt{private} & \textbf{--} & the class itself \\
-package & (none) & \textbf{\freakingtilde} & any class from the same package\\
-protected & \texttt{protected} & \textbf{\#} & from the same
-package, or a subclass\footnote{A ``subclass'' has to
+package & (none) & \textbf{\freakingtilde} & any class from same package\\
+protected & \texttt{protected} & \textbf{\#} & the same
+package, or subclass\footnote{A ``subclass'' has to
 do with the topic of \textbf{inheritance} in OO, which we will cover in gory
 detail in Chapters~\ref{ch:inheritance} and \ref{ch:inheritance2}.
 For now, I just want to make the table complete.} \\
@@ -787,22 +794,25 @@ public & \texttt{public} & \textbf{$\plus$} & any method anywhere \\
 \vspace{.1in}
 \caption{The four Java visibility levels for \textit{methods and inst vars}.}
 \label{fig:visibilityLevels}
+\normalsize
 \end{figure}
 
 \index{plus (+)}
 \index{minus (-)}
-\begin{figure}[hb]
+\begin{figure}[h]
 \centering
+\small
 \begin{tabular}{c|c|c|l}
-\thead{visibility level} & \thead{Java keyword} & \thead{UML syntax} &
+\thead{visibility level} & \thead{Java keyword} & \thead{UML} &
 \thead{visible to...} \\
 \hline
-non-public & (none) & (none) & only classes in the same package \\
+non-public & (none) & (none) & only classes in same package \\
 public & \texttt{public} & \textbf{$\plus$} & any class anywhere \\
 \end{tabular}
 \vspace{.1in}
 \caption{The two Java visibility levels for \textit{classes}.}
 \label{fig:visibilityLevelsClasses}
+\normalsize
 \end{figure}
 
 Now it's important to understand that unlike multiplicity, visibility
@@ -818,17 +828,20 @@ modifiers in action. In particular, the \texttt{numHits} and
 \texttt{numAtBats} inst vars are both marked as private, while the
 \texttt{isBetterThan()} method is public.
 
-\begin{figure}[ht]
+\begin{figure}[h]
 \centering
+\bigskip
 \includegraphics[width=0.5\textwidth]{visAboutClasses.pdf}
+\smallskip
 \caption{A class whose components bear visibility annotations.}
 \label{fig:visAboutClasses}
+\bigskip
 \end{figure}
 
 \index{client code}
 Here's the kind of client code we want to make possible with this method:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
     ...
     Ballplayer jeter = new Ballplayer("Jeter");
     Ballplayer arod = new Ballplayer("Rodriguez");
@@ -853,9 +866,9 @@ class Ballplayer {
     private int numAtBats;
     ...
     public boolean isBetterThan(Ballplayer other) {
-        double myBattingAvg = ((double) numHits) / numAtBats;
-        double otherBattingAvg = ((double) other.numHits) / other.numAtBats;
-        if (myBattingAvg > otherBattingAvg) {
+        double myBA = ((double)numHits)/numAtBats;
+        double otherBA = ((double)other.numHits)/other.numAtBats;
+        if (myBA > otherBA) {
             return true;
         } else {
             return false;
@@ -869,7 +882,7 @@ Now the key line I want to draw your attention to is the \textit{second} line
 of the method. It reads:
 
 \begin{verbatim}
-double otherBattingAvg = ((double) other.numHits) / other.numAtBats;
+double otherBA = ((double)other.numHits)/other.numAtBats;
 \end{verbatim}
 
 My question to you, dear reader, is this: do you think this line ought to
@@ -885,6 +898,7 @@ from, and unavailable to, the \texttt{jeter} object. It stands to reason that
 this will not be allowed. Otherwise, we'd be allowing one object to access
 another object's private data.''
 
+\pagebreak
 This sounds so eminently reasonable, and yet it is dead wrong. Here's why:
 
 \index{private@\texttt{private}}
@@ -933,7 +947,8 @@ class Team {
     public void printRoster() {
         System.out.println("Name          Hits    ABs");
         for (Ballplayer b : roster) {
-            System.out.println(b.name + "     " + b.numHits + "  " + b.numAtBats);
+            System.out.println(b.name + "     " + b.numHits +
+                "  " + b.numAtBats);
         }
     }
     ...
@@ -947,11 +962,11 @@ When we try to compile it, the \texttt{println()} statement inside the
 \footnotesize
 \begin{verbatim}
 Team.java:25: error: numHits has private access in Ballplayer
-    System.out.println(b.name + "     " + b.numHits + "  " + b.numAtBats);
+    System.out.println(b.name + "     " + b.numHits +
                                            ^
-Team.java:25: error: numABs has private access in Ballplayer
-    System.out.println(b.name + b.numHits + b.numABs);
-                                             ^
+Team.java:26: error: numABs has private access in Ballplayer
+        " " + b.numABs);
+               ^
 \end{verbatim}
 \normalsize
 \vspace{-.2in}
@@ -1031,7 +1046,7 @@ all of Figure~\ref{fig:fullClassDiag} correctly.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=1\textwidth]{fullClassDiag.pdf}   % 790x440
+\includegraphics[width=1.05\textwidth]{fullClassDiag.pdf}   % 788x440
 \caption{A full-blown class diagram. (The color is not part of UML; I only
 colored certain elements so I could refer to them in the text.)}
 \label{fig:fullClassDiag}
@@ -1072,8 +1087,8 @@ which is shared among all objects of type \texttt{Team}. It is not visible to
 any other class.}
 
 \item \textcolor{Purple}{Somewhere in the static \texttt{main()} method of the
-\texttt{Simulator} class we would expect to find code like this: ``\texttt{new
-Ballplayer(someName, someAge)}''.}
+\texttt{Simulator} class we would expect to find code like this:
+``\texttt{new Ballplayer(} \texttt{someName, someAge)}''.}
 
 \item \textcolor{Brown}{A \texttt{Simulator} holds on to some number of
 \texttt{Team} objects, probably in an instance variable, and each of those
