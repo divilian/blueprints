@@ -96,10 +96,13 @@ that one object, so that the rest of the code can get to it.
 
 \section{Implementation}
 
-Here's what a properly-coded Singleton pattern looks like. We'll use the
-\texttt{Configuration} example from above:
+Figure~\ref{fig:singletonCode} (p.~\pageref{fig:singletonCode}) shows what a
+properly-coded Singleton pattern looks like. It uses the \texttt{Configuration}
+example from above. Let's go through each part carefully.
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{figure}[ht]
+\centering
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Configuration {
     private static Configuration theInstance;
     
@@ -121,6 +124,10 @@ class Configuration {
     }
 }
 \end{Verbatim}
+\caption{A properly-coded Singleton pattern.}
+\label{fig:singletonCode}
+\end{figure}
+
 
 \index{static@\texttt{static}}
 \index{theInstance@\texttt{theInstance}}
@@ -183,12 +190,11 @@ of me to the caller, to use to their heart's content.''
 \index{lazy instantiation}
 This is called \textbf{lazy instantiation}: the only thing that will trigger
 the one-and-only \texttt{Configuration} object being instantiated is the first
-time any other part of the program calls \texttt{Configuration.instance()}. If
-nobody ever does call it, then there won't ever be even one instance of this
-class created. But assuming someone does, a new \texttt{Configuration} object
-will be instantiated \textit{this time only}. From that point on, all the
-subsequent times \texttt{Configuration.instance()} is called, that same object
-will be returned.
+time anybody calls \texttt{Configuration.instance()}. If nobody ever does call
+it, then there won't ever be even one instance of this class created. But
+assuming someone does, a new \texttt{Configuration} object will be instantiated
+\textit{this time only}. From that point on, all the subsequent times
+\texttt{Configuration.instance()} is called, that same object will be returned.
 
 \index{constructor}
 \index{private@\texttt{private}}
@@ -211,14 +217,14 @@ the \texttt{Configuration} class itself, which we saw in the
 This pattern allows any other part of the code base to do things like:
 
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
-  String bgcolor = Configuration.instance().getParamSetting("backgroundColor");
+String bg = Configuration.instance().getParamSetting("bgColor");
 \end{Verbatim}
 
-Whenever we say ``\texttt{Configuration.instance()}'' we get back a
+Whenever we call ``\texttt{Configuration.instance()}'' we will get back a\\
 \texttt{Configuration} object. (Whether we realize it or not, it's the only
-such object that will ever exist.) There's no need to set this to anything, or
-to use the word \texttt{new}; we just say ``\texttt{Configuration.instance()}''
-every time we need it.
+such object that will ever exist.) There's no need to use use the word
+\texttt{new}; we just say ``\texttt{Configuration.instance()}'' every time we
+need it.
 
 \index{instance variable (inst var)}
 Other than this scaffolding, the rest of your Singleton class can do anything
