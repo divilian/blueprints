@@ -23,7 +23,8 @@ what the code was doing. Only then did I realize that although bottom-up
 inheritance is indeed useful, top-down inheritance is the real game changer.
 We'll cover both in this chapter.
 
-\section{``Bottom-up'' (implementation) inheritance}
+\section[\small ``Bottom-up'' (implementation) inheritance]
+{\large ``Bottom-up'' (implementation) inheritance}
 
 \index{inheritance!bottom-up (implementation)}
 \index{object}
@@ -43,7 +44,7 @@ as the argument of \texttt{.add()}, \texttt{.remove()}, \textit{etc.}
 
 \begin{wrapfigure}{r}{5.5cm}
 \vspace{-.2in}
-\includegraphics[width=0.4\textwidth]{arrayList.pdf}
+\includegraphics[width=0.5\textwidth]{arrayList.pdf}
 \caption{An abbreviated \texttt{ArrayList} class.}
 \label{fig:abbrArrayList}
 \end{wrapfigure}
@@ -57,7 +58,7 @@ to inserting, removing, counting, \textit{etc.}, we also needed the ability to
 \textit{count the number of unique elements} in a list. The client code we'd
 like to be able to write is in Figure~\ref{fig:dreamCountUnique}.
 
-\begin{figure}[hb]
+\begin{figure}[ht]
 \centering
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 public static void main(String args[]) {
@@ -71,7 +72,9 @@ public static void main(String args[]) {
  
    System.out.println(n.get(3));         // prints "Harry"
    System.out.println(n.size());         // prints 6
-   System.out.println(n.countUnique());  // *should print 4 (but no such method)
+
+   // *We want this to print 4, but no such method:
+   System.out.println(n.countUnique());
 }
 \end{Verbatim}
 \caption{Some client code we'd \textit{like} to be able to write in our
@@ -109,9 +112,9 @@ actually store the data. Figure~\ref{fig:countUnique1} gives the idea.
 
 After writing the \texttt{.countUnique()} code, the last line of
 Figure~\ref{fig:dreamCountUnique} would work like a charm. Trouble is...the
-other lines wouldn't work anymore.$\frownie$ Obviously we have to be able to do
-``normal'' \texttt{ArrayList} things with our class as well as calling our new
-special method. So we'd have to duplicate all the other \texttt{ArrayList}
+other lines wouldn't work anymore. $\frownie$ \ Obviously we have to be able to
+do ``normal'' \texttt{ArrayList} things with our class as well as calling our
+new special method. So we'd have to duplicate all the other \texttt{ArrayList}
 methods on our new class, and have them ``pass through'' the arguments to the
 underlying \texttt{ArrayList} that it holds. The result is the unwieldy,
 repetitive monstrosity in Figure~\ref{fig:countUnique2}, which is obviously not
@@ -131,7 +134,6 @@ public class CountUniqueArrayList {
     ...etc...
 }\end{Verbatim}
 
-\pagebreak
 At the very least, this is clumsy, duplicative, and error-prone. But it could
 be even worse, if the \texttt{ArrayList} class evolves. Suppose the Java API
 expands to include a \texttt{.shuffle()} method on \texttt{ArrayList}, which
@@ -157,8 +159,8 @@ Figure~\ref{fig:assocArrows}, p.~\pageref{fig:assocArrows}.)}
 The solution is to use inheritance. \textit{Instead of ``\textbf{has-a},'' an
 inheritance association means ``\textbf{is-a}.''} (See
 Figure~\ref{fig:inheritanceArrows}.) Instead of each
-\texttt{CountUniqueArrayList} \textit{having} an \texttt{ArrayList} under the
-hood, we're declaring that a \texttt{CountUniqueArrayList} in fact
+\texttt{CountUniqueArrayList} \textit{having} an \texttt{ArrayList},
+we're declaring that a \texttt{CountUniqueArrayList} in fact
 \textbf{\textit{is}} an \texttt{ArrayList}. This gives it all the rights and
 privileges of any \texttt{ArrayList} including all of its methods and instance
 variables. All the code in Figure~\ref{fig:dreamCountUnique} \textit{instantly
@@ -422,23 +424,23 @@ output be?'' (Commit to an answer before you continue.)
 \index{Captain America}
 \index{Hulk}
 \index{getMad@\texttt{.getMad()}}
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-    public static void main(String args[]) {
-        SortedArrayList sal = new SortedArrayList();
-        sal.add("Thor");
-        sal.add("Bruce Banner");
-        sal.add("Captain America");
-    
-        getMad(sal);
-    
-        for (int i=0; i<sal.size(); i++) {
-            System.out.println("Hero #" + i + " is " + sal.get(i));
-        }
-    }
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+  public static void main(String args[]) {
+      SortedArrayList sal = new SortedArrayList();
+      sal.add("Thor");
+      sal.add("Bruce Banner");
+      sal.add("Captain America");
+  
+      getMad(sal);
+  
+      for (int i=0; i<sal.size(); i++) {
+          System.out.println("Hero #" + i + " is " + sal.get(i));
+      }
+  }
 
-    private static void getMad(ArrayList al) {
-        al.set(0,"Hulk");
-    }
+  private static void getMad(ArrayList al) {
+      al.set(0,"Hulk");
+  }
 \end{Verbatim}
 \end{samepage}
 
@@ -503,28 +505,27 @@ looking at the inheritance hierarchy from the top down.
 
 \index{masquerading@``masquerading''}
 \index{smuggling@``smuggling''}
-A couple of other descriptive words I like to use for this are ``masquerading''
-and ``smuggling.'' In the above example, the \texttt{SortedArrayList}
-\texttt{sal} is masquerading as an \texttt{ArrayList} -- pretending to be one
-for the sake of the \texttt{getMad()} function. (And of course it's not
-actually ``pretending'' because a \texttt{SortedArrayList} truly
-\mbox{\textbf{is-a}} \texttt{ArrayList}.) From \texttt{main()}'s point of
-view, we smuggled a \texttt{SortedArrayList} into the \texttt{getMad()}
-function, in cognito. Little did \texttt{getMad()} know that it wasn't even
-dealing with an ordinary object of the base class. It was fooled by the
-disguise.
 
-\pagebreak
+A couple of other descriptive words I like to use for this are ``masquerading''
+and ``smuggling.'' Here, the \texttt{SortedArrayList} \texttt{sal} is
+masquerading as an \texttt{ArrayList} -- pretending to be one for the sake of
+the \texttt{getMad()} function. (And of course it's not actually ``pretending''
+because a \texttt{SortedArrayList} truly \mbox{\textbf{is-a}}
+\texttt{ArrayList}.) From \texttt{main()}'s point of view, we smuggled a
+\texttt{SortedArrayList} into the \texttt{getMad()} function, in cognito.
+Little did \texttt{getMad()} know that it wasn't even dealing with an ordinary
+object of the base class. It was fooled by the disguise.
+
 \subsection{Why this matters}
 
 \index{decoupling}
 The reason this idea is so powerful is that it allows programmers to decouple
 the \textit{what} from the \textit{how}.
 
-A chunk of code that only knows about the superclass (like \texttt{ArrayList})
-can dictate \textit{what} to do with it. ``First I'll \texttt{.add()} these
-three elements, then I'll \texttt{.remove()} one, then get the
-\texttt{.size()}, \textit{etc.}''
+A chunk of code that only knows about the superclass (in our example,
+\texttt{ArrayList}) can dictate \textit{what} to do with it. ``First I'll
+\texttt{.add()} these three elements, then I'll \texttt{.remove()} one, then
+get the \texttt{.size()}, \textit{etc.}''
 
 In response to these method calls, the object itself -- perhaps of a
 specialized subclass -- decides \textit{how} to carry out each one. An
@@ -560,7 +561,6 @@ two jobs is crucial -- otherwise you end up with a 500-line function that's a
 mass of spaghetti code. Software engineers call this decoupling
 ``\textbf{separation of concerns},'' and it is among the most important
 principles in all of software development.
-\vspace{1in}
 
 \section{``Cool! Can we do both?''}
 

@@ -33,24 +33,24 @@ neither of the base class's methods.
 
 \begin{figure}
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
-class Animal {                                 class Bird extends Animal {
-  public void makeNoise() {                      public void makeNoise() {
-    System.out.println("Growl!");                  System.out.println("Chirp chirp");
-  }                                              }
-  public void move(int distance) {               public void move(int distance) {
-    for (int i=0; i<distance; i++) {               System.out.println("Flap flap swoosh!");
-      System.out.print("tramp ");                }
-    }                                          }
-    System.out.println();                      
+class Animal {                           class Bird extends Animal {
+  public void makeNoise() {                public void makeNoise() {
+    System.out.println("Growl!");            System.out.println("Chirp");
+  }                                        }
+  public void move(int dist) {             public void move(int dist) {
+    for (int i=0; i<dist; i++) {             System.out.println("Flap");
+      System.out.print("tramp ");          }
+    }                                    }
+    System.out.println();                
   }
-}                                              class Duck extends Bird {
-                                                 public void makeNoise() {
-                                                   System.out.println("Quack quack");
-class Cow extends Animal { }                     }
-  public void makeNoise() {                    }
-    System.out.println("Mooooo");              
+}                                        class Duck extends Bird {
+                                           public void makeNoise() {
+                                             System.out.println("Quack");
+class Cow extends Animal { }               }
+  public void makeNoise() {              }
+    System.out.println("Mooooo");        
   }
-}                                              class Bear extends Animal { }
+}                                        class Bear extends Animal { }
 
 
 class Zoo {
@@ -83,8 +83,8 @@ The output of the program, as you can easily verify, is:
 Growl!
 tramp tramp tramp 
 
-Chirp chirp
-Flap flap swoooooosh!
+Chirp
+Flap
 
 Mooooo
 tramp tramp tramp 
@@ -92,8 +92,8 @@ tramp tramp tramp
 Growl!
 tramp tramp tramp 
 
-Quack quack
-Flap flap swoooooosh!
+Quack
+Flap
 \end{Verbatim}
 \end{samepage}
 
@@ -111,7 +111,7 @@ problem.
 \index{inheritance hierarchy}
 Finally, and most importantly, note that the \texttt{Duck} class does not
 override \texttt{.move()}, but its superclass (\texttt{Bird}) does, and so a
-\texttt{Duck} will ``\texttt{Flap flap swoosh}'' like ordinary \texttt{Bird}s
+\texttt{Duck} will ``\texttt{Flap}'' like ordinary \texttt{Bird}s
 do. The rule is: when a method is called on an object, the code in its class
 is called, unless the class doesn't define that method. In that case, Java
 looks for the method in its immediate superclass, then its superclass's
@@ -300,7 +300,6 @@ leave the method out of the \texttt{Animal} class and only define it on
 subclasses.
 
 \index{abstract method}
-\begin{samepage}
 The solution to our dilemma is to make \texttt{.getNumChromosomes()} an
 \textbf{abstract method}. ``Abstract'' means that even though it's defined in a
 superclass -- with a name, parameter list, and return type -- there's not
@@ -312,9 +311,7 @@ class Animal {     // (not finished yet...)
     ...
 }
 \end{Verbatim}
-\end{samepage}
 
-\begin{samepage}
 It looks a little strange, with a semicolon prematurely truncating the method
 signature. But by doing this, we're declaring that even though there's no
 method \textit{body} for \texttt{.getNumChromosomes()} in the \texttt{Animal}
@@ -329,14 +326,13 @@ class Cow extends Animal {
     ...
 }
 \end{Verbatim}
-\end{samepage}
 
 Notice that the subclasses do \textit{not} include the keyword \texttt{abstract}
 on the method.
 
+\vspace{.7in}
 \subsection{Abstract classes}
 
-\begin{samepage}
 Now I know what you're thinking. ``This is all fine, but what if we have a
 plain-old-\texttt{Animal} object and call \texttt{.getNumChromosomes()} on
 it?'' 
@@ -350,7 +346,6 @@ it?''
 
 There's no code to run for a generic \texttt{Animal}, so what value would we
 get back?
-\end{samepage}
 
 \index{instantiation}
 This is indeed a dilemma, and Java solves it in the only sensible way: it says
@@ -379,7 +374,7 @@ abstract class Animal {
 If we ever try to write the code ``\texttt{new Animal()}'', Java will (rightly)
 stop us with a compilation error.
 
-\begin{Verbatim}[fontsize=\small,samepage=true]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true]
 Animal.java:5: error: Animal is abstract; cannot be instantiated
         new Animal();
         ^
@@ -393,7 +388,7 @@ example, as soon as we add the \texttt{abstract}
 \texttt{.getNumChromosomes()}, our \texttt{Cow.java} suddenly won't compile
 either:
 
-\begin{Verbatim}[fontsize=\small,samepage=true]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true]
 Cow.java:4: error: Cow is not abstract and does not override abstract
 method getNumChromosomes() in Animal
     class Cow extends Animal {}
@@ -457,13 +452,13 @@ indicate abstract classes and methods.}
 
 Occasionally, it will make sense for a method in a class to explicitly call a
 method in its superclass. For instance, suppose we said, ``When asked to make
-noise, a \texttt{Duck} should `\texttt{Quack quack}' but then \textit{also} do
+noise, a \texttt{Duck} should `\texttt{Quack}' but then \textit{also} do
 whatever ordinary \texttt{Bird}s usually do.'' We would write that as follows:
 
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Duck extends Bird {
     public void makeNoise() {
-        System.out.println("Quack quack");
+        System.out.println("Quack");
         super.makeNoise();
     }
 }
@@ -475,11 +470,12 @@ class, not the \texttt{Duck} one. (And a good thing, too: otherwise we'd have
 an infinite loop with \texttt{.makeNoise()} repeatedly calling itself!)
 Written this way, a \texttt{Duck} will make this noise:
 
-\pagebreak
+\vspace{-.15in}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
-Quack quack
-Chirp chirp
+  Quack
+  Chirp
 \end{Verbatim}
+\vspace{-.15in}
 
 \index{chipmunk@\texttt{Chipmunk}}
 As another example, we might define a class \texttt{Chipmunk} that moves twice
@@ -497,21 +493,22 @@ class Chipmunk extends Animal {
 then calling \texttt{.move(3)} on a \texttt{Chipmunk} object would print this:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
-tramp tramp tramp tramp tramp tramp
+  tramp tramp tramp tramp tramp tramp
 \end{Verbatim}
 
 \index{encapsulation}
-By the way, students often ask whether they can call
-\texttt{super.super.move()} to invoke the ``grandparent's method.'' The answer
-is \textbf{no}, for reasons having to do with encapsulation. It's fine for a
-\texttt{Duck} to know it's a subclass of \texttt{Bird}, but it shouldn't know
-what \texttt{Bird}'s superclass is, nor even that \texttt{Bird} \textit{has} a
-superclass. That knowledge (which we would be baking in to our program through
-a ``\texttt{super.super.}''\ call) is outside the realm of the \texttt{Duck}
-class, and therefore should not be known to it. If later, for instance, we
-refactor our code and make \texttt{Bird} its own class instead of inheriting
-from \texttt{Animal}, \texttt{Duck} would break if it had a
-``\texttt{super.super.}''.
+
+By the way, students often have a question here, and maybe you do too. They ask
+whether they can call \texttt{super.super.move()} to invoke the ``grandparent's
+method.'' The answer is \textbf{no}, for reasons having to do with
+encapsulation. It's fine for a \texttt{Duck} to know it's a subclass of
+\texttt{Bird}, but it shouldn't know what \texttt{Bird}'s superclass is, nor
+even that \texttt{Bird} \textit{has} a superclass. That knowledge (which we
+would be baking in to our program through a ``\texttt{super.super.}''\ call) is
+outside the realm of the \texttt{Duck} class, and therefore should not be known
+to it. If later, for instance, we refactor our code and make \texttt{Bird} its
+own class instead of inheriting from \texttt{Animal}, \texttt{Duck} would break
+if it had a ``\texttt{super.super.}''.
 
 \subsubsection{Invoking a superclass's constructor with ``\texttt{super}'' (no
 dot)}
@@ -531,7 +528,7 @@ special kind of \texttt{Animal} (and similarly, a valid \texttt{Bird} before
 we make a special kind of \texttt{Bird}).
 
 \index{student@\texttt{Student}}
-\index{professor@\texttt{Professor}}
+\index{prof@\texttt{Prof}}
 \index{person@\texttt{Person}}
 This usually happens automatically, but can need some special coaxing if
 you're passing arguments to constructors. An example is the code snippet in
@@ -542,7 +539,7 @@ must pass it a \texttt{String} if we want to instantiate one. In the
 \texttt{Student} constructor (which takes a couple arguments of its own) we
 call ``\texttt{super(name)}'' which passes the \texttt{name} the subclass was
 given and passes it up to its superclass's constructor. In the
-\texttt{Professor} constructor, we take a \texttt{"Dr.\ "} on to the front of
+\texttt{Prof} constructor, we take a \texttt{"Dr.\ "} on to the front of
 the name before passing it the superclass. Note that there's no ``dot'' after
 these \texttt{super()}s; that's how we indicate we want to call the
 constructor, rather than an ordinary method.
@@ -559,13 +556,13 @@ method calls; they can be put anywhere.)
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 class Person {                    
     private String name;          
-    protected Person(String name) {         class Professor extends Person {
-        this.name = name;                       private String dept;
-    }                                           Professor(String name, String dept) {
-}                                                   super("Dr. " + name);
-                                                    this.dept = dept;
-class Student extends Person {                  }
-    private double gpa;                     }
+    protected Person(String n) {           class Prof extends Person {
+        this.name = n;                         private String dept;
+    }                                          Prof(String n, String d) {
+}                                                  super("Dr. " + n);
+                                                   this.dept = d;
+class Student extends Person {                 }
+    private double gpa;                    }
     private int year;
     Student(String name, int year) {
         super(name);
@@ -581,7 +578,7 @@ class Student extends Person {                  }
 \index{protected@\texttt{protected}}
 \index{subclass}
 \index{abstract class}
-One other thing on this \texttt{Person}/\texttt{Professor}/\texttt{Student}
+One other thing on this \texttt{Person}/\texttt{Prof}/\texttt{Student}
 example: we have defined the \texttt{Person} constructor to have
 \textbf{\texttt{protected}} visibility. As you may recall from
 Figure~\ref{fig:visibilityLevels} on p.~\pageref{fig:visibilityLevels},
@@ -657,21 +654,21 @@ for storing and one for loading. The code for that much would look like:
 
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 interface Storable {
-    void store(DBConnection c);
-    void load(DBConnection c);
+    void store(DBConn c);
+    void load(DBConn c);
 }
 
-class Race implements Storable {            class Runner implements Storable {                        
-    private Date date;                          private String name;
-    private String loc;                         private String gender;
-    private int maxRunners;                     public void store(DBConnection c) {
-    public void store(DBConnection c) {              ...
-        ...                                     }
-    }                                           public void load(DBConnection c) {
-    public void load(DBConnection c) {               ...
-        ...                                     }
-    }                                       }                                          
-}                                            
+class Race implements Storable {       class Runner implements Storable {                        
+    private Date date;                     private String name;
+    private String loc;                    private String gender;
+    private int maxRunners;                public void store(DBConn c) {
+    public void store(DBConn c) {         ...
+        ...                                }
+    }                                      public void load(DBConn c) {
+    public void load(DBConn c) {          ...
+        ...                                }
+    }                                  }                                          
+}                                       
 \end{Verbatim}
 
 \index{runner@\texttt{Runner}}
@@ -699,10 +696,10 @@ interface Participant {
 class Runner implements Storable, Participant {                        
     private String name;
     private String gender;
-    public void store(DBConnection c) {
+    public void store(DBConn c) {
          ...
     }
-    public void load(DBConnection c) {
+    public void load(DBConn c) {
          ...
     }
     int registerFor(Race r) {
@@ -760,7 +757,7 @@ So the bottom line is that in Java, a class can \textit{inherit} from only one
 class, but it can \textit{implement} as many interfaces as it likes. If you do
 both, you declare yourself like this:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Runner extends Athlete implements Participant, Storable {
     ...
 }
@@ -833,7 +830,7 @@ argument should come first.
 Let's say we want to sort our \texttt{Resort}s alphabetically by name. Then we
 could just write:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Resort implements Comparable<Resort> {
     private String name, desc, phone;
     private int rating, cost;
@@ -853,7 +850,7 @@ effect, ``if you want to know whether I come before or after the resort
 Or, perhaps I want to sort by decreasing rating (5 stars first, 1 star last).
 Then I could write:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class Resort implements Comparable<Resort> {
     private String name, desc, phone;
     private int rating, cost;
