@@ -11,9 +11,11 @@ Up to now, we've used the \texttt{new} operator directly in order to
 instantiate. If we want a new \texttt{Ballplayer} object, we \texttt{new} one
 up:
 
+\vspace{-.1in}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
   Ballplayer joe = new Ballplayer("Dimaggio","OF");
 \end{Verbatim}
+\vspace{-.1in}
 
 \index{ballplayer@\texttt{BallplayerFactory}}
 We're now going to outsource this instantiation process to a special class
@@ -21,9 +23,12 @@ called a \texttt{BallplayerFactory}. It'll seem like unnecessary wiring at
 first, but there are advantages that come to light when the instantiation
 process is more complicated. Our new line of code will be this:
 
+\vspace{-.1in}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
-  Ballplayer joe = BallplayerFactory.instance().create("Dimaggio","OF");
+  Ballplayer joe =
+      BallplayerFactory.instance().create("Dimaggio","OF");
 \end{Verbatim}
+\vspace{-.1in}
 
 \index{Singleton pattern}
 \index{design pattern!Singleton}
@@ -45,7 +50,7 @@ as an excellent terse-yet-precise communication of purpose.}
 Patterns interleave and play off one another all the time. Here, we have a
 factory class that uses the classic Singleton pattern:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class BallplayerFactory {
 
     private static BallplayerFactory theInstance;
@@ -83,7 +88,8 @@ a different part of the code that implements subtype-specific behavior -- is
 one of the important benefits a properly-designed object-oriented program can
 bring.
 
-\section{Top-down inheritance and the Factory pattern}
+\section[Top-down inheritance]
+{\large Top-down inheritance and the Factory pattern}
 
 \index{inheritance!top-down (interface)}
 This is in fact the launch point of top-down inheritance. We've seen that with
@@ -179,7 +185,7 @@ anything about those subtypes. Notice that the return value of
 specific types. If we later add additional subclasses, only the factory class
 has to be updated, not the code that (unknowingly) uses them.
 
-\section{Random type generation and the Factory pattern}
+\section{Random type generation}
 
 \index{random number generation}
 In games and simulations, it's common to instantiate objects according to some
@@ -199,7 +205,7 @@ stats of these basic creatures get buffed, but now an occasional
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\textwidth]{monsterFactory.pdf}
+\includegraphics[width=1\textwidth]{monsterFactory.pdf}
 \caption{The factory pattern in a randomly-generated setting.}
 \label{fig:monsterFactory}
 \end{figure}
