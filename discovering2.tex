@@ -55,7 +55,7 @@ classes to perform functions, not to represent the domain's reality.
 \index{playlist@\texttt{Playlist}}
 You might wonder which of the two domains is most important to get right. The
 answer is unquestionably the \textit{problem domain}. Think about it: if
-Spotify decided to change their underlying storage mechanism, and therefore
+Spotify decided to change their underlying storage mechanism, and thus
 needed to retire their \texttt{DatabaseConnection} class, that's not a big deal to their
 user base. If the new program version is implemented well and doesn't
 introduce a lot of lagginess or bugs, the user will be unaware that it was
@@ -93,8 +93,8 @@ its ``knows'' items all call out for instance variables:
 \begin{samepage}
 \begin{compactitem}
 \item ``which vendor is delivering it'': type \texttt{Supplier}
-\item ``which purchase order it is fulfilling'': type
-\texttt{ArrayList<PurchaseOrder>}
+\item ``which purchase order it is fulfilling'': type\\
+\hspace*{.2in} \texttt{ArrayList<PurchaseOrder>}
 \item ``the expected arrival date'': type \texttt{Date}\footnote{The
 \texttt{java.util} package has a \texttt{Date} class that represents all the
 necessary aspects of a day in time on planet Earth. This is a better choice
@@ -134,6 +134,7 @@ that's okay: to complete \texttt{Shipment}, we can just sketch in temporary
 placeholders for classes like \texttt{PurchaseOrder} and \texttt{Supplier}.
 
 \index{accessory@\texttt{Accessory}}
+
 The \texttt{Accessory} card from p.~\pageref{bikeCRC2} has a number of
 ``knows'' entries, though when we consider where to put them, we realize that
 many of them will go in the abstract \texttt{Item} class. Only an
@@ -141,8 +142,9 @@ many of them will go in the abstract \texttt{Item} class. Only an
 for the \texttt{Accessory} subclass specifically, and that is what the diagram
 shows. Since p.~\pageref{bikeCRC2} tells us that an \texttt{Accessory} ``knows
 its compatible bicycle models,'' it seems appropriate for the class to support
-a \texttt{.compatibleWith()} method that returns a \texttt{boolean} indicating
-whether the accessory in question is compatible with a particular bike.
+a method like \texttt{.compatibleWith()} that returns a \texttt{boolean}
+indicating whether the accessory in question is compatible with a particular
+bike.
 
 \index{Singleton pattern}
 \index{design pattern!Singleton}
