@@ -20,7 +20,7 @@ classes and methods \textit{are} in the first place?'' It's all well and good
 for someone to hand us \texttt{Ballplayer}, \texttt{Team}, and
 \texttt{Simulator} classes. But how did we know to create those particular
 classes? Why not \texttt{Pitch}, \texttt{Catch}, and \texttt{Hit}? Why not
-\texttt{FirstBaseman}, \texttt{Shortstop} and \texttt{Outfielder}? Why not
+\texttt{FirstBaseman}, \texttt{Shortstop} and \texttt{Outfielder}, or
 \texttt{NationalLeague} and \texttt{AmericanLeague}?
 
 Going from the general idea of a program to a list of classes is tricky. It's
@@ -89,8 +89,11 @@ experience as they work with the system.
 \setlength{\fboxsep}{10pt}
 \begin{figure}
 \centering
-\fbox{\parbox{.85\textwidth}{
-Start with a written description of the software, and:
+\definecolor{shadecolor}{rgb}{.9,.9,1}
+\begin{shaded}
+%\fbox{\parbox{.85\textwidth}{
+\hspace{-.7in} Start with a written description of the software, and:
+\smallskip
 \begin{compactenum}
 \itemsep.03in
 \item Identify all noun phrases.
@@ -105,7 +108,8 @@ Start with a written description of the software, and:
 them ``feel right.'' Identify what each one \textbf{knows} and can \textbf{do}.
 
 \end{compactenum}
-}}
+%}}
+\end{shaded}
 \vspace{.1in}
 \caption{Procedure for ``discovering the design.''}
 \label{fig:discovering}
@@ -130,9 +134,10 @@ valid class name. Can you find it?
 \setlength{\fboxsep}{1pt}
 \begin{figure}[hb]
 \centering
-\fbox{\parbox{.85\textwidth}{
+\fbox{\parbox{.95\textwidth}{
 \begin{multicols}{3}
 \begin{compactitem}
+\small
 \renewcommand\labelitemi{\freakingtilde}
 \item happiness
 \item Beyonc\'{e}
@@ -152,6 +157,7 @@ valid class name. Can you find it?
 \caption{All nouns...but not all good class names.}
 \label{fig:nouns}
 \end{figure}
+\normalsize
 
 \index{noun!proper}
 I claim the only legit class name in this list is
@@ -161,6 +167,8 @@ than categories. In English, we almost always use \textit{capital letters} to
 denote proper nouns, which means when you see ``Beyonc\'{e}'' and ``London''
 you can immediately roll your eyes and move on.
 
+\bigskip
+\bigskip
 \label{instantiation}
 Second, most of the other nouns aren't \textit{instantiate-able}. Here's the
 litmus test for whether a noun is instantiate-able: can you meaningfully
@@ -189,6 +197,7 @@ to which we can do things. If you can't imagine a ``\texttt{new Communism()}''
 or ``an \texttt{ArrayList} of \texttt{Happiness}es,'' it has no business being
 a class.
 
+\pagebreak
 The closest contender to crocodile is the word \textit{width}. There may be
 cases where this is a sensible class, but the reason I discard it is that a
 width is almost certainly a \textit{modifier} of some other object, rather
@@ -238,7 +247,7 @@ are ordered to satisfy customer demand.}}}
 \end{center}
 
 Rebecca Wirfs-Brock's process from Figure~\ref{fig:discovering} calls for
-sifting through the requirements description and \textit{circling all the noun
+sifting through the requirements description and \textit{circling all noun
 phrases}. Unless it's an exact duplicate of one that previously occurred, be
 conservative and circle every one. It would be a good exercise for you to do
 this yourself in the box above, and then compare with my answer:
@@ -272,37 +281,34 @@ singular and lower-case, this leaves us with the following list:
 \begin{samepage}
 \begin{multicols}{3}
 \small
-\begin{compactitem}
-\renewcommand\labelitemi{\raisebox{0.25ex}{\tiny$\bullet$}}
-\item \textsf{bicycle store}
-\item \textsf{inventory}
-\item \textsf{shipment}
-\item \textsf{model}
-\item \textsf{bicycle}
-\item \textsf{week}
-\item \textsf{supplier}
-\item \textsf{customer}
-\item \textsf{individual order}
+\hspace*{.05in} \textsf{bicycle store}\\
+\hspace*{.05in} \textsf{inventory}\\
+\hspace*{.05in} \textsf{shipment}\\
+\hspace*{.05in} \textsf{model}\\
+\hspace*{.05in} \textsf{bicycle}\\
+\hspace*{.05in} \textsf{week}\\
+\hspace*{.05in} \textsf{supplier}\\
+\hspace*{.05in} \textsf{customer}\\
 \columnbreak
-\item \textsf{bike}
-\item \textsf{accessory}
-\item \textsf{store}
-\item \textsf{store manager}
-\item \textsf{order}
-\item \textsf{vendor}
-\item \textsf{contact information}
-\item \textsf{list}
-\item \textsf{incoming product}
+\hspace*{.05in} \textsf{individual order}\\
+\textsf{bike}\\
+\textsf{accessory}\\
+\textsf{store}\\
+\textsf{store manager}\\
+\textsf{order}\\
+\textsf{vendor}\\
+\textsf{contact information}\\
+\textsf{list}\\
+\textsf{incoming product}\\
 \columnbreak
-\item \textsf{expected arrival date}
-\item \textsf{manager}
-\item \textsf{multi-item order}
-\item \textsf{individual customer}
-\item \textsf{down payment}
-\item \textsf{inventory level}
-\item \textsf{item}
-\item \textsf{customer demand}
-\end{compactitem}
+\textsf{expected arrival date}\\
+\textsf{manager}\\
+\textsf{multi-item order}\\
+\textsf{individual customer}\\
+\textsf{down payment}\\
+\textsf{inventory level}\\
+\textsf{item}\\
+\textsf{customer demand}
 \end{multicols}
 \end{samepage}
 
@@ -320,29 +326,27 @@ duplicates are shown:
 \begin{samepage}
 \begin{multicols}{2}
 \small
-\begin{compactitem}
-\renewcommand\labelitemi{\raisebox{0.25ex}{\small$\bullet$}}
-\item \textsf{bicycle store == store}
-\item \textsf{inventory}
-\item \textsf{shipment}
-\item \textsf{model}
-\item \textsf{bicycle == bike}
-\item \textsf{week}
-\item \textsf{supplier == vendor}
-\item \textsf{customer == individual customer}
-\item \textsf{individual order == order == multi-item order}
+\hspace*{.05in} \textsf{bicycle store (== store)}\\
+\hspace*{.05in} \textsf{inventory}\\
+\hspace*{.05in} \textsf{shipment}\\
+\hspace*{.05in} \textsf{model}\\
+\hspace*{.05in} \textsf{bicycle (== bike)}\\
+\hspace*{.05in} \textsf{week}\\
+\hspace*{.05in} \textsf{supplier (== vendor)}\\
+\hspace*{.05in} \textsf{customer (== individual customer)}\\
+\hspace*{.05in} \textsf{individual order (== order}\\
 \columnbreak
-\item \textsf{accessory}
-\item \textsf{store manager == manager}
-\item \textsf{contact information}
-\item \textsf{list}
-\item \textsf{incoming product}
-\item \textsf{expected arrival date}
-\item \textsf{down payment}
-\item \textsf{inventory level}
-\item \textsf{item}
-\item \textsf{customer demand}
-\end{compactitem}
+\hspace*{.3in} \textsf{== multi-item order)}\\
+\textsf{accessory}\\
+\textsf{store manager (== manager)}\\
+\textsf{contact information}\\
+\textsf{list}\\
+\textsf{incoming product}\\
+\textsf{expected arrival date}\\
+\textsf{down payment}\\
+\textsf{inventory level}\\
+\textsf{item}\\
+\textsf{customer demand}
 \end{multicols}
 \end{samepage}
 
@@ -366,27 +370,25 @@ idea of a ``\texttt{ContactInformation}'' class. We're now down to:
 
 \begin{multicols}{3}
 \small
-\begin{compactitem}
-\item \textsf{store}
-\item \textsf{inventory}
-\item \textsf{shipment}
-\item \textsf{model}
-\item \textsf{bicycle}
-\item \textsf{week}
+\hspace*{.05in} \textsf{store}\\
+\hspace*{.05in} \textsf{inventory}\\
+\hspace*{.05in} \textsf{shipment}\\
+\hspace*{.05in} \textsf{model}\\
+\hspace*{.05in} \textsf{bicycle}\\
 \columnbreak
-\item \textsf{supplier}
-\item \textsf{customer}
-\item \textsf{order}
-\item \textsf{accessory}
-\item \textsf{manager}
+\hspace*{.05in} \textsf{week}\\
+\textsf{supplier}\\
+\textsf{customer}\\
+\textsf{order}\\
+\textsf{accessory}\\
+\textsf{manager}\\
 \columnbreak
-\item \textsf{list}
-\item \textsf{incoming product}
-\item \textsf{expected arrival date}
-\item \textsf{down payment}
-\item \textsf{inventory level}
-\item \textsf{item}
-\end{compactitem}
+\textsf{list}\\
+\textsf{incoming product}\\
+\textsf{expected arrival date}\\
+\textsf{down payment}\\
+\textsf{inventory level}\\
+\textsf{item}
 \end{multicols}
 
 
@@ -407,10 +409,9 @@ its own individual object. The same could be said for \textsf{down payment} and
 to bits of data that have an obvious ``home'' in another class ought to be
 modeled as inst vars, not classes.
 
-So now here's all that remains:
-
-\vspace{-.2in}
 \begin{samepage}
+So now here's all that remains:
+\bigskip
 \begin{center}
 \parbox{.8\textwidth}{
 \begin{multicols}{2}
@@ -443,7 +444,6 @@ muster enough to deserve a deep think.
 
 \vspace{.3in}
 
-\pagebreak
 \textbf{3a. See which of the remaining ones ``feel right.''} We've come a long
 way semi-mechanically. Now it's time to allow ourselves the luxury of turning
 over in our minds each candidate class, ``trying it on,'' so to speak. 
@@ -504,9 +504,7 @@ these four noun phrases:
 
 \begin{quote}
 \begin{center}
-\textsf{bicycle \quad \quad \quad accessory \quad \quad \quad incoming product
-\quad \quad \quad
-item}
+\textsf{bicycle \ \quad accessory \ \quad incoming product \ \quad item}
 \end{center}
 \end{quote}
 
@@ -516,6 +514,7 @@ really refers to the temporary state of a product (\textit{i.e.}, one in
 transit from a supplier), not a fundamentally distinct kind of thing. So I'm
 going to be bold, ditch ``incoming,'' and make these two assertions:
 
+\pagebreak
 \begin{compactenum}
 \item \textsf{item == product}
 \item \textsf{bicycle} and \textsf{accessory} are two different kinds
@@ -525,10 +524,8 @@ going to be bold, ditch ``incoming,'' and make these two assertions:
 \end{itemize}
 
 With these changes, our list is now:
-\vspace{-.2in}
-\begin{samepage}
 \begin{center}
-\parbox{.9\textwidth}{
+\parbox{\textwidth}{
 \begin{multicols}{2}
 \begin{compactitem}
 \item \textsf{store}
@@ -548,7 +545,6 @@ With these changes, our list is now:
 \end{multicols}
 }
 \end{center}
-\end{samepage}
 
 \vspace{.1in}
 
@@ -584,7 +580,6 @@ If you try to make a CRC card for a class, and have trouble coming up with
 appropriate contents (particularly the Responsibilities section), that's a red
 flag that perhaps this isn't a good class after all.
 
-\pagebreak
 \begin{samepage}
 Let's start at the top.
 
@@ -760,9 +755,9 @@ classes that are cohesive, modular, encapsulated, and work well together.
 
 \index{requirements!specification (``req spec'')}
 \index{Uno"!\textsuperscript{\textregistered}}
-Figure~\ref{fig:uno} gives a second, longer example of a req spec. We'll
-develop this example in the remainder of this chapter and in the next one. In
-particular, it involves a non-trivial inheritance hierarchy.
+Figure~\ref{fig:uno} on p.~\pageref{fig:uno} gives a second, longer example of
+a req spec. We'll develop this example in the remainder of this chapter and in
+the next one. In particular, it involves a non-trivial inheritance hierarchy.
 
 First, test yourself on identifying noun phrases, and see if you find the same
 ones marked in Figure~\ref{fig:unoNouns}.
@@ -821,8 +816,6 @@ games, so that at the end of 50,000 games, an overall winner can be declared.}
 \caption{The requirements specification for a game simulator.}
 \label{fig:uno}
 \end{figure}
-
-\pagebreak
 
 \begin{figure}
 \centering
@@ -1027,7 +1020,6 @@ general, according to which the game is played'' is what's intended. And that
 would steer us away from instantiating some number of \texttt{Rule} objects.
 
 \vspace{.1in}
-\pagebreak
 \textbf{2c. Eliminate things you obviously wouldn't represent.} The only ones
 I got rid of on this step were (ironically) \textsf{student} and
 \textsf{professor}. Nothing personal.
@@ -1081,7 +1073,7 @@ of cards are all subclasses of \texttt{Card}. This is where the
 this as its own class, but rather embedded the functionality into the
 \texttt{Card} subclasses. Either way's okay, though.
 
-\vspace{.1in}
+\vspace{.3in}
 \textbf{3b. Identify what each one \textit{knows} and can \textit{do}.}
 I'll sign off this chapter by taking a crack at CRC cards for some of the
 classes that are going to survive the whole design vetting. These are quality
