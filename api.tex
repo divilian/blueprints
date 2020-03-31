@@ -15,22 +15,22 @@ old-school procedural code (with functions and data structures, rather than
 encapsulated classes and methods), describe it, and call that an API as well.}
 
 In common lingo, people speak of ``programming to an API,'' which means
-``writing some code which conforms to those documented classes/methods.'' Every
+``writing some code which conforms to those documented classes.'' Every
 time you've used an \texttt{ArrayList} or a \texttt{Scanner}, in fact, you
 have been doing this. Instantiating such objects, calling methods on them, and
 (importantly) reading the documentation at
 \url{https://docs.oracle.com/javase/8/docs/api/} to find out how they
 operate is all part of leveraging the built-in Java API for your own purposes.
 
-These days, when people talk about using an API, they often mean writing code
-that connects over the Internet to some publicly-available service or database
-of information. Nearly every major Internet player these days -- Google,
-Youtube, Instagram, Flickr, eBay, Twitter, Dropbox, Spotify, Amazon,
-\texttt{data.gov}, GeoDB cities, \textit{etc.} -- has a publicly-accessible
-API. This allows you to write code (in any language) to connect to it and
-query it for information, perform commands, make purchases, and so forth.
-Browse \url{dev.twitter.com} to get an idea of the rich functionality
-available to anyone with the technical savvy to understand and exploit an API.
+These days, when we talk about using an API, we often mean writing code that
+connects over the Internet to some publicly-available service or database of
+information. Nearly every major Internet player these days -- Google, Youtube,
+Instagram, Flickr, eBay, Twitter, Dropbox, Spotify, Amazon, \texttt{data.gov},
+GeoDB cities, \textit{etc.} -- has a publicly-accessible API. This allows you
+to write code (in any language) to connect to it and query it for information,
+perform commands, make purchases, and so forth. Browse \url{dev.twitter.com} to
+get an idea of the rich functionality available to anyone with the technical
+savvy to understand and exploit an API.
 
 It's an interconnected, collaborative world. Developers rarely write all the
 code themselves anymore on a little isolated island. Instead, they share code
@@ -38,7 +38,7 @@ for others to use, and take advantage of what's been shared with them. If you
 can figure out how to effectively do that, you've increased your programming
 potential a hundredfold.
 
-\section{The importance of good documentation}
+\section{The importance of good docs}
 
 Now in order to make it possible for other developers to use the code you so
 painstakingly wrote, it must be \textbf{documented} in a way that is clear,
@@ -175,22 +175,25 @@ that other programmers can conveniently browse.''
 To accomplish this, we use a special syntax to denote ``JavaDoc comments.''
 Recall that one style of comment in Java is the multi-liner:
 
-\vspace{-.2in}
+\vspace{-.11in}
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=none]
-    /*
-     * This is a regular Java comment, and will be ignored by javac.
-     */
+  /*
+   * This is a regular Java comment, and will be ignored by javac.
+   */
 \end{Verbatim}
+\vspace{-.11in}
 
 JavaDoc comments are the same, except that they have a \textit{double}
 asterisk at the beginning:
 
+\vspace{-.11in}
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=none]
-    /**
-     * This is a special JavaDoc comment, which will be ignored by javac,
-     * but will be extracted by javadoc.
-     */
+  /**
+   * This is a special JavaDoc comment, which will be ignored by
+   * javac, but will be extracted by javadoc.
+   */
 \end{Verbatim}
+\vspace{-.11in}
 
 You can place JavaDoc comments in three places:
 
@@ -230,10 +233,13 @@ though there are others. Each development team acquires their own culture,
 policies, and procedures that call for different pieces of information to be
 highlighted.
 
+% https://tex.stackexchange.com/questions/343028/vertical-centering-of-all-columns-in-tabularx-environment
+\renewcommand\tabularxcolumn[1]{m{#1}}
+
 \begin{figure}[ht]
 \centering
-\small
-\begin{tabular}{|c|c|l|}
+\scriptsize
+\begin{tabularx}{\textwidth}{|c|c|X|}
 \hline
 Tag/syntax & Location & Purpose\\
 
@@ -242,64 +248,57 @@ Tag/syntax & Location & Purpose\\
 
 \index{author tag@\texttt{"@author} tag}
 \texttt{@author} \ Jezebel & class & 
-\makecell[l]{
-The primary or original author of the class.\\
-Using the first name, username, or initials of the\\
-author are common choices.}\\
+The primary or original author of the class. Using the first name, username, or
+initials of the author are common choices.\\
 
 \hline
 
 \index{param tag@\texttt{"@param} tag}
 \texttt{@param} \ \texttt{name} \ description & method & 
-\makecell[l]{
-What one of the arguments to the method means.\\
-``\texttt{name}'' is either the name or the type of argument.\\
-``description'' should begin with a lower-case letter\\
-and end with a period.}\\
+What one of the arguments to the method means.
+``\texttt{name}'' is either the name or the type of argument.
+``description'' should begin with a lower-case letter
+and end with a period.\\
 
 \hline
 
 \index{return tag@\texttt{"@return} tag}
 \texttt{@return} \ description & method & 
-\makecell[l]{
-How the return value of the method should be\\
-interpreted. ``description'' should begin with a\\
-lower-case letter and end with a period.}\\
+How the return value of the method should be
+interpreted. ``description'' should begin with a
+lower-case letter and end with a period.\\
 
 \hline
 
 \index{throws tag@\texttt{"@throws} tag}
 \texttt{@throws} \ type \ description & method & 
-\makecell[l]{
-What type of exception might be thrown from the\\
-method and how it should be interpreted.\\
-``description'' should begin with the word ``if'' and\\
-end with a period.}\\
+What type of exception might be thrown from the
+method and how it should be interpreted.
+``description'' should begin with the word ``if'' and
+end with a period.\\
 
 \hline
 \index{link tag@\texttt{"@link} tag}
 \texttt{\{@link className\}} & anywhere &
-\makecell[l]{
-Create a clickable hyperlink to the class named.}\\
+Create a clickable hyperlink to the class named.\\
 
 \hline
 
 \texttt{\{@link className\#method\}} & anywhere &
-\makecell[l]{
-Create a clickable hyperlink to the method named.}\\
+Create a clickable hyperlink to the method named.\\
 
 \hline
 
 \index{deprecated tag@\texttt{"@deprecated} tag}
-\texttt{@deprecated} \ explanation & class/method & 
-\makecell[l]{
-Mark this class or method as old and not to be used\\
-by new code. (Still supported temporarily for older\\
-code, but intended to be phased out.)}\\
+\texttt{@deprecated} \ explanation &
+\makecell{class / \\ method} & 
+Mark this class or method as old and not to be used
+by new code. (Still supported temporarily for older
+code, but intended to be phased out.)\\
 
 \hline
 
-\end{tabular}
+\end{tabularx}
 \vspace{.1in}
 \caption{Some commonly-used JavaDoc tags, and their meanings.}
 \label{fig:taglist}
@@ -312,12 +311,12 @@ Figure~\ref{fig:javadocApi}.
 
 \index{ballplayer@\texttt{Ballplayer}}
 \begin{figure}
-\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 /**
- * A <tt>Ballplayer</tt> represents a historical baseball player and the
- * composite statistics over his career. Each <tt>Ballplayer</tt> object
- * is associated with one {@link Team} even if he played for multiple
- * teams in his actual career.
+ * A <tt>Ballplayer</tt> represents a historical baseball player and
+ * the composite statistics over his career. Each <tt>Ballplayer</tt>
+ * object is associated with one {@link Team} even if he played for
+ * multiple teams in his actual career.
  * @author SD
  */
 public class Ballplayer {
@@ -325,24 +324,26 @@ public class Ballplayer {
     /**
      * Constructs a new <tt>Ballplayer</tt> object with "empty" stats
      *   (<i>i.e.</i>, all set to their initial, default values.)
-     * @param name the real (no nicknames) first and last name of the player.
+     * @param name the real (no nicknames) first and last name of the
+     *   player.
      * @param uni the most well-known uniform number he played under.
-     * @param team the mascot name (not city) of the {@link Team} he is most
-     *   commonly associated with.
+     * @param team the mascot name (not city) of the {@link Team} he
+     *   is most commonly associated with.
      * @throws NoTeamException if the <tt>team</tt> parameter does not
      *   correspond to the mascot name of any known {@link Team}.
      */
-    public Ballplayer(String name, int uni, String team) throws NoTeamException {
+    public Ballplayer(String name, int uni, String team)
+        throws NoTeamException {
         ...
     }
     
     /**
-     * Returns the player's career batting average, measured as total hits
-     *   divided by total "at bats." If the number of "at bats" is zero,
-     *   returns 0.0 rather than give a divide-by-zero error.
-     * @deprecated This method should be eschewed in favor of more recently
-     *   developed stats such as {@link Ballplayer#getOnBasePercentage} and
-     *   {@link Ballplayer#getSluggingPercentage}.
+     * Returns the player's career batting average, measured as total
+     *   hits divided by total "at bats." If the number of "at bats"
+     *   is zero, returns 0.0 rather than give a divide-by-zero error.
+     * @deprecated This method should be eschewed in favor of more
+     *   recent stats such as {@link Ballplayer#getOnBasePercentage}
+     *   and {@link Ballplayer#getSluggingPercentage}.
      * @return the batting average on a 0.0-to-1.0 scale.
      */
     public double getBattingAvg() {
@@ -450,7 +451,7 @@ writing, here's how to fix that problem:
 
 \begin{compactenum}
 
-\item Go to \url{https://console.cloud.google.com/networking/firewalls/list}.
+\item Go to \texttt{https://console.cloud.google.com/networking/}\\\texttt{firewalls/list}.
 \item Click ``Create firewall rule.''
 \item Give it a name like ``\texttt{allowhttp}''.
 \item Choose ``All instances in the network'' from the ``Targets'' drop-down.
@@ -464,13 +465,13 @@ writing, here's how to fix that problem:
 
 \begin{figure}
 \centering
-\includegraphics[width=0.9\textwidth]{javadoc1.png}
+\includegraphics[width=1\textwidth]{javadoc1.png}
 
-\vspace{.1in}
+\vspace{.2in}
 
-\includegraphics[width=0.9\textwidth]{javadoc2.png}
+\includegraphics[width=1\textwidth]{javadoc2.png}
 
-\vspace{.1in}
+\vspace{.2in}
 
 \caption{The generated HTML for the code in Figure~\ref{fig:javadocTags}.}
 \label{fig:javadocApi}
@@ -485,10 +486,12 @@ important part. The truly important question in all this is less-easily
 defined: how to actually write quality documentation that will communicate
 effectively to programmers I may never meet?
 
+\pagebreak
 The answer is at once super simple and extremely nuanced. Here is the one and
 only rule that should guide your API documentation process:
 
-\begin{samepage}
+\definecolor{shadecolor}{rgb}{.9,.9,1}
+\begin{shaded}
 \begin{quote}
 
 \textbf{\textsf{``Put yourself in the shoes of a Java developer who has never
@@ -496,7 +499,7 @@ seen your code before. Write whatever that person would need to know in order
 to use your code properly.''}}
 
 \end{quote}
-\end{samepage}
+\end{shaded}
 
 You might be surprised how much students (and professionals) struggle
 implementing this advice. It turns out that the human brain has a very
@@ -522,25 +525,27 @@ it's certainly possible to leave important information undefined or ambiguous.
 
 \index{team@\texttt{Team}}
 Let's take a look a bad attempt to document the \texttt{Team} class from the
-baseball simulator example, followed by a good one.
+baseball simulator example, followed by some better ones.
 
-First attempt:
+\pagebreak
+First (bad) attempt:
 \vspace{-.15in}
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 /**
- * A <tt>Team</tt> represents a group of {@link Ballplayer}s who play
- * baseball together.
+ * A <tt>Team</tt> represents a group of {@link Ballplayer}s
+ * who play baseball together.
  */
 public class Team {
     ...
 }
 \end{Verbatim}
+\vspace{-.1in}
 
 This JavaDoc succinctly sums up what the \texttt{Team} class is for, but I
 claim it leaves out at least two important pieces of \textit{non-obvious}
 information. ``Non-obvious'' is the key word here: the stuff that would be
 obvious to a reader isn't particularly important to document. It's the things
-that \textit{aren't} immediately clear that deserve attention.
+that \textit{aren't} clear that deserve attention.
 
 One thing this JavaDoc is missing is the motivating \textit{reason} for using
 the class. A fellow developer might read this and say, ``okay, a \texttt{Team}
@@ -554,16 +559,18 @@ be used as input to the \texttt{Simulator} class, in order to simulate a
 virtual ballgame, and (2) it has useful methods on it that provide summary
 statistics for the entire team. So let's say that:
 
-Second attempt:
+\smallskip
+Second (better) attempt:
 \vspace{-.15in}
-\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 /**
- * A <tt>Team</tt> represents a group of {@link Ballplayer}s who play baseball
- * together, and can compute summary statistics about the group's past
- * performance. Two <tt>Team</tt> objects are required to run a single-game
- * simulation (see {@link Simulator#simSingleGame}.) Methods like {@link 
- * Team#getTeamBattingAverage()} and {@link Team#getWonLossRecord()} can be 
- * called to get aggregate information about the team's performance.
+ * A <tt>Team</tt> represents a group of {@link Ballplayer}s who play
+ * baseball together, and can compute summary statistics about the
+ * group's past performance. Two <tt>Team</tt> objects are required to
+ * run a single-game simulation (see {@link Simulator#simSingleGame}.)
+ * Methods like {@link Team#getTeamBattingAverage()} and
+ * {@link Team#getWonLossRecord()} can be called to get aggregate
+ * information about the team's performance.
  */
 public class Team {
     ...
@@ -588,24 +595,25 @@ one is the true behavior.
 So let's add that information in, together with an author tag, and call it
 done (at least for now):
 
-\pagebreak
+\smallskip
 Final attempt:
-\vspace{-.15in}
-\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+\vspace{-.1in}
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 /**
- * <p>A <tt>Team</tt> represents a group of {@link Ballplayer}s who play
- * baseball together, and can compute summary statistics about the group's
- * past performance. Two <tt>Team</tt> objects are required to run a
- * single-game simulation (see {@link Simulator#simSingleGame}.) Methods
- * like {@link Team#getTeamBattingAverage()} and {@link 
- * Team#getWonLossRecord()} can be called to get aggregate information
- * about the team's performance.</p>
+ * <p>A <tt>Team</tt> represents a group of {@link Ballplayer}s who
+ * play baseball together, and can compute summary statistics about
+ * the group's past performance. Two <tt>Team</tt> objects are required
+ * to run a one-game simulation (see {@link Simulator#simSingleGame}.)
+ * Methods like {@link Team#getTeamBattingAverage()} and
+ * {@link Team#getWonLossRecord()} can be called to get aggregate
+ * information about the team's performance.</p>
  * 
- * Note that a <tt>Ballplayer</tt> can be a member of <i>any number</i> of
- * teams. (This will happen if a player was traded during his career, for
- * instance.) In this case, the summary statistics for each <tt>Team</tt>, 
- * and its performance in a simulation, will take place as though that
- * player's entire career stats applied to <i>each</i> of his teams.
+ * Note that a <tt>Ballplayer</tt> can be a member of <i>any number</i>
+ * of teams. (This will happen if a player was traded during his
+ * career, for instance.) In this case, the summary statistics for each
+ * <tt>Team</tt>, and its performance in a simulation, will take place
+ * as though that player's entire career stats applied to <i>each</i>
+ * of his teams.
  *
  * @author Stephen
  */
@@ -614,6 +622,7 @@ public class Team {
 }
 \end{Verbatim}
 
+\pagebreak
 \index{Stephen}
 \index{Henderson, Rickey}
 Apparently, \texttt{Stephen} has decided to write the \texttt{Team} code to
@@ -650,36 +659,29 @@ Taking again the baseball example, let's look a bad attempt to document the
 
 First attempt:
 \vspace{-.15in}
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-public class Ballplayer {
-    ...
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
     /**
      * Return the player's OPS.
      */
     public double getOPS() {
         ...
-    }
-}
 \end{Verbatim}
 
 This is an example of wasting time typing. The programmer might as well have
 typed nothing at all, since ``returning'' was implied in ``\texttt{get}...'' and
 \texttt{OPS} remains undefined. Let's try again.
 
+\smallskip
 Second attempt:
-\vspace{-.15in}
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
-public class Ballplayer {
-    ...
+\vspace{-.1in}
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
     /**
-     * Return the player's career OPS (On-base-plus-slugging) statistic,
-     * defined as the player's on-base percentage plus his slugging 
-     * percentage.
+     * Return the player's career OPS (On-base-plus-slugging)
+     * statistic, defined as the player's on-base percentage
+     * plus his slugging percentage.
      */
     public double getOPS() {
         ...
-    }
-}
 \end{Verbatim}
 
 This is much more useful, at least, since it defines for a reader who may not
@@ -723,33 +725,28 @@ attempts'' that all these averages are based on.
 
 Answering all these questions adequately, then, leads to this JavaDoc:
 
-\pagebreak
 Final attempt:
 \vspace{-.15in}
-\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
-public class Ballplayer {
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+**
+ * Return the player's career OPS (On-base-plus-slugging) statistic,
+ * defined as the player's on-base percentage plus his slugging 
+ * percentage. On-base "percentage" is computed on a 0-to-1 scale,
+ * not 0-to-100 (and slugging "percentage" is similar, though it can
+ * be as high as 4.0 (all home runs)), so this method's return value
+ * should not be interpreted as a "percentage" either.
+ * 
+ * Although OPS is typically reported to three decimal places, this
+ * method will not perform any rounding to ensure that; full precision
+ * to as many decimal places as the system allows will be reported.
+ *
+ * For <tt>Ballplayer</tt>s with zero plate appearances, this method
+ * will return 0, not a divide-by-zero error.
+ *
+ * @return the player's career OPS statistic.
+ */
+public double getOPS() {
     ...
-    /**
-     * Return the player's career OPS (On-base-plus-slugging) statistic,
-     * defined as the player's on-base percentage plus his slugging 
-     * percentage. On-base "percentage" is computed on a 0-to-1 scale, not
-     * 0-to-100 (and slugging "percentage" is similar, though it can be as
-     * high as 4.0 (all home runs)), so this method's return value should
-     * not be interpreted as a "percentage" either.
-     * 
-     * Although OPS is typically reported to three decimal places, this method
-     * will not perform any rounding to ensure that; full precision to as many
-     * decimal places as the system allows will be reported.
-     *
-     * For <tt>Ballplayer</tt>s with zero plate appearances, this method will
-     * return 0, not a divide-by-zero error.
-     *
-     * @return the player's career OPS statistic.
-     */
-    public double getOPS() {
-        ...
-    }
-}
 \end{Verbatim}
 
 \index{return tag@\texttt{"@return} tag}
@@ -774,15 +771,15 @@ It's hard to pretend you're someone else -- and to momentarily, deliberately
 forget what you know -- but it's not impossible. And as I said earlier, it's
 really the key to communication of all kinds.
 
-\section{How to lose a battle through bad documentation}
+\section[How to lose a battle]{How to lose a battle through bad documentation}
 
 \index{Burnside, Ambrose}
 \index{Battle of Fredericksburg}
 \index{Civil War}
 \index{Franklin, William}
 \index{Lincoln, Abraham}
-I'll close this chapter with a somewhat humorous anecdote which was
-nevertheless deadly serious in its ramifications.
+I'll close this chapter -- and book -- with a somewhat humorous anecdote which
+was nevertheless deadly serious in its ramifications.
 
 On the eve of the Civil War's Battle of Fredericksburg, on December 11, 1862,
 General Ambrose Burnside was running the show for the Union. His northern
@@ -800,13 +797,13 @@ Major General William Franklin in the wee hours of the morning:
 
 \begin{center}
 \large
-\fbox{\begin{varwidth}{\textwidth}
+\fbox{\begin{varwidth}{.9\textwidth}
 \centering
 \Fontskrivan 
-``Keep your whole command in position for a rapid movement down the \\
-Old Richmond Road and send a division at least to seize, if possible, \\
-the height near Capt. Hamilton's, taking care to keep it well supported \\
-and its line of retreat open.'' 
+``Keep your whole command in position for a rapid movement \\
+down the Old Richmond Road and send a division at least to \\
+seize, if possible, the height near Capt. Hamilton's, taking \\
+care to keep it well supported and its line of retreat open.'' 
 \end{varwidth}
 }
 \end{center}
