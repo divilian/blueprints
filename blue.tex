@@ -122,6 +122,12 @@ j 1 J 6 w
 
 \renewcommand{\contentsname}{Contents}
 
+% Add empty page to get to a multiple of 12 (312 total pages).
+\begingroup
+  \null
+  \newpage
+\endgroup
+
 \setcounter{tocdepth}{0}
 \tableofcontents
 
@@ -149,7 +155,16 @@ j 1 J 6 w
 \include{useCases}
 \include{api}
 
+% Add empty page to get to a multiple of 12 (312 total pages).
+\begingroup
+  \null
+  \newpage
+\endgroup
 \backmatter
 \printindex
+
+
+% Add empty (number-less) page to get to a multiple of 12 (312 total pages).
+\shipout\null
 
 \end{document}
