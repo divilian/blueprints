@@ -34,7 +34,7 @@ incorporates the UML object representations we discussed in
 section~\ref{sec:UMLclasses}. A memory diagram depicts the contents of the
 computer's memory at a \textit{snapshot in time.} At any given moment, as a
 program is running, you could say ``Freeze!''\ and look at the memory diagram.
-It would give you the exact state of the system at that moment.
+You'd see the exact state of the system at that moment.
 
 \subsection{The stack and the heap}
 
@@ -42,12 +42,13 @@ It would give you the exact state of the system at that moment.
 \index{heap@the heap}
 \index{memory!statically-allocated}
 \index{memory!dynamically-allocated}
+
 A program's memory, it turns out, is divided into two realms with funny names:
 ``\textbf{the stack}'' and ``\textbf{the heap}.'' It is vital to understand the
 difference between the two, and which one is used for what. The stack contains
-\textbf{statically-allocated} memory and the heap contains
-\textbf{dynamically-allocated} memory. We'll unpack what all this means, but
-first let me show you a full list of differences:
+\textbf{statically-allocated}, and the heap \textbf{dynamically-allocated},
+memory. We'll unpack what all this means, but first let me show you a full list
+of differences:
 
 \small
 \vspace{.2in}
@@ -60,8 +61,8 @@ holds named things & holds unnamed things \\
 holds primitive types and references & holds objects\footnote{This is
 true in Java, but C++ permits programmers to store objects on the
 \textit{stack} as well as the heap. I will argue that's universally dumb, and
-that is a large part of what makes programming in C++ difficult: you have to
-account for that happening, which requires a ton of tedious and error-prone
+it's a large part of what makes programming in C++ difficult: you have to
+account for that occurrence with a ton of tedious and error-prone
 bookkeeping.} \\
 \index{lifespan}
 items have limited lifespan & items have unlimited lifespan\footnote{Not
@@ -74,23 +75,17 @@ needed, rather than evaporating at the end of their current function.} \\
 This is best understood by example, and in fact can be illustrated with just a
 small function:
 
-% TODO: pagination makes this code not appear directly below the text above.
-
-\begin{figure}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 void illustration() {
     int year = 2018;
     Car minivan = new Car("Toyota","Sienna");
 }
 \end{Verbatim}
-\caption{Some surprisingly complex code.}
-\label{fig:firstCode}
-\end{figure}
 
 This teensy function, when it runs, produces memory contents as depicted in
 Figure~\ref{fig:stackHeap1}. Let's go through it carefully.
 
-\begin{figure}   % 590x220
+\begin{figure}[ht]   % 590x220
 \centering
 \includegraphics[width=1\textwidth]{stackHeap1.pdf}
 \caption{The stack and the heap.}
@@ -147,7 +142,8 @@ That seems to make perfect sense. But unfortunately it is \textit{wrong}. The
 truth is that \textit{the object has no name.}
 
 Again, you may think I'm being pedantic. Let me demonstrate why I'm not.
-Suppose we expanded our previous code with four more lines:
+Suppose we expanded our previous code with four more lines, as depicted in
+Figure~\ref{fig:additionalCode}. Study it carefully.
 
 \begin{figure}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
@@ -202,17 +198,15 @@ change. And that's because they \textit{are} the same.
 \centering
 \includegraphics[width=1\textwidth]{stackHeap2.pdf}   % 620x230
 \caption{After executing the first two lines of code
-listing~\ref{fig:additionalCode}.}
+Figure~\ref{fig:additionalCode}.}
 \label{fig:stackHeap2}
 \end{figure}
 
 
-% TODO: the phrase "right before" is awkward. Try "correct previously."
-
 Okay, now the punchline of this whole example. I'm going to complete the
-bait-and-switch, just to prove I was right before when I said ``the name of
+bait-and-switch, just to prove I was correct back when I said ``the name of
 that first blue box is \textit{not} \texttt{minivan}.'' Let's do the
-\textit{second} two lines of code in listing~\ref{fig:additionalCode}:
+\textit{second} two lines of code in Figure~\ref{fig:additionalCode}:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
     ...
@@ -235,7 +229,7 @@ the stuff in the heap, which is ultimately what matters.
 \centering
 \includegraphics[width=1\textwidth]{stackHeap3.pdf}   % 620x230
 \caption{Finally, after executing the rest of code
-listing~\ref{fig:additionalCode}.}
+Figure~\ref{fig:additionalCode}.}
 \label{fig:stackHeap3}
 \end{figure}
 
