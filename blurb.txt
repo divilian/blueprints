@@ -1,0 +1,11 @@
+Blueprints is a concise yet comprehensive coverage of Object-Oriented Analysis and Design concepts, suitable for a second programming course in Computer Science. It introduces and teaches application development in a command-line environment, and assumes basic expertise with the Java programming language. 
+
+Version 2.1 (no version number on cover): ISBN 9781714629657
+Version 2.2: ISBN 9781715311261
+
+Blurb.com:
+----------
+https://www.blurb.com/b/10243389
+Primary category: Computers & Internet
+(No secondary categories)
+Keywords: OOP, OO, Java, programming, computer science

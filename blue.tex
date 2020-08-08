@@ -2,6 +2,17 @@
 %   pdflatex blue.tex
 %   makeindex blue.idx
 %   pdflatex blue.tex
+%
+% The content and cover files, explained:
+% - cover.xcf: Gimp file of full cover (front/back/spine)
+% - cover.pdf: full cover (front/back/spine)
+% - blue_cover.xcf Gimp file of just front
+% - blue_cover.pdf just front
+% - blank.pdf a blank PDF page
+% - blue.pdf: content only, entire book
+% - blue_wcover.pdf: front cover and content, for electronic posting.
+%   To make this:
+%   $ pdftk blue_cover.pdf blank.pdf blue.pdf output blue_wcover.pdf
 \documentclass[11pt]{memoir}
 \usepackage[usenames,dvipsnames]{color}
 \usepackage{bbding}  % for checkmark and X
@@ -40,14 +51,14 @@
 %\settrims{0pt}{0pt}
 
 % Blurb.com
-%\setstocksize{9.25in}{6.125in}
-%\settrimmedsize{9in}{6in}{*}
-%\settrims{.125in}{.125in}
+\setstocksize{9.25in}{6.125in}
+\settrimmedsize{9in}{6in}{*}
+\settrims{.125in}{.125in}
 
 % Amazon.com
-\setstocksize{9in}{6in}
-\settrimmedsize{9in}{6in}{*}
-\settrims{0pt}{0pt}
+%\setstocksize{9in}{6in}
+%\settrimmedsize{9in}{6in}{*}
+%\settrims{0pt}{0pt}
 
 \setlxvchars
 \settypeblocksize{*}{\lxvchars}{1.618}
@@ -118,7 +129,7 @@ j 1 J 6 w
 
 \title{{\Huge Blueprints:}\\
 {\Large Creating, Describing, and Implementing Designs}\\
-{\Large for Larger-scale Software Projects}\\{\small version 2.1.1}}
+{\Large for Larger-scale Software Projects}\\{\small version 2.2}}
 \author{Stephen Davies, Ph.D.\\Computer Science Department\\University of Mary Washington}
 \date{}
 \maketitle
@@ -162,15 +173,16 @@ j 1 J 6 w
 \include{api}
 
 % Add empty page to get to a multiple of 12 (312 total pages).
-\begingroup
-  \null
-  \newpage
-\endgroup
+%\begingroup
+%  \null
+%  \newpage
+%\endgroup
 \backmatter
 \printindex
 
 
 % Add empty (number-less) page to get to a multiple of 12 (312 total pages).
+\shipout\null
 \shipout\null
 
 \end{document}
