@@ -1,11 +1,18 @@
 
-\chapter{The ``software crisis'' and encapsulation}
+\chapter[The ``software crisis'']{The ``software crisis'' and encapsulation}
 \label{ch:encapsulation}
 
 \index{object-oriented}
+\index{OOP}
+\index{OOA\&D}
+
 This book is going to dive deeply into a huge pile of nuts and bolts. But
 before we take the leap into particulars, it's important to stand briefly at
-the precipice and understand why we're jumping. What does ``object-oriented''
+the precipice and understand why we're jumping.
+
+Our subject goes by the names Object-Oriented Analysis \& Design (OOA\&D) and
+Object-Oriented Programming (OOP).\footnote{I'll use these two terms (and
+acronyms) pretty much interchangeably.} But what does ``object-oriented'' even
 mean? What problem was it intended to solve? When was it invented and why?
 
 \section{Ancient history}
@@ -329,11 +336,14 @@ avoid the hell of spaghetti code.
 \subsection{OOP's encapsulation solution: the \texttt{class}}
 
 \index{object-oriented}
+\index{OOP}
+\index{OOA\&D}
 \index{class@\texttt{class}}
-I've been using vague terms like ``chunks'' and ``units'' and ``components''
-to refer to these bits of interacting software. The key innovation of OOP
-(object-oriented programming) was a particular kind of ``unit,'' structured in
-a particular way: the \textbf{class}. It changed the world.
+
+I've been using vague terms like ``chunks'' and ``units'' and ``components'' to
+refer to these bits of interacting software. The key innovation of OOA\&D was a
+particular kind of ``unit,'' structured in a particular way: the
+\textbf{class}. It changed the world.
 
 \index{public interface}
 \index{private implementation}
@@ -374,7 +384,7 @@ green code chunks on that earlier diagram will form a \textbf{class}. The
 communicate gets mapped to the public interface of the class, while all of the
 other chunks are put in the private implementation.
 
-\section{Features of OO}
+\section{Features of OOP}
 
 The object-oriented revolution came about simply by taking what was formerly
 spaghetti code, and learning how to organize it into encapsulated classes.
@@ -387,11 +397,11 @@ you a glimpse of some of the features of this paradigm shift:
 \index{abstraction}
 \index{function}
 \index{procedural programming}
-\item \textbf{A higher level of abstraction.} Before OOP, encapsulation was
+\item \textbf{A higher level of abstraction.} Before OOA\&D, encapsulation was
 already sort of a thing, since ordinary \textbf{functions} gave programmers a
 way to group code chunks together into cohesive bits. In this older style of
 \textbf{procedural programming}, developers wrote code to compose and combine
-these functions to achieve a larger purpose. The difference with OOP is that
+these functions to achieve a larger purpose. The difference with OOA\&D is that
 the fundamental building block is no longer the function, but the class, which
 is a bigger, richer, more sophisticated entity. It encompasses functions,
 variables, and more besides. Being able to program ``at a higher level of
@@ -404,7 +414,7 @@ paragraphs instead of out of individual words or letters.
 \item \textbf{Nouns, not verbs.} An old-school function is conceptually a
 verb: it represents a command to \textit{do} something. As we'll see, a class
 is conceptually a noun: it has the ability to \textit{be} something. Thus,
-with OOP you don't think so much about what you want to \textit{execute} --
+with OOA\&D you don't think so much about what you want to \textit{execute} --
 first do this, then that, then print the output -- as about what you want to
 \textit{model} -- how can you best represent the important entities in your
 system? OOP is about building a representation of a world, rather than giving
