@@ -1,6 +1,4 @@
 
-% TODO: never say "ArrayList" or "hashtable" in API
-
 \chapter{Documenting an API}
 \label{ch:api}
 
@@ -770,6 +768,87 @@ and (2) really truly trying to put yourself in the mindset of a new developer.
 It's hard to pretend you're someone else -- and to momentarily, deliberately
 forget what you know -- but it's not impossible. And as I said earlier, it's
 really the key to communication of all kinds.
+
+\subsubsection{Important: \textit{don't} mention implementation!}
+
+The most common error (and it is indeed an \textit{error}) that I see students
+making when writing their method-level documentation is including
+implementation details in their description.
+
+For instance, suppose our \texttt{Team} class had a method called
+\texttt{.add()} which could add a \texttt{Ballplayer} to the team. Here's a
+very common, but also very wrong, way to write its JavaDoc:
+
+\vspace{-.15in}
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+    /**
+     * !WRONG! Include a new {@link Ballplayer} object in this
+     * <tt>Team</tt> by adding it to this object's "players"
+     * <tt>ArrayList</tt>.
+     */
+    public void add(Ballplayer bp) {
+        ...
+\end{Verbatim}
+
+\index{encapsulation}
+
+Do you see the problem? If you've learned anything in this book, I hope you do.
+\textit{Our documentation has seriously violated encapsulation here}, and of
+course encapsulation is the whole freaking point of OOP.
+
+Specifically, \textit{users} of the \texttt{Team} class should neither know nor
+care \textit{how} the \texttt{.add()} method does its work. They should neither
+know nor care whether there's an \texttt{ArrayList}, or anything else,
+involved, let alone the name of a specific instance variable (which is
+``\texttt{players},'' apparently). They should only be told \textit{what} the
+method does -- what behavior to expect when it's called.
+
+There are two reasons for this. One, that implementation info is simply
+irrelevant to clients. if I'm writing code that instantiates and uses
+\texttt{Team} objects, I don't need to know what its instance variables are, or
+anything else under the hood. It's a distraction. Two, if we did reveal that
+information, we would be loudly advertising something that is subject to future
+change. Suppose we decided to store a \texttt{Team}'s \texttt{Ballplayer}s in a
+\texttt{Hashtable} instead of an \texttt{ArrayList}, or in some other object
+entirely? It would sure be awkward if we had baked into our public
+documentation the statement about ``a \texttt{players} \texttt{ArrayList}''!
+
+Here's a correct version:
+
+\vspace{-.15in}
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
+    /**
+     * !RIGHT! Add a new {@link Ballplayer} to this <tt>Team</tt>,
+     * which will thereafter use it in single-game simulations and
+     * include it in its aggregate statistics.
+     *
+     * Note that a <tt>Ballplayer</tt> can be a member of
+     * <i>multiple</i> <tt>Team</tt>s, so calling this method on one
+     * <tt>Team</tt> will not remove the player from any others.
+     *
+     * If the <tt>Ballplayer</tt> is already a member of this
+     * <tt>Team</tt>, this method will have no effect.
+     * 
+     * <tt>Ballplayer</tt>s added to a <tt>Team</tt> can be later
+     * removed from it via the {link Team#remove} method.
+     */
+    public void add(Ballplayer bp) {
+        ...
+\end{Verbatim}
+
+\index{underwear drawer}
+
+The documentation is now chock-full of important information that a client of
+the \texttt{Team} class would need to know, and shows off nothing in the
+underwear drawer. The general rule here is: if something's \texttt{private}
+(which certainly includes instance variables) \textit{don't} mention it in the
+JavaDoc.
+
+\medskip
+
+One other similar rule is this: don't make your method-level JavaDoc a
+step-by-step narration of what the method's code is going to look like. Again,
+the purpose of the JavaDoc is to specify \textit{what}, not \textit{how}.
 
 \section[How to lose a battle]{How to lose a battle through bad documentation}
 
