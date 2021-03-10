@@ -119,6 +119,7 @@ straightforward to interpret that second compartment.
 \index{underlined@\underline{underlined}}
 \index{car@\texttt{Car}}
 \index{static@\texttt{static}}
+\label{mentionStatic}
 By the way, one important piece of syntax in that second compartment is an
 \underline{underline}. If an inst var is underlined, then it actually isn't an
 ``instance variable'' after all: it's a \textbf{class variable}. This means
@@ -169,6 +170,7 @@ method \textbf{\textit{on an object}}. In the example, we have a
 ordinary function, but rather an OO method, we must call it on a particular
 instance of a \texttt{Car}. In Java code, this does \textit{not} work:
 
+\label{callMethodOnObject}
 \begin{verbatim}
     fillUp();        // NOPE
 \end{verbatim}
@@ -184,6 +186,8 @@ Instead, one must call \texttt{fillUp()} like this:
 \begin{verbatim}
     johnsMercedes.fillUp();     // Correct!
 \end{verbatim}
+
+\index{Mercedez-Benz}
 
 where \texttt{johnsMercedes} is the name of a valid \texttt{Car} object,
 previously instantiated. This is what we mean by ``calling \texttt{.fillUp()}
@@ -281,6 +285,7 @@ picture, you can see that there is a \texttt{Car} object in memory representing
 an old Chevy Malibu with a zillion miles on it and other suboptimal features.
 
 \index{names}
+\index{Mercedez-Benz}
 Perhaps the strangest thing about a UML object is the top compartment. Notice
 that it says ``\texttt{:~Car}'' (``colon-Car''), which is not a typo. Here's
 the sitch. The top compartment of a \textit{class} has the class's name, since
@@ -579,6 +584,7 @@ class Car {
 
 We could equally well have written this as:
 
+\vspace{-.15in}
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
 class Car {
     ...
@@ -587,12 +593,15 @@ class Car {
     }
 }
 \end{Verbatim}
+\vspace{-.15in}
 
-to make it explicit that we're talking about two instance variables here, and
+to be explicit that we're talking about two instance variables here, and
 assigning the value of one to the other. It's a matter of style.
 
+\medskip
+
 In the same vein, we ask ourselves, ``suppose some client code asks me what
-percentage full my tank is. What answer do I give them?'' The proper response
+percentage full my tank is. What answer do I give?'' The proper response
 involves these same two inst vars and a little math:
 
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
@@ -603,12 +612,16 @@ class Car {
     }
 }
 \end{Verbatim}
+\vspace{-.15in}
 
 I chose to omit \texttt{this}, but again it's a personal choice.
+\medskip
 
-% TODO: actually show a setter in addition to a getter (not obvious to some).
-Some methods are no-brainers:
+\index{getter}
+\index{setter}
+Some methods, like accessors, are no-brainers. Here's a getter:
 
+\vspace{-.15in}
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
 class Car {
     ...
@@ -617,12 +630,23 @@ class Car {
     }
 }
 \end{Verbatim}
+\vspace{-.15in}
 
-If a client asks me what my model is, I tell them my model, duh. The same is
-true for the other accessor methods.
+If a client asks me what my model is, I just tell them my model, duh. A setter
+generally looks like this:
+\vspace{-.15in}
+\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
+class Car {
+    ...
+    void setMake(String make) {
+        this.make = make;
+    }
+}
+\end{Verbatim}
 
-% TODO: add numCars/num (static methods).
+\medskip
 
+\pagebreak
 \index{drive@\texttt{.drive()}}
 Finally, what if a client instructs me to drive $n$ miles? How should my
 internal state be adjusted to reflect that?
@@ -652,6 +676,86 @@ have a couple of local variables involved and I wanted to be explicit. Our
 math is a mix of function parameters, temporary variables, and permanent
 attributes of the \texttt{Car}.
 
+\subsubsection{``Static methods'' and ``static inst vars''}
+\index{class variable}
+
+Now as I mentioned on p.~\pageref{mentionStatic}, some ``instance variables''
+are actually not \textit{instance} variables at all, but rather class
+variables. For a class variable, all objects of that class (in the present
+example, all \texttt{Car} objects) would share the \textit{same} value for the
+variable, rather than each object getting its own copy. This is rare, but it
+does happen.
+
+\index{function!vs.~method}
+\index{method!vs.~function}
+Also, recall that in unusual cases a ``method'' might not be a method at all,
+but just a regular function that takes arguments and returns a value. With such
+a function you don't call it \textbf{\textit{on}} a particular object, but
+rather ``just call it.'' Again, this is the exception, not the norm.
+
+\index{static@\texttt{static}}
+These situations are similar in that both of them seek to associate something
+(a variable or a subroutine) with \textit{the class as a whole}, rather than
+with individual instances. And that's why the syntax for them is the same. In
+both cases, the way to make them happen in Java is the \texttt{static} keyword.
+
+\smallskip
+
+It's actually hard to think of good examples of class variables (sometimes
+called ``static instance variables,'' an oxymoron that drives me nuts). But
+I'll try. Suppose we want to keep track of the \textit{number} of \texttt{Car}s
+that have been created. This is an integer, of course, but importantly we don't
+want to make it an instance variable, since it's a property of ``cars in
+general,'' not any particular car.
+
+Additionally, we need to be able to access it, and so we'll use a ``static
+method'' (a.k.a.~a regular function, defined on the class) that will retrieve
+its value. Putting it all together, we get:
+
+\vspace{.15in}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=single,framesep=3mm]
+class Car {
+    ...
+    static int numCars;
+    ...
+
+    Car(String make, String model) {
+        ...the rest of the constructor...
+        numCars++;
+    }
+    ...
+    static int getNumCars() {
+        return numCars;
+    }
+}
+\end{Verbatim}
+
+By marking \texttt{numCars} static, we ensure that unlike \texttt{make},
+\texttt{model}, and the rest, there's only one \texttt{numCars} variable no
+matter how many \texttt{Car}s we instantiate. Note that the way to call the
+\texttt{getNumCars()} function is like this:
+
+\begin{verbatim}
+    int n = Car.getNumCars();               // Correct!
+\end{verbatim}
+
+\textit{not} like this:
+
+\begin{verbatim}
+    int n = johnsMercedes.getNumCars();     // NOPE
+\end{verbatim}
+
+\index{Mercedez-Benz}
+This is the exact opposite of the situation on p.~\pageref{callMethodOnObject},
+and it makes sense because we aren't asking a specific car (like John's
+Mercedes-Benz) how many cars exist. We're just asking the universe that
+question.
+
+\smallskip
+Also notice that we incremented \texttt{numCars} in our class constructor. This
+is so that as soon as each \texttt{Car} comes off the assembly line (no pun
+intended), we'll automatically click the turnstile and count it towards our
+total.
 
 \section{Objects in Java}
 
@@ -838,6 +942,7 @@ class Car {
     String make, model;
     int yearsOld, odo;
     double galsRemaining, sizeOfTank, gasMileage;
+    static int numCars;
 
     Car(String make, String model) {
         this.make = make;
@@ -855,6 +960,7 @@ class Car {
         } else {
             gasMileage = 24;
         }
+        numCars++;
     }
 
     public String toString() {
@@ -862,12 +968,11 @@ class Car {
     }
 
     String getMake() { return make; }
-
     String getModel() { return model; }
-
     int getYearsOld() { return yearsOld; }
-
     void setYearsOld(int x) { yearsOld = x; }
+
+    static int getNumCars() { return numCars; }
 
     void fillUp() {
         this.galsRemaining = this.sizeOfTank;
