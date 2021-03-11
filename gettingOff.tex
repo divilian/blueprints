@@ -1,6 +1,4 @@
 
-% TODO: filenames in tt font.
-
 \chapter{Getting off the ground}
 \label{ch:gettingOff}
 
@@ -159,26 +157,27 @@ computer.
 A file is simply any named chunk of stuff on your disk. Images, .mp3 tunes,
 Word docs, and (importantly) plain text files are all in this category. On
 Windows, you're used to each of these files having a filesystem ``extension''
-designating its type: ``.doc'' means a Word doc, and ``.jpg'' means an image
-file, for example. This is sort of true with Linux, although the rules are
-a bit looser. Not all files have extensions at all, and when they do, it's
-more a signal that they're intended to be treated a certain way than it is a
-hard-and-fast requirement.
+designating its type: ``\texttt{.docx}'' means a Word doc, and
+``\texttt{.jpg}'' means an image file, for example. This is sort of true with
+Linux, although the rules are a bit looser. Not all files have extensions at
+all, and when they do, it's more a signal that they're intended to be treated a
+certain way than it is a hard-and-fast requirement.
 
 \index{java file@\texttt{.java} file}
 \index{source file}
 \index{Microsoft}
+
 The most important files you'll work with in this class will have a
 \texttt{.java} extension. These are your Java \textbf{source files}. You'll
 also work with other various supporting files to make all the tools work
 correctly. It's important to realize that \textit{a file is fundamentally just
 some data, which can theoretically be opened and dealt with by any program}.
-When we say that HamletPaper.doc ``\textit{is}'' a Word doc, what we really
-mean is that its data is formatted in a certain way that the Microsoft Word
-application expects to see, so it can render it on the screen for editing. But
-it is possible to open that same HamletPaper.doc file with other programs and
-manipulate its contents. This may seem sketchy, but it is actually a force for
-good.
+When we say that \texttt{HamletPaper.docx} ``\textit{is}'' a Word doc, what we
+really mean is that its data is formatted in a certain way that the Microsoft
+Word application expects to see, so it can render it on the screen for editing.
+But it is possible to open that same \texttt{HamletPaper.docx} file with other
+programs and manipulate its contents. This may seem sketchy, but it is actually
+a force for good.
 
 \index{text file}
 In particular, you'll be tempted this semester to think of a \texttt{.java}
@@ -194,11 +193,11 @@ filesystem, as discussed in the following section.
 
 %\index{Foreman, George}
 By the way, every file and directory \textit{in a particular directory} must
-have a unique name. You can't have a file called ``DireStraits.mp3'' and
-another one also called ``DireStraits.mp3'' sitting there in the same folder:
-it's a name collision. However, it's perfectly permissible to have two files
-with the same name in different directories. This is kind of like how there
-isn't more than one ``Stephen'' in my immediate family (that would be
+have a unique name. You can't have a file called ``\texttt{DireStraits.mp3}''
+and another one also called ``\texttt{DireStraits.mp3}'' sitting there in the
+same folder: it's a name collision. However, it's perfectly permissible to have
+two files with the same name in different directories. This is kind of like how
+there isn't more than one ``Stephen'' in my immediate family (that would be
 confusing\footnote{With apologies to boxing legend George Foreman, who named
 all four of his children ``George.'' That practice is not
 filesystem-compatible.}), but there are of course many ``Stephens'' in the
@@ -640,7 +639,8 @@ in your home directory to actually see it in the listing.
 \index{ls@\texttt{ls}}
 \vspace{-.1in}
 \begin{tabular}{m{.5in}m{3in}}
-{\Huge \leftthumbsup} & The above three commands -- \texttt{pwd}, \texttt{cd}, and \texttt{ls}, go together like Luke, Han, and Leia. Get in the habit of using them literally every minute you're working on the Linux command line.
+{\Huge \leftthumbsup} & The above three commands -- \texttt{pwd}, \texttt{cd},
+and \texttt{ls} -- go together like Luke, Han, and Leia. Get in the habit of using them literally every minute you're working on the Linux command line.
 \end{tabular}
 \vspace{.1in}
 \bigline
@@ -951,7 +951,16 @@ $ javac  HelloWorld.java
 $ java  HelloWorld
 \end{Verbatim}
 
-% TODO: Commit the file to git, duh.
+\item Finally, add the file to your repo:
+\begin{Verbatim}[fontsize=\small]
+$ git  add  HelloWorld.java
+\end{Verbatim}
+
+\item and commit it:
+\begin{Verbatim}[fontsize=\small]
+$ git  commit  -a  -m  "Finished chapter 1!"
+\end{Verbatim}
+
 \end{enumerate}
 
 It's a big bright world ahead of us. Go take a break and I'll see you next
