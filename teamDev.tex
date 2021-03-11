@@ -132,14 +132,14 @@ workspace as compared with your repo. The output will look like this:
 
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 $ git status
-On branch master
+On branch main
 Changes to be committed:
-  (use "git reset HEAD <file>..." to unstage)
+  (use "git restore --staged <file>..." to unstage)
     modified:   Cat.java
 
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in directory)
+  (use "git restore <file>..." to discard changes in working directory)
     modified:   Cat.java
 
 Untracked files:
@@ -154,7 +154,7 @@ Several things of interest here:
 \begin{itemize}
 
 \index{branch}
-\item The ``\texttt{On branch master}'' means you're on the main, default code
+\item The ``\texttt{On branch main}'' means you're on the normal, default code
 ``trunk.'' Later in your career, you'll discover that you sometimes want to
 create \textbf{branch}es, which are independently developed sequences of
 changes for some specific purpose. They are normally brought back together and
@@ -228,13 +228,13 @@ files'' section of \texttt{git status} really is something to think hard about.
 provides: they're great for telling you exactly how to change things if
 necessary. For instance:
 
-\begin{compactitem}
+\begin{itemize}
 
 \index{git@\texttt{git}!\texttt{git reset}}
 \index{git@\texttt{git}!\texttt{git checkout}}
 \item If we decide we don't want to check in that first set of
-\texttt{Cat.java} changes after all, we run the command ``\texttt{git reset
-HEAD Cat.java}'' to remove it from the purple diamond.
+\texttt{Cat.java} changes after all, we run the command ``\texttt{git restore
+-{}-staged Cat.java}'' to remove it from the purple diamond.
 
 \item If we want \textit{all} our changes in \texttt{Cat.java} to be committed
 (the old pre-\texttt{-git-add} ones and the newer ones), we do ``\texttt{git
@@ -242,11 +242,9 @@ add Cat.java}'' which will update the purple diamond's copy to match the
 workspace.
 
 \item If we decide to actually ditch the \texttt{Cat.java} changes entirely,
-the command is ``\texttt{git checkout -{}- Cat.java}'' to discard them.
-(Notice the double-hyphen, and also the spaces on either side of it: it's a
-weird syntax but you have to use it.)
+the command is ``\texttt{git restore Cat.java}'' to discard them.
 
-\end{compactitem}
+\end{itemize}
 
 \end{itemize}
 
@@ -262,29 +260,30 @@ I personally find the default \texttt{git log} output pretty wordy. It uses
 multiple lines per commit, which to me is TMI and fills up my screen too
 quickly:
 
+\label{gitLogOutput}
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 $ git log
 commit 928ab4924f1c5ddd3b9e2a1c7b507b1b60cf745d
 Author: Betty Lou <bettylou@umw.edu>
-Date:   2020-11-03
+Date:   2021-11-03
 
     Fix NPE bug caused by multiple hairballs.
 
 commit 7813b199f40051df14b23a418bce37ccb51a986d
 Author: Filbert <filbert@umw.edu>
-Date:   2020-11-02
+Date:   2021-11-02
 
     Add support for multiple, simultaneous hairballs.
 
 commit bdb0fa3071a220bfaccb0d687046e73873a6381d
 Author: Betty Lou <bettylou@umw.edu>
-Date:   2020-10-21
+Date:   2021-10-21
 
     Make most setters private.
 
 commit e4471910b8d27c819e4e0df39804ab607cd16c5c
 Author: Jezebel <jezebel@umw.edu>
-Date:   2020-10-15
+Date:   2021-10-15
 
     Add Cat.java, Hairball.java.
 \end{Verbatim}
@@ -320,10 +319,10 @@ this:
 \definecolor{darkgreen}{rgb}{0,.65,0}
 \begin{Verbatim}[commandchars=\\\{\},fontsize=\scriptsize,samepage=true,frame=single]
 $ git log
-(928ab49) \textcolor{blue}{Betty Lou}: \textcolor{darkgreen}{Fix NPE caused by multiple hairballs.} (2020-11-03)
-(7813b19) \textcolor{blue}{Filbert}: \textcolor{darkgreen}{Add support for simultaneous hairballs.} (2020-11-02)
-(bdb0fa3) \textcolor{blue}{Betty Lou}: \textcolor{darkgreen}{Make most setters private.} (2020-10-21)
-(e447191) \textcolor{blue}{Jezebel}: \textcolor{darkgreen}{Add Cat.java, Hairball.java.} (2020-10-15)
+(928ab49) \textcolor{blue}{Betty Lou}: \textcolor{darkgreen}{Fix NPE caused by multiple hairballs.} (2021-11-03)
+(7813b19) \textcolor{blue}{Filbert}: \textcolor{darkgreen}{Add support for simultaneous hairballs.} (2021-11-02)
+(bdb0fa3) \textcolor{blue}{Betty Lou}: \textcolor{darkgreen}{Make most setters private.} (2021-10-21)
+(e447191) \textcolor{blue}{Jezebel}: \textcolor{darkgreen}{Add Cat.java, Hairball.java.} (2021-10-15)
 \end{Verbatim}
 
 \index{man@\texttt{man}}
@@ -360,6 +359,7 @@ $ git config --global merge.tool vimdiff
 $ git config --global diff.tool vimdiff
 $ git config --global difftool.prompt false
 \end{Verbatim}
+\vspace{-.15in}
 
 \index{git@\texttt{git}!\texttt{git difftool}}
 This tells \texttt{git} to use the ``\texttt{vimdiff}'' tool to do
@@ -415,6 +415,7 @@ Okay. So that's how \texttt{vimdiff} (which is triggered from \texttt{git
 difftool}) works in general. Now, how do you specify what versions of the
 files you want to compare?
 
+\smallskip
 If you just type the command with no other arguments:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
@@ -426,6 +427,8 @@ you'll be comparing \textit{your workspace} (yellow oval) against \textit{your
 staging area} (purple diamond). This shows you the things that you have
 changed \textit{since your last \texttt{git add}}. This is useful when asking,
 ``I'm about to do a commit...have I forgotten anything I meant to include?''
+
+\medskip
 
 \index{staged@\texttt{-{}-staged} argument}
 If you add the ``\texttt{-{}-staged}'' argument:
@@ -440,6 +443,7 @@ you'll be comparing \textit{your staging area} (purple diamond) with the
 \textit{repo} (green box). This is useful when asking, ``if I do a commit
 right now, exactly what changes will be recorded?''
 
+\medskip
 \index{commit hash}
 \index{hash}
 Finally, to compare \textit{any two versions}, include the first few letters
@@ -451,16 +455,99 @@ $ git difftool bdb0fa3 7813b19
 
 \index{Filbert}
 will examine the changes Filbert made when he added multi-hairball support.
-(Refer to the commit hashes in the \texttt{git log} output, above.) The first
-hash identifies the commit Filbert was working with when he began making
-changes (\textit{i.e.}, the one he started with), and the second is the hash
-of the commit he himself made (the one he ended with). This process gives us
-fine-grained resolution in examining the past and identifying errors.
+(Refer to the commit hashes in the \texttt{git log} output,
+p.~\pageref{gitLogOutput}.) The first hash identifies the commit Filbert was
+working with when he began making changes (\textit{i.e.}, the one he started
+with), and the second is the hash of the commit he himself made (the one he
+ended with). This process gives us fine-grained resolution in examining the
+past and identifying errors.
 
-% Rolling back to a previous version (git checkout)
+\subsection{Going back in time}
 
+\index{time traveling (in \texttt{git})}
 
-\subsection{Using \texttt{git} with more than one human}
+One of the big value-adds of using a sophisticated version-control system like
+\texttt{git} is the ability to ``go back in time.'' This actually involves two
+superpowers: (1) to see the contents of previous versions of your code base,
+and (2) to permanently revert to those old contents (undoing recent commits).
+We'll cover each one.
+
+\subsubsection{Looking at old versions}
+
+There are a couple of ways to do this, but let me show you just the most
+straightforward one. First, before you can look at a past version of your repo,
+\textit{make sure your workspace is clean.} The easiest way to do that is
+simply to commit your current changes (although using the ``\texttt{git
+stash}'' command mentioned in the footnote on p.~\pageref{gitStash} is an
+alternative). If you want to go back in time right now, then first go commit
+your changes, and make sure that \texttt{git status} reports ``\texttt{working
+tree clean}'' before coming back here.
+
+\vspace{-.1in}
+\begin{center}
+\textsl{*author waits while reader commits his/her changes*}
+\end{center}
+\vspace{-.1in}
+
+Okay, now that your workspace is clean, run a \texttt{git log}. Each entry
+shows a commit you've made in the past (with a helpful comment). Your job now
+is to figure out which version of your past you want to (temporarily) return
+to. Don't worry, this process is non-destructive! You will absolutely be able
+to return to the present any time you want to.
+
+\index{Betty Lou}
+Once you've figured out which old version you want to explore, make a note of
+the first few characters of its commit hash. Then, type ``\texttt{git
+checkout}'' followed by those characters, and press Enter. For instance, if I
+wanted to revisit life as it existed when Betty Lou made her ``\texttt{Make
+most setters private}'' commit (see p.~\pageref{gitLogOutput}), I would type:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+$ git checkout bdb0f
+\end{Verbatim}
+
+Typing four or five characters of the hash is almost always enough. (If it's
+not, \texttt{git} will warn you to type more.)
+
+All right: go for it.
+
+\vspace{-.1in}
+\begin{center}
+\textsl{*reader time travels*}
+\end{center}
+\vspace{-.1in}
+
+Congratulations, you have now time-traveled to the past. As a bonus, you can
+read arguably the funniest command-line message I've ever seen:
+
+\index{detached heads}
+\index{zombies}
+
+\vspace{-.1in}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+  You are in a 'detached HEAD' state.
+\end{Verbatim}
+\vspace{-.1in}
+
+Lol! Talk about scaring somebody away from command-line tools! Detached heads
+are normally only good for zombies.
+
+Anyway, you may now explore the previous version of your world. Do an
+``\texttt{ls}'' command, browse files with \texttt{vim}, make copies of
+anything you'd like, and so forth. You will see that the state of your
+workspace is exactly how it was at that point in the past. If you do a
+\texttt{git log} right now, you'll see that everything that occurred after the
+point in the past you teleported back to is now missing from the list.
+
+When you're done reminiscing, and want to return to the present, simply type:
+
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+$ git checkout main
+\end{Verbatim}
+
+and you'll be back in the present day.
+
+\section{Using \texttt{git} with more than one human}
 
 In a team environment, the \texttt{git} tool works much the same way, but with
 an added level of complexity to ``join'' the developers together. Look at the
@@ -647,6 +734,7 @@ simple email or text often does the trick.
 
 \end{itemize}
 
+
 Bottom line: using the \texttt{git} verbs \texttt{add}, \texttt{commit},
 \texttt{pull}, and \texttt{push} properly is your key to ensuring your team
 has a living, breathing, healthy, working repository of shared code.
@@ -657,21 +745,25 @@ Here are the most common pitfalls I see:
 \index{git@\texttt{git}!\texttt{git pull}}
 \index{git@\texttt{git}!\texttt{git stash}}
 \index{man@\texttt{man}}
-\begin{compactitem} \item Forgetting to do a \texttt{pull} before trying a
-\texttt{push}. git won't allow you to \texttt{push} into a repo if you're
-out-of-date. You must first \texttt{pull} the recent changes so you're all in
-sync, and \textit{then} you can \texttt{push} your new changes to it. \item
-Forgetting to do a local \texttt{commit} before trying to \texttt{pull}. git
-won't let you pull changes from another repo if you have car parts all over
+
+\begin{compactitem}
+
+\item Forgetting to do a \texttt{pull} before trying a \texttt{push}. git won't
+allow you to \texttt{push} into a repo if you're out-of-date. You must first
+\texttt{pull} the recent changes so you're all in sync, and \textit{then} you
+can \texttt{push} your new changes to it.
+
+\item Forgetting to do a local \texttt{commit} before trying to \texttt{pull}.
+git won't let you pull changes from another repo if you have car parts all over
 your own garage. Make sure you check everything in and have a clean local
-workspace before doing that.\footnote{An alternative to a full local commit
-here is the ``\texttt{git stash}'' command which I've found useful. Doing a
-``\texttt{stash}'' is different than a \texttt{commit}, since you're not
-actually marking version control with labeled changes. Instead, you're sort of
-sweeping stuff under the rug to make your workspace temporarily clean, for the
-sake of doing an important \texttt{pull} operation from your teammates. You
-can then pull your stuff back out from under your rug and continue. For
-details, type ``\texttt{man git stash}'' and read carefully.}
+workspace before doing that.\footnote{\label{gitStash} An alternative to a full
+local commit here is the ``\texttt{git stash}'' command which I've found
+useful. Doing a ``\texttt{stash}'' is different than a \texttt{commit}, since
+you're not actually marking version control with labeled changes. Instead,
+you're sort of sweeping stuff under the rug to make your workspace temporarily
+clean, for the sake of doing an important \texttt{pull} operation from your
+teammates. You can then pull your stuff back out from under your rug and
+continue. For details, type ``\texttt{man git stash}'' and read carefully.}
 
 \end{compactitem}
 
