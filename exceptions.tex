@@ -1,6 +1,3 @@
-% TODO: explain somewhere that you can have subclasses that inherit from
-% Exception, and catch them in different catch blocks. (Seems like it would go
-% in this chapter, but we haven't covered inheritance yet, so...)
 
 \chapter{Exceptions}
 \label{ch:exceptions}
@@ -177,6 +174,7 @@ like \texttt{.drive()} so that if an exception is indeed ``thrown'' when we
 call it, we can ``catch'' is and do something sensible. Here's what the code
 looks like:
 
+\label{originalExceptionExample}
 \begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
     public static void main(String args[]) {
         ...
@@ -219,15 +217,85 @@ Once all the method calls that are defined as ``\texttt{throws Exception}''
 have been enclosed in try/catch blocks that at least nominally handle the
 errors, the code compiles again and it can hopefully run error-free.
 
+\section{Different kinds of exceptions}
+
+By the way, throughout this chapter I've been referring to ``vanilla''
+exceptions. By that, I mean we've literally used the plain word
+``\texttt{Exception}'' in all the code samples. Sometimes you'll see code in
+the real world that refers to specific \textit{kinds} of exceptions. Things
+like:
+
+\begin{compactitem}
+\item \texttt{FileNotFoundException}
+\item \texttt{DivideByZeroException}
+\item \texttt{ArrayIndexOutOfBoundsException}
+\item \texttt{IOException}
+\item \texttt{NullPointerException}
+\item ...
+\end{compactitem}
+
+You can probably tell from the names that these entities represent certain
+specific kinds of error conditions: a misspelled filename, division by zero,
+falling off the end of an array, \textit{etc.} Besides readability, one reason
+these are useful is that Java allows you to catch different kinds of errors in
+different catch blocks, so you can handle them differently.
+Figure~\ref{fig:multipleExceptions} gives you the idea.
+
+\begin{figure}[ht]
+\centering
+\begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
+    public static void main(String args[]) {
+        ...
+        minivan.fillUp();
+        try {
+            minivan.drive(500);
+        } catch (OutOfGasException e1) {
+            ...find nearest gas station...
+        } catch (FlatTireException e2) {
+            ...stop car and get out the jack...
+        } catch (EarthquakeSwallowedTheCarException e3) {
+            ...pray...
+        } catch (Exception e4) {
+            ...print an error and stop program...
+        }
+        ...
+    }
+\end{Verbatim}
+\caption{Multiple catch blocks, to handle different kinds of errors.}
+\label{fig:multipleExceptions}
+\end{figure}
+
+Important: only \textit{one} catch block (at most) will get executed when this
+code runs. Depending on what specifically went wrong, it could trigger the code
+in the first, second, third, or fourth. (Or, if the \texttt{.drive()} was
+successful, none of them will be triggered, obviously.) This is convenient
+because your error-handling code can be organized.
+
+Notice that the last of the four catch blocks in
+Figure~\ref{fig:multipleExceptions} is for a ``vanilla'' exception. This is
+like a default catch-all (no pun intended): it will be triggered only if none
+of the specific three previously-mentioned errors occurred.
+
+\pagebreak
+
+The way to throw a special type of exception is the same as throwing a
+vanilla one; you just ``\texttt{throw new OutOfGasException()}'' instead of
+``\texttt{throw new Exception()}''. To actually create your own special kind of
+exception, we'll need the material from
+chapters~\ref{ch:inheritance}-\ref{ch:inheritance2}, so stay tuned.
+ 
+
+
 \section{Stack traces}
 
 \index{stack trace}
 \index{printStackTrace@\texttt{.printStackTrace()}}
 One more thing before we leave this chapter on exceptions. It often proves
 useful to look at an \texttt{Exception}'s \textbf{stack trace}, which is
-accomplished by simply calling \texttt{.printStackTrace()} on the
-\texttt{Exception}, often in the \texttt{catch} block. For instance, suppose
-we change the previous try/catch block to this:
+accomplished by calling \texttt{.printStackTrace()} on the
+\texttt{Exception}, often in the \texttt{catch} block. For instance, suppose we
+change the original try/catch block (p.~\pageref{originalExceptionExample}) to
+this:
 
 \begin{Verbatim}[samepage=true,fontsize=\footnotesize,frame=single]
         try {
@@ -314,11 +382,13 @@ the error occurred, and then set about figuring out why it was caused.
 By the way, you can also print a stack trace from any place in your code, even
 if no error condition has arisen or exception is thrown. If you just type:
 
+\vspace{-.15in}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
             ...
             new Exception().printStackTrace();
             ...
 \end{Verbatim}
+\vspace{-.15in}
 
 anywhere you please, then whenever that line of code is encountered, a stack
 trace like those above will be spewed to your screen. It's often quite helpful
@@ -333,7 +403,7 @@ Oh, I should also mention that these stack trace outputs are a Java thing.
 C++'s equivalent output for many of these kinds of error cases is simply this:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
-Segmentation fault (core dumped)
+  Segmentation fault (core dumped)
 \end{Verbatim}
 
 I think you'll agree, that's not nearly as helpful. $\smiley$
