@@ -7,7 +7,7 @@ time. The solution, of course, is to work on a \textbf{team} with other
 software developers. Working on a team brings up a host of other issues, some
 technical and some social.
 
-\section{Team-based version control with \texttt{git}}
+\section{Looking deeper into \texttt{git}}
 
 \index{git@\texttt{git}}
 \index{CLI (command-line interface)}
@@ -120,7 +120,7 @@ add}''ed at some point.}
 
 \end{compactenum}
 
-\subsection{Understanding \texttt{git status}}
+\section{Understanding \texttt{git status}}
 
 Two extremely common commands for inspecting your workspace are ``\texttt{git
 status}'' and ``\texttt{git log}''. Let's look at each in turn.
@@ -230,8 +230,11 @@ necessary. For instance:
 
 \begin{itemize}
 
+\label{gitRestore}
 \index{git@\texttt{git}!\texttt{git reset}}
 \index{git@\texttt{git}!\texttt{git checkout}}
+\index{git@\texttt{git}!\texttt{git restore}}
+\index{restore@\texttt{restore} (\texttt{git})}
 \item If we decide we don't want to check in that first set of
 \texttt{Cat.java} changes after all, we run the command ``\texttt{git restore
 -{}-staged Cat.java}'' to remove it from the purple diamond.
@@ -248,7 +251,7 @@ the command is ``\texttt{git restore Cat.java}'' to discard them.
 
 \end{itemize}
 
-\subsection{Understanding \texttt{git log}}
+\section{Understanding \texttt{git log}}
 
 \index{git@\texttt{git}!\texttt{git log}}
 While \texttt{git status} is a detailed look at the present, ``\texttt{git
@@ -333,7 +336,7 @@ that use it, you only have to type the first few characters anyway (just
 enough to guarantee uniqueness) and the short version is waaaay easier to look
 at.
 
-\subsection{Comparing versions}
+\section{Comparing versions}
 
 \index{diff@\texttt{diff}}
 A very common operation for a developer is to compare two versions (of the
@@ -342,7 +345,7 @@ Colloquially, comparing two versions of something is called ``\textbf{doing a
 diff},'' named after the Linux ``\texttt{diff}'' command. Here's my favorite
 way of comparing versions.
 
-\subsubsection{The \texttt{vimdiff} comparison tool}
+\subsection{The \texttt{vimdiff} comparison tool}
 
 \index{vimdiff@\texttt{vimdiff}}
 \index{git@\texttt{git}!\texttt{git config}}
@@ -409,7 +412,7 @@ quit \texttt{vimdiff} you have to enter ``\texttt{:q}'' \textit{twice}, once
 for each of the panes. Sometimes it's quicker to use the ``\texttt{:qa}'' (for
 ``quit all'') sequence instead.)
 
-\subsubsection{Specifying the versions to compare}
+\subsection{Specifying the versions to compare}
 
 Okay. So that's how \texttt{vimdiff} (which is triggered from \texttt{git
 difftool}) works in general. Now, how do you specify what versions of the
@@ -462,7 +465,7 @@ with), and the second is the hash of the commit he himself made (the one he
 ended with). This process gives us fine-grained resolution in examining the
 past and identifying errors.
 
-\subsection{Going back in time}
+\section{Going back in time}
 
 \index{time traveling (in \texttt{git})}
 
@@ -472,7 +475,7 @@ superpowers: (1) to see the contents of previous versions of your code base,
 and (2) to permanently revert to those old contents (undoing recent commits).
 We'll cover each one.
 
-\subsubsection{Looking at old versions}
+\subsection{Looking at old versions}
 
 There are a couple of ways to do this, but let me show you just the most
 straightforward one. First, before you can look at a past version of your repo,
@@ -517,8 +520,8 @@ All right: go for it.
 \end{center}
 \vspace{-.1in}
 
-Congratulations, you have now time-traveled to the past. As a bonus, you can
-read arguably the funniest command-line message I've ever seen:
+Congratulations, you have now time-traveled to the past. As a bonus, you will
+encounter arguably the funniest command-line message I've ever seen:
 
 \index{detached heads}
 \index{zombies}
@@ -545,15 +548,121 @@ When you're done reminiscing, and want to return to the present, simply type:
 $ git checkout main
 \end{Verbatim}
 
-and you'll be back in the present day.
+and you'll be back in the present day.\footnote{Older versions of \texttt{git}
+called the main branch ``\texttt{master}'' instead of ``\texttt{main}.'' If you
+try the above command and it doesn't work, don't panic: try ``\texttt{git
+checkout master}'' instead.}
 
-\section{Using \texttt{git} with more than one human}
+\subsection{Reverting to old versions}
+
+Everybody makes mistakes. And sometimes you want to do more than just look at
+the older versions of your files -- you actually want to revert back to them
+permanently. You may realize that something you tried (``it seemed like a good
+idea at the time!'') actually isn't working out, and you want to go back to the
+way things were and pursue a different path.
+
+The good news: \texttt{git} is made for this. The neutral news: there's more
+than one way to do it, so you do have to think.
+
+\index{Back to the Future@\textit{Back to the Future}}
+
+No matter which way you do it, the first step is to clean your workspace --
+make sure all your current changes are committed. This may seem
+counterintuitive, since after all you're abandoning your current efforts,
+right? Why commit them? Just trust me. This reverting operation is
+non-destructive, in the sense that if you change your mind again later, you can
+always come \textit{back} to the future and resume the path you once abandoned.
+(If you're really really sure that your current changes are forever garbage,
+then you can clean your workspace with \texttt{git restore} (see
+p.~\pageref{gitRestore}) instead of \texttt{git commit}.)
+
+\medskip
+
+Okay, now the choices. I'll give you a couple of the most common ones:
+\texttt{git reset} and \texttt{git revert}.
+
+\vspace{-.1in}
+\begin{itemize}
+\itemsep.5em
+
+\index{pushing to a team repo}
+\index{git@\texttt{git}!\texttt{git push}}
+\index{git@\texttt{git}!\texttt{git reset}}
+
+\item \underline{Option \#1: \texttt{git reset}.} This tells git: ``I want to
+teleport back in time and continue life from a previous version of myself.''
+(\textit{Warning}: don't use this option if you've already pushed some of the
+commits that you're undoing to your team repo! (see next section.))
+
+First, use the git log to locate the version you want to go back to, as
+described in the previous section. Make a note of the first few characters of
+the commit hash. (For example, \texttt{2fe3}.) Once you've done that, run this
+command:
+
+\vspace{-.1in}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+  $ git reset --hard 2fe3
+\end{Verbatim}
+\vspace{-.1in}
+
+substituting your own commit hash, of course. You have now gone ``permanently''
+back in time, and can continue your work from the previous state. If you do a
+\texttt{git log} right now, none of the future commits will even appear. If you
+ever change your mind and want to go back to the future after all, you can find
+the commit hash of the future commit using:
+
+\vspace{-.1in}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+  $ git log --reflog
+\end{Verbatim}
+\vspace{-.1in}
+
+and then do another ``\texttt{git reset --hard}'' with that future commit hash.
+
+
+\index{git@\texttt{git}!\texttt{git revert}}
+
+\item \underline{Option \#2: \texttt{git revert}.} This tells git: ``One of my
+(or our) previous commits was a mistake. Please undo those changes, but leave
+me here in the (revised) future.''
+
+First, use the git log to locate the offending commit. Make a note of the first
+few characters of the commit hash. (For example, \texttt{b6b7}.) Once you've
+done that, run this command:
+
+\vspace{-.1in}
+\begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
+  $ git revert b6b7
+\end{Verbatim}
+\vspace{-.1in}
+
+substituting your own commit hash, of course. This operation creates a
+\textit{new} commit to represent ``the undoing of the offending commit's
+changes,'' and hence you'll be prompted for a commit message. You can accept
+the default or type a more descriptive one, and then voil\`{a}, the effect of
+the bad commit's changes will be canceled, and you can carry on.
+
+\end{itemize}
+
+There are other options too, which I encourage you to Google. The important
+point is to think through exactly what it is you want to do, so you can make
+sure that the command you choose applies to your situation. I've used both of
+the above options (and others) numerous times, depending on my scenario.
+
+
+
+
+
+\vfill
+\pagebreak
+
+\section{Team-based version control with \texttt{git}}
 
 In a team environment, the \texttt{git} tool works much the same way, but with
 an added level of complexity to ``join'' the developers together. Look at the
 revised picture in Figure~\ref{fig:teamGit}.
 
-\begin{figure}
+\begin{figure}[hb]
 \centering
 \hspace*{-.1in}
 \includegraphics[width=1.05\textwidth]{teamGit.pdf}  % 700x550
@@ -585,6 +694,7 @@ that someone creates the initial version of the repo on github, and the other
 team members \textbf{clone} copies of it. ``Clone'' is exactly what it sounds
 like: it means to make an exact duplicate.
 
+\index{pushing to a team repo}
 \index{git@\texttt{git}!\texttt{git push}}
 \index{Microsoft}
 github makes it easy to do this in a variety of ways. Perhaps the most common
@@ -612,6 +722,7 @@ $ git clone https://github.com/stuff/projectName.git projectName
 
 which will populate your filesystem with a copy of all the repo's files.
 
+\index{pushing to a team repo}
 \index{git@\texttt{git}!\texttt{git push}}
 \item \texttt{git push}: As usual, you'll constantly be making your own local
 commits to your own copy of the repo as you work. You should do this every
@@ -633,6 +744,7 @@ Last thing on \texttt{git push}: you normally don't do a \texttt{push} until
 \textit{after} doing a \texttt{pull} to make sure you have your teammate's
 latest code integrated in yours. See next bullet.
 
+\index{pulling from a team repo}
 \index{git@\texttt{git}!\texttt{git pull}}
 \item \texttt{git pull}: The inverse process of \texttt{push} is
 \texttt{pull}. It means, ``go to github, fetch whatever changes have been made
@@ -741,6 +853,8 @@ has a living, breathing, healthy, working repository of shared code.
 
 Here are the most common pitfalls I see:
 
+\index{pushing to a team repo}
+\index{pulling from a team repo}
 \index{git@\texttt{git}!\texttt{git push}}
 \index{git@\texttt{git}!\texttt{git pull}}
 \index{git@\texttt{git}!\texttt{git stash}}
@@ -766,8 +880,3 @@ teammates. You can then pull your stuff back out from under your rug and
 continue. For details, type ``\texttt{man git stash}'' and read carefully.}
 
 \end{compactitem}
-
-% TODO: Add: "rewinding to old versions" to:
-%  - compare
-%  - actually permanently roll back
-
