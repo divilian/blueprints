@@ -130,7 +130,7 @@ and returns a \texttt{String}. If any of that ever changed in the
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.8\textwidth]{dependencyAssoc.pdf}   % 
+\includegraphics[width=0.9\textwidth]{dependencyAssoc.pdf}   % 
 \caption{Examples of dependency associations.}
 \label{fig:dependencyExamples}
 \end{figure}
@@ -179,10 +179,11 @@ code there will be a ``\texttt{new RangedSpell()}'' line, we say that
 
 \index{dependency!dependency association}
 \index{uses@$\ll$uses$\gg$ stereotype}
+
 Now what would we expect to see in the code that would reflect this kind of
 association? In the ``$\ll$uses$\gg$'' case, we expect to see one or more
-methods of the \texttt{A} class making method calls on \texttt{B} objects.
-Perhaps something like this:
+methods of the \texttt{A} class (\texttt{Battle}, in our example) making method
+calls on \texttt{B} (\texttt{Die}) objects. Perhaps something like this:
 
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 class Battle {
@@ -197,13 +198,15 @@ class Battle {
 }
 \end{Verbatim}
 
-The design diagram doesn't specify exactly what \texttt{A} method will be
+The design diagram doesn't specify exactly which \texttt{Die} method(s) will be
 called where, just that method calls are expected. This communicates something
 important to the programmer.
 
 \index{instantiates@$\ll$instantiates$\gg$ stereotype}
-For ``$\ll$instantiates$\gg$'', we'd expect to see the word \texttt{new}
-somewhere in \texttt{A}:
+
+For ``$\ll$instantiates$\gg$'', we'd expect to see the phrase ``\texttt{new
+B()}'' (``\texttt{new RangedSpell()},'' in our example) somewhere in some
+method of the \texttt{A} class (\texttt{Wizard}, in our example):
 
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 class Wizard {
@@ -226,6 +229,7 @@ class Wizard {
 \index{association!has-a@``has-a''}
 \index{line!solid (---)}
 \index{arrowhead (\textbf{>})}
+
 The next strongest type of association has a bizarre name: it's called
 ``\textbf{has-a}.'' We denote it with a solid arrow between classes, with a
 crow's foot on one side or both.
@@ -445,7 +449,7 @@ classes, is called \textbf{composition}. It's a lot like aggregation (even the
 diamond syntax is the same, except it's black) but with one difference. With
 composition, not only does an \texttt{A} object have exclusive ownership over
 its \texttt{B} object(s), but there's a \textbf{lifespan dependency} as well:
-if the \texttt{A} ever disappears, its constituent \texttt{B}'s should also
+if the \texttt{A} ever disappears, its constituent \texttt{B}(s) should also
 cease to exist.
 
 \begin{figure}[ht]
@@ -687,6 +691,7 @@ relationships and what each one is supposed to mean.
 Often, the role name on the diagram is simply used as the instance variable
 name in the code. For instance, I'd expect to see something like this:
 
+\vspace{-.15in}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
 class Student {
     String major;    
@@ -694,6 +699,7 @@ class Student {
     ArrayList<Professor> instructors;
 }
 \end{Verbatim}
+\vspace{-.15in}
 
 since those names were handed to us on a silver platter in the design diagram.
 
@@ -809,12 +815,14 @@ public & \texttt{public} & \textbf{$\plus$} & any method anywhere \\
 non-public & (none) & (none) & only classes in same package \\
 public & \texttt{public} & \textbf{$\plus$} & any class anywhere \\
 \end{tabular}
-\vspace{.1in}
+\vspace{.2in}
 \caption{The two Java visibility levels for \textit{classes}.}
+\vspace{.3in}
 \label{fig:visibilityLevelsClasses}
 \normalsize
 \end{figure}
 
+\pagebreak
 Now it's important to understand that unlike multiplicity, visibility
 modifiers make a statement about \textit{classes}, not \textit{objects}. Also,
 crucially, visibility is about the very \textit{existence} of the method, inst
@@ -831,8 +839,8 @@ modifiers in action. In particular, the \texttt{numHits} and
 \begin{figure}[h]
 \centering
 \bigskip
-\includegraphics[width=0.5\textwidth]{visAboutClasses.pdf}
-\smallskip
+\includegraphics[width=0.8\textwidth]{visAboutClasses.pdf}
+\medskip
 \caption{A class whose components bear visibility annotations.}
 \label{fig:visAboutClasses}
 \bigskip
@@ -841,6 +849,7 @@ modifiers in action. In particular, the \texttt{numHits} and
 \index{client code}
 Here's the kind of client code we want to make possible with this method:
 
+\vspace{-.15in}
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
     ...
     Ballplayer jeter = new Ballplayer("Jeter");
@@ -851,6 +860,7 @@ Here's the kind of client code we want to make possible with this method:
     ...
 \end{Verbatim}
 
+\pagebreak
 Let's inspect the \textit{inside} of the \texttt{.isBetterThan()} method
 (\textit{i.e.}, its implementation). Suppose it reads like
 this\footnote{Apologies to baseball fans for the gross simplification of
@@ -898,7 +908,6 @@ from, and unavailable to, the \texttt{jeter} object. It stands to reason that
 this will not be allowed. Otherwise, we'd be allowing one object to access
 another object's private data.''
 
-\pagebreak
 This sounds so eminently reasonable, and yet it is dead wrong. Here's why:
 
 \index{private@\texttt{private}}
