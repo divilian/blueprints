@@ -593,10 +593,10 @@ teleport back in time and continue life from a previous version of myself.''
 (\textit{Warning}: don't use this option if you've already pushed some of the
 commits that you're undoing to your team repo! (see next section.))
 
-First, use the git log to locate the version you want to go back to, as
-described in the previous section. Make a note of the first few characters of
-the commit hash. (For example, \texttt{2fe3}.) Once you've done that, run this
-command:
+First, use the git log to locate \textbf{the version you want to go back to},
+as described in the previous section. Make a note of the first few characters
+of the commit hash. (For example, \texttt{2fe3}.) Once you've done that, run
+this command:
 
 \vspace{-.1in}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
@@ -604,11 +604,12 @@ command:
 \end{Verbatim}
 \vspace{-.1in}
 
-substituting your own commit hash, of course. You have now gone ``permanently''
-back in time, and can continue your work from the previous state. If you do a
-\texttt{git log} right now, none of the future commits will even appear. If you
-ever change your mind and want to go back to the future after all, you can find
-the commit hash of the future commit using:
+substituting your own commit hash (for the version you want to go back to) of
+course. You have now gone ``permanently'' back in time, and can continue your
+work from the previous state. If you do a \texttt{git log} right now, none of
+the future commits will even appear. If you ever change your mind and want to
+go back to the future after all, you can find the commit hash of the future
+commit using:
 
 \vspace{-.1in}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
@@ -626,9 +627,9 @@ hash.
 (or our) previous commits was a mistake. Please undo those changes, but leave
 me here in the (revised) future.''
 
-First, use the git log to locate the offending commit. Make a note of the first
-few characters of the commit hash. (For example, \texttt{b6b7}.) Once you've
-done that, run this command:
+First, use the git log to locate \textbf{the offending commit you want to
+undo}. Make a note of the first few characters of the commit hash. (For
+example, \texttt{b6b7}.) Once you've done that, run this command:
 
 \vspace{-.1in}
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
@@ -636,13 +637,23 @@ done that, run this command:
 \end{Verbatim}
 \vspace{-.1in}
 
-substituting your own commit hash, of course. This operation creates a
-\textit{new} commit to represent ``the undoing of the offending commit's
-changes,'' and hence you'll be prompted for a commit message. You can accept
-the default or type a more descriptive one, and then voil\`{a}, the effect of
-the bad commit's changes will be canceled, and you can carry on.
+substituting your own commit hash (for the commit you want to undo) of course.
+This operation creates a \textit{new} commit to represent ``the undoing of the
+offending commit's changes,'' and hence you'll be prompted for a commit
+message. You can accept the default or type a more descriptive one, and then
+voil\`{a}, the effect of the bad commit's changes will be canceled, and you can
+carry on.
 
 \end{itemize}
+
+(I've gotten messed up on this before, so heads-up: note that for the
+\texttt{git reset} command (option \#1), you specify the hash of the ``good''
+commit that you want to go back to, whereas for the \texttt{git revert} command
+(option \#2), you specify the hash of the ``bad'' commit that you want to
+undo.)
+
+
+\bigskip
 
 There are other options too, which I encourage you to Google. The important
 point is to think through exactly what it is you want to do, so you can make
