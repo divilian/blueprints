@@ -555,7 +555,7 @@ public class Song {
 \item As for \textit{\texttt{Song}'s} \texttt{.play()}
 method\footnote{Interestingly, note that there are \textit{three} different
 methods called \texttt{.play()} in this design, on each of three different
-classes: \texttt{Playlist}, \texttt{Play}, and \texttt{MP3Stream}.}, it
+classes: \texttt{Playlist}, \texttt{Song}, and \texttt{MP3Stream}.}, it
 apparently involves calling its own \texttt{.genStream()} method, which in
 turn instantiates an \texttt{MP3Stream} object to do the actual playing. After
 this, it gets the Singleton \texttt{.instance()} from the
