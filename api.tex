@@ -358,9 +358,12 @@ public class Ballplayer {
 \subsection{Generating the mini-website}
 
 \index{javadoc@\texttt{javadoc}}
+
 To actually generate the HTML in Figure~\ref{fig:javadocApi}, you'll need to
-run the \texttt{javadoc} command with some options. Generally, if I'm running
-on a Google Cloud instance, this is how I run it:
+run the \texttt{javadoc} command with some options. The specifics here may vary
+depending on what kind of machine you're running on and what access you have.
+Generally, assuming you're on an Internet-accessible server and have
+administrator privileges, this is how you run it:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=none]
 $ sudo javadoc -d /var/www/html -author *.java
@@ -380,7 +383,7 @@ require typing your password to confirm you're really Clark Kent.
 The ``\texttt{-d /var/www/html}'' bit is a command option with a parameter. The
 \texttt{-d} stands for ``directory'' and it says that the HTML that
 \texttt{javadoc} generates should be written to this directory. It's a
-system-specific thing; on Debian Linux (which I install on Google Cloud) this
+system-specific thing; on Ubuntu Linux (which I install on Google Cloud) this
 is the directory that Apache Web Server will look in to serve up content to
 browsers that connect to it. (More on that in a moment.) In other contexts,
 like if you have a user directory on a shared machine that you don't have
@@ -443,9 +446,10 @@ prettily-formatted HTML website like in Figure~\ref{fig:javadocApi}.
 \subsubsection{Firewall settings}
 
 \index{firewall settings (Google Cloud)}
-If you can't reach your JavaDoc site via the above URL, your problem might be
-that your Google Cloud firewall is blocking the traffic. At the time of this
-writing, here's how to fix that problem:
+
+Btw, if you can't reach your JavaDoc site via the URL as described above, your
+problem might be that your system firewall is blocking the traffic. For Google
+Cloud, here's how to fix that problem (at the time of this writing):
 
 \begin{compactenum}
 
