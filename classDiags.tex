@@ -657,18 +657,22 @@ relationship, the role that the \texttt{Villain} plays with respect to the
 \texttt{Hero} is that the former is the archenemy of the latter.
 
 \index{twitteruser@\texttt{TwitterUser}}
+\index{X@``X'' (Twitter)}
+
 Moving to the right side of the diagram, we have an interesting situation
-involving only one class: \texttt{TwitterUser}. This class apparently has an
-association to itself! This turns out not to be as weird as it might seem. In
-fact, if you think about a social network like Twitter, the most meaningful
-relationships \textit{are} between objects of the same class. And that's the
-key to de-weirding it in your mind: remember that an association is a
-statement about \textit{objects}, not classes. We're not saying
-``\texttt{TwitterUser} has a relationship with itself'' but rather ``each
-\texttt{TwitterUser} is related to zero or more other \texttt{TwitterUser}s.''
+involving only one class: \texttt{TwitterUser}\footnote{Twitter is the former
+name of the social networking site that Elon Musk renamed ``X.''}. This class
+apparently has an association to itself! This turns out not to be as weird as
+it might seem. In fact, if you think about a social network like Twitter (or
+``X''), the most meaningful relationships \textit{are} between objects of the
+same class. And that's the key to de-weirding it in your mind: remember that an
+association is a statement about \textit{objects}, not classes. We're not
+saying ``\texttt{TwitterUser} has a relationship with itself'' but rather
+``each \texttt{TwitterUser} is related to zero or more other
+\texttt{TwitterUser}s.''
 
 And what do those relations mean, you ask? The role name tells us: one of the
-users ``follows'' the other in the Twitter sense. In this diagram, we have role
+users ``follows'' the other in the X sense. In this diagram, we have role
 names on both sides of the arrow, although that's probably not strictly
 necessary. What is interesting here is the navigability of the association:
 according to the design, a \texttt{TwitterUser} object is aware of what other
@@ -829,6 +833,7 @@ crucially, visibility is about the very \textit{existence} of the method, inst
 var, or class, not its \textit{value.} This is very commonly misconstrued, so
 let me clarify with an example.
 
+\medskip
 \index{ballplayer@\texttt{Ballplayer}}
 Suppose a class diagram included the class in
 Figure~\ref{fig:visAboutClasses}. Here, for the first time, we see visibility
@@ -846,6 +851,7 @@ modifiers in action. In particular, the \texttt{numHits} and
 \bigskip
 \end{figure}
 
+\pagebreak
 \index{client code}
 Here's the kind of client code we want to make possible with this method:
 
@@ -860,7 +866,6 @@ Here's the kind of client code we want to make possible with this method:
     ...
 \end{Verbatim}
 
-\pagebreak
 Let's inspect the \textit{inside} of the \texttt{.isBetterThan()} method
 (\textit{i.e.}, its implementation). Suppose it reads like
 this\footnote{Apologies to baseball fans for the gross simplification of
@@ -1046,7 +1051,6 @@ world. Their use in practice is somewhat rarer than private methods, but I
 encourage their use.
 
 
-\pagebreak
 \section{Putting it all together}
 
 All right, let's close this chapter with a small but still full-blown class
@@ -1062,6 +1066,7 @@ colored certain elements so I could refer to them in the text.)}
 \label{fig:fullClassDiag}
 \end{figure}
 
+\pagebreak
 Here's an incomplete list of things we know from the diagram. Each item's
 color corresponds to an item in Figure~\ref{fig:fullClassDiag}:
 
@@ -1082,7 +1087,6 @@ specify a city and a mascot.)}
 \texttt{Ballplayer} can find out his/her age. But only methods of the
 \texttt{Ballplayer} class itself can change his/her age.}
 
-\pagebreak
 \item \textcolor{Red}{Every \texttt{Team} object will have a private instance
 variable\footnote{Notice that the ``\textbf{--}'' immediately before the word
 ``roster'' is a visibility modifier, indicating that the inst var that results
