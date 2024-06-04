@@ -83,9 +83,9 @@ sometimes, but not always, in \texttt{main()}. Here we pick up the action in
 class Simulator {
     ...
     public void printAllStars() {
-        int numTeams = teams.size();
+        int numTeams = this.teams.size();
         for (int i=0; i<numTeams; i++) {
-            Team nextTeam = teams.get(i);
+            Team nextTeam = this.teams.get(i);
             System.out.println(nextTeam + " - " +
                 nextTeam.getBestHitter());
         }
@@ -250,10 +250,10 @@ because \texttt{.bestHitter()} has a lot to do. Here it is:
 \begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
     ...
     private Ballplayer bestHitter() {
-        int numPlayers = roster.size();
-        Ballplayer best = roster.get(0);
+        int numPlayers = this.roster.size();
+        Ballplayer best = this.roster.get(0);
         for (int i=0; i<numPlayers; i++) {
-            Ballplayer b = roster.get(i);
+            Ballplayer b = this.roster.get(i);
             if (b.getBattingAvg() > best.getBattingAvg()) {
                 best = b;
             }

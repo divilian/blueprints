@@ -107,10 +107,10 @@ class Configuration {
     private static Configuration theInstance;
     
     public static synchronized Configuration instance() {
-        if (theInstance == null) {
-            theInstance = new Configuration(...);
+        if (Configuration.theInstance == null) {
+            Configuration.theInstance = new Configuration(...);
         }
-        return theInstance;
+        return Configuration.theInstance;
     }
 
     private Configuration(...) {

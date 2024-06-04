@@ -50,16 +50,16 @@ as an excellent terse-yet-precise communication of purpose.}
 Patterns interleave and play off one another all the time. Here, we have a
 factory class that uses the classic Singleton pattern:
 
-\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\scriptsize,samepage=true,frame=single]
 class BallplayerFactory {
 
     private static BallplayerFactory theInstance;
     
     public static synchronized BallplayerFactory instance() {
-        if (theInstance == null) {
-            theInstance = new BallplayerFactory();
+        if (BallplayerFactory.theInstance == null) {
+            BallplayerFactory.theInstance = new BallplayerFactory();
         }
-        return theInstance;
+        return BallplayerFactory.theInstance;
     }
 
     private BallplayerFactory() {
@@ -138,7 +138,7 @@ class Pitcher extends Ballplayer {
 
     public Pitcher(String name) { this.name = name; }
     public double estimatedMarketValue() {
-        return koDominance * 20000000;
+        return this.koDominance * 20000000;
     }
 }
 
@@ -152,7 +152,7 @@ class PositionPlayer extends Ballplayer {
         this.position = pos;
     }
     public double estimatedMarketValue() {
-        return numHits * 100000 - numAtBats * 1000;
+        return this.numHits * 100000 - this.numAtBats * 1000;
     }
 }
 \end{Verbatim}
@@ -163,7 +163,7 @@ class PositionPlayer extends Ballplayer {
 Our factory can now instantiate \textit{the right kind} of \texttt{Ballplayer}
 when it is asked to:
 
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
 class BallplayerFactory {
     ...
 
@@ -241,7 +241,7 @@ class MonsterFactory {
 
     Monster create() {
         Monster m = null;
-        switch (level) {
+        switch (this.level) {
             case 1:
                 double randomNumber = rng.nextDouble();
                 if (randomNumber < .5) {

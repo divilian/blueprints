@@ -15,9 +15,9 @@ example on p.~\pageref{fig:carClassCodePreExceptions}. It looked like this:
 class Car {
     ...
     void drive(int numMiles) {
-        double galsBurned = numMiles / gasMileage;
-        galsRemaining = galsRemaining - galsBurned;
-        odo += numMiles;
+        double galsBurned = numMiles / this.gasMileage;
+        this.galsRemaining -= galsBurned;
+        this.odo += numMiles;
     }
 }
 \end{Verbatim}
@@ -51,7 +51,7 @@ class Car {
         if (galsBurned > this.galsRemaining) {
             System.out.println("Not enough gas!!");
         }
-        this.galsRemaining = this.galsRemaining - galsBurned;
+        this.galsRemaining -= galsBurned;
         this.odo += numMiles;
     }
 }
@@ -78,7 +78,7 @@ class Car {
             System.out.println("Not enough gas!!");
             return;                       //  <---  NOTICE THIS!
         }
-        this.galsRemaining = this.galsRemaining - galsBurned;
+        this.galsRemaining -= galsBurned;
         this.odo += numMiles;
     }
 }
@@ -117,7 +117,7 @@ class Car {
         if (galsBurned > this.galsRemaining) {
             throw new Exception("Not enough gas!!");  //  NOTICE!
         }
-        this.galsRemaining = this.galsRemaining - galsBurned;
+        this.galsRemaining -= galsBurned;
         this.odo += numMiles;
     }
 }

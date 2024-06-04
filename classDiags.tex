@@ -881,7 +881,7 @@ class Ballplayer {
     private int numAtBats;
     ...
     public boolean isBetterThan(Ballplayer other) {
-        double myBA = ((double)numHits)/numAtBats;
+        double myBA = ((double)this.numHits)/this.numAtBats;
         double otherBA = ((double)other.numHits)/other.numAtBats;
         if (myBA > otherBA) {
             return true;

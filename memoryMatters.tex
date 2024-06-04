@@ -664,21 +664,21 @@ class Ballplayer {
 
     Ballplayer(String name) {
         this.name = name;
-        numHits = 0;
-        numAtBats = 0;
+        this.numHits = 0;
+        this.numAtBats = 0;
     }
 
     void strikeout() {
-        numAtBats++;
+        this.numAtBats++;
     }
 
     void getAHit() {
-        numHits++;
-        numAtBats++;
+        this.numHits++;
+        this.numAtBats++;
     }
 
     double getBattingAverage() {
-        return ((double) numHits)/numAtBats;
+        return ((double) this.numHits)/this.numAtBats;
     }
     ...
 }
@@ -712,7 +712,7 @@ class Pitcher {
     void face(Ballplayer batter) {
         double koRandNum = rng.nextDouble();
         double batterRandNum = rng.nextDouble();
-        if (koRandNum < koDominance) {
+        if (koRandNum < this.koDominance) {
             batter.strikeout();
             this.numKos++;
         } else {
@@ -720,7 +720,7 @@ class Pitcher {
                 batter.hit();
             } else {
                 batter.strikeout();
-                numKos++;
+                this.numKos++;
             }
         }
     }

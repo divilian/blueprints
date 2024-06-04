@@ -460,17 +460,19 @@ method was called on.''
 \end{shaded}
 \end{samepage}
 
-It's weird and meta and self-referential, but it's also necessary. There are
-times when we need to have a name for ``the very object I'm `in' right now,''
-and ``\texttt{this}'' is our (awkward) name to refer to that.
+It's weird and meta and self-referential, but it's also necessary. We need to
+to have a name for ``the very object I'm `in' right now,'' and
+``\texttt{this}'' is our (awkward) name to refer to that.
 
 So in our constructor, when we say ``\texttt{this.make}'' we mean ``the
 \texttt{make} instance variable of this very object that is in the process of
 being birthed.'' We set that to the \texttt{make} argument that was passed to
-the constructor. Ditto with \texttt{model}. Oftentimes, using \texttt{this} is
-optional, but in the present case it's required because we named our argument
-the same as the instance variable, and there has to be a way to distinguish
-between the two.
+the constructor. Ditto with \texttt{model}. Note: oftentimes (namely, when it's
+unambiguous), using \texttt{this} is optional. But \textbf{in this book I'm
+\textit{always} going to use \texttt{this} before instance variables, to drill
+home the point that they are very different from ordinary, local variables.}
+Just be aware that you'll see code out in the wild where lazy programmers don't
+always use \texttt{this} for inst vars, and you'll be fine.
 
 \index{initialization}
 Now for our other inst vars. Some of them make sense to be set to zero:
@@ -505,14 +507,14 @@ class Car {
         this.galsRemaining = 0.0;
         
         if (make.equals("Chevy") || make.equals("GM")) {
-            sizeOfTank = 21;
+            this.sizeOfTank = 21;
         } else {
-            sizeOfTank = 13;
+            this.sizeOfTank = 13;
         }
         if (make.equals("Chevy") && model.equals("Malibu")) {
-            gasMileage = 3;
+            this.gasMileage = 3;
         } else {
-            gasMileage = 24;
+            this.gasMileage = 24;
         }
     }
 }
@@ -577,26 +579,14 @@ correct implementation of \texttt{.fillUp()}, then, is simply:
 class Car {
     ...
     void fillUp() {
-        galsRemaining = sizeOfTank;
-    }
-}
-\end{Verbatim}
-
-We could equally well have written this as:
-
-\vspace{-.15in}
-\begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
-class Car {
-    ...
-    void fillUp() {
         this.galsRemaining = this.sizeOfTank;
     }
 }
 \end{Verbatim}
-\vspace{-.15in}
 
-to be explicit that we're talking about two instance variables here, and
-assigning the value of one to the other. It's a matter of style.
+At the risk of repetition, note the word \texttt{this} before each of these
+variable names, indicating in each case that we mean ``the inst var in this
+object by that name.''
 
 \medskip
 
@@ -608,14 +598,11 @@ involves these same two inst vars and a little math:
 class Car {
     ...
     double getTankPerc() {
-        return galsRemaining / sizeOfTank * 100;
+        return this.galsRemaining / this.sizeOfTank * 100;
     }
 }
 \end{Verbatim}
 \vspace{-.15in}
-
-I chose to omit \texttt{this}, but again it's a personal choice.
-\medskip
 
 \index{getter}
 \index{setter}
@@ -626,7 +613,7 @@ Some methods, like accessors, are no-brainers. Here's a getter:
 class Car {
     ...
     String getModel() {
-        return model;
+        return this.model;
     }
 }
 \end{Verbatim}
@@ -665,16 +652,24 @@ class Car {
     ...
     void drive(int numMiles) {
         double galsBurned = numMiles / this.gasMileage;
-        this.galsRemaining = this.galsRemaining - galsBurned;
+        this.galsRemaining -= galsBurned;
         this.odo += numMiles;
     }
 }
 \end{Verbatim}
 
-This time, I did include the \texttt{this}'s where appropriate, since we also
-have a couple of local variables involved and I wanted to be explicit. Our
-math is a mix of function parameters, temporary variables, and permanent
-attributes of the \texttt{Car}.
+(Recall that the ``\texttt{-=}'' operator in Java means ``subtract the thing on
+the right-hand side permanently from the thing on the left-hand side''; in other
+words, ``\texttt{x -= y;}'' is a shorthand for, and exactly the same thing as,
+``\texttt{x = x - y;}'')
+
+Now note that some of these variables have \texttt{this} before them, and others
+don't, which distinguishes which are semi-permanent parts of the object, and
+which are merely parameters names and local variables that this method made up.
+Double-check me: if you look back at page~\pageref{fig:classObject}, you're not
+going to see any inst vars called ``\texttt{numMiles}'', or
+``\texttt{galsBurned}''. Those were created in the spur of the moment, just
+for this method.
 
 \subsubsection{``Static methods'' and ``static inst vars''}
 \index{class variable}
@@ -713,7 +708,7 @@ method'' (a.k.a.~a regular function, defined on the class) that will retrieve
 its value. Putting it all together, we get:
 
 \vspace{.15in}
-\begin{Verbatim}[fontsize=\small,samepage=true,frame=single,framesep=3mm]
+\begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single,framesep=3mm]
 class Car {
     ...
     static int numCars;
@@ -721,11 +716,11 @@ class Car {
 
     Car(String make, String model) {
         ...the rest of the constructor...
-        numCars++;
+        Car.numCars++;
     }
     ...
     static int getNumCars() {
-        return numCars;
+        return Car.numCars;
     }
 }
 \end{Verbatim}
@@ -749,7 +744,8 @@ matter how many \texttt{Car}s we instantiate. Note that the way to call the
 This is the exact opposite of the situation on p.~\pageref{callMethodOnObject},
 and it makes sense because we aren't asking a specific car (like John's
 Mercedes-Benz) how many cars exist. We're just asking the universe that
-question.
+question. So to refer to a static variable, instead of \texttt{this} before the
+dot, we put the name of the class before the dot.
 
 \smallskip
 Also notice that we incremented \texttt{numCars} in our class constructor. This
@@ -865,13 +861,13 @@ Heck, let's try it:
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
     Car porsche = new Car("Porsche","Carrera");
     porsche.setYearsOld(2);
-    System.out.println("My car is: " + porsche + ".");
+    System.out.println("My car is " + porsche + ".");
 \end{Verbatim}
 
 The output we get is:
 
 \begin{verbatim}
-   My car is: Car@4aa298b7.
+   My car is Car@4aa298b7.
 \end{verbatim}
 
 Whoa. The word ``\texttt{Car}'' is perhaps not surprising, but what's the rest
@@ -911,16 +907,16 @@ be there.)
 Here's one:
 
 \begin{Verbatim}[samepage=true,fontsize=\scriptsize,frame=single]
-    public String toString() {
-        return "a " + yearsOld + "-year-old " + make + " " + model;
-    }
+public String toString() {
+  return "a " + this.yearsOld + "-yr-old " + this.make + " " + this.model;
+}
 \end{Verbatim}
 
 We're assembling various aspects of the vehicle into a sensible, readable
 string. Now, when we run \textit{the same code} as above, our output is this:
 
 \begin{verbatim}
-   My car is: a 2-year-old Porsche Carrera.
+  My car is a 2-yr-old Porsche Carrera.
 \end{verbatim}
 
 Notice that we didn't explicitly ever call \texttt{.toString()}! Instead, we
@@ -947,46 +943,46 @@ class Car {
     Car(String make, String model) {
         this.make = make;
         this.model = model;
-        yearsOld = 0;
-        odo = 0;
-        galsRemaining = 0;
+        this.yearsOld = 0;
+        this.odo = 0;
+        this.galsRemaining = 0;
         if (make.equals("Chevy") || make.equals("GM")) {
-            sizeOfTank = 21;
+            this.sizeOfTank = 21;
         } else {
-            sizeOfTank = 13;
+            this.sizeOfTank = 13;
         }
         if (make.equals("Chevy") && model.equals("Malibu")) {
-            gasMileage = 3;
+            this.gasMileage = 3;
         } else {
-            gasMileage = 24;
+            this.gasMileage = 24;
         }
-        numCars++;
+        Car.numCars++;
     }
 
     public String toString() {
-        return "a " + yearsOld + "-year-old " + make + " " + model;
+      return "a " + this.yearsOld + "-yr-old " + this.make + " " + model;
     }
 
-    String getMake() { return make; }
-    String getModel() { return model; }
-    int getYearsOld() { return yearsOld; }
-    void setYearsOld(int x) { yearsOld = x; }
+    String getMake() { return this.make; }
+    String getModel() { return this.model; }
+    int getYearsOld() { return this.yearsOld; }
+    void setYearsOld(int x) { this.yearsOld = x; }
 
-    static int getNumCars() { return numCars; }
+    static int getNumCars() { return Car.numCars; }
 
     void fillUp() {
         this.galsRemaining = this.sizeOfTank;
     }
 
     double getTankPerc() {
-        double perc = galsRemaining / sizeOfTank * 100;
+        double perc = this.galsRemaining / this.sizeOfTank * 100;
         return perc;
     }
 
     void drive(int numMiles) {
-        double galsBurned = numMiles / gasMileage;
-        galsRemaining = galsRemaining - galsBurned;
-        odo += numMiles;
+        double galsBurned = this.numMiles / this.gasMileage;
+        this.galsRemaining -= galsBurned;
+        this.odo += this.numMiles;
     }
 }
 \end{Verbatim}

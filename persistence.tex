@@ -222,28 +222,29 @@ class Resort {
   private int rating, cost;
 
   Resort(Scanner s) {
-      name = s.nextLine();
-      phone = s.nextLine();
-      rating = s.nextInt();
+      this.name = s.nextLine();
+      this.phone = s.nextLine();
+      this.rating = s.nextInt();
       s.nextLine();    // read and discard the " stars" part.
-      cost = s.nextLine().length();
-      desc = "";
+      this.cost = s.nextLine().length();
+      this.desc = "";
       String next = s.nextLine();
       while (!next.equals(".")) {
-          desc = desc + next + "\n";
+          this.desc += next + "\n";
           next = s.nextLine();
       }
   }
   
   void persist(PrintWriter pw) {
-      pw.println(name);
-      pw.println(phone);
-      pw.println(rating + " " + (rating == 1 ? "star" : "stars"));
-      for (int i=0; i<cost; i++) {
+      pw.println(this.name);
+      pw.println(this.phone);
+      pw.println(this.rating + " " +
+            (this.rating == 1 ? "star" : "stars"));
+      for (int i=0; i<this.cost; i++) {
           pw.print("$");
       }
       pw.println();  // newline for the $$$
-      pw.println(desc);
+      pw.println(this.desc);
       pw.println(".");
   }
 }
@@ -312,8 +313,8 @@ Just a few things of note here:
 
 \index{conditional expression}
 \index{? : (conditional expression)}
-\item If you haven't seen the wacky syntax at the end of the
-``\texttt{rating}'' line, it's worth knowing. It's called a ``conditional
+\item If you haven't seen the wacky syntax on the
+``\texttt{this.rating}'' lines, it's worth knowing. It's called a ``conditional
 expression'' or a ``question-mark-colon operator'' and is a compact way of
 sticking a short \texttt{if}/\texttt{else} onto one line. It means ``if the
 boolean expression before the question mark is true, replace this whole
@@ -340,7 +341,7 @@ necessitates us reading that field in the latter.
 
 I said above that Figure~\ref{fig:resort1} is \textit{almost} what we want.
 We're going to make one change to it. When a client calls ``\texttt{new
-Resort(someScanner)}'', it's expecting the constructor to hydrate a
+Resort(aScanner)}'', it's expecting the constructor to hydrate a
 \texttt{Resort} object and hand it over. But consider: what if there are no
 more \texttt{Resort} objects in the file?
 
@@ -351,7 +352,7 @@ save file is going to have lots of resorts in it, back-to-back-to-back, each
 separated from the following one by the period delimiter.
 
 This in turn means that our code in \texttt{ReservationSystem} is going to be
-calling ``\texttt{new Resort(someScanner)}'' \textit{in a loop} to hydrate all
+calling ``\texttt{new Resort(aScanner)}'' \textit{in a loop} to hydrate all
 the objects. This will work great until the point at which we hit the end of
 the list. What then?
 
@@ -404,18 +405,18 @@ instantiate an object}, and throws the exception back to the caller.
 \centering
 \begin{Verbatim}[fontsize=\footnotesize,samepage=true,frame=single]
     Resort(Scanner s) throws NoMoreResortsException {
-        name = s.nextLine();
-        if (name.equals("-END-")) {
+        this.name = s.nextLine();
+        if (this.name.equals("-END-")) {
             throw new NoMoreResortsException();
         }
-        phone = s.nextLine();
-        rating = s.nextInt();
+        this.phone = s.nextLine();
+        this.rating = s.nextInt();
         s.nextLine();    // read and discard the " stars" part.
-        cost = s.nextLine().length();
-        desc = "";
+        this.cost = s.nextLine().length();
+        this.desc = "";
         String next = s.nextLine();
         while (!next.equals(".")) {
-            desc = desc + next + "\n";
+            this.desc += next + "\n";
             next = s.nextLine();
         }
     }
@@ -503,7 +504,7 @@ public class ReservationSystem {
         this.resorts = new ArrayList<Resort>();
         Scanner s = new Scanner(new FileReader(filename));
         this.chainName = s.nextLine();
-        year = s.nextInt();
+        this.year = s.nextInt();
         s.nextLine();    // Read past " season"
         s.nextLine();    // Read past line of hyphens
 
@@ -511,7 +512,7 @@ public class ReservationSystem {
         try {
             while (true) {
                 Resort r = new Resort(s);
-                resorts.add(r);
+                this.resorts.add(r);
             }
         } catch (NoResortException e) {
         }
@@ -545,7 +546,6 @@ aren't any. Carry on with your other business, Mr.~Client.''
 To be crystal clear, here's what happens in the \texttt{try}/\texttt{while}
 construct when we read Figure~\ref{fig:wholeFile}:
 
-\pagebreak
 \begin{compactenum}
 \item It hydrates a \texttt{Resort} object, and adds it to the
 \texttt{resorts} \texttt{ArrayList}.
@@ -576,10 +576,10 @@ class:
 
 \begin{Verbatim}[fontsize=\small,samepage=true,frame=single]
     void persist(PrintWriter pw) {
-        pw.println(chainName);
-        pw.println("" + year + " season");
+        pw.println(this.chainName);
+        pw.println("" + this.year + " season");
         pw.println("-----------------------------------");
-        for (Resort r : resorts) {
+        for (Resort r : this.resorts) {
             r.persist(pw);
         }
         pw.println("Copyright (C) " + year);
