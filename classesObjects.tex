@@ -274,7 +274,7 @@ setters \textbf{accessors}, and sometimes specifically call setters
 
 \index{object}
 \index{state}
-Now let's examine the blue box in Figure~\ref{fig:classObject}, which
+Now let's finally examine the blue box back on p.~\pageref{fig:classObject}, which
 represents an object rather than a class. It has only two compartments, not
 three. That's because there's no need (in most OO languages) to say anything
 about an object's methods when focusing on the object: after all, the methods
@@ -815,21 +815,21 @@ shows that our \texttt{Car} class has uses.
   public static void main(String args[]) {
   
       // The archaic Davies family vehicles
-      Car minivan = new Car("Toyota","Sienna");
-      minivan.setYear(2002);
+      Car famCar = new Car("Honda","CR-V");
+      famCar.setYear(2008);
       Car stephensLemon = new Car("Chevy","Malibu");
-      minivan.setYear(2001);
+      famCar.setYear(2001);
   
       // Grammy lives in Colorado
       Car grammysCar = new Car("Lexus","ES");
-      grammysCar.setYear(2023);
+      grammysCar.setYear(2025);
   
       // Caravan to Disneyworld!  (Grammy's meeting us there.)
-      minivan.fillUp();
-      minivan.drive(500);
+      famCar.fillUp();
+      famCar.drive(500);
       stephensLemon.fillUp();
       stephensLemon.drive(500);
-      System.out.println("The van is " + minivan.getTankPerc() + 
+      System.out.println("The Honda is " + famCar.getTankPerc() + 
           "% full, while the chevy is " +
           stephensLemon.getTankPerc() + "% full.");
       grammysCar.drive(1899);  // a long way from Colorado
